@@ -129,6 +129,18 @@ docs/archive/en/index.md    → /archive/en/
 > 砍出第一个真正的地编历史版时，把它删掉，并把配置里那一条换成真实的
 > id / label / date。删掉之后切换器只剩一项，版本机制照常工作。
 
+### 空左栏会自己收掉
+
+单页分区（`准备工作`、`关于`）与首页的左栏是**空的**——它铺的是「当前分区的其它页」，
+而这些分区里只有它自己。空着也占 242px，正文被挤到 688px。
+
+所以 `tools/docsgen.py` 会按「这一棵树里还有没有别的页」推导出来，给该页的产物补一行
+`hide: [navigation]`，正文随之铺到 938px。判据在构建层而不在各页的前置元数据里：
+分区里加一篇新页时左栏该自己回来，写死在前置元数据里就不会，而且每加一种语言、
+每个历史版都要各写一遍。
+
+作者自己在前置元数据里写了 `hide:` 的，这里不覆盖——那是有意为之，不是推导的结果。
+
 ### 缺页怎么办
 
 历史版是冻结的，它的页面集合与当前版对不上是常态：当前版新加的分区，旧版自然没有。
@@ -180,6 +192,18 @@ site/                 构建产物，不入库
 `make gen`，发出去的就是旧内容且**不会有任何报错**——`make build` 与 CI 都先跑生成，
 就是为了堵这个缺口。
 
+### 标题锚点钉住，别靠自动生成
+
+需要被链接的标题（`主界面` 里那十六个小节、`准备工作` 的四节……）都写了显式 id：
+
+```markdown
+## WallE 说明 { #walle }
+```
+
+自动生成的 id 是**标题文字的变形**，靠不住：改一个空格，`#save说明` 就变成
+`#save-说明`；繁体树上同一个标题还会被转写成 `#save說明`。凡是别处要链过去的标题，
+都钉一个 ASCII 的 id，链接从此与排版和简繁转换都无关。
+
 ---
 
 ## 这个仓库对模版改了什么
@@ -212,7 +236,8 @@ site/                 构建产物，不入库
 
 另外新增：`tools/versions.py`（版本清单与体检）、`overrides/partials/route.html`
 （两条轴的唯一判据）、`overrides/partials/version.html`（版本切换器）、
-`translation_in_progress`（语种补齐进度这条刻意的放宽）。
+`translation_in_progress`（语种补齐进度这条刻意的放宽）、空左栏的自动推导
+（见上）、以及标题锚点的显式钉住。
 
 ---
 
@@ -231,17 +256,30 @@ site/                 构建产物，不入库
 
 ## 部署
 
-`make build` 产出的 `site/` 与托管商无关。两条常见接法：
+!!! warning "本仓库**没有**部署"
+    按需求撤掉了：GitHub Pages 站点已删除，`deploy` 分支已删除，
+    `.github/workflows/deploy.yml` 也已从仓库移除。现在推 `main` 只会跑校验，
+    不会发布任何东西。
 
-**A. 由托管商构建** —— 盯 `main`，构建命令 `make gen && make build`，输出目录 `site`。
+`make build` 产出的 `site/` 是一个普通静态目录，与托管商无关。要重新发布时，
+两件事：
 
-**B. 在 CI 里构建，产物推一个分支**（本仓库采用）：`.github/workflows/deploy.yml`
-在 CI 里跑完整条产线，把 `site/` 作为**一个全新的孤儿提交** force-push 到 `deploy`
-分支。GitHub Pages 从 `deploy` 分支发布。每次都是新提交而不是追加，上一版才有的
-文件因此不会在线上阴魂不散。
+1. 取回发布工作流——它在提交 `881ae35`（模版基线）里：
 
-`.github/workflows/docs.yml` 只做校验、**不发布**，挂在 push 与 PR 上。
+   ```bash
+   git show 881ae35:.github/workflows/deploy.yml > .github/workflows/deploy.yml
+   ```
 
-> 站点挂在 `https://bananaxiao2333.github.io/rwr-mapbook/`，即 `site_url` 带一个
-> 子路径。换域名或换成用户站（`<user>.github.io`）时记得改 `site_url`——
-> `linkcheck` 与 `i18n_check` 都按它解析绝对链接。
+   它在 CI 里跑完整条产线，然后把 `site/` 作为**一个全新的孤儿提交** force-push
+   到 `deploy` 分支（每次都是新提交而不是追加，上一版才有的文件因此不会在线上
+   阴魂不散）；
+2. 在仓库设置里开启 Pages，来源选 `deploy` 分支。
+
+也可以不用那条工作流：让托管商盯 `main`，构建命令填 `make gen && make build`、
+输出目录填 `site` 即可。
+
+`.github/workflows/docs.yml` 只做校验、**不发布**，挂在 push 与 PR 上——它一直留着。
+
+> `zensical.toml` 里的 `site_url` 目前是 `https://bananaxiao2333.github.io/rwr-mapbook/`，
+> 即带一个子路径（GitHub Pages 项目站）。换域名或换成用户站（`<user>.github.io`）时
+> 要改它——`linkcheck` 与 `i18n_check` 都按它解析绝对链接。
