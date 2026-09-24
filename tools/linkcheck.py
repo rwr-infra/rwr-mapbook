@@ -35,11 +35,28 @@ from __future__ import annotations
 import posixpath
 import re
 import sys
+import tomllib
 from pathlib import Path
-from urllib.parse import unquote
+from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "site"
+
+
+def site_base() -> str:
+    """site_url 里的路径部分，去掉首尾斜杠（站点挂在域名根上时是空串）。
+
+    为什么必须有它：`site_url = "https://you.github.io/repo/"` 这种**子路径部署**
+    （GitHub Pages 的项目站全是这样）下，模板里的 `| url` 过滤会生成
+    `/repo/editor/` 这样的**绝对**地址。这个地址是给浏览器看的，它在站点里对应
+    的文件是 `site/editor/index.html`——不带 `repo` 那一段。本脚本原先一律把
+    绝对地址当站点根相对来解，于是全站的绝对链接都会被判成落空，
+    而它们其实条条都对。子路径是部署形态，不是内容错误，判据得跟着走。
+    """
+    with (ROOT / "zensical.toml").open("rb") as handle:
+        config = tomllib.load(handle)
+    path = urlsplit(str(config.get("project", {}).get("site_url", "") or "")).path
+    return path.strip("/")
 
 ATTR_RE = re.compile(r'(?:href|src)\s*=\s*"([^"]*)"')
 REFRESH_RE = re.compile(r"<meta[^>]*http-equiv=\"refresh\"[^>]*>", re.I)
@@ -56,13 +73,21 @@ def page_dir(path: Path) -> str:
 
 
 def resolve(page: str, ref: str) -> str:
-    """引用 → 站点内的规范路径（去引号、去查询串与锚点、解码百分号）。"""
+    """引用 → 站点内的规范路径（去引号、去查询串与锚点、解码百分号）。
+
+    以 `/` 开头的是**站点绝对**地址，它带着 site_url 的子路径前缀（如果有）；
+    其余按当前页面所在的目录解析。
+    """
     clean = ref.split("#", 1)[0].split("?", 1)[0]
     if not clean:
         return ""
     clean = unquote(clean)
     joined = posixpath.join("/" + page, clean)
-    return posixpath.normpath(joined).lstrip("/")
+    site_rel = posixpath.normpath(joined).lstrip("/")
+    base = site_base()
+    if base and (site_rel == base or site_rel.startswith(base + "/")):
+        site_rel = site_rel[len(base):].lstrip("/")
+    return site_rel
 
 
 def is_internal(ref: str) -> bool:

@@ -1,10 +1,10 @@
 [project]
-site_url = "https://example.com/"
-site_name = "文档站模版"
-site_description = "一个三语（简中 / 英文 / 繁中）静态文档站模版：content/ 是唯一手写层，其余全部由脚本生成。"
-site_author = "Your Name"
+site_url = "https://bananaxiao2333.github.io/rwr-mapbook/"
+site_name = "RWR 地编手册"
+site_description = "小兵步枪（Running With Rifles）地图编辑器手册：地编界面逐项说明、模型与墙体清单、交互按键与常用流程。"
+site_author = "RWR 地图编辑组"
 
-copyright = "文档站模版 · 示例内容"
+copyright = "RWR 地编手册 · 由 RWR 地图编辑组维护"
 
 # 仓库入口（可选）：填了 repo_url，页眉搜索框旁就会出现一个「图标 + 仓库名」的链接
 # （见 overrides/partials/header.html 末尾那段判断，以及主题的 partials/source.html）。
@@ -16,8 +16,8 @@ copyright = "文档站模版 · 示例内容"
 #
 # 不设 repo_name 时 Zensical 拿 URL 的域名推断，页眉那行字只剩「GitHub」；
 # 写上仓库名读者才知道点进去是哪儿。
-# repo_url = "https://github.com/you/your-repo"
-# repo_name = "your-repo"
+repo_url = "https://github.com/bananaxiao2333/rwr-mapbook"
+repo_name = "rwr-mapbook"
 
 
 # extra_css / extra_javascript 必须在任何 [[project.*]] 表之前，
@@ -61,11 +61,11 @@ invalid_link_anchors = true
 # 仅用于结构化数据里的 alternateName（见 overrides/main.html 的 JSON-LD），
 # 让检索端把默认语言站名与译文站名认成同一个实体。
 # 这个键通常三语同形，故不做分语种。
-site_subtitle = "DOCS TEMPLATE"
+site_subtitle = "鼠书"
 
-site_name_en = "Docs Template"
-copyright_en = "Docs Template · sample content"
-site_author_en = "Your Name"
+site_name_en = "RWR Map Editor's Handbook"
+copyright_en = "RWR Map Editor's Handbook · maintained by the RWR map-editing group"
+site_author_en = "RWR Map Editing Group"
 consent_title_en = "Data & privacy"
 consent_description_en = "This site collects no visitor data. There is no analytics, no advertising, no cookie and no third-party request of any kind. Fonts, styles and scripts are all self-hosted, so any page contacts this site’s domain only. A single light/dark display preference is stored locally by the browser, and is removed when browser data is cleared."
 
@@ -74,7 +74,7 @@ consent_description_zh_hant = "本站不收集任何存取資料：無統計、�
 
 # 页面包屑的根（默认语言的根标签，例如「首页」）
 nav_root_label_en = "Home"
-site_description_en = "A trilingual (Simplified Chinese / English / Traditional Chinese) static docs template: content/ is the only hand-written layer, everything else is generated."
+site_description_en = "The handbook for the Running With Rifles map editor: what every panel does, the model and wall inventories, key bindings and common workflows."
 # 主题切换按钮的提示文案（config.theme.palette 里的 toggle.name 是全站唯一的）
 palette_toggle_auto_en = "Toggle light/dark"
 palette_toggle_light_en = "Switch to dark"
@@ -82,9 +82,9 @@ palette_toggle_dark_en = "Switch to light"
 
 # 繁体（zh-hant）。键名后缀用下划线，因为语言代码里本来就有连字符。
 # 站名、版权、作者若与默认语言同形（如均为中文），该键可以省略、回落到默认值。
-copyright_zh_hant = "文檔站模版 · 示例內容"
-site_author_zh_hant = "Your Name"
-site_description_zh_hant = "一個三語（簡中 / 英文 / 繁中）靜態文檔站模版：content/ 是唯一手寫層，其餘全部由腳本生成。"
+copyright_zh_hant = "RWR 地編手冊 · 由 RWR 地圖編輯組維護"
+site_author_zh_hant = "RWR 地圖編輯組"
+site_description_zh_hant = "小兵步槍（Running With Rifles）地圖編輯器手冊：地編介面逐項說明、模型與牆體清單、互動按鍵與常用流程。"
 nav_root_label_zh_hant = "首頁"
 palette_toggle_auto_zh_hant = "切換深淺色"
 palette_toggle_light_zh_hant = "切換到深色"
@@ -92,17 +92,55 @@ palette_toggle_dark_zh_hant = "切換到淺色"
 
 # ── 页脚品牌区的自由文案（见 overrides/partials/footer.html）──────────────
 # 三段都是可选的：不填就不渲染那一段。键名后缀规则与上面完全一样。
-footer_tagline = "一份内容，三种语言。content/ 是唯一手写层。"
-footer_tagline_en = "One body of content, three languages. content/ is the only hand-written layer."
-footer_tagline_zh_hant = "一份內容，三種語言。content/ 是唯一手寫層。"
+footer_tagline = "修图之前先看这一页。三种语言，两份版本。"
+footer_tagline_en = "Read this before you start mapping. Three languages, two versions."
+footer_tagline_zh_hant = "修圖之前先看這一頁。三種語言，兩份版本。"
 
 footer_note = "由 Zensical 构建<br>字体与脚本全部自托管"
 footer_note_en = "Built with Zensical<br>Fonts and scripts are entirely self-hosted"
 footer_note_zh_hant = "由 Zensical 構建<br>字型與腳本全部自託管"
 
-footer_bottom = "文档站模版"
-footer_bottom_en = "DOCS TEMPLATE"
-footer_bottom_zh_hant = "文檔站模版"
+footer_bottom = "鼠书 · RWR 地编手册"
+footer_bottom_en = "RAT BOOK · RWR MAP EDITOR'S HANDBOOK"
+footer_bottom_zh_hant = "鼠書 · RWR 地編手冊"
+# ── 语种补齐进度 ──────────────────────────────────────────────────────────
+# ⚠️ 这是一处**刻意放宽**，改的是 tools/i18n_check.py 的判据，理由写在那里：
+#    「还没翻」是看得见的（那页就是没有），「翻了但原文改了」才是看不见的。
+#    本检查器存在的理由始终是后者，所以这里只放宽前者——
+#    名单里的语种，它的「缺篇目 / 还是占位 / 刚建骨架」只统计、不挡构建；
+#    「已过期 / 派生失同步 / 未记录指纹 / 结构待核」**照样挡**。
+#
+# 补完一个语种就把它从这张名单里删掉，判据立刻回到全严（一个字都不用改代码）。
+# 名单为空或整条删掉，就是「所有语种都要求翻完」。
+translation_in_progress = ["en"]
+
+# 切换器的无障碍标签。版本切换器是本站独有的（overrides/partials/version.html），
+# 主题没有对应原版，所以这三条文案也由本站自己给。
+version_aria = "切换地编版本"
+version_aria_en = "Switch editor version"
+version_aria_zh_hant = "切換地編版本"
+
+# ── 版本清单 ──────────────────────────────────────────────────────────────
+# 本站的第二条切换轴。读者装的是哪一版地编，就该看到哪一版的说明，所以版本
+# 是「冻结快照」而不是「一份持续回改的文档」：砍一版 = 把当时那棵树复制到
+# content/versions/<id>/，此后不再回改。
+#
+# ⚠️ 这张表是版本清单的**唯一出处**（tools/versions.py 读它），而 content/ 里
+#    有没有对应的内容目录由 tools/versions.py 的 audit() 对齐：声明了没有目录、
+#    或有目录没声明，都以非零码退出。不会静默分成两家账。
+#
+# 标记规则：标了 current = true 的那一条是**当前版**，它的内容就在 content/ 根下，
+# 网址没有前缀（`/`）；其余各条是历史版，内容在 content/versions/<id>/，网址带
+# 前缀（`/0101/`）。当前版必须**恰好一个**。
+#
+# 顺序就是切换器里的顺序——最新的排在最前。这里不排序：版本号不是都能比大小的，
+# `vao0822` 与 `0101` 谁大只有作者知道。
+#
+# ⚠️ 末尾的 archive 是**演示版本机制的示例快照**，不是某一版真实的说明。
+#    砍出第一个真正的地编历史版时：把 content/versions/archive/ 删掉，
+#    把这一条改成真实的 id / label / date 并新建对应目录即可。
+
+
 
 # 页脚品牌区左上角的徽标（可选）。路径相对 docs/。
 # footer_logo = "assets/logo.svg"
@@ -141,6 +179,17 @@ github = false
 
 # 同上：config 里的这套文案是全站唯一的，其余语种按 _en / _zh_hant 取用
 # （见 overrides/partials/consent.html）。
+
+[[project.extra.version]]
+id = "0101"
+label = "地编版本 0101"
+date = "2026-09-22"
+current = true
+
+[[project.extra.version]]
+id = "archive"
+label = "历史版（示例快照）"
+date = "示例"
 
 # 语言代码用**文字**标签（zh-Hans / zh-Hant），不用 zh-CN / zh-TW 这类**地区**标签：
 # 地区标签会把用词一起改掉，那是替读者选定某一地的用法。
@@ -270,6 +319,14 @@ def_list = {}
 footnotes = {}
 md_in_html = {}
 toc.permalink = true
+# ⚠️ 标题锚点的生成规则。Zensical 默认那套会把**中日韩字符整段丢掉**：
+#    `## Save说明` → `#save`，纯中文标题（本站绝大多数）→ `#_1`、`#_2`……
+#    于是目录里的每一条锚点都指不准，toc.permalink 生成的「¶」也就成了摆设。
+#    这里换上 pymdownx 的 Unicode 版（`_uslugify`），中日韩字符原样保留：
+#    `## 一、地编下载后如何配置` → `#一-地编下载后如何配置`。
+#    case 给 lower 是为了让 `Save说明` 与 `save说明` 不分家。
+toc.slugify.object = "pymdownx.slugs.slugify"
+toc.slugify.kwds.case = "lower"
 pymdownx.betterem = {}
 # 图片/表格题注：让「图 + 图说」成为一个 figure，而不是一行裸图。
 # 原档与社牌两组图都靠它来带图说（/// caption）。

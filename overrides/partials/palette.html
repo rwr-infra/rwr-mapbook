@@ -10,7 +10,9 @@
   本文件其余部分与主题的 partials/palette.html 保持一致。
 -#}
 {% set here = page.url | default("", true) %}
-{% set L = "_zh_hant" if here[:8] == "zh-hant/" else ("_en" if here[:3] == "en/" else "") %}
+{% import "partials/route.html" as route with context %}
+{% set ldir = route.lang(here) | trim %}
+{% set L = route.suffix(ldir) | trim %}
 <form class="md-header__option" data-md-component="palette">
   {% for option in config.theme.palette %}
     {% set scheme  = option.scheme  | d("default", true) %}

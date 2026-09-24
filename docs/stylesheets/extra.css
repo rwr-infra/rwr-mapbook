@@ -244,3 +244,15 @@
   -webkit-mask-image: var(--md-status--partial);
   mask-image: var(--md-status--partial);
 }
+
+/* ── 版本切换器里的小字 ────────────────────────────────────────────────────
+   见 overrides/partials/version.html。版本项下面挂一行日期，让读者分得清
+   「地编 0101」和「历史版」；主题的 .md-select__link 是单行布局，
+   这里把它撑成两行。 */
+.md-select__note {
+  display: block;
+  font-size: 0.72em;
+  line-height: 1.3;
+  opacity: 0.65;
+  margin-top: 0.15em;
+}

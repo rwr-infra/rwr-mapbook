@@ -10,9 +10,12 @@
       （键名规则与 header/footer 一致：默认语言留空，其余 _en / _zh_hant），
       取不到再退回 config.extra.status。 -#}
   {% set here = page.url | default("", true) %}
-  {% set is_en = here[:3] == "en/" %}
-  {% set is_hant = here[:8] == "zh-hant/" %}
-  {% set L = "_zh_hant" if is_hant else ("_en" if is_en else "") %}
+{% import "partials/route.html" as route with context %}
+{% set vdir = route.version(here) | trim %}
+{% set ldir = route.lang(here) | trim %}
+  {% set is_en = ldir == "en" %}
+  {% set is_hant = ldir == "zh-hant" %}
+  {% set L = route.suffix(ldir) | trim %}
   {% set key = type ~ L %}
   {% set label = config.extra.status_label[key] if config.extra.status_label and config.extra.status_label[key]
                  else (config.extra.status[type] if config.extra.status and config.extra.status[type] else none) %}

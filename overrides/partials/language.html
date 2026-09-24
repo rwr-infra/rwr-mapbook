@@ -20,8 +20,11 @@
   回退链保持主题原样：当前语言包 → 英文包 → 键名本身。
 -#}
 {% set here = page.url | default("", true) %}
-{% set is_en = here[:3] == "en/" %}
-{% set is_hant = here[:8] == "zh-hant/" %}
+{% import "partials/route.html" as route with context %}
+{% set vdir = route.version(here) | trim %}
+{% set ldir = route.lang(here) | trim %}
+{% set is_en = ldir == "en" %}
+{% set is_hant = ldir == "zh-hant" %}
 {% if is_en %}
   {% set pack = "en" %}
   {% set lang_tag = "en" %}

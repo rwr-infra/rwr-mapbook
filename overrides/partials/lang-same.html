@@ -1,19 +1,20 @@
 {#-
-  「同语言」判据——三棵树是三套独立的导航顺序，跨语言的上一页/下一页没有意义。
+  「同一支」判据——三棵语言树 × 每个历史版，各自是独立的导航顺序，
+  跨语言、跨版本的上一页/下一页都没有意义。
 
-  默认语言的页面网址不带语言前缀，其余语言带，所以看 `page.url` 的前缀即可。
+  判据本体在 partials/route.html 的 same()：它按 page.url 解析出版本与语言，
+  两者都相同才算同一支。原先这里手写 `here[:3] == "en/"` 一类的前缀比较，
+  在 `0101/en/…` 这类网址上会静默判错（见 route.html 的说明），故收拢过去。
 
-  两个坑，第二个是真踩过的：
+  坑：**宏渲染出来的是字符串**，而 MiniJinja 把布尔渲染成小写的 `true` / `false`。
+  此前判据写成布尔再比 `| trim == "True"`，于是恒为假——页脚的「上一页 / 下一页」
+  和 `<link rel="prev/next">` 因此**一直没渲染出来**，而且不报错。
+  所以 route.same() 返回自定义记号 `yes`，不依赖布尔怎么序列化。
 
-  1. 前缀要手写比较：MiniJinja 没有 `str.startswith`。
-  2. **宏渲染出来的是字符串**，而 MiniJinja 把布尔渲染成小写的 `true` / `false`。
-     此前本判据写成布尔再比 `| trim == "True"`，于是恒为假——页脚的
-     「上一页 / 下一页」和 `<link rel="prev/next">` 因此**一直没渲染出来**，
-     而且不报错。所以这里返回自定义记号 `yes`，不依赖布尔怎么序列化。
-
-  用法（需 `with context`，判据要用到调用方的 is_en / is_hant）：
+  用法（需 `with context`，判据要用到 page）：
 
       {% import "partials/lang-same.html" as langutil with context %}
       {% if langutil.same_lang(other.url) | trim == "yes" %}
 -#}
-{% macro same_lang(url) %}{% set u = url | default("", true) %}{{ "yes" if ((u[:8] == "zh-hant/") if is_hant else ((u[:3] == "en/") if is_en else (u[:8] != "zh-hant/" and u[:3] != "en/"))) else "" }}{% endmacro %}
+{% import "partials/route.html" as route with context %}
+{% macro same_lang(url) %}{{ route.same(page.url | default("", true), url) | trim }}{% endmacro %}

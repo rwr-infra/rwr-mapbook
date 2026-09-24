@@ -14,11 +14,16 @@
 {% extends "base.html" %}
 
 {% set here = page.url | default("", true) %}
-{% set is_en = here[:3] == "en/" %}
-{% set is_hant = here[:8] == "zh-hant/" %}
-{% set L = "_zh_hant" if is_hant else ("_en" if is_en else "") %}
+{% import "partials/route.html" as route with context %}
+{% set vdir = route.version(here) | trim %}
+{% set ldir = route.lang(here) | trim %}
+{% set is_en = ldir == "en" %}
+{% set is_hant = ldir == "zh-hant" %}
+{% set L = route.suffix(ldir) | trim %}
 {% set site_name = config.extra["site_name" ~ L] | d(config.site_name, true) %}
-{% set is_home = here in ("", "en/", "zh-hant/") %}
+{#- 落地页判据：去掉了版本与语言两层前缀之后，路径为空就是某一支的首页。
+    原先写死三串网址，历史版一进来就判错（0101/ 不在那三串里）。 -#}
+{% set is_home = (route.tail(here) | trim) == "" %}
 
 {% block extrahead %}
   {#- 目录地址补正要排在 <head> 里最前面：它必须在正文被解析之前改掉地址栏。
@@ -87,7 +92,7 @@
    并避免上一页/下一页跨语言串台（三种语言是三棵独立的树） #}
 {% block site_meta %}
 {#- 当前页面在语言树内的相对路径（去掉语言前缀）-#}
-{% if is_hant %}{% set tail = here[8:] %}{% elif is_en %}{% set tail = here[3:] %}{% else %}{% set tail = here %}{% endif %}
+{% set tail = route.tail(here) | trim %}
 {% import "partials/lang-same.html" as langutil with context %}
   {% set prev_page = page.previous_page if page.previous_page and langutil.same_lang(page.previous_page.url) | trim == "yes" else none %}
   {% set next_page = page.next_page if page.next_page and langutil.same_lang(page.next_page.url) | trim == "yes" else none %}
@@ -118,12 +123,9 @@
   {% endif %}
   {#- hreflang 指向对应页，而不是语言首页；也标出当前页自身 #}
   {% for alt in config.extra.alternate %}
-    {% set alt_is_en = alt.lang == "en" %}
-    {% set alt_is_hant = alt.lang == "zh-Hant" %}
-    {% set is_current = (alt_is_en == is_en) and (alt_is_hant == is_hant) %}
-    {% if alt_is_en %}{% set target = "en/" ~ tail %}
-    {% elif alt_is_hant %}{% set target = "zh-hant/" ~ tail %}
-    {% else %}{% set target = tail %}{% endif %}
+    {% set alt_dir = alt.link | d("./", true) | replace("./", "") | replace("/", "") %}
+    {% set is_current = alt_dir == ldir %}
+    {% set target = (route.version_prefix(here) | trim) ~ (alt_dir ~ "/" if alt_dir else "") ~ tail %}
     {% if not target %}{% set target = nav.homepage.url %}{% endif %}
     <link rel="alternate" href="{{ './' if is_current else (target | url) }}" hreflang="{{ alt.lang }}">
   {% endfor %}

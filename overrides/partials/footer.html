@@ -7,12 +7,16 @@
   主题的 page.previous_page / next_page 会跨过去，这里按语言过滤。
 -#}
 {% set here = page.url | default("", true) %}
-{% set is_en = here[:3] == "en/" %}
-{% set is_hant = here[:8] == "zh-hant/" %}
-{% set lang_dir = "zh-hant" if is_hant else ("en" if is_en else "") %}
-{% set L = "_zh_hant" if is_hant else ("_en" if is_en else "") %}
+{% import "partials/route.html" as route with context %}
+{% set vdir = route.version(here) | trim %}
+{% set ldir = route.lang(here) | trim %}
+{% set is_en = ldir == "en" %}
+{% set is_hant = ldir == "zh-hant" %}
+{% set lang_dir = ldir %}
+{% set L = route.suffix(ldir) | trim %}
 {% set site_name = config.extra["site_name" ~ L] | d(config.site_name, true) %}
-{% set home_url = lang_dir ~ "/" if lang_dir else nav.homepage.url %}
+{#- 页脚的品牌链接回「本版本本语言」的首页，历史版里不要把人送回当前版 -#}
+{% set home_url = (route.base(here) | trim) or nav.homepage.url %}
 {% import "partials/lang-same.html" as langutil with context %}
 {% set prev_page = page.previous_page if page.previous_page and langutil.same_lang(page.previous_page.url) | trim == "yes" else none %}
 {% set next_page = page.next_page if page.next_page and langutil.same_lang(page.next_page.url) | trim == "yes" else none %}
@@ -80,7 +84,7 @@
     <div class="brand-footer__meta">
       {% set note = config.extra["footer_note" ~ L] | d(config.extra.footer_note | d("", true), true) %}
       {% if note %}{{ note }}<br>{% endif %}
-      <a href="{{ 'tags/' | url }}">{% if is_en %}Browse by tag ↗{% elif is_hant %}依標籤瀏覽 ↗{% else %}按标签浏览 ↗{% endif %}</a>
+      <a href="{{ ((route.base(here) | trim) ~ 'tags/') | url }}">{% if is_en %}Browse by tag ↗{% elif is_hant %}依標籤瀏覽 ↗{% else %}按标签浏览 ↗{% endif %}</a>
     </div>
     <div class="brand-footer__bottom">
       <span>{{ config.extra["footer_bottom" ~ L] | d(config.extra.footer_bottom | d(site_name, true), true) }}</span>

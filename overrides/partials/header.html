@@ -1,20 +1,27 @@
 {#-
-  模板覆盖：页眉里的站名按页面语言显示。
+  模板覆盖：页眉里的站名按页面语言显示，并挂上版本与语言两个切换器。
 
   Zensical 的 config.site_name 是全站唯一的，
   其余语言的站名放在 config.extra.site_name_en / _zh_hant 里，这里按 page.url 取用。
   <title> 同名处理见 overrides/main.html 的 htmltitle 块。
 
+  语言与版本都从 partials/route.html 解析（不在这里手写前缀比较，
+  否则 `0101/en/…` 这类网址会被静默判成默认语言）。两个切换器各管一层前缀：
+  语言见 partials/alternate.html，版本见 partials/version.html。
+
   本文件其余部分与主题的 partials/header.html 保持一致，主题升级时需同步。
 -#}
 {% set here = page.url | default("", true) %}
-{% set is_en = here[:3] == "en/" %}
-{% set is_hant = here[:8] == "zh-hant/" %}
-{% set lang_dir = "zh-hant" if is_hant else ("en" if is_en else "") %}
-{% set L = "_zh_hant" if is_hant else ("_en" if is_en else "") %}
+{% import "partials/route.html" as route with context %}
+{% set vdir = route.version(here) | trim %}
+{% set ldir = route.lang(here) | trim %}
+{% set is_en = ldir == "en" %}
+{% set is_hant = ldir == "zh-hant" %}
+{% set lang_dir = ldir %}
+{% set L = route.suffix(ldir) | trim %}
 {% set site_name = config.extra["site_name" ~ L] | d(config.site_name, true) %}
-{#- 徽标与站名的落点：回本站该语言的首页 -#}
-{% set home_url = lang_dir ~ "/" if lang_dir else nav.homepage.url %}
+{#- 徽标与站名的落点：回「本版本本语言」的首页——历史版里不要把人送回当前版 -#}
+{% set home_url = (route.base(here) | trim) or nav.homepage.url %}
 {% set class = "md-header" %}
 {% if "navigation.tabs.sticky" in features %}
   {% set class = class ~ " md-header--shadow md-header--lifted" %}
@@ -55,6 +62,9 @@
     {% endif %}
     {% if not config.theme.palette is mapping %}
       {% include "partials/javascripts/palette.html" %}
+    {% endif %}
+    {% if config.extra.version %}
+      {% include "partials/version.html" %}
     {% endif %}
     {% if config.extra.alternate %}
       {% include "partials/alternate.html" %}

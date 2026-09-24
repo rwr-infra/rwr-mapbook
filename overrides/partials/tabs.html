@@ -14,20 +14,32 @@
 -#}
 {% import "partials/tabs-item.html" as item with context %}
 {% set here = page.url | default("", true) %}
-{% set is_en = here[:3] == "en/" %}
-{% set is_hant = here[:8] == "zh-hant/" %}
-{% set lang_dir = "zh-hant" if is_hant else ("en" if is_en else "") %}
+{% import "partials/route.html" as route with context %}
+{% set vdir = route.version(here) | trim %}
+{% set ldir = route.lang(here) | trim %}
+{% set is_en = ldir == "en" %}
+{% set is_hant = ldir == "zh-hant" %}
+{% set lang_dir = ldir %}
 <nav class="md-tabs" aria-label="{{ lang.t('tabs') }}" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
-      {% for nav_item in nav.items %}
+      {#- 与 partials/nav.html 同一条判据：先定位当前版本的分区，再挑当前语言那一支 -#}
+      {% set tree = namespace(items=nav.items) %}
+      {% if vdir %}
+        {% for nav_item in nav.items %}
+          {% if (nav_item.title | default("", true)) == "__ver:" ~ vdir %}
+            {% set tree.items = nav_item.children | default([], true) %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+      {% for nav_item in tree.items %}
         {% set title = nav_item.title | default("", true) %}
-        {% set nav_is_lang = "__lang:" in title %}
-        {% if lang_dir and nav_is_lang and title == "__lang:" ~ lang_dir %}
+        {% set nav_is_partition = "__lang:" in title or "__ver:" in title %}
+        {% if lang_dir and title == "__lang:" ~ lang_dir %}
           {% for child in nav_item.children | default([], true) %}
             {{ item.render(child) }}
           {% endfor %}
-        {% elif not lang_dir and not nav_is_lang %}
+        {% elif not lang_dir and not nav_is_partition %}
           {{ item.render(nav_item) }}
         {% endif %}
       {% endfor %}

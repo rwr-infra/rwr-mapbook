@@ -1,0 +1,140 @@
+{#-
+  「当前这一页属于哪个版本、哪种语言」——两条切换轴的唯一判据。
+
+  为什么要有这个文件
+  ------------------
+  站点的网址是两个正交维度的拼接，**版本在前、语言在后**：
+
+      /                      当前版 · 默认语言
+      /en/                   当前版 · 英文
+      /0101/                 0101 版 · 默认语言
+      /0101/en/guide/…       0101 版 · 英文
+
+  所以「去掉语言前缀」这件事，在历史版上不再等于「砍掉前 3 个字符」——
+  `0101/en/` 的 `here[:3]` 是 `010`。模版原先在十来个模板里各写一遍
+  `here[:3] == "en/"` 的写法，在引入版本之后会**静默判错**：页面被当成默认语言，
+  站名、标注文案、面包屑全落到错误的一支，而构建不报错。判据只留在这里一份。
+
+  语言目录与版本清单都**不是硬编码**的，各自从配置推导：
+
+  * 语言目录   ← config.extra.alternate 的 link（`./`、`zh-hant/`、`en/`）；
+  * 版本       ← config.extra.version 的 id 与 current。
+
+  于是加一种语言或砍一版，都只需要动 zensical.toml 与 content/，
+  不会漏掉某个模板里那份抄写的判据。
+
+  用法
+  ----
+      {% import "partials/route.html" as route with context %}
+      {% set here = page.url | default("", true) %}
+      {% set vdir = route.version(here) | trim %}    →  "" 或 "0101"
+      {% set ldir = route.lang(here)    | trim %}    →  "" 或 "en" / "zh-hant"
+      {% set tail = route.tail(here)    | trim %}    →  两项都去掉后的页内路径
+      {% set L    = route.suffix(ldir)  | trim %}    →  "" 或 "_en" / "_zh_hant"
+
+  ⚠️ 这个文件的说明里不能出现 Jinja 的行内注释标记：`{#` 与它配对的第一个 `#}`
+     之间不嵌套，写进去会把说明**提前截断**，后面那几行就变成真的模板代码了。
+     这处踩过一次——报错是「undefined has no method named lang」，看着像宏没导入，
+     其实是说明断在了半路。
+
+  宏的返回值是**字符串**，空的宏渲染出来是空串，所以要 `| trim` 再用；
+  判等一律拿字符串比（`ldir == "en"`），不要依赖布尔怎么序列化——
+  模版里为这件事踩过一次坑，见 partials/lang-same.html 的说明。
+-#}
+
+{#- ── 语言目录清单，从配置推导 ────────────────────────────────────────────
+    alternate 的 link 去掉 "./" 与斜杠就是目录名（`./`、`zh-hant/`、`en/`）。
+    不硬编码语言名：加一种语言只需要在 zensical.toml 里加一条 alternate。
+    MiniJinja 的字符串没有 split / find，所以一律直接遍历配置里的列表，
+    不在模板里把清单拼成字符串再切开。 -#}
+
+{#- 页面网址落在哪个版本里；当前版（也就是最浅的那一支）返回空串。 -#}
+{% macro version(url) %}
+{%- set u = url | default("", true) -%}
+{%- set ns = namespace(found="") -%}
+{%- for v in config.extra.version | d([], true) -%}
+{%- if v.id and not v.current and u[:v.id | length + 1] == v.id ~ "/" -%}
+{%- set ns.found = v.id -%}
+{%- endif -%}
+{%- endfor -%}
+{{- ns.found -}}
+{% endmacro %}
+
+{#- 去掉版本前缀之后的那一段；后面几个判据都在它上面做。 -#}
+{% macro _after_version(url) %}
+{%- set u = url | default("", true) -%}
+{%- set v = version(u) | trim -%}
+{{- u[v | length + 1:] if v else u -}}
+{% endmacro %}
+
+{#- 页面网址落在哪种语言里；默认语言返回空串。 -#}
+{% macro lang(url) %}
+{%- set r = _after_version(url) | trim -%}
+{%- set ns = namespace(found="") -%}
+{%- for alt in config.extra.alternate | d([], true) -%}
+{%- set d = alt.link | d("./", true) | replace("./", "") | replace("/", "") -%}
+{%- if d and r[:d | length + 1] == d ~ "/" -%}{%- set ns.found = d -%}{%- endif -%}
+{%- endfor -%}
+{{- ns.found -}}
+{% endmacro %}
+
+{#- 两项前缀都去掉之后的页内路径。 -#}
+{% macro tail(url) %}
+{%- set r = _after_version(url) | trim -%}
+{%- set d = lang(r) | trim -%}
+{{- r[d | length + 1:] if d else r -}}
+{% endmacro %}
+
+{#- 语言目录 → 配置键名后缀。`-` 与 `.` 都换成下划线：zh-hant → _zh_hant。 -#}
+{% macro suffix(lang_dir) %}
+{{- ("_" ~ lang_dir | replace("-", "_") | replace(".", "_")) if lang_dir else "" -}}
+{% endmacro %}
+
+{#- 只取版本前缀（带尾斜杠）。**语言切换器**要用的是这个，不是 base()：
+    语言那一层是要被替换掉的，接在 base() 后面会拼出 `zh-hant/en/` 这种
+    根本不存在的地址，而链接看上去还挺像回事。版本切换器反过来——
+    版本要被替换、语言要留着，所以它用 base() 与 ldir 各取一半。
+    两条切换轴各改一层前缀，这是它们唯一的分工。 -#}
+{% macro version_prefix(url) %}
+{%- set v = version(url) | trim -%}
+{{- v ~ "/" if v else "" -}}
+{% endmacro %}
+
+{#- 该页面地址的「版本 + 语言」前缀，带尾斜杠；版本切换器用。 -#}
+{% macro base(url) %}
+{%- set v = version(url) | trim -%}
+{%- set d = lang(url) | trim -%}
+{{- (v ~ "/" if v else "") ~ (d ~ "/" if d else "") -}}
+{% endmacro %}
+
+{#- 两个网址是否同版本、同语言。 -#}
+{% macro same(a, b) %}
+{%- set ua = a | default("", true) -%}
+{%- set ub = b | default("", true) -%}
+{{- "yes" if (version(ua) | trim) == (version(ub) | trim) and (lang(ua) | trim) == (lang(ub) | trim) else "" -}}
+{% endmacro %}
+
+{#- 一个网址里的锚点段（含 `#`），没有则返回空串。
+    标签胶囊用它把 `0101/en/tags/#tag:x` 剥成 `#tag:x`。原先那种
+    「依次 replace 掉几种语言前缀」的写法在引入版本之后会漏掉版本那一层。
+    MiniJinja 没有 str.find / str.split，所以这里逐字符扫一遍——
+    网址都很短，且这样不会因为某个标签名里出现 "tags/" 而切错位置。 -#}
+{% macro anchor(url) %}
+{%- set ns = namespace(found="", on=false) -%}
+{%- for ch in url | default("", true) -%}
+{%- if ch == "#" -%}{%- set ns.on = true -%}{%- endif -%}
+{%- if ns.on -%}{%- set ns.found = ns.found ~ ch -%}{%- endif -%}
+{%- endfor -%}
+{{- ns.found -}}
+{% endmacro %}
+
+{#- 版本清单里某一项的名字。切换器与页脚用。 -#}
+{% macro version_label(vid) %}
+{%- set wanted = vid | default("", true) -%}
+{%- set ns = namespace(label=wanted) -%}
+{%- for v in config.extra.version | d([], true) -%}
+{%- if v.current and not wanted -%}{%- set ns.label = v.label -%}{%- endif -%}
+{%- if not v.current and wanted and v.id == wanted -%}{%- set ns.label = v.label -%}{%- endif -%}
+{%- endfor -%}
+{{- ns.label -}}
+{% endmacro %}

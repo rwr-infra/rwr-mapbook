@@ -23,6 +23,13 @@
 （曾如此：一个指向 `报告_2026年版.pdf` 的下载链接被转成了「報告_2026年版.pdf」，
 文件实际仍叫原名，链接直接取不到。）
 
+**但目标里的锚点（`#` 之后那一段）要转。** 本站的标题大多是中文，
+`](settings.md#save说明)` 这个锚点是**标题的 id**（由 toc.slugify 生成），
+而目标页的标题在繁体树里是要转写的——`## Save说明` 变成 `## Save說明`，
+它的 id 也就成了 `save說明`。锚点若不跟着转，繁体树上每一条指向中文标题的
+链接都会落空，而简体树上全都好好的。所以这里把路径与锚点分开：
+路径原样保留，`#` 之后交给 convert_span。
+
 另外把几个「古体异写」归一为现代通行的繁体写法。这些差异不是地区差异
 （两岸三地都更常用右边那个），只是转换表偏古：
     爲→為  羣→群  啓→啟  祕→秘  峯→峰  衆→眾
@@ -73,6 +80,22 @@ AMBIGUOUS = set("干里后复采斗云划冲占咸尽只面系板表松谷制卷
 #: 围栏行：```text title="…"
 FENCE_RE = re.compile(r"^(\s*`{3,})(.*)$")
 
+#: 行内链接与图片的目标（上面 PROTECTED 会整段保住），这里只把 `#` 之后的锚点
+#: 捞出来转写，路径那一段原样不动。理由见文件开头「两处不转换」的补充说明。
+LINK_TARGET = re.compile(r"\]\(([^)\n]*)\)")
+
+
+def convert_anchors(line: str) -> str:
+    """把链接目标里 `#` 之后的锚点转成繁体，路径保持不变。"""
+    def patch(match: re.Match[str]) -> str:
+        whole = match.group(1)
+        head, sep, fragment = whole.partition("#")
+        if not sep or not fragment:
+            return match.group(0)
+        return f"]({head}#{convert_span(fragment)})"
+
+    return LINK_TARGET.sub(patch, line)
+
 
 def _sweep_chars(chunk: str) -> str:
     """逐字补漏：把上一遍没跟上的简体字补上。
@@ -112,7 +135,8 @@ def convert_line(line: str) -> str:
         out.append(match.group(0))  # 路径原样保留
         pos = match.end()
     out.append(_convert_backticks(line[pos:]))
-    return "".join(out)
+    # 路径位整个跳过了转换，锚点因此也停在了简体；这里单独把锚点补上
+    return convert_anchors("".join(out))
 
 
 def _convert_backticks(chunk: str) -> str:

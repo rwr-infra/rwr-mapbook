@@ -11,7 +11,10 @@
   本文件其余部分与主题自带的 partials/tags.html 保持一致。
 -#}
 {% set here = page.url | default("", true) %}
-{% set lang_dir = "zh-hant" if here[:8] == "zh-hant/" else ("en" if here[:3] == "en/" else "") %}
+{% import "partials/route.html" as route with context %}
+{% set vdir = route.version(here) | trim %}
+{% set ldir = route.lang(here) | trim %}
+{% set lang_dir = route.lang(here) | trim %}
 {% if page.meta and page.meta.hide %}
   {% set hidden = "hidden" if "tags" in page.meta.hide %}
 {% endif %}
@@ -31,11 +34,11 @@
       {% if tag.url %}
         {#- tag.url 形如 en/tags/#tag:a4-flight。MiniJinja 没有 str.find / str.split，
             所以用 replace 把三种可能的「标签页目录」前缀依次剥掉，留下 # 之后那一段。 -#}
-        {% set hash = tag.url | replace("zh-hant/tags/", "") | replace("en/tags/", "") | replace("tags/", "") %}
+        {% set hash = route.anchor(tag.url) | trim %}
         {#- 括号仍不能省：`~ hash | url` 是 `~ (hash | url)`（`|` 比 `~` 结合得紧），
             那样 url 只作用在锚点上，路径前缀不会被转成相对路径，
             /en/flight/ 下就会得到 /en/flight/en/tags/ 这种死链。 -#}
-        <a href="{{ (((lang_dir ~ "/tags/") if lang_dir else "tags/") ~ hash) | url }}" class="{{ class }}">
+        <a href="{{ (((route.base(here) | trim) ~ "tags/") ~ hash) | url }}" class="{{ class }}">
           {{- tag.name -}}
         </a>
       {% else %}

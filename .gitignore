@@ -20,3 +20,8 @@ __pycache__/
 .DS_Store
 .idea/
 .vscode/
+
+# 源文档的抽取暂存区：从 鼠书.html / RWR一堆表826测试.xlsx 抽出来的中间产物
+# （700 多张图 + 每张表的 JSON）。内容是**一次性**导入的，抽完就落进 content/
+# 与 docs/assets/，这里不再留副本。
+.staging/

@@ -18,10 +18,13 @@
   {% set hidden = "hidden" if "path" in page.meta.hide %}
 {% endif %}
 {% set here = page.url | default("", true) %}
-{% set is_en = here[:3] == "en/" %}
-{% set is_hant = here[:8] == "zh-hant/" %}
-{% set lang_dir = "zh-hant" if is_hant else ("en" if is_en else "") %}
-{% set L = "_zh_hant" if is_hant else ("_en" if is_en else "") %}
+{% import "partials/route.html" as route with context %}
+{% set vdir = route.version(here) | trim %}
+{% set ldir = route.lang(here) | trim %}
+{% set is_en = ldir == "en" %}
+{% set is_hant = ldir == "zh-hant" %}
+{% set lang_dir = ldir %}
+{% set L = route.suffix(ldir) | trim %}
 {% set depth = page.ancestors | length %}
 {% if nav.homepage %}
   {% set depth = depth + 1 %}
@@ -29,18 +32,21 @@
 {% if depth > 1 %}
   <nav class="md-path" aria-label="{{ lang.t('nav') }}" {{ hidden }}>
     <ol class="md-path__list">
-      {% if lang_dir %}
+      {% if vdir or lang_dir %}
         <li class="md-path__item">
           {#- 括号不能省：Jinja 里 `|` 比 `~` 结合得紧，写成 lang_dir ~ '/' | url
               实际是 lang_dir ~ ('/' | url)，等于没过滤——页面上就出现 href="en/"，
               在 /en/collection/design/ 这类内页里解析成 /en/design/en/，面包屑根节点点了 404。-#}
-          <a href="{{ (lang_dir ~ '/') | url }}" class="md-path__link">
+          {#- 根要指向**本版本本语言**的首页：历史版里指向当前版首页，
+              读者一点就不知道自己已经离开 0101 了。 -#}
+          <a href="{{ (route.base(here) | trim) | url }}" class="md-path__link">
             <span class="md-ellipsis">{{ config.extra["nav_root_label" ~ L] | d(config.site_name, true) }}</span>
           </a>
         </li>
         {% for nav_item in page.ancestors | reverse %}
           {#- 语言分区不是页面，跳过；其余分区交给 path-item 下潜到它的 index 子页 -#}
-          {% if not ("__lang:" in (nav_item.title | default("", true))) %}
+          {% set atitle = nav_item.title | default("", true) %}
+          {% if not ("__lang:" in atitle or "__ver:" in atitle) %}
             {{ item.render(nav_item) }}
           {% endif %}
         {% endfor %}

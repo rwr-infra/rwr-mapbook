@@ -13,10 +13,13 @@
   本文件其余部分与主题的 partials/alternate.html 保持一致。
 -#}
 {% set here = page.url | default("", true) %}
-{% set is_en = here[:3] == "en/" %}
-{% set is_hant = here[:8] == "zh-hant/" %}
+{% import "partials/route.html" as route with context %}
+{% set vdir = route.version(here) | trim %}
+{% set ldir = route.lang(here) | trim %}
+{% set is_en = ldir == "en" %}
+{% set is_hant = ldir == "zh-hant" %}
 {#- 当前页面在各语言树里的相对路径（去掉语言前缀） -#}
-{% set tail = here[8:] if is_hant else (here[3:] if is_en else here) %}
+{% set tail = route.tail(here) | trim %}
 <div class="md-header__option">
   <div class="md-select">
     {% set icon = config.theme.icon.alternate or "material/translate" %}
@@ -26,12 +29,12 @@
     <div class="md-select__inner">
       <ul class="md-select__list">
         {% for alt in config.extra.alternate %}
-          {% set alt_is_en = alt.lang == "en" %}
-          {% set alt_is_hant = alt.lang == "zh-Hant" %}
-          {% set is_current = (alt_is_en == is_en) and (alt_is_hant == is_hant) %}
-          {% if alt_is_en %}{% set target = "en/" ~ tail %}
-          {% elif alt_is_hant %}{% set target = "zh-hant/" ~ tail %}
-          {% else %}{% set target = tail %}{% endif %}
+          {#- 语言目录从 alternate 的 link 推导（`./`、`zh-hant/`、`en/`），
+              这样加一种语言不必回来改这里；版本前缀原样带过去，
+              免得在历史版里点英文被送回当前版。 -#}
+          {% set alt_dir = alt.link | d("./", true) | replace("./", "") | replace("/", "") %}
+          {% set is_current = alt_dir == ldir %}
+          {% set target = (route.version_prefix(here) | trim) ~ (alt_dir ~ "/" if alt_dir else "") ~ tail %}
           {% if not target %}{% set target = nav.homepage.url %}{% endif %}
           <li class="md-select__item">
             <a href="{{ './' if is_current else (target | url) }}" hreflang="{{ alt.lang }}"

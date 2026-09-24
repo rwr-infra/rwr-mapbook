@@ -1,14 +1,36 @@
 #!/usr/bin/env python3
 """翻译度检查器：默认语言与各语种之间的对照体检。
 
-它回答四个问题：
+它回答五个问题：
 
 1. **有没有漏翻** —— 默认语言有的篇目，某个语种有没有；
 2. **有没有过期** —— 该语种是不是照着当前的默认语言版做的；
 3. **结构对不对得上** —— 各语种的章节、表格、提示框、链接是否与默认语言一一对应
    （漏掉一段、少一行表格，光看字符数是看不出来的）；
 4. **派生语种有没有跟上** —— 繁体不是翻译，是从简体**脚本转换**出来的，
-   所以它必须**逐字节等于**对当前简体原文做一次转换的结果。
+   所以它必须**逐字节等于**对当前简体原文做一次转换的结果；
+5. **历史版有没有被回改** —— 历史版是冻结的快照，它的派生语种同样要逐字节对得上。
+
+两条轴
+------
+内容有**版本**与**语言**两条轴（见 tools/versions.py）。本检查器只管后者，
+但两者的交集要说清楚：
+
+* **当前版**（content/ 根）的每一篇都要求有译文；
+* **历史版**（content/versions/<id>/）是冻结快照，**不要求**译文——
+  砍版那一刻它是什么样就永远是什么样，逼迫后人去补一版十年前的手册没有意义。
+  但它的**派生**语种（繁体）照样要逐字节对得上：那一支是脚本算出来的，不花人力。
+
+语种「还在补齐」怎么算
+----------------------
+一个语种从零翻到满是几个月的事，中途构建不可能一直红着。所以
+`zensical.toml` 的 `[project.extra] translation_in_progress` 可以声明
+**哪些语种还在补**。声明了的语种，它的「缺篇目 / 还是占位 / 刚建骨架」三种状态
+只统计、不阻塞构建；**「已过期」「派生失同步」「未记录指纹」「结构待核」仍然阻塞**。
+
+这条界线是刻意的：「还没翻」是**看得见**的（那页就是没有），
+「翻了但原文改了」才是**看不见**的——本检查器存在的理由就是后者。
+所以放宽的只是前者。补完一个语种，把它从那张名单里删掉，检查立刻回到全严。
 
 两种语种，两套判据
 ------------------
@@ -41,11 +63,16 @@ import urllib.parse
 from datetime import date
 from pathlib import Path
 
+import tomllib
+
 import yaml
 
-from docsgen import depth_of, rewrite_shared
+from docsgen import depth_of, lang_prefix, rewrite_shared
+from linkcheck import site_base
 from hant import to_hant
 from langs import CONTENT, DEFAULT_LANG, DERIVATIONS, LANG_RE, ROOT, other_languages
+from versions import (ARCHIVE, Version, all_versions, current as current_version,
+                      source_root, url_prefix)
 
 DOCS = ROOT / "docs"
 REPORT_JSON = ROOT / "i18n-report.json"
@@ -57,6 +84,18 @@ BANNER_RE = re.compile(r"^# ⚠️ 由 tools/docsgen\.py .*$\n?", re.M)
 
 #: 正文里 CJK 占比超过这个值，基本可以断定没翻
 CJK_UNTRANSLATED = 0.08
+
+#: 「这一篇还没有译文」的三种状态。语种若被声明为「仍在补齐」，
+#: 这三种状态只统计、不阻塞构建（理由见文件开头的说明）；其余状态一律阻塞。
+PENDING = {"missing", "placeholder", "created"}
+
+
+def in_progress_languages() -> set[str]:
+    """仍在补齐的语种，来自 zensical.toml 的 [project.extra] translation_in_progress。"""
+    with (ROOT / "zensical.toml").open("rb") as handle:
+        config = tomllib.load(handle)
+    raw = config.get("project", {}).get("extra", {}).get("translation_in_progress") or []
+    return {str(x) for x in raw}
 
 
 # ── 基础 ──────────────────────────────────────────────────────────────────
@@ -137,8 +176,26 @@ def structure_diff(source: dict, target: dict) -> list[str]:
 # ── 对照 ──────────────────────────────────────────────────────────────────
 
 def source_pages() -> list[Path]:
-    """默认语言的源文件，按路径排序。"""
-    return sorted(CONTENT.rglob(f"*.{DEFAULT_LANG}.md"))
+    """**当前版**的默认语言源文件，按路径排序。
+
+    历史版在 content/versions/ 下，是冻结快照，不参与「有没有译文」这一问；
+    它们只走派生语种的比对（见 archived_pages）。
+    """
+    return sorted(path for path in CONTENT.rglob(f"*.{DEFAULT_LANG}.md")
+                  if ARCHIVE not in path.parents)
+
+
+def archived_pages() -> list[tuple[Path, Version]]:
+    """历史版的默认语言源文件，连同它所属的版本。"""
+    out: list[tuple[Path, Version]] = []
+    for version in all_versions():
+        if version.current:
+            continue
+        root = source_root(version)
+        if not root.is_dir():
+            continue
+        out += [(path, version) for path in sorted(root.rglob(f"*.{DEFAULT_LANG}.md"))]
+    return out
 
 
 def target_of(source: Path, lang: str) -> Path:
@@ -219,15 +276,17 @@ def inspect_translation(source: Path, lang: str, *, sync: bool) -> dict:
     return record
 
 
-def inspect_derived(source: Path, lang: str) -> dict:
+def inspect_derived(source: Path, lang: str, version: Version) -> dict:
     """派生语种：产物必须逐字节等于「对当前原文做一次转换」的结果。"""
-    target = DOCS / lang / source.relative_to(CONTENT).with_name(
-        source.name[: -len(f".{DEFAULT_LANG}.md")] + ".md").relative_to(".")
+    root = source_root(version)
+    name = source.relative_to(root).with_name(source.name[: -len(f".{DEFAULT_LANG}.md")] + ".md")
+    target = DOCS / url_prefix(version) / lang_prefix(lang) / name
     record: dict = {
         "source": source.relative_to(ROOT).as_posix(),
         "target": target.relative_to(ROOT).as_posix(),
         "lang": lang,
         "kind": "derived",
+        "version": version.id,
     }
 
     if not target.exists():
@@ -236,10 +295,10 @@ def inspect_derived(source: Path, lang: str) -> dict:
         return record
 
     # 期望值要按 docsgen 的同一条流水线算：先补共享资产的相对层级，再转换
-    base = source.parent.relative_to(CONTENT).as_posix()
+    base = source.parent.relative_to(root).as_posix()
     base = "" if base == "." else base
     expected = strip_banner(to_hant(rewrite_shared(
-        source.read_text(encoding="utf-8"), base, depth_of(lang))))
+        source.read_text(encoding="utf-8"), base, depth_of(version, lang))))
     actual = strip_banner(target.read_text(encoding="utf-8"))
     if expected == actual:
         record["status"] = "ok"
@@ -289,16 +348,24 @@ def create_stub(source: Path, target: Path, digest: str) -> None:
 #: 只在 site/ 存在时检查（CI 是 build 之后才跑；本地没构建就跳过）。
 SMOKE: list[tuple[str, str, str]] = [
     ("index.html", "brand-footer", "首页的页脚品牌区"),
+    # 两个切换器都挂在这一页上，少一个就说明对应的 partial 没渲染出来
+    ("index.html", "md-select__link", "语言切换器 / 版本切换器的入口"),
 ]
 #: 逐语言各取一页样例。语言清单来自 tools/langs.py，加一种语言不必回来改这里；
-#: 样例页指向模版自带的示例内容（content/guide/），换掉示例内容时同步改这里。
+#: 样例页是本站的固定页，换掉内容结构时同步改这里。
 for _lang in [DEFAULT_LANG, *other_languages()]:
     _prefix = "" if _lang == DEFAULT_LANG else f"{_lang}/"
     SMOKE += [
-        (f"{_prefix}guide/index.html", "md-path__link", f"{_lang} 的面包屑"),
-        (f"{_prefix}guide/writing/index.html", "md-footer__link--next", f"{_lang} 页脚的「下一页」"),
-        (f"{_prefix}guide/writing/index.html", 'rel="prev"', f"{_lang} 的 <link rel=prev>"),
+        (f"{_prefix}editor/index.html", "md-path__link", f"{_lang} 的面包屑"),
+        (f"{_prefix}editor/keys/index.html", "md-footer__link--next", f"{_lang} 页脚的「下一页」"),
+        (f"{_prefix}editor/keys/index.html", 'rel="prev"', f"{_lang} 的 <link rel=prev>"),
     ]
+#: 历史版的树也要真的生成出来：切换器指向它，它不在就等于切换器全是死链。
+for _version in all_versions():
+    if _version.current:
+        continue
+    SMOKE += [(f"{_version.id}/index.html", "brand-footer",
+               f"历史版 {_version.id} 的首页")]
 
 def inspect_rendered_output() -> dict:
     """对构建产物做一组「该有的东西真的在」的断言。"""
@@ -335,7 +402,13 @@ def inspect_rendered_output() -> dict:
             if not raw or raw[0] in "#?" or raw.startswith(("http://", "https://", "mailto:", "data:", "javascript:")):
                 continue
             target = urllib.parse.urljoin(base, urllib.parse.unquote(raw.split("#")[0].split("?")[0]))
-            fs = site / target.lstrip("/")
+            # 绝对地址带着 site_url 的子路径前缀（子路径部署时），站点目录里没有那一段
+            base_path = site_base()
+            rel_target = target.lstrip("/")
+            if base_path and (rel_target == base_path or rel_target.startswith(base_path + "/")):
+                rel_target = rel_target[len(base_path):].lstrip("/")
+            target = "/" + rel_target
+            fs = site / rel_target
             if fs.is_dir():
                 fs = fs / "index.html"
             if not fs.exists() and not (site / target.lstrip("/")).with_suffix(".html").exists():
@@ -371,35 +444,69 @@ def main() -> int:
 
     languages = other_languages()
     declared = set(languages) - set(DERIVATIONS)
+    relaxing = in_progress_languages() & set(declared)
+
+    current = current_version()
+    if current is None:
+        print("error: zensical.toml 里没有一个版本标了 current = true，"
+              "先跑 uv run python tools/versions.py 看体检结果。", file=sys.stderr)
+        return 1
 
     pages: list[dict] = []
+    # 当前版：手写的译文要查漏翻 / 过期 / 结构，派生语种要查逐字节一致
     for source in source_pages():
         for lang in languages:
             if lang in declared:
                 pages.append(inspect_translation(source, lang, sync=args.sync))
             else:
-                pages.append(inspect_derived(source, lang))
+                pages.append(inspect_derived(source, lang, current))
+    # 历史版：冻结快照，不要求译文；但派生语种照样要逐字节对得上（那是脚本算的）
+    for source, version in archived_pages():
+        for lang in sorted(set(languages) & set(DERIVATIONS)):
+            pages.append(inspect_derived(source, lang, version))
     pages.append(inspect_rendered_output())
 
     counts: dict[str, int] = {}
     for page in pages:
         counts[page["status"]] = counts.get(page["status"], 0) + 1
 
-    todolist = [p for p in pages if p["status"] not in ("ok", "created")]
+    def blocks(page: dict) -> bool:
+        """这一条要不要挡住构建。
+
+        「已同步」「刚建骨架」不挡；「还没翻」在**声明为仍在补齐的语种**里也不挡
+        ——那三种状态是看得见的（页面就是没有），而本检查器存在是为了那些
+        看不见的：原文改了、译文还是旧的。补完一个语种就把它从
+        translation_in_progress 里删掉，判据立刻回到全严。
+        """
+        if page["status"] in ("ok", "created"):
+            return False
+        if page["lang"] in relaxing and page["status"] in PENDING:
+            return False
+        return True
+
+    todolist = [p for p in pages if blocks(p)]
+    deferred = [p for p in pages if not blocks(p) and p["status"] not in ("ok", "created")]
 
     report = {
         "generated": date.today().isoformat(),
         "languages": {"default": DEFAULT_LANG, "others": languages,
-                      "derived": sorted(DERIVATIONS)},
+                      "derived": sorted(DERIVATIONS),
+                      "in_progress": sorted(relaxing)},
         "summary": {
             "total": len(pages),
             "counts": {k: counts.get(k, 0) for k in ORDER if k in counts},
             "complete": not todolist,
+            "blocking": len(todolist),
+            "deferred": len(deferred),
         },
         "todo": [
             {"lang": p["lang"], "source": p["source"], "target": p["target"],
              "status": p["status"], "next": p["next"]}
             for p in todolist
+        ],
+        "untranslated": [
+            {"lang": p["lang"], "target": p["target"], "status": p["status"]}
+            for p in deferred
         ],
         "pages": pages,
     }
@@ -417,14 +524,31 @@ def main() -> int:
     for status in ORDER:
         if status in counts:
             lines.append(f"| {LABEL[status]} `{status}` | {counts[status]} |")
-    lines += ["", "## 待办", ""]
+    lines += ["", "## 待办（会挡住构建）", ""]
     if todolist:
         lines += ["| 语种 | 状态 | 文件 | 来源 | 下一步 |", "| --- | --- | --- | --- | --- |"]
         for p in todolist:
             cell = re.sub(r"\s+", " ", p["next"]).replace("|", "\\|")
             lines.append(f"| `{p['lang']}` | {LABEL[p['status']]} | `{p['target']}` | `{p['source']}` | {cell} |")
     else:
-        lines.append("各语种与默认语言完全同步。")
+        lines.append("没有会挡住构建的条目。")
+
+    lines += ["", "## 还在补的语种（只统计，不挡构建）", ""]
+    if deferred:
+        lines.append(f"已在 `translation_in_progress` 里声明的语种："
+                     f"{'、'.join('`' + x + '`' for x in sorted(relaxing))}。")
+        lines.append("")
+        by_lang: dict[str, int] = {}
+        for p in deferred:
+            by_lang[p["lang"]] = by_lang.get(p["lang"], 0) + 1
+        lines += ["| 语种 | 待译条目 |", "| --- | --- |"]
+        for lang in sorted(by_lang):
+            lines.append(f"| `{lang}` | {by_lang[lang]} |")
+        lines.append("")
+        lines.append("把某个语种翻完，从 `zensical.toml` 的 `translation_in_progress` "
+                     "里删掉它，这一节就会消失、判据回到全严。")
+    else:
+        lines.append("没有声明任何「仍在补齐」的语种，所有条目都是全严判据。")
     lines.append("")
     REPORT_MD.write_text("\n".join(lines), encoding="utf-8")
 
@@ -434,6 +558,12 @@ def main() -> int:
 
     summary = "　".join(f"{LABEL[s]} {counts[s]}" for s in ORDER if s in counts)
     print(f"\n翻译度：{summary}")
+    if deferred:
+        by_lang: dict[str, int] = {}
+        for page in deferred:
+            by_lang[page["lang"]] = by_lang.get(page["lang"], 0) + 1
+        spread = "　".join(f"{lang} 待译 {n}" for lang, n in sorted(by_lang.items()))
+        print(f"仍在补齐（不挡构建）：{spread}")
     print(f"报告：{REPORT_JSON.relative_to(ROOT)}　{REPORT_MD.relative_to(ROOT)}")
 
     return 0 if not todolist else 1
