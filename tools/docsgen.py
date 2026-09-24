@@ -4,7 +4,7 @@
 分层
 ----
     content/            唯一手写层。当前版内容，文件名带语言后缀
-    content/versions/   历史版的冻结树，每个版本一个子目录
+    content/versions/   非当前版的冻结树，每个版本一个子目录
     docs/               构建层。.md 与跳转桩由本脚本产出；assets/、stylesheets/ 仍是手写的
 
 同名不同语言后缀的文件是**同一篇**的不同语种：
@@ -36,7 +36,7 @@ zensical.toml 的 [[project.extra.version]]（见 tools/versions.py）。
 
 跳转桩
 ------
-历史版是**冻结的快照**，所以它的页面集合可能与当前版对不上：当前版新加的分区，
+非当前版是**冻结的快照**，所以它的页面集合可能与当前版对不上：当前版新加的分区，
 旧版自然没有。而版本切换器出现在每一页上，从当前版的这一页切到 0101 版时，
 0101 版里未必有对应页。缺的那些页在这里补一个跳转桩（`<meta http-equiv="refresh">`），
 落到该版本该语言的首页——而不是把读者送进 404。桩是**生成物**，带同样的横幅，
@@ -46,7 +46,7 @@ zensical.toml 的 [[project.extra.version]]（见 tools/versions.py）。
 --------
 `docs/assets/` 只有一份，全部版本与语言共用。content/ 里的相对链接按**内容根**
 解析，落点在 assets/ 之下的就是共享资产；产物每深一层，这些链接就多补一个 `../`，
-层数由 depth_of() 算（历史版一层 + 非默认语言一层）。其余链接指向镜像页面，保持原样。
+层数由 depth_of() 算（非当前版一层 + 非默认语言一层）。其余链接指向镜像页面，保持原样。
 
     uv run python tools/docsgen.py
     uv run python tools/docsgen.py --check     # 只比对，不写盘
@@ -124,7 +124,7 @@ def lang_prefix(lang: str) -> str:
 
 
 def depth_of(version: Version, lang: str) -> int:
-    """产物相对 docs/ 下沉几层：历史版一层 + 非默认语言一层。"""
+    """产物相对 docs/ 下沉几层：非当前版一层 + 非默认语言一层。"""
     return (0 if version.current else 1) + (0 if lang == DEFAULT_LANG else 1)
 
 
@@ -159,7 +159,7 @@ def sources() -> list[Source]:
     """全部手写内容，按（版本，路径）排序。
 
     当前版的根是 content/ 本身，所以要显式跳过 content/versions/——
-    那是历史版的地盘，不然历史版会被当成当前版的 `versions/` 分区重复生成一遍。
+    那是非当前版的地盘，不然非当前版会被当成当前版的 `versions/` 分区重复生成一遍。
     """
     found: list[Source] = []
     for version in all_versions():
@@ -255,7 +255,7 @@ def stub_target(name: str, lang: str, version: Version, has_home: bool) -> str:
     退几层由桩自己的落点算出来，不靠数名字里的斜杠：`index` 那一层特殊，
     数斜杠会少退一层。
 
-    `has_home=False` 时该（版本 × 语言）树下**没有自己的首页**——例如某个历史版
+    `has_home=False` 时该（版本 × 语言）树下**没有自己的首页**——例如某个非当前版
     只写了简体。这时再退回一层，落到该版本的**默认语言**首页：宁可把读者送到
     看得懂的上一站，也不要停在一个不存在的地址上。
     """
@@ -316,7 +316,7 @@ def inert_sidebar(name: str, names: set[str]) -> bool:
 
     判据放在构建层而不是各页的前置元数据里：分区里加一篇新页时，
     左栏该自己回来——写死在前置元数据里就不会，而且每加一种语言、
-    每个历史版都要各写一遍。作者自己在前置元数据里写了 `hide:` 的，
+    每个非当前版都要各写一遍。作者自己在前置元数据里写了 `hide:` 的，
     这里不覆盖（见 insert_hide）。
     """
     section, sep, _ = name.partition("/")
@@ -468,7 +468,7 @@ def prune(previous: set[str], current: set[str]) -> list[Path]:
 def collisions() -> list[str]:
     """版本 id 与当前版的顶层分区名撞车。
 
-    这一条只有在生成时才知道，所以不放进 versions.audit()：历史版的产物落在
+    这一条只有在生成时才知道，所以不放进 versions.audit()：非当前版的产物落在
     docs/<id>/，而当前版的分区也落在 docs/<分区名>/，两者同名就会把两棵完全
     不同的树叠在一起——生成不报错，页面悄悄互相覆盖。
     """
@@ -588,7 +588,7 @@ def main() -> int:
 
     # 两条切换轴都出现在每一页上，所以只要「别处有、这里没有」，
     # 就要在这里补一个桩，否则切换器会把读者送进 404：
-    #   * 版本轴 —— 当前版新加的分区，历史版没有；
+    #   * 版本轴 —— 当前版新加的分区，非当前版没有；
     #   * 语言轴 —— 还没翻的篇目（含仍在补齐的语种）。
     # 逐棵树补，判据是这一棵树自己有没有那一页，而不是整个版本有没有。
     for version in all_versions():

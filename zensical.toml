@@ -128,17 +128,21 @@ version_aria_zh_hant = "切換地編版本"
 #    或有目录没声明，都以非零码退出。不会静默分成两家账。
 #
 # 标记规则：标了 current = true 的那一条是**当前版**，它的内容就在 content/ 根下，
-# 网址没有前缀（`/`）；其余各条是历史版，内容在 content/versions/<id>/，网址带
-# 前缀（`/0100/`）。当前版必须**恰好一个**。
+# 网址没有前缀（`/`）；其余各条在 content/versions/<id>/ 下，网址带前缀（`/egg/`）。
+# 当前版必须**恰好一个**。
 #
 # 顺序就是切换器里的顺序——最新的排在最前。这里不排序：版本号不是都能比大小的，
 # `vao0822` 与 `0101` 谁大只有作者知道。
 #
-# ⚠️ 版本是「冻结快照」：砍一版之后，那一支不再回改。本站现在的历史版是各版
-#    **构建信息**的快照（见 content/versions/<id>/index.zh-hans.md），手册正文与
-#    当前版共用一份——工具条目在 060 到 0101 之间没变过，说明也就没跟着变。
-#    哪天某一版真的改了做法，再把当时那棵树整份复制进 content/versions/<id>/，
-#    此后就不动它了；tools/docsgen.py 会给缺失的页补跳转桩，不会让人点进 404。
+# ⚠️ 版本是「冻结快照」：定下来之后那一支不再回改。**id 就是网址那一段**，
+#    所以它只能是 URL 里不用转义的字符（tools/versions.py 的 VERSION_RE 拦着），
+#    并且**不能长得像数字**（见 tools/navgen.py 的 _quote_numeric_values 与 README）。
+#    label 随便取，切换器与页面标题用它，历史版叫「彩蛋」也无所谓。
+#
+# 现在只有两条：`0101` 是当前版，`egg` 是砍版机制的试用品（一枚彩蛋，
+# 里面冻着 060 那次构建的真实数字）。要放真正的历史版，按 README 的
+# 「加一个版本」加一条，并把当时那棵树整份复制进 content/versions/<id>/；
+# 缺的页由 tools/docsgen.py 补跳转桩，不会让人点进 404。
 
 
 
@@ -187,40 +191,9 @@ date = "2026-09-06"
 current = true
 
 [[project.extra.version]]
-id = "0100"
-label = "地编版本 0100"
-date = "2026-08-30"
-
-[[project.extra.version]]
-id = "091"
-label = "地编版本 091"
-date = "2026-08-30"
-
-[[project.extra.version]]
-id = "090"
-label = "地编版本 090"
-date = "2026-07-26"
-
-[[project.extra.version]]
-id = "081"
-label = "地编版本 081"
-date = "2026-06-08"
-
-[[project.extra.version]]
-id = "080"
-label = "地编版本 080"
-date = "2026-06-02"
-
-[[project.extra.version]]
-id = "070"
-label = "地编版本 070"
-date = "2026-05-20"
-
-[[project.extra.version]]
-id = "060"
-label = "地编版本 060"
+id = "egg"
+label = "彩蛋"
 date = "2026-05-14"
-
 
 # 语言代码用**文字**标签（zh-Hans / zh-Hant），不用 zh-CN / zh-TW 这类**地区**标签：
 # 地区标签会把用词一起改掉，那是替读者选定某一地的用法。

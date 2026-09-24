@@ -22,7 +22,7 @@
 {% set L = route.suffix(ldir) | trim %}
 {% set site_name = config.extra["site_name" ~ L] | d(config.site_name, true) %}
 {#- 落地页判据：去掉了版本与语言两层前缀之后，路径为空就是某一支的首页。
-    原先写死三串网址，历史版一进来就判错（0101/ 不在那三串里）。 -#}
+    原先写死三串网址，非当前版一进来就判错（0101/ 不在那三串里）。 -#}
 {% set is_home = (route.tail(here) | trim) == "" %}
 
 {% block extrahead %}

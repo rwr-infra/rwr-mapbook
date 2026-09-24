@@ -45,7 +45,7 @@
     </div>
   {% endif %}
   <ul class="md-nav__list" data-md-scrollfix>
-    {#- 第一步：历史版的内容挂在自己的 __ver: 分区里，先把它取出来当这一页的根。
+    {#- 第一步：非当前版的内容挂在自己的 __ver: 分区里，先把它取出来当这一页的根。
         当前版没有版本分区，直接用整棵树。 -#}
     {% set tree = namespace(items=nav.items) %}
     {% if vdir %}

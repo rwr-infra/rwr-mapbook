@@ -9,7 +9,7 @@
    （漏掉一段、少一行表格，光看字符数是看不出来的）；
 4. **派生语种有没有跟上** —— 繁体不是翻译，是从简体**脚本转换**出来的，
    所以它必须**逐字节等于**对当前简体原文做一次转换的结果；
-5. **历史版有没有被回改** —— 历史版是冻结的快照，它的派生语种同样要逐字节对得上。
+5. **非当前版有没有被回改** —— 非当前版是冻结的快照，它的派生语种同样要逐字节对得上。
 
 两条轴
 ------
@@ -17,7 +17,7 @@
 但两者的交集要说清楚：
 
 * **当前版**（content/ 根）的每一篇都要求有译文；
-* **历史版**（content/versions/<id>/）是冻结快照，**不要求**译文——
+* **非当前版**（content/versions/<id>/）是冻结快照，**不要求**译文——
   砍版那一刻它是什么样就永远是什么样，逼迫后人去补一版十年前的手册没有意义。
   但它的**派生**语种（繁体）照样要逐字节对得上：那一支是脚本算出来的，不花人力。
 
@@ -179,7 +179,7 @@ def structure_diff(source: dict, target: dict) -> list[str]:
 def source_pages() -> list[Path]:
     """**当前版**的默认语言源文件，按路径排序。
 
-    历史版在 content/versions/ 下，是冻结快照，不参与「有没有译文」这一问；
+    非当前版在 content/versions/ 下，是冻结快照，不参与「有没有译文」这一问；
     它们只走派生语种的比对（见 archived_pages）。
     """
     return sorted(path for path in CONTENT.rglob(f"*.{DEFAULT_LANG}.md")
@@ -187,7 +187,7 @@ def source_pages() -> list[Path]:
 
 
 def archived_pages() -> list[tuple[Path, Version]]:
-    """历史版的默认语言源文件，连同它所属的版本。"""
+    """非当前版的默认语言源文件，连同它所属的版本。"""
     out: list[tuple[Path, Version]] = []
     for version in all_versions():
         if version.current:
@@ -368,12 +368,12 @@ for _lang in [DEFAULT_LANG, *other_languages()]:
         (f"{_prefix}editor/keys/index.html", "md-footer__link--next", f"{_lang} 页脚的「下一页」"),
         (f"{_prefix}editor/keys/index.html", 'rel="prev"', f"{_lang} 的 <link rel=prev>"),
     ]
-#: 历史版的树也要真的生成出来：切换器指向它，它不在就等于切换器全是死链。
+#: 非当前版的树也要真的生成出来：切换器指向它，它不在就等于切换器全是死链。
 for _version in all_versions():
     if _version.current:
         continue
     SMOKE += [(f"{_version.id}/index.html", "brand-footer",
-               f"历史版 {_version.id} 的首页")]
+               f"非当前版 {_version.id} 的首页")]
 
 CARD_BLOCK_RE = re.compile(r'class="grid cards"')
 
@@ -548,7 +548,7 @@ def main() -> int:
                 pages.append(inspect_translation(source, lang, sync=args.sync))
             else:
                 pages.append(inspect_derived(source, lang, current))
-    # 历史版：冻结快照，不要求译文；但派生语种照样要逐字节对得上（那是脚本算的）
+    # 非当前版：冻结快照，不要求译文；但派生语种照样要逐字节对得上（那是脚本算的）
     for source, version in archived_pages():
         for lang in sorted(set(languages) & set(DERIVATIONS)):
             pages.append(inspect_derived(source, lang, version))

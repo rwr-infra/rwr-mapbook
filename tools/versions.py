@@ -14,7 +14,7 @@
 三个概念
 --------
     current   当前版。内容就在 `content/` 根下，产物落在 docs/ 根，网址没有前缀。
-    archived  历史版。内容在 `content/versions/<id>/`，产物落在 docs/<id>/。
+    archived  非当前版。内容在 `content/versions/<id>/`，产物落在 docs/<id>/。
     语言      与版本正交。默认语言没有前缀，其余语言各自一层，所以某一页的产物在
               docs/[<版本>/][<语言>/]<名字>.md，最多两层前缀。
 
@@ -27,7 +27,7 @@
     「版本在前」是为了让当前版的简体（也就是绝大多数人看的那一支）保持在最浅的
     地址上；调过来会把它推到 /zh-hans/ 下面去。
 
-为什么历史版是整棵冻结的树，而不是「只写改动」
+为什么非当前版是整棵冻结的树，而不是「只写改动」
 ------------------------------------------------
 地编的手册是**跟着工具版本走的**：读者装的是 0101，就该看到 0101 的说明。
 所以砍一版就是当时那棵树的一份快照，之后再不回改。等到某一版的页面集合与
@@ -47,7 +47,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONTENT = ROOT / "content"
 CONFIG = ROOT / "zensical.toml"
 
-#: 历史版的落点。`content/versions/` 下的每个子目录就是一个历史版。
+#: 非当前版的落点。`content/versions/` 下的每个子目录就是一个非当前版。
 #: 当前版没有目录——它就是 content/ 根，这样默认语言的网址才停在最浅处。
 ARCHIVE = CONTENT / "versions"
 
@@ -64,9 +64,9 @@ class Version:
     id: str
     label: str
     date: str = ""
-    #: 当前版在清单里**不写** `current = true`——不写就是历史版，写了才是当前版。
+    #: 当前版在清单里**不写** `current = true`——不写就是非当前版，写了才是当前版。
     #: 反过来（默认当前、显式标历史）会让「多标了一个」这种错变成静默的：
-    #: 两个 current 时第一个赢，另一个悄悄降级成历史版，网址却不是那么回事。
+    #: 两个 current 时第一个赢，另一个悄悄降级成非当前版，网址却不是那么回事。
     current: bool = False
 
 
@@ -129,7 +129,7 @@ def current() -> Version | None:
 
 
 def archived() -> list[Version]:
-    """历史版，按声明顺序。"""
+    """非当前版，按声明顺序。"""
     return [v for v in declared() if not v.current and v.id]
 
 
@@ -174,7 +174,7 @@ def audit(default_lang: str, other_lang_dirs: tuple[str, ...] = ()) -> list[str]
     三类问题，每一类都是构建期就能定的，没有一类需要等到读者点到才发现：
 
       1. 清单本身不成立（没有当前版、当前版多于一个、id 不合法或重复）；
-      2. 声明了历史版但 `content/versions/<id>/` 不在（切换器会指向一个空目录）；
+      2. 声明了非当前版但 `content/versions/<id>/` 不在（切换器会指向一个空目录）；
       3. `content/versions/<id>/` 在，但清单里没声明（内容写了却上不了线）。
 
     还有一条不在这张单子里、由 docsgen 管：版本 id 不能与当前版顶层的分区名

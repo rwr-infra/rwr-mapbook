@@ -31,7 +31,7 @@
         {% for alt in config.extra.alternate %}
           {#- 语言目录从 alternate 的 link 推导（`./`、`zh-hant/`、`en/`），
               这样加一种语言不必回来改这里；版本前缀原样带过去，
-              免得在历史版里点英文被送回当前版。 -#}
+              免得在非当前版里点英文被送回当前版。 -#}
           {% set alt_dir = alt.link | d("./", true) | replace("./", "") | replace("/", "") %}
           {% set is_current = alt_dir == ldir %}
           {% set target = (route.version_prefix(here) | trim) ~ (alt_dir ~ "/" if alt_dir else "") ~ tail %}

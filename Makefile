@@ -8,12 +8,13 @@
 #   make versions 版本清单体检：声明与 content/versions/ 是否对得上
 #   make links   产物链接体检：站内引用 / 目录尾斜杠 / 跳转桩目标 / 补正脚本
 #   make build   生成 → 构建站点 → 标签过滤 → 链接体检 → 翻译度检查
-#   make serve   本地预览 http://127.0.0.1:8000
+#   make serve   本地预览 http://127.0.0.1:8000（根域；线上带子路径，见文件末尾）
+#   make serve-subpath  同上，但按线上的子路径预览
 #   make sync    为缺失的译文建立骨架，然后重新生成
 
 UV ?= uv
 
-.PHONY: gen docs nav check versions links build serve serve-root sync clean
+.PHONY: gen docs nav check versions links build serve serve-subpath sync clean
 
 gen: docs nav
 
@@ -47,35 +48,39 @@ build: gen
 # ⚠️ zensical serve 自己构建、自己服务，插不进 tagfilter 与 linkcheck，
 #    所以预览里的 /tags/ 仍会列出全部三种语言的篇目（线上产物不会）。
 #
-# 为什么预览也在子路径下
+# 为什么线上在子路径下
 # ----------------------
-# 线上是 GitHub Pages 的「项目站」，它的地址本来就是
+# 线上是 GitHub Pages 的「项目站」（仓库名不是 <用户名>.github.io），
+# 它的地址本来就是
 #     https://<用户名>.github.io/<仓库名>/
-# 这个子路径**不是本地预览的怪癖，而是线上真实地址的前缀**——站点根就在那一层，
-# 而不是域名根。所以 `site_url` 里必须带着它：站内绝对引用、sitemap、canonical
-# 都按这个根拼；少了它，本地看着一切正常，一上线全是断链。
+# 也就是说**站点根落在那一层，而不是域名根**。所以 zensical.toml 里的 site_url
+# 必须带着 /rwr-mapbook/：站内绝对引用、sitemap、canonical 都按这个根拼。
+# 少了它，本地看着一切正常，一上线全是断链——这一项不能按「本地预览方便」来取舍。
 #
-# `zensical serve` 没有覆盖 site_url 的选项，于是它老老实实按配置把
-# `http://127.0.0.1:8000/` 302 到下面这个地址。**入口是它，不是根。**
+# `zensical serve` 没有覆盖 site_url 的选项，于是它按配置把
+# `http://127.0.0.1:8000/` 302 到 `/rwr-mapbook/`。
 #
-# 想按根域预览（比如要跟别的本地站并排开），用 `make serve-root`：
-# 它另外生成一份 zensical.preview.toml（site_url 换成 127.0.0.1:8000），
-# 其余配置原样照抄。那份文件是生成物，不入库，改不动线上的 site_url。
-SERVE_URL = http://127.0.0.1:8000/rwr-mapbook/
+# 本地预览不该背这个包袱：**默认就让预览停在根域。** 办法是另生成一份
+# zensical.preview.toml，只把 site_url 换成本地根域，其余配置一行不动；
+# 那份文件是生成物、不入库，也改不到线上的 site_url。
 SERVE_ROOT_URL = http://127.0.0.1:8000/
+SERVE_SUBPATH_URL = http://127.0.0.1:8000/rwr-mapbook/
 PREVIEW_CONFIG = zensical.preview.toml
 
-serve: gen
-	@echo "预览入口： $(SERVE_URL)  （带子路径，与线上一致）"
+serve: gen $(PREVIEW_CONFIG)
+	@echo "预览入口： $(SERVE_ROOT_URL)"
+	$(UV) run zensical serve -f $(PREVIEW_CONFIG) -a 127.0.0.1:8000
+
+# 要核对「线上那种子路径」下的表现（绝对引用、canonical、sitemap）就用这个。
+serve-subpath: gen
+	@echo "预览入口： $(SERVE_SUBPATH_URL)  （带子路径，与线上一致）"
 	$(UV) run zensical serve -a 127.0.0.1:8000
 
-# 只把 site_url 换成本地根域，其余一行不动。用 sed 而不是 copy 再改，
-# 是为了让「除了 site_url，两份配置完全相同」这件事在编辑器里一眼可见。
-serve-root: gen
-	@sed 's|^site_url = .*|site_url = "$(SERVE_ROOT_URL)"|' zensical.toml > $(PREVIEW_CONFIG)
-	@grep -q '^site_url = "$(SERVE_ROOT_URL)"' $(PREVIEW_CONFIG) || { echo "预览配置没换掉 site_url，先看 zensical.toml 第一行"; rm -f $(PREVIEW_CONFIG); exit 1; }
-	@echo "预览入口： $(SERVE_ROOT_URL)  （根域，仅供本地对照）"
-	$(UV) run zensical serve -f $(PREVIEW_CONFIG) -a 127.0.0.1:8000
+# 只把 site_url 换成本地根域，其余一行不动。用 sed 而不是「复制再改」，
+# 是为了让「除了 site_url，两份配置完全相同」这件事一眼可见。
+$(PREVIEW_CONFIG): zensical.toml
+	@sed 's|^site_url = .*|site_url = "$(SERVE_ROOT_URL)"|' zensical.toml > $@
+	@grep -q '^site_url = "$(SERVE_ROOT_URL)"' $@ || { echo "预览配置没换掉 site_url，先看 zensical.toml 第一行"; rm -f $@; exit 1; }
 
 sync:
 	$(UV) run python tools/i18n_check.py --sync

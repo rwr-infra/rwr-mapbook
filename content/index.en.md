@@ -1,7 +1,7 @@
 ---
 title: "RWR Map Editor's Handbook"
 description: "The handbook for the Running With Rifles map editor: what every panel does, the model and wall inventories, key bindings and common workflows."
-source_sha256: 104fa2bd3c9eef3e85a7b04d587608b91685cae785755d3e5e1822acfac705f7
+source_sha256: 0bd45c03a508ac47daf7f82d9a83c5abae1f50f065d5d22c10b4f0f64d4962aa
 translated: 2026-09-25
 nav_label: "Home"
 icon: lucide/house
@@ -67,14 +67,18 @@ What to do before you start making a map — mostly to make the editor less pain
 
 ## This site has two axes
 
-**Version** decides which release of the editor you are reading about; **language**
-decides which script you read it in. The two do not touch: switching version keeps your
-language, and switching language keeps your version.
+**Version** decides which set of pages you are reading; **language** decides which
+script you read it in. The two do not touch: switching version keeps your language,
+and switching language keeps your version.
 
 | Axis | Which side of the header | What changes |
 | --- | --- | --- |
 | Version | the tag icon on the left | only the version; language stays |
 | Language | the translate icon on the right | only the language; version stays |
+
+The version menu holds two entries right now: **地编版本 0101** (this handbook) and
+**彩蛋** — not an old release but a trial run of the freeze mechanism, with a 060 build's
+numbers inside it.
 
 [Start with getting ready](prepare/index.md){ .md-button .md-button--primary }
 [Go straight to the inventories](tables/index.md){ .md-button }

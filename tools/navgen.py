@@ -63,7 +63,7 @@ DOCS = ROOT / "docs"
 #: （overrides/partials/path.html）。所以这里刻意用一个可机器识别的标记前缀，
 #: 而不是会随人改动的显示名：模板靠 `"__lang:" in title` 认出语言分区。
 LANG_MARKER = "__lang:"
-#: 版本分区同理。历史版在导航里同样不该占一格，读者靠页眉的版本切换器进去。
+#: 版本分区同理。非当前版在导航里同样不该占一格，读者靠页眉的版本切换器进去。
 VER_MARKER = "__ver:"
 
 
@@ -127,7 +127,7 @@ def lang_dirs_under(base: Path) -> tuple[Path, ...]:
 
 
 def version_dirs() -> tuple[Path, ...]:
-    """历史版的产物根（当前版在 docs/ 根，不是分区）。"""
+    """非当前版的产物根（当前版在 docs/ 根，不是分区）。"""
     return tuple(DOCS / v.id for v in all_versions() if not v.current and (DOCS / v.id).is_dir())
 
 
@@ -295,7 +295,7 @@ def targets() -> list[tuple[Path, list[tuple[str, Path]]]]:
        「没有分区」的样子收的——于是同一个目录被排两遍，后一遍（空分区）
        盖掉前一遍，`0100/.nav.yml` 里的语言分区就没了，而它看上去只是一份
        普通的 .nav.yml。所以遍历时要把别的树根整个剪掉。
-    2. **还是没有页面的树？那也必须给一份空的。** 历史版的某个语种一篇内容都没有
+    2. **还是没有页面的树？那也必须给一份空的。** 非当前版的某个语种一篇内容都没有
        （读者由跳转桩送走），这里只剩一个 index.html 桩。⚠️ 这时候**恰恰不能跳过**：
        awesome-nav 找不到 .nav.yml 就自己去扫目录，扫到一个 html 也没有的目录，
        会把 nav 解析成非列表并以 `nav must be a list` 让整个构建失败——

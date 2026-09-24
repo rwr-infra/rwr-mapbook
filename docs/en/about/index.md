@@ -1,7 +1,7 @@
 ---
 title: "About"
 description: "Which editor version this handbook covers, how the URLs are laid out, and what has not been verified yet."
-source_sha256: 058a380098185bd420b9610842c9114349177387dcb545db8a4fcd220f4f4759
+source_sha256: e6cc67b08088711550055f400a24313756af6545d9f3beed557e0398151315cf
 translated: 2026-09-25
 nav_label: "About"
 icon: lucide/info
@@ -40,9 +40,9 @@ and every language:
 graph TD
   A["/ · current · Simplified"] --> B["/en/ · current · English"]
   A --> C["/zh-hant/ · current · Traditional"]
-  A --> D["/0100/ · archived · Simplified"]
-  D --> E["/0100/en/"]
-  D --> F["/0100/zh-hant/"]
+  A --> D["/egg/ · the egg · Simplified"]
+  D --> E["/egg/en/"]
+  D --> F["/egg/zh-hant/"]
 ```
 
 ## What has not been verified

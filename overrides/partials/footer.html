@@ -15,7 +15,7 @@
 {% set lang_dir = ldir %}
 {% set L = route.suffix(ldir) | trim %}
 {% set site_name = config.extra["site_name" ~ L] | d(config.site_name, true) %}
-{#- 页脚的品牌链接回「本版本本语言」的首页，历史版里不要把人送回当前版 -#}
+{#- 页脚的品牌链接回「本版本本语言」的首页，非当前版里不要把人送回当前版 -#}
 {% set home_url = (route.base(here) | trim) or nav.homepage.url %}
 {% import "partials/lang-same.html" as langutil with context %}
 {% set prev_page = page.previous_page if page.previous_page and langutil.same_lang(page.previous_page.url) | trim == "yes" else none %}
