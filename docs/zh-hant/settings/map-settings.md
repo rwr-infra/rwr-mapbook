@@ -1,9 +1,10 @@
 ---
 nav_label: "mapSettings 說明（待試）"
 title: "mapSettings 說明（待試）"
-description: "地圖自身的設置項。原文標註「待試」，尚未逐項驗證。"
+description: "地圖自身的設置項。這一頁標註「待試」，尚未逐項驗證。"
 status: "partial"
 # ⚠️ 由 tools/docsgen.py 從 content/settings/map-settings.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
+hide: [toc]
 ---
 
 # mapSettings 說明（待試） { #map-settings }
@@ -11,7 +12,7 @@ status: "partial"
 <p class="kicker">SETTINGS · 地圖自己的那份配置</p>
 
 !!! warning "這一頁是**待試**的"
-    下面每一行的「說明」列都是原文寫的，其中好幾條直接標着「沒試」「不知道這是啥」。
+    下面每一行的「說明」列都照原樣留着，其中好幾條直接標着「沒試」「不知道這是啥」。
     照原樣留着——**沒試過就是沒試過**，不要照着猜。
 
 | 字段 | 示例 | 備註 | 說明 |
@@ -32,4 +33,4 @@ status: "partial"
 
 !!! tip "顏色那兩行的第三種寫法"
     `day_color` 與 `night_color` 的示例裡除了色值還有一個 `fill` / `stroke`——
-    原文沒寫這是什麼，也沒試過。照填色值即可。
+    這裡沒寫這是什麼，也沒試過。照填色值即可。

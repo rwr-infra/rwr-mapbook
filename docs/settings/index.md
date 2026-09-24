@@ -5,6 +5,7 @@ icon: "lucide/settings"
 description: "mapSettings、3rdParSettings 与 RefpM 三处配置。"
 nav: ["map-settings", "third-party", "reference-images"]
 # ⚠️ 由 tools/docsgen.py 从 content/settings/index.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
+hide: [toc]
 ---
 
 # 设置文件
@@ -22,7 +23,7 @@ nav: ["map-settings", "third-party", "reference-images"]
     地图自身的设置：名字、描述、昼夜颜色、背景音效。
 
     !!! warning "**待试**"
-        原文自己标了「待试」，好几行还是「没试，不知道这是啥」。
+        这一页标着「待试」，好几行还是「没试，不知道这是啥」。
 
     [:octicons-arrow-right-24: 去看](map-settings.md)
 

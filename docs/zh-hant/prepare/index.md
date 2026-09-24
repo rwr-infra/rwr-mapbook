@@ -53,15 +53,15 @@ hide: [navigation]
 
 1. 將下載後的文件解壓到你自己喜歡的路徑。
 
-    ![解壓到任意路徑](../../assets/shushu/001.png)
+    ![解壓到任意路徑](../../assets/editor/001.png)
 
 2. 在 `1007_Data` 中創建一個 `templates` 文件夾與 `map` 文件夾。
 
-    ![建 templates 與 map 兩個文件夾](../../assets/shushu/002.png)
+    ![建 templates 與 map 兩個文件夾](../../assets/editor/002.png)
 
 3. 下載群內的最新模板（目前是 `vao0822.svg`），放進地編的 `templates` 文件夾中。
 
-    ![把模板放進 templates](../../assets/shushu/003.png)
+    ![把模板放進 templates](../../assets/editor/003.png)
 
     !!! note "目前只有原版地圖的模板"
         沙漠與雪地的模板暫未製作完成。
@@ -70,9 +70,9 @@ hide: [navigation]
    文件夾下所有相關文件都扔進去。拿不準就用 `map7`——它就是上面那份模板的底稿，
    可以避開一些詭異問題。
 
-    ![把地圖文件放進 map](../../assets/shushu/004.png)
+    ![把地圖文件放進 map](../../assets/editor/004.png)
 
-    ![放好之後的樣子](../../assets/shushu/005.png)
+    ![放好之後的樣子](../../assets/editor/005.png)
 
     !!! warning "地圖分三類，模板要對得上"
         RWR 原版地圖分為三個類型：原版中的原版、原版中的沙漠、原版中的雪地。
@@ -93,9 +93,9 @@ hide: [navigation]
 
 1. 按 ++win+r++，輸入 `cmd`，打開命令提示符。
 
-    ![Win+R 運行框](../../assets/shushu/006.png)
+    ![Win+R 運行框](../../assets/editor/006.png)
 
-    ![輸入 cmd](../../assets/shushu/007.png)
+    ![輸入 cmd](../../assets/editor/007.png)
 
 2. 輸入下面這條命令：
 
@@ -109,11 +109,11 @@ hide: [navigation]
 
         第一個路徑要保證**執行命令之前它不存在**，否則會報「文件已存在」。
 
-    ![輸入 mklink 命令](../../assets/shushu/008.png)
+    ![輸入 mklink 命令](../../assets/editor/008.png)
 
 3. 完成後應該是這樣：
 
-    ![創建成功](../../assets/shushu/009.png)
+    ![創建成功](../../assets/editor/009.png)
 
 ## 三、如何開啟 RWR 自帶的相機 mod { #camera-mod }
 
@@ -125,19 +125,19 @@ hide: [navigation]
     skip_nat_server_usage debugmode no_simulation auto_update_tree_foliage big_water
     ```
 
-    ![填啟動選項](../../assets/shushu/010.png)
+    ![填啟動選項](../../assets/editor/010.png)
 
 2. 打開遊戲，點「開始新的快速比賽模式」，然後點「加載模組」。
 
-    ![開始快速比賽](../../assets/shushu/011.png)
+    ![開始快速比賽](../../assets/editor/011.png)
 
 3. 選中 Camera mod。
 
-    ![選中 Camera mod](../../assets/shushu/012.png)
+    ![選中 Camera mod](../../assets/editor/012.png)
 
 4. 進入地圖，按 ++f4++ 動動鼠標，看看有沒有反應。
 
-    ![進入地圖按 F4](../../assets/shushu/013.png)
+    ![進入地圖按 F4](../../assets/editor/013.png)
 
     | 按鍵 | 作用 |
     | --- | --- |
@@ -155,12 +155,12 @@ hide: [navigation]
 
 現在用不到，等[3rdParSettings](../settings/third-party.md#third-party)要用的時候再回來。
 
-![OgreSDK 包](../../assets/shushu/014.png)
+![OgreSDK 包](../../assets/editor/014.png)
 
 1. 從群文件下載 `OgreSDK_vc10_v1-7-4.zip`，解壓到自己喜歡的路徑，
    推薦和地編文件夾放在一塊。
 
-    ![解壓 OgreSDK](../../assets/shushu/015.png)
+    ![解壓 OgreSDK](../../assets/editor/015.png)
 
 2. 沒了。之後 3rdParSettings 要用，現在先不說 :)
 

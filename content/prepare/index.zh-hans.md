@@ -51,15 +51,15 @@ description: "下载后的配置、与 RWR 文件夹同步、开启自带相机 
 
 1. 将下载后的文件解压到你自己喜欢的路径。
 
-    ![解压到任意路径](../assets/shushu/001.png)
+    ![解压到任意路径](../assets/editor/001.png)
 
 2. 在 `1007_Data` 中创建一个 `templates` 文件夹与 `map` 文件夹。
 
-    ![建 templates 与 map 两个文件夹](../assets/shushu/002.png)
+    ![建 templates 与 map 两个文件夹](../assets/editor/002.png)
 
 3. 下载群内的最新模板（目前是 `vao0822.svg`），放进地编的 `templates` 文件夹中。
 
-    ![把模板放进 templates](../assets/shushu/003.png)
+    ![把模板放进 templates](../assets/editor/003.png)
 
     !!! note "目前只有原版地图的模板"
         沙漠与雪地的模板暂未制作完成。
@@ -68,9 +68,9 @@ description: "下载后的配置、与 RWR 文件夹同步、开启自带相机 
    文件夹下所有相关文件都扔进去。拿不准就用 `map7`——它就是上面那份模板的底稿，
    可以避开一些诡异问题。
 
-    ![把地图文件放进 map](../assets/shushu/004.png)
+    ![把地图文件放进 map](../assets/editor/004.png)
 
-    ![放好之后的样子](../assets/shushu/005.png)
+    ![放好之后的样子](../assets/editor/005.png)
 
     !!! warning "地图分三类，模板要对得上"
         RWR 原版地图分为三个类型：原版中的原版、原版中的沙漠、原版中的雪地。
@@ -91,9 +91,9 @@ description: "下载后的配置、与 RWR 文件夹同步、开启自带相机 
 
 1. 按 ++win+r++，输入 `cmd`，打开命令提示符。
 
-    ![Win+R 运行框](../assets/shushu/006.png)
+    ![Win+R 运行框](../assets/editor/006.png)
 
-    ![输入 cmd](../assets/shushu/007.png)
+    ![输入 cmd](../assets/editor/007.png)
 
 2. 输入下面这条命令：
 
@@ -107,11 +107,11 @@ description: "下载后的配置、与 RWR 文件夹同步、开启自带相机 
 
         第一个路径要保证**执行命令之前它不存在**，否则会报「文件已存在」。
 
-    ![输入 mklink 命令](../assets/shushu/008.png)
+    ![输入 mklink 命令](../assets/editor/008.png)
 
 3. 完成后应该是这样：
 
-    ![创建成功](../assets/shushu/009.png)
+    ![创建成功](../assets/editor/009.png)
 
 ## 三、如何开启 RWR 自带的相机 mod { #camera-mod }
 
@@ -123,19 +123,19 @@ description: "下载后的配置、与 RWR 文件夹同步、开启自带相机 
     skip_nat_server_usage debugmode no_simulation auto_update_tree_foliage big_water
     ```
 
-    ![填启动选项](../assets/shushu/010.png)
+    ![填启动选项](../assets/editor/010.png)
 
 2. 打开游戏，点「开始新的快速比赛模式」，然后点「加载模组」。
 
-    ![开始快速比赛](../assets/shushu/011.png)
+    ![开始快速比赛](../assets/editor/011.png)
 
 3. 选中 Camera mod。
 
-    ![选中 Camera mod](../assets/shushu/012.png)
+    ![选中 Camera mod](../assets/editor/012.png)
 
 4. 进入地图，按 ++f4++ 动动鼠标，看看有没有反应。
 
-    ![进入地图按 F4](../assets/shushu/013.png)
+    ![进入地图按 F4](../assets/editor/013.png)
 
     | 按键 | 作用 |
     | --- | --- |
@@ -153,12 +153,12 @@ description: "下载后的配置、与 RWR 文件夹同步、开启自带相机 
 
 现在用不到，等[3rdParSettings](../settings/third-party.md#third-party)要用的时候再回来。
 
-![OgreSDK 包](../assets/shushu/014.png)
+![OgreSDK 包](../assets/editor/014.png)
 
 1. 从群文件下载 `OgreSDK_vc10_v1-7-4.zip`，解压到自己喜欢的路径，
    推荐和地编文件夹放在一块。
 
-    ![解压 OgreSDK](../assets/shushu/015.png)
+    ![解压 OgreSDK](../assets/editor/015.png)
 
 2. 没了。之后 3rdParSettings 要用，现在先不说 :)
 

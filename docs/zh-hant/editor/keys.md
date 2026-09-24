@@ -4,6 +4,7 @@ title: "交互按鍵表"
 icon: "lucide/keyboard"
 description: "鼠標與鍵盤在地編裡各做什麼。"
 # ⚠️ 由 tools/docsgen.py 從 content/editor/keys.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
+hide: [toc]
 ---
 
 # 交互按鍵表 { #keys }
@@ -11,7 +12,7 @@ description: "鼠標與鍵盤在地編裡各做什麼。"
 <p class="kicker">EDITOR · 手放在哪裡</p>
 
 !!! question "這張表收錄全了嗎"
-    原文自己在這一頁頂上空了一行「（真收錄全了嗎）」——那就是**沒驗過**。
+    這一頁頂上空了一行「（真收錄全了嗎）」——那就是**沒驗過**。
     後面用着發現少了的，直接補進下面的表裡。
 
 | 按鍵 | 作用 |

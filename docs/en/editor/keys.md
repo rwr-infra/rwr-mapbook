@@ -6,6 +6,7 @@ translated: null
 nav_label: "交互按键表"
 icon: lucide/keyboard
 # ⚠️ 由 tools/docsgen.py 从 content/editor/keys.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
+hide: [toc]
 ---
 
 <!-- TODO: 翻译自 content/editor/keys.zh-hans.md -->

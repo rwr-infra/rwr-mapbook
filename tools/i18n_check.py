@@ -35,7 +35,7 @@
 两种语种，两套判据
 ------------------
 * **手写语种**（英文）：在该语种文件的前置元数据里记下所依据的默认语言原文指纹
-      source_sha256: 3f9c…      # content/guide/index.zh-hans.md 当时的 sha256
+      source_sha256: 3f9c…      # content/prepare/index.zh-hans.md 当时的 sha256
   默认语言一改指纹就对不上，该页立刻报「已过期」，不需要人工维护清单。
 * **派生语种**（繁体，见 tools/langs.py 的 DERIVATIONS）：没有手写源文件，
   由 tools/docsgen.py 从默认语言转换而来，因此判据是「转换结果是否与产物一致」。
@@ -67,7 +67,7 @@ import tomllib
 
 import yaml
 
-from docsgen import (depth_of, inert_sidebar, insert_hide, lang_prefix,
+from docsgen import (depth_of, hide_sides, insert_hide, lang_prefix,
                      rewrite_shared, tree_names)
 from linkcheck import site_base
 from hant import to_hant
@@ -300,12 +300,13 @@ def inspect_derived(source: Path, lang: str, version: Version) -> dict:
     base = "" if base == "." else base
     expected = strip_banner(to_hant(rewrite_shared(
         source.read_text(encoding="utf-8"), base, depth_of(version, lang))))
-    # 构建层还会往空左栏的页上补一行 hide: ——复核时要走同一条流水线，
+    # 构建层还会往空侧栏的页上补一行 hide: ——复核时要走同一条流水线，
     # 否则「派生失同步」会误报，而误报的修法是「跑 make gen」，
     # 跑完还是不一致，人就只能去改产物了。
     rel_name = name.with_suffix("").as_posix()
-    if inert_sidebar(rel_name, tree_names().get((version.id, lang), set())):
-        expected = insert_hide(expected, source)
+    sides = hide_sides(rel_name, tree_names().get((version.id, lang), set()),
+                       source.read_text(encoding="utf-8"))
+    expected = insert_hide(expected, source, sides)
     actual = strip_banner(target.read_text(encoding="utf-8"))
     if expected == actual:
         record["status"] = "ok"

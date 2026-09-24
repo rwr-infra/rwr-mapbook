@@ -1,7 +1,7 @@
 ---
 title: "Model inventories"
 description: "Mesh E, Wall E, Building E, Vehicle Scatter and Decal."
-source_sha256: 05680777553957081d0af97251a4f293cb161da0dae52ee2a2f3d9b5cbb37279
+source_sha256: 22922bfecfe21accafc73f01194ca50d1e6fb09302a45cae4bac2cf2f325c462
 translated: 2026-09-25
 nav_label: "Model inventories"
 icon: lucide/table
@@ -12,9 +12,8 @@ nav: ["mesh", "wall", "building", "vehicle", "decal"]
 
 <p class="kicker">TABLES · seven hundred objects, and whether they work</p>
 
-Five sheets, taken from the spreadsheet the editing group maintains (the original marks it
-**template version vao0822**). Each row is one object: a preview, what it is, and whatever
-the group wrote down about it.
+Five sheets, **template version vao0822**. Each row is one object: a preview, what it is,
+and whatever was measured about it in the editor.
 
 | Page | What is in it | Entries |
 | --- | --- | --- |

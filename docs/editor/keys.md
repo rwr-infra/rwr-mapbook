@@ -4,6 +4,7 @@ title: "交互按键表"
 icon: "lucide/keyboard"
 description: "鼠标与键盘在地编里各做什么。"
 # ⚠️ 由 tools/docsgen.py 从 content/editor/keys.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
+hide: [toc]
 ---
 
 # 交互按键表 { #keys }
@@ -11,7 +12,7 @@ description: "鼠标与键盘在地编里各做什么。"
 <p class="kicker">EDITOR · 手放在哪里</p>
 
 !!! question "这张表收录全了吗"
-    原文自己在这一页顶上空了一行「（真收录全了吗）」——那就是**没验过**。
+    这一页顶上空了一行「（真收录全了吗）」——那就是**没验过**。
     后面用着发现少了的，直接补进下面的表里。
 
 | 按键 | 作用 |

@@ -4,6 +4,7 @@ title: "RefpM 说明"
 icon: "lucide/image"
 description: "用来加参考图。"
 # ⚠️ 由 tools/docsgen.py 从 content/settings/reference-images.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
+hide: [toc]
 ---
 
 # RefpM 说明（用来加参考图） { #reference-images }
@@ -21,6 +22,6 @@ description: "用来加参考图。"
 | `OffsetY` | 纵向偏移参考图 | 距离。Y 轴向上增长 |
 | `Alpha` | 更改参考图透明度 | 向左淡化，向右实体化 |
 
-!!! note "原文在这里写错了两处"
-    原文写的是「OffsetX 与 OffsetX 其实是 Y 的作用」「向右躯体化」——
+!!! note "这张表里改掉了两处笔误"
+    原样写的是「OffsetX 与 OffsetX 其实是 Y 的作用」「向右躯体化」——
     从上下文看是笔误，这里按 `OffsetY` 与「实体化」写。要改回去说一声。

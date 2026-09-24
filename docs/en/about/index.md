@@ -1,7 +1,7 @@
 ---
 title: "About"
-description: "Where this handbook comes from, and which versions it covers."
-source_sha256: 4b6b9e7affd936697afcccbe0d83dfd1814e3c3c19e157876cc63c47cb496213
+description: "Which editor version this handbook covers, how the URLs are laid out, and what has not been verified yet."
+source_sha256: 058a380098185bd420b9610842c9114349177387dcb545db8a4fcd220f4f4759
 translated: 2026-09-25
 nav_label: "About"
 icon: lucide/info
@@ -11,8 +11,9 @@ hide: [navigation]
 
 # About
 
-This handbook comes from *Rat Book*, the RWR map-editing group's internal document,
-together with the model inventories the group maintains.
+This is a handbook for the Running With Rifles map editor: **what every panel does, which
+models you can place, which key does what, and how to fill in the configuration files**.
+It was written by people who make maps, not by the developers.
 
 |  |  |
 | --- | --- |
@@ -21,12 +22,14 @@ together with the model inventories the group maintains.
 | Current editor | HamSter |
 | Inventory template version | vao0822 |
 
-## The two originals
+## What this handbook covers
 
-| Original | Form | What it became on this site |
-| --- | --- | --- |
-| *Rat Book* | a single HTML page with 54 embedded images | Getting ready, The editor, Configuration files |
-| The inventories | an Excel workbook, 5 sheets, 705 floating images | The five pages of Model inventories |
+| Section | What is in it |
+| --- | --- |
+| [Getting ready](../prepare/index.md) | How to configure the editor once you have it, how to sync it with your RWR folder, and how to switch on the built-in camera mod |
+| [The editor](../editor/index.md) | Every tool on the main panel, the key bindings, and finding an object by ID |
+| [Model inventories](../tables/index.md) | Five inventories, seven hundred objects, with previews and notes |
+| [Configuration files](../settings/index.md) | Every entry in mapSettings, 3rdParSettings and RefpM |
 
 ## How the URLs are laid out
 
@@ -37,19 +40,26 @@ and every language:
 graph TD
   A["/ · current · Simplified"] --> B["/en/ · current · English"]
   A --> C["/zh-hant/ · current · Traditional"]
-  A --> D["/archive/ · archived · Simplified"]
-  D --> E["/archive/en/"]
-  D --> F["/archive/zh-hant/"]
+  A --> D["/0100/ · archived · Simplified"]
+  D --> E["/0100/en/"]
+  D --> F["/0100/zh-hant/"]
 ```
 
-## What the original left unverified
+## What has not been verified
 
-Where the original says "untested", it still does, and the navigation shows an
-*Incomplete* marker for it; the "it is said that…" passages are unchanged too.
-**This move does not second-guess the source.**
+Not every line has been tried. Where that is the case, the page says so — read with care:
 
-!!! quote "How the original sounds"
-    These notes were written by the group for the group, so they are blunt:
-    "crashes on load", "no collision box", "whatever you do, do not file every material
-    error under template meshes". All of that is kept as written — polished into formal
-    prose, a reader could no longer tell how certain the author was.
+| Marker | What it means |
+| --- | --- |
+| **Untested** | the whole page has not been checked item by item |
+| **Incomplete** | written only halfway, or mentioned in a single sentence |
+| not tried / no idea what this is | the author did not verify that row either — **fill it in as shown, but do not treat it as a conclusion** |
+
+The "it is said that…" passages are kept as written too.
+**This handbook does not second-guess the source.**
+
+!!! quote "Why it reads so bluntly"
+    These notes were written for people who actually build maps: "crashes on load",
+    "no collision box", "whatever you do, do not file every material error under
+    template meshes". All of it is kept as written, not polished into formal prose —
+    polished, a reader could no longer tell how certain the author was.

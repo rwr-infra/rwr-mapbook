@@ -1,7 +1,7 @@
 ---
-title: "Rat Book"
+title: "RWR Map Editor's Handbook"
 description: "The handbook for the Running With Rifles map editor: what every panel does, the model and wall inventories, key bindings and common workflows."
-source_sha256: 4bf67b4d22d8c524f2f904e2b76ed8e1863e74fb7afc6a25ff8a1a123e73509e
+source_sha256: 104fa2bd3c9eef3e85a7b04d587608b91685cae785755d3e5e1822acfac705f7
 translated: 2026-09-25
 nav_label: "Home"
 icon: lucide/house
@@ -10,9 +10,9 @@ nav: ["prepare", "editor", "tables", "settings", "about"]
 hide: [navigation]
 ---
 
-# Rat Book
+# RWR Map Editor's Handbook
 
-<p class="kicker">RWR MAP EDITING GROUP · INTERNAL NOTES</p>
+<p class="kicker">RWR · READ THIS BEFORE YOU START MAPPING</p>
 
 What to do before you start making a map — mostly to make the editor less painful to use.
 
@@ -23,9 +23,10 @@ What to do before you start making a map — mostly to make the editor less pain
 | Current editor | HamSter |
 
 !!! warning "First, what this is"
-    These are the editing group's **internal working notes**, not an official manual.
-    Where the original says "untested" or "not recorded", it still says that — it means
-    **the group has not tried it**, which is not the same as "it works" or "it does not".
+    These are **notes by mappers, for mappers** — not an official manual.
+    Where a line says "untested" or "not tried, no idea what this is", it still says that:
+    it means **nobody has tried it yet**, which is not the same as "it works"
+    or "it does not".
 
 ## Where to start
 
@@ -52,7 +53,7 @@ What to do before you start making a map — mostly to make the editor less pain
 
     ---
 
-    Five inventories, seven hundred objects, with previews and the group's own notes.
+    Five inventories, seven hundred objects, with previews and notes from testing.
 
     [:octicons-arrow-right-24: Model inventories](tables/index.md)
 

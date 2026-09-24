@@ -21,7 +21,7 @@ nav: ["map-settings", "third-party", "reference-images"]
     地图自身的设置：名字、描述、昼夜颜色、背景音效。
 
     !!! warning "**待试**"
-        原文自己标了「待试」，好几行还是「没试，不知道这是啥」。
+        这一页标着「待试」，好几行还是「没试，不知道这是啥」。
 
     [:octicons-arrow-right-24: 去看](map-settings.md)
 

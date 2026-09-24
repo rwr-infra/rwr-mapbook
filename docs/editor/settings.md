@@ -10,7 +10,7 @@ description: "Save / ViewMap / Select / PinMan / WallE / BuildingE 等按钮的�
 
 <p class="kicker">EDITOR · 十四个按钮，各管一件事</p>
 
-地编的顶栏从左到右排着这些工具。下面按顺序逐项说明——每一条都是**组里用出来的**，不是从界面文字猜的。
+地编的顶栏从左到右排着这些工具。下面按顺序逐项说明——每一条都是**用出来的**，不是从界面文字猜的。
 
 <div class="grid cards" markdown>
 
@@ -153,7 +153,7 @@ description: "Save / ViewMap / Select / PinMan / WallE / BuildingE 等按钮的�
 
 生成地图的战术预览图，也就是 RWR 里面按 Tab 查看的地图。
 
-!!! question "原文存疑"
+!!! question "存疑"
     文件名貌似得自己调一下？
 
 ## Select 说明 { #select }
@@ -177,25 +177,25 @@ description: "Save / ViewMap / Select / PinMan / WallE / BuildingE 等按钮的�
 ## WallE 说明 { #walle }
 
 - 用来在列表中选择各种墙的种类，并使用 PathBush 绘制节点然后按空格自动以摆放顺序连成线。既可以先选择墙的种类后绘制，也可以先绘制然后再选择墙的种类，选择后点击已经画好的墙即可完成替换。
-- 在搜索栏中可搜索对应名称来快速选择对象，墙的相关图鉴表见群文件：一堆表.xlsx。
+- 在搜索栏中可搜索对应名称来快速选择对象，每种墙的作用见[模型清单 · Wall E](../tables/wall.md)。
 - 在用 Select 选中后，可以在这个界面编辑坐标（第一项为 X 轴向右增长、第二项为 Y 轴向下增长，数据为鼠标当前位置坐标的二倍）、使用 Add Point 来在绘制方向增加一条相连的线段、使用叉号来删除这段节点。
 - 在用 Select 选中多个后，可以在这个界面进行删除指定对象的操作，Buiding、Mesh 等同理。
 - 在用 Select 选中后，可以在这个界面查看 id、当前层、墙的种类以及设置自定义高度与是否 Merge。
 - Marge 默认勾选，目的是防止 AI 卡墙翻不过去。
 - 勾选 ReHeight 后，可以自行输入墙的高度。
 
-![主界面 1](../assets/shushu/017.png)
+![主界面 1](../assets/editor/017.png)
 
-![主界面 2](../assets/shushu/018.png)
+![主界面 2](../assets/editor/018.png)
 
-![主界面 3](../assets/shushu/019.png)
+![主界面 3](../assets/editor/019.png)
 
-![主界面 4](../assets/shushu/020.png)
+![主界面 4](../assets/editor/020.png)
 
 ## BuildingE 说明 { #buildinge }
 
 - 用来在列表中选择各种建筑物的种类，并使用 DrawBush 按住左键拖动来绘制建筑物。既可以先选择建筑物的种类后绘制，也可以先绘制然后再选择建筑物的种类，选择后点击已经画好的建筑物即可完成替换。
-- 在搜索栏中可搜索对应名称来快速选择对象，墙的相关图鉴表见群文件：一堆表.xlsx。
+- 在搜索栏中可搜索对应名称来快速选择对象，每种建筑的外形见[模型清单 · Building E](../tables/building.md)。
 - 最上方 HeightDown 与 HeightUp 的作用为改变点击位置的 Building 高度，每次变化 2（6）。
 - RoofSwitch 的作用为将屋顶变为尖顶/平顶，尖顶方向固定需要选择建筑物后按 R 自行旋转。
 - 建议先调整完 Height 后再在上方叠加新的对象，上方的对象高度不会随下方 Building 高度的变化而变化。
@@ -206,35 +206,35 @@ description: "Save / ViewMap / Select / PinMan / WallE / BuildingE 等按钮的�
 !!! warning "待修复"
     在飞行模式（透视）下，不同方向的透视有严重问题，见上方右侧例图。
 
-![主界面 5](../assets/shushu/021.png)
+![主界面 5](../assets/editor/021.png)
 
-![主界面 6](../assets/shushu/022.png)
+![主界面 6](../assets/editor/022.png)
 
-![主界面 7](../assets/shushu/023.png)
+![主界面 7](../assets/editor/023.png)
 
-![主界面 8](../assets/shushu/024.png)
+![主界面 8](../assets/editor/024.png)
 
-![主界面 9](../assets/shushu/025.png)
+![主界面 9](../assets/editor/025.png)
 
 ## PlatformE 说明 { #platforme }
 
 - 用来在列表中选择各种平台的种类，并使用 pathBush 绘制，与 Wall 类似，不再赘述。
 - 例子说明见下方：如何画平台？
 - 搜索栏与 Wall 类似，不再赘述。
-- 最下方的 TypeChange 的作用为让点击位置的 Platform 在无特殊属性、deck 属性、bridge 属性之间切换，相关图鉴表见群文件：一堆表.xlsx。（哈哈这个还没写完）
+- 最下方的 TypeChange 的作用为让点击位置的 Platform 在无特殊属性、deck 属性、bridge 属性之间切换。（这一节还没写完）
 - ChangeHei 的操作为在设置完成高度后按回车进入工具使用状态，作用为改变点击位置的 Platform 高度。
 - 在用 Select 选中后，可以在这个界面编辑坐标，方法与 Wall 类似，不再赘述。
 - 在用 Select 选中后，可以在这个界面查看 type、id、当前层、顶部材质、平台侧面墙的种类、平台上方附加墙的种类、墙的高度。
 - 平台上方附加墙的种类可以使用 WallE 工具进行更改。
-- SetMaterial 中添加的值可以是 wood、grass、pavement、terrian，相关图鉴表见群文件：一堆表.xlsx。（哈哈这个还没写完）
+- SetMaterial 中添加的值可以是 wood、grass、pavement、terrian。（这一节还没写完）
 
-![主界面 10](../assets/shushu/026.png)
+![主界面 10](../assets/editor/026.png)
 
-![主界面 11](../assets/shushu/027.png)
+![主界面 11](../assets/editor/027.png)
 
-![主界面 12](../assets/shushu/028.png)
+![主界面 12](../assets/editor/028.png)
 
-![主界面 13](../assets/shushu/029.png)
+![主界面 13](../assets/editor/029.png)
 
 ## FuncObjects 说明 { #funcobjects }
 
@@ -248,28 +248,28 @@ LadderScatter 与 LadderEraser 的作用为放置梯子与删除梯子。放置�
 - SpawnScatter 与 SpawnEraser 的作用为创建复活点与删除复活点，复活点不宜太靠近地图边界。
 - BaseScatter 的作用为左键拖动创建据点，在用 Select 选中后，可以分别更改据点的名字显示与指定该剧点最开始被哪个阵营占领，填写 0、1、2，分别为我也不知道对应哪个哈哈 XD
 
-![主界面 14](../assets/shushu/030.png)
+![主界面 14](../assets/editor/030.png)
 
-![主界面 15](../assets/shushu/031.png)
+![主界面 15](../assets/editor/031.png)
 
 ## MeshE 说明 { #meshe }
 
 - 用来在列表中选择各种模型的种类。
 - 搜索栏与 Wall 类似，不再赘述。
-- StoneEraser 与 StoneScatter 的作用为删除一个随机石头或放置一个随机石头。相关图鉴表见群文件：一堆表.xlsx。
-- TreeEraser 与 TreeScatter 的作用为删除一个随机树或放置一个随机树。相关图鉴表见群文件：一堆表.xlsx。
+- StoneEraser 与 StoneScatter 的作用为删除一个随机石头或放置一个随机石头，石头的样子见[模型清单 · MESH E](../tables/mesh.md)。
+- TreeEraser 与 TreeScatter 的作用为删除一个随机树或放置一个随机树，树的样子见[模型清单 · MESH E](../tables/mesh.md)。
 - 最下方的工具使用方法与 Wall 类似，作用为放置电线杆子作为节点，放完后按空格进行按顺序的两两间电线连线，电线仅为装饰物，无碰撞。
 - 在用 Select 选中后，可以在这个界面查看 id、种类、碰撞体积（如果是默认则不显示）。
 - 勾选 ReCollision 后可在上方窗口内更改长、高、宽（以中心为基准）。
 - offset 的作用是设置自定义偏移度（第一项为 X 轴向右增长、第二项为 Z 轴向顶部增长、第三项为 Y 轴向下增长）。
 
-![主界面 16](../assets/shushu/032.png)
+![主界面 16](../assets/editor/032.png)
 
-![主界面 17](../assets/shushu/033.png)
+![主界面 17](../assets/editor/033.png)
 
-![主界面 18](../assets/shushu/034.png)
+![主界面 18](../assets/editor/034.png)
 
-![主界面 19](../assets/shushu/035.png)
+![主界面 19](../assets/editor/035.png)
 
 ## HeightMap 说明 { #heightmap }
 
@@ -279,21 +279,21 @@ LadderScatter 与 LadderEraser 的作用为放置梯子与删除梯子。放置�
 - Noise 的作用为对全图增加地形上的噪音，让整个地图不是同一个高度数值的大平地，有些微小起伏。
 - heightPath 的作用为路径地形刷，使用方式类似 Wall 工具，相关数据调整左上角均有说明，可自行尝试。
 
-![主界面 20](../assets/shushu/036.png)
+![主界面 20](../assets/editor/036.png)
 
-![主界面 21](../assets/shushu/037.png)
+![主界面 21](../assets/editor/037.png)
 
 ## TerrainBash 说明 { #terrainbash }
 
 - Pathpainter 的作用为路径地面质地刷，使用方式类似 Wall 工具，相关数据调整左上角均有说明，可自行尝试。
 - 衰减指数的调成为[与]，并不是描述打重复变成[[/]] 了。
-- painter 的作用为地面质地刷，Chg Index 为材质种类，填数字，相关图鉴表见群文件：一堆表.xlsx、Chg Rng 为范围、Chg Har 为硬度。
+- painter 的作用为地面质地刷，Chg Index 为材质种类，填数字、Chg Rng 为范围、Chg Har 为硬度。
 - 0101 版本中使用这个工具的时候左下角可能会有个多余的调节栏，实际啥用没有。
 - Smooth 的作用为平缓全图的地面质地。
 
-![主界面 22](../assets/shushu/038.png)
+![主界面 22](../assets/editor/038.png)
 
-![主界面 23](../assets/shushu/039.png)
+![主界面 23](../assets/editor/039.png)
 
 ## offroadbuilder 说明 { #offroadbuilder }
 
@@ -307,7 +307,7 @@ LadderScatter 与 LadderEraser 的作用为放置梯子与删除梯子。放置�
 - deleteDecals 的作用为删除框选范围内的贴花。
 - Select 选中后，可以使用 Length 更改这个贴花的大小，也就是缩放比例。
 
-![主界面 24](../assets/shushu/040.png)
+![主界面 24](../assets/editor/040.png)
 
 ## Assaum 说明 { #assaum }
 
@@ -327,17 +327,17 @@ Add 与 Name 暂时不可用，无效果。
 
 我们这次的目的是要从左侧的高处用缓坡到达谷底的水中，可以看到在箭头方向的左侧是一个不那么平缓的坡，右侧则为陡崖，那我们就应该以左侧的坡的高度为基准制作一个过度的山崖。
 
-![主界面 25](../assets/shushu/041.png)
+![主界面 25](../assets/editor/041.png)
 
-![主界面 26](../assets/shushu/042.png)
+![主界面 26](../assets/editor/042.png)
 
 因为绘制平台时需保证终点边在起点边行进方向右边，同时起点边为判定高度的边，所以我们应该先在箭头的左侧缓坡处，沿着图一的箭头方向绘制。
 
 （画了八个点，如果想让变化更均匀可以多点几个）之后按空格，在箭头右侧放置另外对应的八个点，按第二空格次完成绘制。
 
-![主界面 27](../assets/shushu/043.png)
+![主界面 27](../assets/editor/043.png)
 
-![主界面 28](../assets/shushu/044.png)
+![主界面 28](../assets/editor/044.png)
 
 之后对平台进行细致调整，使其合理。
 
@@ -347,10 +347,10 @@ Add 与 Name 暂时不可用，无效果。
 
 （反正图片也没压缩，细节自行放大查看吧）
 
-![主界面 29](../assets/shushu/045.png)
+![主界面 29](../assets/editor/045.png)
 
 进游戏看看~
 
 果不其然做的一坨，可见多加几个锚点和完善地形的重要性，希望各位引以为戒:(
 
-![主界面 30](../assets/shushu/046.png)
+![主界面 30](../assets/editor/046.png)

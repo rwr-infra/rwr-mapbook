@@ -5,6 +5,7 @@ icon: "lucide/layout-grid"
 description: "地编的界面总览、主界面各按钮、交互按键与 ID 搜索。"
 nav: ["interface", "settings", "keys", "id-search"]
 # ⚠️ 由 tools/docsgen.py 从 content/editor/index.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
+hide: [toc]
 ---
 
 # 地编界面

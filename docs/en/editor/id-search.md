@@ -6,6 +6,7 @@ translated: null
 nav_label: "ID 搜索功能说明"
 icon: lucide/search
 # ⚠️ 由 tools/docsgen.py 从 content/editor/id-search.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
+hide: [toc]
 ---
 
 <!-- TODO: 翻译自 content/editor/id-search.zh-hans.md -->

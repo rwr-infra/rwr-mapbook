@@ -46,6 +46,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from pathlib import Path
 
@@ -245,6 +246,28 @@ def build_nav(directory: Path, partitions: list[tuple[str, Path]]) -> tuple[list
     return nav, warnings
 
 
+#: 看起来像数字的版本 id（`0100`、`100`）要**加引号**再写进 YAML。
+#: ⚠️ 不加会以一句 `nav must be a list` 让整个构建失败，而报错指不到这里：
+#:    YAML 把光秃秃的 `0100` 解析成数字，awesome-nav 拿到手的是数字而不是
+#:    「目录名」字符串，于是找不到那棵树，往回退成一个标量，
+#:    校验 `nav` 时才发现它不是列表。诡异之处在于**只有一部分版本号中招**：
+#:    `080`/`091` 里的 8、9 不是八进制数字，YAML 不认它是数，于是原样留着字符串、
+#:    构建正常；`060`/`0100` 只含 0-7，YAML 认它是数，构建就红。
+#:    「版本号换个数字就坏」是这里踩的坑，所以引号是**无条件**加的。
+_NUMERIC_RE = re.compile(r"^[0-9]+[0-9_]*$")
+
+
+def _quote_numeric_values(body: str) -> str:
+    """把 nav 里那些「长得像数字」的值逐个加上引号。"""
+    out: list[str] = []
+    for line in body.split("\n"):
+        match = re.match(r"^(\s*-\s*.*?:\s*)(\S+)\s*$", line)
+        if match and _NUMERIC_RE.match(match.group(2)):
+            line = f"{match.group(1)}'{match.group(2)}'"
+        out.append(line)
+    return "\n".join(out)
+
+
 def render(nav: list) -> str:
     body = yaml.safe_dump(
         {"nav": nav},
@@ -253,6 +276,10 @@ def render(nav: list) -> str:
         default_flow_style=False,
         width=4096,
     )
+    body = _quote_numeric_values(body)
+    if yaml.safe_load(body) != {"nav": nav}:
+        # 加引号万一改了语义，宁可原样写出去——但那就得有人去看。
+        raise SystemExit("navgen: 加引号之后 YAML 读回来不是同一份，先查 render()")
     return BANNER + body
 
 
@@ -264,13 +291,16 @@ def targets() -> list[tuple[Path, list[tuple[str, Path]]]]:
     两处要当心：
 
     1. **不能在站根的 rglob 里走进别的树。** 站根那一次遍历沿着整个 docs/ 往下，
-       会顺手把 `docs/archive/`、`docs/en/` 这些**别的树根**也收进来，而且是以
+       会顺手把 `docs/0100/`、`docs/en/` 这些**别的树根**也收进来，而且是以
        「没有分区」的样子收的——于是同一个目录被排两遍，后一遍（空分区）
-       盖掉前一遍，`archive/.nav.yml` 里的语言分区就没了，而它看上去只是一份
+       盖掉前一遍，`0100/.nav.yml` 里的语言分区就没了，而它看上去只是一份
        普通的 .nav.yml。所以遍历时要把别的树根整个剪掉。
-    2. **没有页面的树不必有导航。** 历史版的某个语种可能一篇内容都没有
-       （读者由跳转桩送走），那里写一份空的 .nav.yml 只是噪声，还会每次都
-       warn 一行，把真正的告警淹掉。
+    2. **还是没有页面的树？那也必须给一份空的。** 历史版的某个语种一篇内容都没有
+       （读者由跳转桩送走），这里只剩一个 index.html 桩。⚠️ 这时候**恰恰不能跳过**：
+       awesome-nav 找不到 .nav.yml 就自己去扫目录，扫到一个 html 也没有的目录，
+       会把 nav 解析成非列表并以 `nav must be a list` 让整个构建失败——
+       报错点在主题里，看不出是这个语种缺文件。空目录写一份空清单，
+       构建才过得去（`nav: []` 是合法取值）。
     """
     roots = trees()
     all_roots = [base for base, _ in roots]
@@ -278,7 +308,8 @@ def targets() -> list[tuple[Path, list[tuple[str, Path]]]]:
     for base, partitions in roots:
         if not base.is_dir():
             continue
-        if partitions or (base / "index.md").exists():
+        # 有子目录（语言分区）就一定要留骨架；否则至少要有一篇内容或一个跳转桩。
+        if partitions or (base / "index.md").exists() or (base / "index.html").exists():
             out.append((base, partitions))
         others = [r for r in all_roots if r != base]
         for index in sorted(base.rglob("index.md")):

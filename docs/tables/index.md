@@ -5,14 +5,15 @@ icon: "lucide/table"
 description: "Mesh E、Wall E、Building E、Vehicle Scatter、Decal 五张清单。"
 nav: ["mesh", "wall", "building", "vehicle", "decal"]
 # ⚠️ 由 tools/docsgen.py 从 content/tables/index.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
+hide: [toc]
 ---
 
 # 模型清单
 
 <p class="kicker">TABLES · 七百多个物件，能不能用</p>
 
-五张表，来自编辑组维护的那份 Excel（原文标着**模板版本 vao0822**）。
-每一行是一个物件：预览图、它是什么、以及组里记的备注。
+五张表，**模板版本 vao0822**。每一行是一个物件：预览图、它是什么，
+以及在地编里实测下来的备注。
 
 | 页 | 内容 | 条目 |
 | --- | --- | --- |

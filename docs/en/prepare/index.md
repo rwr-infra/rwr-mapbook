@@ -6,7 +6,7 @@ translated: null
 nav_label: "准备工作"
 icon: lucide/download
 # ⚠️ 由 tools/docsgen.py 从 content/prepare/index.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
-hide: [navigation]
+hide: [navigation, toc]
 ---
 
 <!-- TODO: 翻译自 content/prepare/index.zh-hans.md -->

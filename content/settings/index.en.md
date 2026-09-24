@@ -1,7 +1,7 @@
 ---
 title: "Configuration files"
 description: "mapSettings, 3rdParSettings and RefpM."
-source_sha256: 01286284e9de3f3ad67efbe2243d6c65f35015746c5043dc1fd266f10a5f50e2
+source_sha256: c378402e84bf25967f44cb64737798da0b37cf966ae7344a3881817f1f6cfe87
 translated: 2026-09-25
 nav_label: "Configuration files"
 icon: lucide/settings
@@ -24,7 +24,7 @@ that live outside the editor, and one for a reference image you lay underneath.
     The map's own settings: name, description, day and night colours, ambient sound.
 
     !!! warning "**Untested**"
-        The original marks this page "untested", and several rows still read
+        This page is marked "untested", and several rows still read
         "not tried, no idea what this is".
 
     [:octicons-arrow-right-24: Read](map-settings.md)

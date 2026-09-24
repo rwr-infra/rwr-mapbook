@@ -9,8 +9,8 @@
 
 同名不同语言后缀的文件是**同一篇**的不同语种：
 
-    content/guide/index.zh-hans.md  ─┐
-    content/guide/index.en.md       ─┴─ 同一篇，两个语种
+    content/prepare/index.zh-hans.md  ─┐
+    content/prepare/index.en.md       ─┴─ 同一篇，两个语种
 
 产物路径
 --------
@@ -270,7 +270,7 @@ def render_stub(name: str, lang: str, version: Version, source_rel: str, has_hom
     """缺页的跳转桩：说明这一页没有该版本，并把读者送到该版本的首页。
 
     用 refresh 而不是「带本站样式的说明页」，是因为桩必须**进不了导航**：
-    它占着 `guide/index.md` 这种会建分区的位置，写成页面就会被 navgen 当成
+    它占着 `prepare/index.md` 这种会建分区的位置，写成页面就会被 navgen 当成
     一个真的分区。HTML 桩不参与页面树，navgen 与 awesome-nav 都看不见它。
     """
     target = stub_target(name, lang, version, has_home)
@@ -297,9 +297,10 @@ def render_stub(name: str, lang: str, version: Version, source_rel: str, has_hom
     )
 
 
-# ── 空左栏 ────────────────────────────────────────────────────────────────
+# ── 空侧栏 ────────────────────────────────────────────────────────────────
 
 HIDE_NAV = "hide: [navigation]"
+HIDE_TOC = "hide: [toc]"
 
 
 def inert_sidebar(name: str, names: set[str]) -> bool:
@@ -344,17 +345,78 @@ def tree_names() -> dict[tuple[str, str], set[str]]:
     return found
 
 
-def insert_hide(text: str, source: Path) -> str:
-    """往生成物的前置元数据里加一行 `hide: [navigation]`。
+#: 一行放在**代码围栏之外**的 h2~h6。
+#: 只认 `#`，不认裸 HTML 的 `<h2>`：本站的标题一律是 Markdown 写法，真写了
+#: 裸 HTML 标题的页面，作者自己加 `hide: [toc]` 即可（这里不覆盖作者写的 hide）。
+_SECTION_RE = re.compile(r"^#{2,6}[ \t]+\S", re.M)
+_FENCE_RE = re.compile(r"^\s*(`{3,}|~{3,})")
+
+
+def body_without_fences(text: str) -> str:
+    """去掉前置元数据与代码围栏，只留正文行。
+
+    围栏里的 `## 这是注释` 不是标题，得排掉；否则一篇通篇代码的页面会被判成
+    「有小标题」，右栏又空着占回去。前置元数据里的 `#` 是 YAML 注释，同理。
+    """
+    if has_front_matter(text):
+        end = text.find("\n---", 3)
+        text = text[end + 4:] if end != -1 else text
+    kept: list[str] = []
+    fence: str | None = None
+    for line in text.split("\n"):
+        match = _FENCE_RE.match(line)
+        if fence is None:
+            if match:
+                fence = match.group(1)[0] * 3
+                continue
+            kept.append(line)
+        elif match and match.group(1).startswith(fence):
+            fence = None
+    return "\n".join(kept)
+
+
+def has_sections(text: str) -> bool:
+    """这一页有没有二级及以上标题 —— 也就是右栏有没有东西可铺。
+
+    只靠一个 h1 成不了目录：主题的 base.html 会把唯一的 h1 剥掉
+    （`{% set first = toc | first %}` 之后取 `first.children`），剩下的空目录
+    照样渲染成一个「目录」标签——看着有东西，点开只有它自己，却实打实
+    占掉右侧 242px。所以判据是「有没有 h2 及以下」，不是「有没有标题」。
+    """
+    return _SECTION_RE.search(body_without_fences(text)) is not None
+
+
+def hide_sides(name: str, names: set[str], text: str) -> tuple[str, ...]:
+    """这一页要收掉哪几侧栏 —— `hide:` 里那串东西的唯一判据。
+
+    tools/i18n_check.py 复核派生语种时要重跑同一条流水线（它比对的正是产物
+    逐字节相等），所以判据只能有这一处：两边各写一遍，迟早会分叉，
+    而分叉的表现是构建红着、却看不出谁对。
+    """
+    sides: list[str] = []
+    if inert_sidebar(name, names):
+        sides.append("navigation")
+    # 右栏是这一页的目录。没有二级及以上标题就没有目录可铺——空栏一样占地方，
+    # 而且它在手机上只表现为一个点开是空的「目录」抽屉。
+    if not has_sections(text):
+        sides.append("toc")
+    return tuple(sides)
+
+
+def insert_hide(text: str, source: Path, sides: tuple[str, ...]) -> str:
+    """往生成物的前置元数据里加一行，收掉会空着的侧栏。
 
     作者已经在源文件里写了 `hide:` 的，原样不动——那是有意为之，不是这里的推导。
     """
+    if not sides:
+        return text
+    line = f"hide: [{', '.join(sides)}]"
     if not has_front_matter(text):
-        # 没有前置元数据就加不了 hide:，这一页的左栏会一直空着占 242px。
+        # 没有前置元数据就加不了 hide:，这些侧栏会一直空着占地方。
         # 不在这里抛错（模版允许无前置元数据的内容），但要说出来——
-        # 否则「左栏怎么没藏」会变成一个找不着原因的现象。
+        # 否则「栏怎么没藏」会变成一个找不着原因的现象。
         print(f"warn: {source.relative_to(ROOT)} 没有 YAML 前置元数据，"
-              f"因此加不了 {HIDE_NAV}（这一页的左栏会是空的）", file=sys.stderr)
+              f"因此加不了 {line}（这些侧栏会是空的）", file=sys.stderr)
         return text
     end = text.find("\n---", 3)
     if end == -1:
@@ -362,7 +424,7 @@ def insert_hide(text: str, source: Path) -> str:
     front = text[:end]
     if re.search(r"^hide\s*:", front, re.M):
         return text
-    return f"{front}\n{HIDE_NAV}{text[end:]}"
+    return f"{front}\n{line}{text[end:]}"
 
 
 # ── 认领与清理 ────────────────────────────────────────────────────────────
@@ -469,10 +531,14 @@ def main() -> int:
     trees = tree_names()
 
     def emit(target: Path, content: str, name: str | None = None,
-             version: Version | None = None, lang: str | None = None) -> None:
+             version: Version | None = None, lang: str | None = None,
+             source: Source | None = None) -> None:
         if name is not None and version is not None and lang is not None:
-            if inert_sidebar(name, trees.get((version.id, lang), set())):
-                content = insert_hide(content, target)
+            # 判据取自**源文件**：产物与源是同一份正文，而源文件在手边更直接。
+            sides = hide_sides(name, trees.get((version.id, lang), set()),
+                               source.path.read_text(encoding="utf-8")
+                               if source is not None else "")
+            content = insert_hide(content, target, sides)
         wanted.add(target.relative_to(ROOT).as_posix())
         existing = target.read_text(encoding="utf-8") if target.exists() else None
         if existing == content:
@@ -493,7 +559,8 @@ def main() -> int:
             errors.append(f"{source.path} 与 {seen[target]} 都要生成 {target}")
         seen[target] = source.path
         stub_sources.setdefault(source.name, source.path.relative_to(ROOT).as_posix())
-        emit(target, render(source), source.name, source.version, source.lang)
+        emit(target, render(source), source.name, source.version, source.lang,
+             source=source)
 
         # 由这一族语言派生的其它语言（如 zh-hans → zh-hant）
         for dst_lang, src_lang, convert in DERIVATIONS:
@@ -503,7 +570,7 @@ def main() -> int:
             emit(
                 output_of(source.name, dst_lang, source.version),
                 render(source, out_lang=dst_lang, convert=convert, note=note),
-                source.name, source.version, dst_lang,
+                source.name, source.version, dst_lang, source=source,
             )
 
     # 每棵树（版本 × 语言）手里有哪些页面。派生语种跟着源语言一起记，

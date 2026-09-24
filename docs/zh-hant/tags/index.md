@@ -6,7 +6,7 @@ description: "按語言中立的線索橫向瀏覽本站各頁。"
 nav: []
 nav_hidden: true
 # ⚠️ 由 tools/docsgen.py 從 content/tags/index.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
-hide: [navigation]
+hide: [navigation, toc]
 ---
 
 # 標簽

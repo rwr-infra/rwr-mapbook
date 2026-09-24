@@ -15,21 +15,21 @@ description: "报错时按 ID 把物件揪出来。"
 
 1. 先在报错信息里看 ID（或者看下面「找问题」那几张图里 ID 出现的位置）。
 
-    ![报错里的 ID](../assets/shushu/050.png)
+    ![报错里的 ID](../assets/editor/050.png)
 
 2. 把 ID 填进搜索框，搜。
 
-    ![在搜索框里按 ID 搜](../assets/shushu/051.png)
+    ![在搜索框里按 ID 搜](../assets/editor/051.png)
 
 ## 一些找问题的运用
 
-下面这几张是原文给的例子，都是先拿到 ID、再回到地图上定位：
+下面这几张是例子，都是先拿到 ID、再回到地图上定位：
 
-![按 ID 定位物件（一）](../assets/shushu/052.png)
+![按 ID 定位物件（一）](../assets/editor/052.png)
 
-![按 ID 定位物件（二）](../assets/shushu/053.png)
+![按 ID 定位物件（二）](../assets/editor/053.png)
 
-![按 ID 定位物件（三）](../assets/shushu/054.png)
+![按 ID 定位物件（三）](../assets/editor/054.png)
 
 !!! tip "ID 会变"
     地编每次保存后都会重新排一遍 ID，编号可能和上一次不一样。

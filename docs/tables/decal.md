@@ -4,6 +4,7 @@ title: "Decal"
 description: "地面贴花清单。"
 icon: "lucide/box"
 # ⚠️ 由 tools/docsgen.py 从 content/tables/decal.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
+hide: [toc]
 ---
 
 # Decal { #decal }
@@ -11,7 +12,7 @@ icon: "lucide/box"
 <p class="kicker">EDITOR · 地面贴花</p>
 
 !!! tip "怎么读这张表"
-    「预览」列按原文的两张图并排给：左侧斜向下视角，右侧正对法线。判断形状请以**水平线**为准，垂直线是点透视。
+    「预览」列按两张图并排给：左侧斜向下视角，右侧正对法线。判断形状请以**水平线**为准，垂直线是点透视。
 
     一张表。备注列写着贴图引用有没有问题。
 

@@ -6,6 +6,7 @@ translated: null
 nav_label: "主界面"
 icon: lucide/sliders-horizontal
 # ⚠️ 由 tools/docsgen.py 从 content/editor/settings.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
+hide: [toc]
 ---
 
 <!-- TODO: 翻译自 content/editor/settings.zh-hans.md -->

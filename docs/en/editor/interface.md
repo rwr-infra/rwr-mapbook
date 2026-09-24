@@ -6,6 +6,7 @@ translated: null
 nav_label: "总导航"
 icon: lucide/compass
 # ⚠️ 由 tools/docsgen.py 从 content/editor/interface.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
+hide: [toc]
 ---
 
 <!-- TODO: 翻译自 content/editor/interface.zh-hans.md -->

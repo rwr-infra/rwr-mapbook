@@ -6,6 +6,7 @@ translated: null
 nav_label: "Wall E"
 icon: lucide/box
 # ⚠️ 由 tools/docsgen.py 从 content/tables/wall.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
+hide: [toc]
 ---
 
 <!-- TODO: 翻译自 content/tables/wall.zh-hans.md -->

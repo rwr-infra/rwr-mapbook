@@ -57,11 +57,11 @@ invalid_link_anchors = true
 # 键名后缀：默认语言（zh-hans）留空，其余语言用 _en / _zh_hant。
 # 模板里用 `config.extra["site_name" ~ L]` 取用，L 由页面语言决定。
 [project.extra]
-# 社名的罗马字写法。**不在页面上显示**——页眉只留站名一行。
+# 站名的另一种写法。**不在页面上显示**——页眉只留站名一行。
 # 仅用于结构化数据里的 alternateName（见 overrides/main.html 的 JSON-LD），
 # 让检索端把默认语言站名与译文站名认成同一个实体。
 # 这个键通常三语同形，故不做分语种。
-site_subtitle = "鼠书"
+site_subtitle = "RWR 地编手册"
 
 site_name_en = "RWR Map Editor's Handbook"
 copyright_en = "RWR Map Editor's Handbook · maintained by the RWR map-editing group"
@@ -100,9 +100,9 @@ footer_note = "由 Zensical 构建<br>字体与脚本全部自托管"
 footer_note_en = "Built with Zensical<br>Fonts and scripts are entirely self-hosted"
 footer_note_zh_hant = "由 Zensical 構建<br>字型與腳本全部自託管"
 
-footer_bottom = "鼠书 · RWR 地编手册"
-footer_bottom_en = "RAT BOOK · RWR MAP EDITOR'S HANDBOOK"
-footer_bottom_zh_hant = "鼠書 · RWR 地編手冊"
+footer_bottom = "RWR 地图编辑器手册"
+footer_bottom_en = "RWR MAP EDITOR'S HANDBOOK"
+footer_bottom_zh_hant = "RWR 地圖編輯器手冊"
 # ── 语种补齐进度 ──────────────────────────────────────────────────────────
 # ⚠️ 这是一处**刻意放宽**，改的是 tools/i18n_check.py 的判据，理由写在那里：
 #    「还没翻」是看得见的（那页就是没有），「翻了但原文改了」才是看不见的。
@@ -121,9 +121,7 @@ version_aria_en = "Switch editor version"
 version_aria_zh_hant = "切換地編版本"
 
 # ── 版本清单 ──────────────────────────────────────────────────────────────
-# 本站的第二条切换轴。读者装的是哪一版地编，就该看到哪一版的说明，所以版本
-# 是「冻结快照」而不是「一份持续回改的文档」：砍一版 = 把当时那棵树复制到
-# content/versions/<id>/，此后不再回改。
+# 本站的第二条切换轴。读者装的是哪一版地编，就该看到哪一版的说明。
 #
 # ⚠️ 这张表是版本清单的**唯一出处**（tools/versions.py 读它），而 content/ 里
 #    有没有对应的内容目录由 tools/versions.py 的 audit() 对齐：声明了没有目录、
@@ -131,14 +129,16 @@ version_aria_zh_hant = "切換地編版本"
 #
 # 标记规则：标了 current = true 的那一条是**当前版**，它的内容就在 content/ 根下，
 # 网址没有前缀（`/`）；其余各条是历史版，内容在 content/versions/<id>/，网址带
-# 前缀（`/0101/`）。当前版必须**恰好一个**。
+# 前缀（`/0100/`）。当前版必须**恰好一个**。
 #
 # 顺序就是切换器里的顺序——最新的排在最前。这里不排序：版本号不是都能比大小的，
 # `vao0822` 与 `0101` 谁大只有作者知道。
 #
-# ⚠️ 末尾的 archive 是**演示版本机制的示例快照**，不是某一版真实的说明。
-#    砍出第一个真正的地编历史版时：把 content/versions/archive/ 删掉，
-#    把这一条改成真实的 id / label / date 并新建对应目录即可。
+# ⚠️ 版本是「冻结快照」：砍一版之后，那一支不再回改。本站现在的历史版是各版
+#    **构建信息**的快照（见 content/versions/<id>/index.zh-hans.md），手册正文与
+#    当前版共用一份——工具条目在 060 到 0101 之间没变过，说明也就没跟着变。
+#    哪天某一版真的改了做法，再把当时那棵树整份复制进 content/versions/<id>/，
+#    此后就不动它了；tools/docsgen.py 会给缺失的页补跳转桩，不会让人点进 404。
 
 
 
@@ -183,13 +183,44 @@ github = false
 [[project.extra.version]]
 id = "0101"
 label = "地编版本 0101"
-date = "2026-09-22"
+date = "2026-09-06"
 current = true
 
 [[project.extra.version]]
-id = "archive"
-label = "历史版（示例快照）"
-date = "示例"
+id = "0100"
+label = "地编版本 0100"
+date = "2026-08-30"
+
+[[project.extra.version]]
+id = "091"
+label = "地编版本 091"
+date = "2026-08-30"
+
+[[project.extra.version]]
+id = "090"
+label = "地编版本 090"
+date = "2026-07-26"
+
+[[project.extra.version]]
+id = "081"
+label = "地编版本 081"
+date = "2026-06-08"
+
+[[project.extra.version]]
+id = "080"
+label = "地编版本 080"
+date = "2026-06-02"
+
+[[project.extra.version]]
+id = "070"
+label = "地编版本 070"
+date = "2026-05-20"
+
+[[project.extra.version]]
+id = "060"
+label = "地编版本 060"
+date = "2026-05-14"
+
 
 # 语言代码用**文字**标签（zh-Hans / zh-Hant），不用 zh-CN / zh-TW 这类**地区**标签：
 # 地区标签会把用词一起改掉，那是替读者选定某一地的用法。

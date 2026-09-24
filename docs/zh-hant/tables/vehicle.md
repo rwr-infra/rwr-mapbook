@@ -4,6 +4,7 @@ title: "Vehicle Scatter"
 description: "載具散布清單。"
 icon: "lucide/box"
 # ⚠️ 由 tools/docsgen.py 從 content/tables/vehicle.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
+hide: [toc]
 ---
 
 # Vehicle Scatter { #vehicle }
@@ -11,7 +12,7 @@ icon: "lucide/box"
 <p class="kicker">EDITOR · 載具散布</p>
 
 !!! tip "怎麼讀這張表"
-    「預覽」列按原文的兩張圖並排給：左側斜向下視角，右側正對法線。判斷形狀請以**水平線**為準，垂直線是點透視。
+    「預覽」列按兩張圖並排給：左側斜向下視角，右側正對法線。判斷形狀請以**水平線**為準，垂直線是點透視。
 
     一張表。名稱列的 `xxx.vehicle` 就是 `common.resources` 裡的 key。
 

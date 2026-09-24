@@ -31,7 +31,7 @@ description: "用來加載細緻模型以及部分材質，可不用。"
 
 1. 找到你 Steam 上小兵步槍的根目錄。可以在 Steam 界面裡「管理 → 瀏覽本地文件」定位。
 
-    ![瀏覽本地文件](../../assets/shushu/047.png)
+    ![瀏覽本地文件](../../assets/editor/047.png)
 
 2. 順着 `RunningWithRifles\media\packages\vanilla` 找到 `models` 文件夾，選中它。
 3. 點擊 **load mesh**。
@@ -43,7 +43,7 @@ description: "用來加載細緻模型以及部分材質，可不用。"
 
 設好之後效果是這樣（以 Mesh 為例）：
 
-![加載 mesh 之後](../../assets/shushu/048.png)
+![加載 mesh 之後](../../assets/editor/048.png)
 
 /// caption
 模型不再是方塊，能看到原本的形體了。
@@ -62,7 +62,7 @@ description: "用來加載細緻模型以及部分材質，可不用。"
 
 設好之後效果是這樣（以 Decal 為例）：
 
-![加載 textures 之後](../../assets/shushu/049.png)
+![加載 textures 之後](../../assets/editor/049.png)
 
 /// caption
 地面貼花有了真正的材質。
