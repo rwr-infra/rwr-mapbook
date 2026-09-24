@@ -9,8 +9,8 @@
  *
  *   1. **筛选栏里的标签按语言分段**：一种语言一段，段标题就是语言名，而
  *      **当前页面的语言排在最前**——一打开搜索就先看到自己这一种。
- *      点击照旧走主题原生的标签筛选：那些条目是从原生列表里**搬**过来的，
- *      事件监听是它们自己的，这里只负责把它们归位。
+ *      点击照旧走主题原生的标签筛选：我们那一列是**抄**出来的，点一下转发给
+ *      主题里那一条，命中的还是它自己的逻辑。
  *   2. **面板界面上的文案跟着页面语言走**（主题的搜索面板写死英文）。
  *
  * 语言清单从哪儿来
@@ -34,10 +34,17 @@
  *
  *   · 定位一律走**结构**（input[role=combobox] → 父 → 祖父 → …），不认它那些
  *     一个字母的类名——那是压缩产物，升级主题就会变；
- *   · 标签条目是**搬**（move）不是抄（clone）：抄出来的没有事件监听，点了没反应；
- *   · preact 每次重画都可能把新条目塞回原生列表、把文案改回英文；
- *     MutationObserver 盯着，对不上就再摆一次（写入前先比较，不会自己触发自己）；
+ *   · **主题的节点一个都不搬**。原先那一版把原生 <li> 搬进自己那几列里——抄是
+ *     省事，但那列 DOM 是 preact 的：一搜索，主题就把标签清单按结果重算一遍
+ *     （只剩命中的几个），而我们搬走的那些它既删不掉、也不知道该留，
+ *     于是筛选栏越搜越空，清空关键字也回不来。现在只**加一个类**把它藏起来，
+ *     自己那一列按当前的原生清单**重新派生**（抄），点一下转发给原生那一条。
+ *   · preact 每次重画都可能把清单换掉、把文案改回英文；MutationObserver 盯着，
+ *     对不上就再摆一次（写入前先比较，不会自己触发自己）；
  *   · 结构对不上、配置取不到，就都不做事，绝不改一半。
+ *
+ * ⚠️ 主题会按当前的搜索结果**过滤**标签清单（搜「墙」时只剩 5 个标签），这是它
+ * 本来就有的行为，不是缺陷；我们要做的只是跟着它变，不要跟它抢 DOM。
  *
  * 标签属于哪种语言，是从 search.json 的 `tags` 字段反查出来的，不另立一张表；
  * 查不到的标签（刚加、还没进索引的）归到当前语言那一段。
@@ -90,7 +97,8 @@
   ].join("");
 
   var TAG_LANGS = null;   // { 标签名: { 语言 id: true } }
-  var parts = null;
+  var shell = null;       // 我们那一列：{ inner, groups: [{lang, head, list}] }
+  var lastSig = null;     // 上一次是照着哪份原生清单摆的；没变就不重摆
 
   /** 一条网址属于哪种语言：看路径前两段里出现了哪个语言前缀。 */
   function langOf(pathname) {
@@ -132,83 +140,135 @@
     return text.replace(/\s+/g, " ").trim().replace(/\d+$/, "").trim();
   }
 
-  function build(root) {
+  /** 面板现在在哪：每次都重新找一遍——preact 会把这一带的元素整个换掉。 */
+  function locate() {
+    var root = searchRoot();
+    if (!root) return null;
     var input = root.querySelector('input[role="combobox"]');
     var controls = input && input.parentElement && input.parentElement.parentElement;
     var content = controls && controls.parentElement;
     var sidebar = content && content.nextElementSibling;
-    var inner = sidebar && sidebar.querySelector("h3");
-    inner = inner && inner.parentElement;
+    var h3 = sidebar && sidebar.querySelector("h3");
+    var inner = h3 && h3.parentElement;
     if (!inner) return null;
 
-    // 原生结构：[h3「Filters」, h4「Tags」, 标签清单 ol]
-    var h3 = inner.querySelector("h3");
-    var tagsHead = inner.querySelector("h4");
+    // 原生清单 = 这个侧栏里**不属于我们**的第一个 ol：我们那几列都带 dsl-list。
+    // 按类名认主题的 `.F` 是不行的（压缩产物），按位置找又会随主题改版而错。
     var native = null;
-    if (tagsHead) {
-      for (var n = tagsHead.nextElementSibling; n; n = n.nextElementSibling) {
-        if (n.tagName === "OL") { native = n; break; }
-      }
-    }
-    if (!native) {
-      var lists = inner.querySelectorAll("ol");
-      if (lists.length) native = lists[lists.length - 1];
+    var ols = inner.querySelectorAll("ol");
+    for (var i = 0; i < ols.length; i++) {
+      if (!ols[i].classList.contains("dsl-list")) { native = ols[i]; break; }
     }
     if (!native) return null;
 
-    var style = el("style");
-    style.textContent = CSS;
-    root.appendChild(style);
+    return { root: root, inner: inner, native: native, h3: h3,
+             tagsHead: inner.querySelector("h4") };
+  }
 
-    // 段标题就是语言名，原生的「Tags」那一行因此多余；原生清单也空掉（条目都搬走）。
-    if (tagsHead) tagsHead.classList.add("dsl-off");
-    native.classList.add("dsl-off");
-
+  /** 摆出「一种语言一列」的空壳。壳被 preact 拆掉时会再摆一次。 */
+  function buildShell(P) {
+    if (!P.root.querySelector("style.dsl-style")) {
+      var style = el("style", "dsl-style");
+      style.textContent = CSS;
+      P.root.appendChild(style);
+    }
     var groups = order().map(function (lang) {
       var head = el("h4", "dsl-h", lang.name);
       var list = el("ol", "dsl-list");
-      inner.appendChild(head);
-      inner.appendChild(list);
+      P.inner.appendChild(head);
+      P.inner.appendChild(list);
       return { lang: lang.id, head: head, list: list };
     });
-
-    return { root: root, inner: inner, native: native, groups: groups, h3: h3 };
+    return { inner: P.inner, groups: groups };
   }
 
-  /** 把标签条目归位到各自语言的段里；preact 新塞进原生清单的也一并归位。 */
-  function regroup(P) {
-    var loose = Array.prototype.slice.call(P.native.children);
-    P.groups.forEach(function (g) {
-      Array.prototype.forEach.call(g.list.children, function (li) {
-        if (loose.indexOf(li) < 0) loose.push(li);
+  /** 一条标签属于哪种语言；查不到就归当前语言（刚加、还没进索引的）。 */
+  function langOfTag(name) {
+    var known = TAG_LANGS && TAG_LANGS[name];
+    if (!known) return home;
+    for (var i = 0; i < LANGS.length; i++) {
+      if (known[LANGS[i].id]) return LANGS[i].id;
+    }
+    return home;
+  }
+
+  /** 原生清单的「指纹」：名字、全文（含条数）、当前是否选中的那一条。 */
+  function signature(items) {
+    return items.map(function (li) {
+      return tagName(li) + "|" + li.textContent.replace(/\s+/g, " ") + "|" + li.className;
+    }).join("\n");
+  }
+
+  /** 照着当前的原生清单，把我们那一列重摆一遍。 */
+  function paint(items) {
+    var columns = {};
+    shell.groups.forEach(function (group) {
+      group.list.textContent = "";               // 只清自己那一列，主题的碰都不碰
+      columns[group.lang] = group.list;
+    });
+
+    items.forEach(function (nativeItem) {
+      var name = tagName(nativeItem);
+      var column = columns[langOfTag(name)] || columns[home];
+      var item = nativeItem.cloneNode(true);
+      // 点我们自己这一条 = 点主题那一条。名字是**现查**的：主题随时会把整份
+      // 清单换掉，手里攥着一个旧节点就会点空。抄出来的没有主题的事件监听，
+      // 所以由这里转发过去，过滤逻辑仍旧是主题自己的那一套。
+      item.addEventListener("click", function (event) {
+        event.preventDefault();
+        forward(name);
       });
+      column.appendChild(item);
     });
 
-    loose.forEach(function (li) {
-      var known = TAG_LANGS && TAG_LANGS[tagName(li)];
-      var lang = home;
-      if (known) {
-        for (var i = 0; i < LANGS.length; i++) {
-          if (known[LANGS[i].id]) { lang = LANGS[i].id; break; }
-        }
-      }
-      for (var k = 0; k < P.groups.length; k++) {
-        if (P.groups[k].lang !== lang) continue;
-        if (!P.groups[k].list.contains(li)) P.groups[k].list.appendChild(li);
-        return;
-      }
+    // 这种语言在这个查询下一个标签都没有，就整段收起来。
+    shell.groups.forEach(function (group) {
+      var empty = group.list.children.length === 0;
+      group.list.classList.toggle("dsl-off", empty);
+      group.head.classList.toggle("dsl-off", empty);
     });
+  }
 
-    // 空段（这种语言在这个查询下一个标签都没有）收起来
-    P.groups.forEach(function (g) {
-      var empty = g.list.children.length === 0;
-      g.list.classList.toggle("dsl-off", empty);
-      g.head.classList.toggle("dsl-off", empty);
-    });
+  /** 把点击交给主题里对应的那一条。 */
+  function forward(name) {
+    var P = locate();
+    if (!P) return;
+    var items = Array.prototype.slice.call(P.native.children);
+    for (var i = 0; i < items.length; i++) {
+      if (tagName(items[i]) === name) { items[i].click(); return; }
+    }
+  }
+
+  /**
+   * 主循环：看主题现在摆的是什么，跟上它。
+   *
+   * ⚠️ 主题会按**当前结果**过滤标签清单（搜「墙」时只剩 5 个标签），也会在
+   *    每一次输入之后重摆一遍。所以这里不缓存任何主题的节点，每次都重新找、
+   *    重新抄——**跟它抢 DOM 就会输**（上一版就是搬走节点，结果越搜越空）。
+   */
+  function sync() {
+    var P = locate();
+    if (!P) return;
+    if (!shell || shell.inner !== P.inner || !shell.groups[0].list.isConnected) {
+      shell = buildShell(P);
+      lastSig = null;                            // 壳是新摆的，内容得重来
+    }
+
+    // 主题自己那一行「Tags」与原生清单都收起来：只加类，不搬它的节点。
+    if (P.tagsHead) P.tagsHead.classList.add("dsl-off");
+    P.native.classList.add("dsl-off");
+
+    var items = Array.prototype.slice.call(P.native.children);
+    var sig = signature(items);
+    if (sig === lastSig) return;
+    lastSig = sig;
+    paint(items);
   }
 
   /** 面板上写死的英文，换成配置里这份文案。 */
-  function localize(P) {
+  function localize() {
+    var P = locate();
+    if (!P) return;
     var input = P.root.querySelector('input[role="combobox"]');
     if (input && input.placeholder !== S.search) input.placeholder = S.search;
 
@@ -255,11 +315,13 @@
 
   function mount(root) {
     if (root.__dsl) return;
-    parts = build(root);
-    if (!parts) { parts = null; return; }
     root.__dsl = true;
-    localize(parts);
-    learnTags(function () { if (parts) regroup(parts); });
+
+    // 面板这一刻可能还没把侧栏渲染出来；不要在这里放弃收工——
+    // 下面的 MutationObserver 盯着整个 shadow root，侧栏一出现就会再 sync 一次。
+    sync();
+    localize();
+    learnTags(function () { lastSig = null; sync(); });
 
     var queued = false;
     new MutationObserver(function () {
@@ -267,14 +329,10 @@
       queued = true;
       requestAnimationFrame(function () {
         queued = false;
-        if (!parts) return;
-        // preact 重画可能把标题改回英文、把清单换掉；换掉了就重搭一遍。
-        if (!parts.native.isConnected || !parts.groups[0].head.isConnected) {
-          parts = build(root);
-          if (!parts) return;
-        }
-        localize(parts);
-        regroup(parts);
+        // preact 重画会换掉清单、把文案改回英文。sync() 里比对指纹，
+        // 没变就什么也不写，所以不会自己触发自己。
+        sync();
+        localize();
       });
     }).observe(root, { childList: true, subtree: true, characterData: true });
   }
