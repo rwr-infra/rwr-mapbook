@@ -25,7 +25,7 @@ hide: [navigation]
 | --- | --- |
 | [準備工作](../prepare/index.md) | 拿到地編之後怎麼配置、怎麼與 RWR 的文件夾同步、怎麼打開自帶的相機 mod |
 | [地編界面](../editor/index.md) | 主界面各工具逐項說明、交互按鍵、按 ID 找物件 |
-| [模型清單](../tables/index.md) | 五張清單、七百多個物件，帶預覽圖與備註 |
+| [模型清單](../tables/index.md) | 五張清單、六百多個物件，帶預覽圖與備註 |
 | [設置文件](../settings/index.md) | mapSettings、3rdParSettings、RefpM 三個配置文件的每一項 |
 
 ## 網址是怎麼排的

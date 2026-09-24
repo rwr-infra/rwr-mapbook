@@ -1,7 +1,7 @@
 ---
 title: "Model inventories"
 description: "Mesh E, Wall E, Building E, Vehicle Scatter and Decal."
-source_sha256: 22922bfecfe21accafc73f01194ca50d1e6fb09302a45cae4bac2cf2f325c462
+source_sha256: 49189affb63f63e6ef48b406cb2c17e16b9733a34f0035738c8c69fc86e2f16d
 translated: 2026-09-25
 nav_label: "Model inventories"
 icon: lucide/table
@@ -12,15 +12,15 @@ hide: [toc]
 
 # Model inventories
 
-<p class="kicker">TABLES · seven hundred objects, and whether they work</p>
+<p class="kicker">TABLES · six hundred objects, and whether they work</p>
 
 Five sheets, **template version vao0822**. Each row is one object: a preview, what it is,
 and whatever was measured about it in the editor.
 
 | Page | What is in it | Entries |
 | --- | --- | --- |
-| [MESH E](mesh.md) | Rocks, plants, small props, large props, special props, and the ones with serious problems | 136 |
-| [Wall E](wall.md) | Normal walls and special walls | 49 |
+| [MESH E](mesh.md) | Rocks, plants, small props, large props, special props, and the ones with serious problems | 311 |
+| [Wall E](wall.md) | Normal walls and special walls | 76 |
 | [Building E](building.md) | Placeable houses | 12 |
 | [Vehicle Scatter](vehicle.md) | Vehicle scatter | 194 |
 | [Decal](decal.md) | Ground decals | 20 |

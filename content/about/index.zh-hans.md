@@ -23,7 +23,7 @@ description: "这份手册覆盖哪一版地编、网址怎么排，以及哪些
 | --- | --- |
 | [准备工作](../prepare/index.md) | 拿到地编之后怎么配置、怎么与 RWR 的文件夹同步、怎么打开自带的相机 mod |
 | [地编界面](../editor/index.md) | 主界面各工具逐项说明、交互按键、按 ID 找物件 |
-| [模型清单](../tables/index.md) | 五张清单、七百多个物件，带预览图与备注 |
+| [模型清单](../tables/index.md) | 五张清单、六百多个物件，带预览图与备注 |
 | [设置文件](../settings/index.md) | mapSettings、3rdParSettings、RefpM 三个配置文件的每一项 |
 
 ## 网址是怎么排的

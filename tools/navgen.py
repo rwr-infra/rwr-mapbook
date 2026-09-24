@@ -295,6 +295,12 @@ def targets() -> list[tuple[Path, list[tuple[str, Path]]]]:
        「没有分区」的样子收的——于是同一个目录被排两遍，后一遍（空分区）
        盖掉前一遍，`0100/.nav.yml` 里的语言分区就没了，而它看上去只是一份
        普通的 .nav.yml。所以遍历时要把别的树根整个剪掉。
+
+       ⚠️ 只剪**下级的**树根。`docs/` 本身是每棵树根的上级，早先的写法把
+       「不等于自己」的树根一律当障碍，于是站根把 `docs/en/editor/` 这类
+       目录也一并剪掉了——语言树下**一份 .nav.yml 都写不出来**，awesome-nav
+       只好自己扫目录，英文区的栏目名按字母序排、显示的还尽是中文占位标题。
+       判据要的是「这个目录属于别的树」，不是「这个目录不是我的树根」。
     2. **还是没有页面的树？那也必须给一份空的。** 非当前版的某个语种一篇内容都没有
        （读者由跳转桩送走），这里只剩一个 index.html 桩。⚠️ 这时候**恰恰不能跳过**：
        awesome-nav 找不到 .nav.yml 就自己去扫目录，扫到一个 html 也没有的目录，
@@ -311,7 +317,8 @@ def targets() -> list[tuple[Path, list[tuple[str, Path]]]]:
         # 有子目录（语言分区）就一定要留骨架；否则至少要有一篇内容或一个跳转桩。
         if partitions or (base / "index.md").exists() or (base / "index.html").exists():
             out.append((base, partitions))
-        others = [r for r in all_roots if r != base]
+        # 只把 base 下面的树根当障碍；上级树根（站根之于 docs/en）不是障碍。
+        others = [r for r in all_roots if r != base and base in r.parents]
         for index in sorted(base.rglob("index.md")):
             directory = index.parent
             if directory == base:

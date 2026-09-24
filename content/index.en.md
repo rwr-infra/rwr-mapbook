@@ -1,7 +1,7 @@
 ---
 title: "RWR Map Editor's Handbook"
 description: "The handbook for the Running With Rifles map editor: what every panel does, the model and wall inventories, key bindings and common workflows."
-source_sha256: 0bd45c03a508ac47daf7f82d9a83c5abae1f50f065d5d22c10b4f0f64d4962aa
+source_sha256: 10bf4f9b3643b02443cbe137633f3c3e1c692170e47db229568a07446a70c397
 translated: 2026-09-25
 nav_label: "Home"
 icon: lucide/house
@@ -51,7 +51,7 @@ What to do before you start making a map — mostly to make the editor less pain
 
     ---
 
-    Five inventories, seven hundred objects, with previews and notes from testing.
+    Five inventories, six hundred objects, with previews and notes from testing.
 
     [:octicons-arrow-right-24: Model inventories](tables/index.md)
 
@@ -77,8 +77,8 @@ and switching language keeps your version.
 | Language | the translate icon on the right | only the language; version stays |
 
 The version menu holds two entries right now: **地编版本 0101** (this handbook) and
-**彩蛋** — not an old release but a trial run of the freeze mechanism, with a 060 build's
-numbers inside it.
+**彩蛋** — not an old release but a trial run of the freeze mechanism, holding nothing
+but one page of thanks.
 
 [Start with getting ready](prepare/index.md){ .md-button .md-button--primary }
 [Go straight to the inventories](tables/index.md){ .md-button }

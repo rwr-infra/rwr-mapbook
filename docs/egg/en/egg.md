@@ -2,7 +2,7 @@
 title: "Thank you"
 description: "A thank-you to the people who make maps, try the tools and write things down."
 translated: 2026-09-25
-source_sha256: 182a4f47d716ee0f7f60d315d9246e8c620f037c2b2a086e1571a755c031a24c
+source_sha256: 8a820b70a984e27b0aebb3f7276b1d6719ceef292641a136fdda768eaef0464e
 nav_label: "Thank you"
 icon: lucide/heart
 # ⚠️ 由 tools/docsgen.py 从 content/versions/egg/egg.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
@@ -17,15 +17,34 @@ No single person wrote this handbook. Every panel in it, every row of the invent
 every blunt "crashes on load" and "no collision box" — somebody actually tried it,
 ran into it and wrote it down. That is why there is anything to read here at all.
 
-Thank you to **the people who make maps** — for going in and out of the game over and
-over and changing a config each time, until the editor became something you can learn.
+!!! abstract "The people who put the work in"
+    In no particular order; if someone is missing, add them.
 
-Thank you to **the people who write things down** — noting down the answer while you
-still have it looks effortless, and it saves everyone after you a great deal of guessing.
+- Confederaey
+- AVALON - 7
+- 不上心的 Eli_valkyrie
+- Car_los
+- 赤狐 京爷
+- david0875
+- 枸巡二
+- 蛤？
+- 徽瀛惠
+- IDW
+- 冷然雀
+- 冷血幻月
+- Mark·Drees·Django
+- Mr. KimjongEel RWR
+- MR.SMALLHAMSTER
+- Nightfall
+- remidesivir
+- Scabish
+- 兴科科技
+- 云月yuki
+- 喷
+- 走地鳥
+- /star_
 
-Thank you to **the people who come back and fill things in** — each time one of those
-"untested" and "not tried, no idea what this is" lines gets an answer, this page becomes
-a little more useful than it was yesterday.
+Those names are the ones that turned "untested" into an answer. Thank you.
 
 !!! quote ""
     The person doing the work matters more than the work.
