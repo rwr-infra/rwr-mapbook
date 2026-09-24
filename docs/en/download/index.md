@@ -1,7 +1,7 @@
 ---
 title: "Previous versions"
 description: "Complete archives of every editor version, plus the two companion files: one click fetches the parts, checks them, and joins them into a single package."
-source_sha256: 3513a772d32e258d86122fcc4e0f3ccdc9b99c0b774dcd957b25b76a965c4b39
+source_sha256: f86420beaecbcece92dc693c646fb6f8744c52a47cda5aeaa06cc43f0ac2649d
 translated: 2026-09-25
 nav_label: "Previous versions"
 icon: lucide/archive
@@ -17,9 +17,12 @@ hide: [navigation]
 Complete archives of every editor version, from 060 to 0101. Each one holds the whole
 set of files for that version, exactly as it was posted in the group files.
 
-One click is all it takes: the page fetches the parts, checks every hash, and joins them
-into a single package **under the original file name**. No manual joining, and no extra
-tool to merge them.
+"Download" is usually a plain **direct link**: the package sits in the repository as an
+ordinary file, so a browser can fetch it and so can a download manager. Only a package over
+the host's single-file limit is split; that one the page fetches piece by piece, checks
+every hash, and joins into a package **under the original file name**. Either way what lands
+in your download folder is one whole package — never `.partNNN` files, and never anything
+you have to join by hand.
 
 | Version | Archive | Download |
 | --- | --- | --- |
@@ -48,8 +51,12 @@ OgreSDK is only needed once `3rdParSettings` comes into play.
 | Template (inventory version vao0822) | `vao0822.svg`<br><span data-dl-size="vao0822">—</span> | <button type="button" class="md-button md-button--primary" data-dl="vao0822">Download</button> <span class="dl-status" data-dl-status="vao0822"></span> |
 | OgreSDK | `OgreSDK_vc10_v1-7-4.zip`<br><span data-dl-size="OgreSDK_vc10_v1-7-4">—</span> | <button type="button" class="md-button md-button--primary" data-dl="OgreSDK_vc10_v1-7-4">Download</button> <span class="dl-status" data-dl-status="OgreSDK_vc10_v1-7-4"></span> |
 
-!!! note "Why the packages are split"
-    The host caps how large a single file may be, so archives bigger than that cap are
-    stored as several parts. That happens **on the server side only**: the page fetches
-    every part, checks each hash, and hands you one joined package. If any part fails its
-    check it stops and reports the error rather than giving you half a package.
+!!! note "A direct link, or the page joins it"
+    **A package under the limit is just an ordinary file**, and that button is a direct
+    link: a browser can fetch it, and so can a download manager (right-click hands it over),
+    giving you the whole package at once. Only a package over the limit is stored as several
+    parts, and that one **only the page can join**: the parts are real URLs, but they are
+    several pieces, so a download manager would hand you several `.partNNN` files to merge
+    yourself. The page fetches every part, checks each hash, and joins them into one package;
+    if any part fails its check it stops and reports the error rather than giving you half a
+    package.

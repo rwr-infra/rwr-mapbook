@@ -1,25 +1,30 @@
 #!/usr/bin/env python3
-"""把发布用的归档切成不超过上限的分片，并写一份清单让浏览器端拼回去。
+"""把发布用的归档放进 docs/downloads/，写一份清单，超过上限的才切开。
 
-为什么要有分片
+先别切
+------
+**能整份存下就整份存。** 整包是一个文件时，页面上那个按钮就是一条**直链**：
+浏览器能下，下载器（IDM、aria2、迅雷）也能下，右键就交给它们了。切成分片则相反——
+分片是真实地址没错，但那是几段，交给下载器只会拿到几段 `.partNNN`，还得自己合并；
+说得准确一点，**分片是给「上传」省事，不是给「下载」省事**，代价全落在读者那边。
+
+所以上限取的是「命令行 push」那一档（`git push` 单文件 100 MiB），不是网页上传那一档
+（网页上传单文件 25 MB）。两者混起来就会白切一刀，见 LIMIT 处的说明。
+要按网页上传那一档切：`make downloads LIMIT=25000000`。
+
+非切不可的时候
 --------------
-仓库要托管历史版本的地编归档（060、070……），而 **GitHub 网页上传的单文件上限是
-25 MB**：比它大的文件在浏览器里根本传不上去。所以归档一分为若干片，每片不超上限，
-随站点一起发布；读者那边由 docs/javascripts/downloads.js 一次取回全部片段、
-逐片校验、拼成一个**与原文件同名**的整包存下来。
-
-读者不该看见分片
-----------------
-分片是**托管方的限制**，不是内容的一部分。页面上只出现版本、文件名与总大小，
-拼接与命名都在浏览器里做完，落到下载文件夹里的是 `060.zip`，不是一堆 `.partNNN`。
-手工合并、命令行工具都不需要。
+超过上限的文件一切为若干片，随站点一起发布；读者那边由
+docs/javascripts/downloads.js 一次取回全部片段、逐片校验、拼成一个
+**与原文件同名**的整包存下来。落到下载文件夹里的是 `060.zip`，不是一堆 `.partNNN`。
 
 清单是唯一出处
 --------------
 本脚本产出两样东西，都在 docs/downloads/ 下：
 
-    manifest.json        分片的名单：路径、字节数、每片与整文件的 sha256
-    <名字>.partNNN       分片本体
+    manifest.json              名单：路径、字节数、每片与整文件的 sha256
+    <名字>                     整文件（未超上限），或
+    <名字>.partNNN             分片（超了上限）
 
 页面（content/download/*.md）只写「哪一版、什么文件、一个按钮」——大小与状态由
 docs/javascripts/downloads.js 从清单里读出来摆在按钮旁边。所以**大小只有一份**，
@@ -52,9 +57,23 @@ CONTENT = ROOT / "content"
 OUT = DOCS / "downloads"
 MANIFEST = OUT / "manifest.json"
 
-#: 单片上限：25 MB。用**十进制**，不用 25 MiB —— 各家说的「25 MB」都是十进制，
-#: 按 MiB 切出来的 26 214 400 字节会正好贴在上限上，多半传不上去。
-LIMIT = 25 * 1000 * 1000
+#: 单片上限。**默认取的是「命令行 push」那一档，不是网页上传那一档。**
+#:
+#: 托管方对单个文件其实有两个不同的上限，混起来就会像下面这样白切一刀：
+#:
+#:   25 MB      GitHub **网页端**上传单个文件的上限（十进制）
+#:   100 MiB    `git push` 的硬上限（超过直接被服务端拒绝）
+#:
+#: 按 25 MB 切出来的分片，读者那边只能由页面拼（见 docs/javascripts/downloads.js）——
+#: 分片是真实地址，但那是几段，交给下载器只会得到几段 `.partNNN`。而 100 MiB 以内的
+#: 整包可以**原样存一份**，按钮就是一个直链：浏览器能下，下载器也能下。
+#: 所以默认值是后者：**只在必须的时候才切**。
+#:
+#: 要改回按网页上传那一档切：`make downloads LIMIT=25000000`（切成十进制 25 MB）。
+LIMIT = 100 * 1024 * 1024
+
+#: 读写分块。整文件的哈希是边写边算的，不为了算哈希把大文件整个读进内存。
+BLOCK = 1 << 20
 
 #: 分片名。原扩展名留在中间，肉眼一看就知道它属于哪个文件。
 PART_FMT = "{name}.part{n:03d}"
@@ -81,9 +100,31 @@ def digest_of(data: bytes) -> str:
 def split_one(src: Path, limit: int, out: Path) -> dict:
     """切一个文件，返回清单里的一条。
 
-    整文件的哈希是**边切边算**的：一遍读完，不为了算哈希再读一次盘。
+    不超上限的文件**原样存一份，还叫它本来的名字**。`060.zip` 本来就是一个整文件，
+    没有任何理由把它改名成 `060.zip.part001` —— 那会白白毁掉两件事：它的地址不再
+    是直链（右键交给下载器这一条就没了），以及读者要经过页面才拿得到。
+    清单里仍然是「一条，含一片」，只是一个不多不少，所以上层不必分两种情况。
+
+    整文件的哈希**边写边算**，一遍过，不为了算哈希把大文件整个读进内存。
     """
+    size = src.stat().st_size
     whole = hashlib.sha256()
+
+    if size <= limit:
+        target = out / src.name
+        with src.open("rb") as reader, target.open("wb") as writer:
+            for block in iter(lambda: reader.read(BLOCK), b""):
+                whole.update(block)
+                writer.write(block)
+        digest = whole.hexdigest()
+        return {
+            "id": src.stem,
+            "name": src.name,
+            "bytes": size,
+            "sha256": digest,
+            "parts": [{"path": URL_PREFIX + src.name, "bytes": size, "sha256": digest}],
+        }
+
     parts: list[dict] = []
     with src.open("rb") as handle:
         index = 0
@@ -109,8 +150,28 @@ def split_one(src: Path, limit: int, out: Path) -> dict:
     }
 
 
-def prune(out: Path, keep: set[str]) -> list[str]:
-    """删掉上一次切分留下的、这一份清单里已经没有的分片。
+def known_names(manifest: Path) -> set[str]:
+    """上一份清单里出现过的文件名。清理时靠它认出「这次不再需要」的那些。
+
+    只按分片名的形状扫是不够的：改成整文件存放之后，上一次留下的
+    `060.zip.part001` 和这一次的 `060.zip` 名字对不上，而整文件本身没有
+    任何形状可认——所以拿上一份清单当名单，才认得全。
+    """
+    if not manifest.is_file():
+        return set()
+    try:
+        payload = json.loads(manifest.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return set()
+    names: set[str] = set()
+    for entry in payload.get("files") or []:
+        for part in entry.get("parts") or []:
+            names.add(str(part.get("path", "")).rsplit("/", 1)[-1])
+    return names
+
+
+def prune(out: Path, keep: set[str], previous: set[str]) -> list[str]:
+    """删掉上一次留下的、这一份清单里已经没有的文件。
 
     上限调小一次再调回来，就会留下比现在多的分片；不清理的话它们既发布出去，
     又让读者那边多取几十兆——而 `--check` 也会因此一直报「不在清单里」。
@@ -119,7 +180,11 @@ def prune(out: Path, keep: set[str]) -> list[str]:
     if not out.is_dir():
         return removed
     for path in sorted(out.iterdir()):
-        if path.is_file() and PART_RE.match(path.name) and path.name not in keep:
+        if not path.is_file() or path.name in keep:
+            continue
+        # 两种都要清：上一次的分片（名字就是 `X.partNNN`，改了上限之后名字还在，
+        # 但已经不该留），以及 JSON 与清单本身（listdir 之外的东西不动）。
+        if PART_RE.match(path.name) or path.name in previous:
             path.unlink()
             removed.append(path.name)
     return removed
@@ -222,11 +287,14 @@ def selftest() -> int:
         )
         assert merged == payload, "拼回来的字节与源不一致"
 
-        # 不超上限的文件切成一片，内容原样——大多数归档走的就是这一条。
+        # 不超上限的文件**原样存一份**，还叫本来的名字——直链就是这么来的。
         small = root / "small.bin"
         small.write_bytes(payload[:100])
         one = split_one(small, 3_000_000, out)
         assert len(one["parts"]) == 1 and one["parts"][0]["bytes"] == 100, one["parts"]
+        assert one["parts"][0]["path"] == "downloads/small.bin", one["parts"][0]["path"]
+        assert (out / "small.bin").is_file(), "整文件应当以原名落盘"
+        assert not (out / "small.bin.part001").exists(), "整文件不该改名成分片"
 
         # 上限正好整除时不多切一片空的。
         exact = root / "exact.bin"
@@ -262,8 +330,11 @@ def main() -> int:
             return 1
         files = json.loads(MANIFEST.read_text(encoding="utf-8"))["files"]
         total = sum(entry["bytes"] for entry in files)
-        print(f"归档体检：{len(files)} 个归档、{sum(len(e['parts']) for e in files)} 片，"
-              f"合计 {total / 1e6:.1f} MB，页面与清单对得上")
+        split = [entry for entry in files if len(entry.get("parts") or []) > 1]
+        shape = ("全部是整文件" if not split
+                 else f"{len(split)} 个切成了分片、{len(files) - len(split)} 个是整文件")
+        print(f"归档体检：{len(files)} 个归档、合计 {total / 1e6:.1f} MB（{shape}），"
+              f"页面与清单对得上")
         return 0
 
     if not args.files:
@@ -271,6 +342,7 @@ def main() -> int:
 
     src_dir = Path(args.src).expanduser()
     OUT.mkdir(parents=True, exist_ok=True)
+    previous = known_names(MANIFEST)
     entries: list[dict] = []
     seen: set[str] = set()
     for name in args.files:
@@ -290,15 +362,15 @@ def main() -> int:
         entries.append(split_one(path, args.limit, OUT))
 
     keep = {part["path"].rsplit("/", 1)[-1] for entry in entries for part in entry["parts"]}
-    removed = prune(OUT, keep)
+    removed = prune(OUT, keep, previous)
     write_manifest(entries, args.limit, MANIFEST, OUT)
 
     for name in removed:
-        print(f"清掉旧分片 {name}")
+        print(f"清掉旧的 {name}")
     for entry in entries:
-        biggest = max(part["bytes"] for part in entry["parts"])
-        print(f"  {entry['name']:<16} {entry['bytes']:>10} B → {len(entry['parts'])} 片，"
-              f"最大一片 {biggest / 1e6:.1f} MB")
+        pieces = len(entry["parts"])
+        shape = "整文件" if pieces == 1 else f"切 {pieces} 片"
+        print(f"  {entry['name']:<24} {entry['bytes']:>10} B  {shape}")
 
     problems = check(OUT, MANIFEST)
     for problem in problems:
