@@ -1,11 +1,11 @@
 ---
 title: "RWR Map Editor's Handbook"
 description: "The handbook for the Running With Rifles map editor: what every panel does, the model and wall inventories, key bindings and common workflows."
-source_sha256: a9754ab1efe545c0de592cb0d75a8d25dae8edc353dd9db583d9c43435e3ac01
+source_sha256: 6b1f2a89c06bdd4a046af9d8bccaff004569bc97a861b55d6a25780c0417d89c
 translated: 2026-09-25
 nav_label: "Home"
 icon: lucide/house
-nav: ["prepare", "editor", "tables", "settings", "about"]
+nav: ["prepare", "editor", "tables", "settings", "download", "about"]
 # ⚠️ 由 tools/docsgen.py 从 content/index.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
 hide: [navigation]
 ---

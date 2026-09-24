@@ -28,6 +28,7 @@ hide: [navigation]
 
 ## <span class="md-tag">安裝與配置</span> { #tag:安裝與配置 }
 
+- [歷史版本](../download/index.md)
 - [準備工作](../prepare/index.md)
 
 ## <span class="md-tag">工具</span> { #tag:工具 }

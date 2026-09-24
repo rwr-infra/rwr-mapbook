@@ -2,7 +2,7 @@
 nav_label: "首頁"
 icon: "lucide/house"
 description: "小兵步槍地圖編輯器手冊：地編界面逐項說明、模型與牆體清單、交互按鍵與常用流程。"
-nav: ["prepare", "editor", "tables", "settings", "about"]
+nav: ["prepare", "editor", "tables", "settings", "download", "about"]
 # ⚠️ 由 tools/docsgen.py 從 content/index.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
 hide: [navigation]
 ---

@@ -71,6 +71,7 @@ mix in English or Traditional Chinese entries.
 
 ## <span class="md-tag">Setup</span> { #tag:setup }
 
+- [Previous versions](../download/index.md)
 - [Getting ready](../prepare/index.md)
 
 ## <span class="md-tag">Tools</span> { #tag:tools }

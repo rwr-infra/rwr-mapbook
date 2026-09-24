@@ -303,3 +303,34 @@
   -webkit-user-select: auto;
   user-select: auto;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   历史版本归档的下载按钮与状态行
+
+   按钮用主题自己的 `.md-button`——页面上别处（同意表单）就是这么写的，
+   样式与配色跟着主题走，不另立一套。只有一处要补：`.md-button` 是给 `<a>`
+   写的，落在 `<button>` 上时字号字重都对，**字族不会**——浏览器给按钮的是
+   系统字族，不继承页面字体，中英混排会突然换脸。补这一条就够。
+   `font-size` 不重复声明：主题那条 `.875em` 已经在起作用，压掉反而与
+   `<a>` 按钮不一样了。
+   ══════════════════════════════════════════════════════════════ */
+.md-typeset button.md-button {
+  font-family: inherit;
+}
+
+.md-typeset button.md-button[disabled] {
+  cursor: progress;
+  opacity: 0.5;
+}
+
+/* 状态行跟在按钮后面：取第几段、校验中、已保存。句子长短差得多，
+   所以给它一个不换行的前缀留白，`:empty` 时不占位。 */
+.md-typeset .dl-status {
+  margin-left: 0.6em;
+  font-size: 0.75em;
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset .dl-status:empty {
+  margin: 0;
+}

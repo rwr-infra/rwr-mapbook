@@ -6,8 +6,10 @@
 #   make gen     从 content/ 生成 docs/，并从文件树重新生成导航
 #   make check   翻译度检查：漏翻 / 过期 / 译文结构对不上，产出 agent 可读报告
 #   make versions 版本清单体检：声明与 content/versions/ 是否对得上
+#   make archives 历史版本归档体检：分片、哈希、页面上的按钮与清单是否对得上
+#   make downloads 切分历史版本归档，并写清单（要有源归档；平时用不到）
 #   make links   产物链接体检：站内引用 / 目录尾斜杠 / 跳转桩目标 / 补正脚本
-#   make build   生成 → 构建站点 → 标签过滤 → 链接体检 → 翻译度检查
+#   make build   生成 → 构建站点 → 链接体检 → 归档体检 → 翻译度检查
 #   make watch   盯着 content/，改了自动重新生成 docs/（配合 make serve 用）
 #   make serve   本地预览 http://127.0.0.1:8000（根域；线上带子路径，见文件末尾）
 #   make serve-subpath  同上，但按线上的子路径预览
@@ -15,7 +17,7 @@
 
 UV ?= uv
 
-.PHONY: gen docs nav check versions links build serve serve-subpath watch sync clean
+.PHONY: gen docs nav check versions archives downloads links build serve serve-subpath watch sync clean
 
 gen: docs nav
 
@@ -33,6 +35,22 @@ check:
 versions:
 	$(UV) run python tools/versions.py
 
+# 历史版本归档体检：docs/downloads/ 下的分片与清单对不对得上、
+# content/download/ 页面上挂的按钮与清单是不是两边都对得上。
+# ⚠️ 它**不需要源归档**（源在群文件里，仓库里没有），所以 CI 跑得了这个，
+#    跑不了 downloads。
+archives:
+	$(UV) run python tools/chunker.py --check
+
+# 切分片。源归档放在 DOWNLOADS_SRC 下（默认 ~/Downloads），要切哪几个由
+# DOWNLOADS 列着。产物 docs/downloads/ 是**要进仓库**的：托管方不给传大文件，
+# 所以分片就是最终形态，不是中间产物。
+DOWNLOADS_SRC ?= $(HOME)/Downloads
+DOWNLOADS ?= 060.zip 070.rar 080.rar 081.rar 090.rar 091.rar 0100.rar 0101.rar
+
+downloads:
+	$(UV) run python tools/chunker.py --src "$(DOWNLOADS_SRC)" $(DOWNLOADS)
+
 # 产物链接体检。构建会一页页重写 site/，所以它必须在 zensical 之后跑。
 links: versions
 	$(UV) run python tools/linkcheck.py
@@ -42,6 +60,7 @@ links: versions
 build: gen
 	$(UV) run zensical build --clean --strict
 	$(UV) run python tools/linkcheck.py
+	$(UV) run python tools/chunker.py --check
 	$(UV) run python tools/i18n_check.py
 
 # 预览时另开一个终端跑这个：`zensical serve` 只盯 docs/（生成物），

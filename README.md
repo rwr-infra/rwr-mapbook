@@ -205,6 +205,40 @@ refresh 目标当成一条必须落地的引用去验。桩写成 HTML 而不是
 
 ---
 
+## 历史版本归档怎么发
+
+地编的整包（060、070……）比托管方允许的单文件上限大——**GitHub 网页上传是 25 MB
+一个文件**，超了在浏览器里根本传不上去。所以整包在仓库里是**分片**：
+
+```
+content/download/index.<lang>.md     页面：版本、文件名、一个按钮（手写）
+docs/downloads/manifest.json         清单：分片路径、字节数、哈希（生成）
+docs/downloads/<名字>.partNNN        分片本体（生成，≤25 MB 一片）
+```
+
+```bash
+make downloads   # 切分片 + 写清单；源归档在 ~/Downloads，切哪几个见 DOWNLOADS
+make archives    # 体检：分片、哈希、页面按钮与清单两边对账（CI 也跑这条）
+```
+
+**分片是对读者藏起来的**：`docs/javascripts/downloads.js` 把全部片段取回来、
+逐片核对哈希、拼成一个 Blob，以**与原文件同名**的文件存下去。读者点一次下载，
+拿到的就是 `060.zip`，不需要手工合并，也不需要命令行工具。
+
+几处刻意的取舍：
+
+* **页面上不写大小**。大小从清单里算出来摆在按钮旁边——手写一份就会在换了源文件
+  之后过期，而那种过期没有任何症状。清单是大小与分片的**唯一出处**。
+* **`make archives` 不需要源归档**（源在群文件里，仓库里没有），所以 CI 跑得了它，
+  跑不了 `make downloads`。它查的是仓库里这一份自己成不成立。
+* **页面与清单两边对账**：`content/download/` 里挂了 `data-dl="060"` 而清单里没有
+  这个归档，或者清单里有归档而没页面引用它，都以非零码退出——和版本清单一个道理，
+  两处记录会分叉，一处不会。
+* 分片是**最终形态**，不是中间产物，要进仓库。上限调小再调大之后留下的旧分片由
+  `make downloads` 自己清掉。
+
+---
+
 ## 加一种语言
 
 **只需要动 `zensical.toml`。** 模板、脚本里都不再写死语言名：
@@ -231,12 +265,14 @@ refresh 目标当成一条必须落地的引用去验。桩写成 HTML 而不是
 | [`tools/linkcheck.py`](tools/linkcheck.py) | 站内引用落地、目录引用带尾斜杠、跳转桩目标存在、每页都带地址补正脚本 |
 | [`tools/i18n_check.py`](tools/i18n_check.py) | 漏翻 / 过期 / 结构对不上 / 派生失同步 / 产物缺件（SMOKE 断言） |
 | [`tools/versions.py`](tools/versions.py) | 版本清单与 `content/versions/` 对齐、版本条目里没有混进别处的配置 |
+| [`tools/chunker.py`](tools/chunker.py) | 历史版本归档的分片与哈希、页面上挂的按钮与清单两边对账 |
 | `zensical build --strict` | 断链、失效锚点 |
 
 ```bash
 make check     # 翻译度体检
 make links     # 链接体检（需先构建）
 make versions  # 版本清单体检
+make archives  # 历史版本归档体检
 ```
 
 ---
@@ -246,9 +282,11 @@ make versions  # 版本清单体检
 ```
 content/              唯一手写层
   versions/<id>/      非当前版的冻结树
+  download/           历史版本归档那一页（归档本体在 docs/downloads/）
 docs/                 构建层（.md 与跳转桩是生成物）+ 手写资产
   assets/editor/      界面与流程的 54 张图
   assets/tables/      清单里的 705 张图
+  downloads/          历史版本归档的分片与清单（**不是**生成层的副产物，要入库）
   stylesheets/ javascripts/   手写
 tools/                生成器、看门脚本与体检；langs.py 是语言清单的唯一出处
 overrides/            主题模板覆盖

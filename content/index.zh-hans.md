@@ -2,7 +2,7 @@
 nav_label: "首页"
 icon: "lucide/house"
 description: "小兵步枪地图编辑器手册：地编界面逐项说明、模型与墙体清单、交互按键与常用流程。"
-nav: ["prepare", "editor", "tables", "settings", "about"]
+nav: ["prepare", "editor", "tables", "settings", "download", "about"]
 ---
 
 # RWR 地图编辑器手册
