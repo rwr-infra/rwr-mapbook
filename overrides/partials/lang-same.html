@@ -1,0 +1,19 @@
+{#-
+  「同语言」判据——三棵树是三套独立的导航顺序，跨语言的上一页/下一页没有意义。
+
+  默认语言的页面网址不带语言前缀，其余语言带，所以看 `page.url` 的前缀即可。
+
+  两个坑，第二个是真踩过的：
+
+  1. 前缀要手写比较：MiniJinja 没有 `str.startswith`。
+  2. **宏渲染出来的是字符串**，而 MiniJinja 把布尔渲染成小写的 `true` / `false`。
+     此前本判据写成布尔再比 `| trim == "True"`，于是恒为假——页脚的
+     「上一页 / 下一页」和 `<link rel="prev/next">` 因此**一直没渲染出来**，
+     而且不报错。所以这里返回自定义记号 `yes`，不依赖布尔怎么序列化。
+
+  用法（需 `with context`，判据要用到调用方的 is_en / is_hant）：
+
+      {% import "partials/lang-same.html" as langutil with context %}
+      {% if langutil.same_lang(other.url) | trim == "yes" %}
+-#}
+{% macro same_lang(url) %}{% set u = url | default("", true) %}{{ "yes" if ((u[:8] == "zh-hant/") if is_hant else ((u[:3] == "en/") if is_en else (u[:8] != "zh-hant/" and u[:3] != "en/"))) else "" }}{% endmacro %}

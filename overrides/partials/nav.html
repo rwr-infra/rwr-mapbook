@@ -1,0 +1,59 @@
+{#-
+  模板覆盖：按语言过滤主导航。
+
+  为什么需要它：
+  Zensical 的 nav 是**全站唯一**的（官方语言文档只提供 extra.alternate，
+  没有任何按语言分 nav 的机制）。本站用 awesome-nav 的 .nav.yml 描述导航树：
+      docs/.nav.yml              默认语言（简体）导航 + 末尾若干语言分区
+      docs/en/.nav.yml           英文导航
+      docs/zh-hant/.nav.yml      繁体导航
+  语言分区在 .nav.yml 里的标题带 `__lang:` 前缀（见 tools/navgen.py），
+  这里按当前页面的语言只渲染其中一支。
+
+  语言判定用 page.url 前缀：默认语言在根（''），其余在 zh-hant/、en/ 之下。
+
+  本文件其余部分与主题自带的 partials/nav.html 保持一致，主题升级时需同步。
+-#}
+{% import "partials/nav-item.html" as item with context %}
+{% set here = page.url | default("", true) %}
+{% set is_en = here[:3] == "en/" %}
+{% set is_hant = here[:8] == "zh-hant/" %}
+{% set lang_dir = "zh-hant" if is_hant else ("en" if is_en else "") %}
+{% set L = "_zh_hant" if is_hant else ("_en" if is_en else "") %}
+{% set site_name = config.extra["site_name" ~ L] | d(config.site_name, true) %}
+{% set home_url = lang_dir ~ "/" if lang_dir else nav.homepage.url %}
+{% set class = "md-nav md-nav--primary" %}
+{% if "navigation.tabs" in features %}
+  {% set class = class ~ " md-nav--lifted" %}
+{% endif %}
+{% if "toc.integrate" in features %}
+  {% set class = class ~ " md-nav--integrated" %}
+{% endif %}
+<nav class="{{ class }}" aria-label="{{ lang.t('nav') }}" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="{{ config.extra.homepage | d(home_url, true) | url }}" title="{{ site_name | e }}" class="md-nav__button md-logo" aria-label="{{ site_name | e }}" data-md-component="logo">
+      {% include "partials/logo.html" %}
+    </a>
+    {{ site_name }}
+  </label>
+  {% if config.repo_url %}
+    <div class="md-nav__source">
+      {% include "partials/source.html" %}
+    </div>
+  {% endif %}
+  <ul class="md-nav__list" data-md-scrollfix>
+    {% for nav_item in nav.items %}
+      {% set kids = nav_item.children | default([], true) %}
+      {% set nav_is_lang = "__lang:" in (nav_item.title | default("", true)) %}
+      {% if lang_dir and nav_is_lang and nav_item.title == "__lang:" ~ lang_dir %}
+        {#- 当前语言的页面：直接铺开该语言分区的子项，不显示语言分区这一层 -#}
+        {% for child in kids %}
+          {{ item.render(child, "__nav_" ~ lang_dir ~ "_" ~ loop.index, 1) }}
+        {% endfor %}
+      {% elif not lang_dir and not nav_is_lang %}
+        {#- 默认语言：渲染除语言分区以外的全部顶层项 -#}
+        {{ item.render(nav_item, "__nav_" ~ loop.index, 1) }}
+      {% endif %}
+    {% endfor %}
+  </ul>
+</nav>

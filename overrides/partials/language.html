@@ -1,0 +1,45 @@
+{#-
+  模板覆盖：语言包按页面选，而不是按全站选。
+
+  为什么需要它：
+  Zensical 的界面文案语言是**全站唯一**的（config.theme.language），
+  而本站三种语言共用一次构建，需要一个页面一个语言包。
+  主题的 base.html 用 `{% import "partials/language.html" as lang with context %}`
+  取文案，所以覆盖这一个文件就够：界面文案与 <html lang> 都会跟着页面走
+  —— base.html 里写的是 <html lang="{{ lang.t('language') }}">。
+
+  语言判定用 page.url 前缀（默认语言在根，网址没有前缀）：
+      ''          → zh-hans（简体，默认）
+      'zh-hant/'  → zh-hant（繁体）
+      'en/'       → en（英文）
+
+  <html lang> 用 BCP-47 的**文字**标签 zh-Hans / zh-Hant / en。
+  主题自带的 zh 语言包返回的是裸 "zh"，这里按页面改写为带文字子标签的值；
+  繁体用主题自带的 zh-Hant 包。
+
+  回退链保持主题原样：当前语言包 → 英文包 → 键名本身。
+-#}
+{% set here = page.url | default("", true) %}
+{% set is_en = here[:3] == "en/" %}
+{% set is_hant = here[:8] == "zh-hant/" %}
+{% if is_en %}
+  {% set pack = "en" %}
+  {% set lang_tag = "en" %}
+{% elif is_hant %}
+  {% set pack = "zh-Hant" %}
+  {% set lang_tag = "zh-Hant" %}
+{% else %}
+  {% set pack = "zh" %}
+  {% set lang_tag = "zh-Hans" %}
+{% endif %}
+{% import "partials/languages/" ~ pack ~ ".html" as lang %}
+{% import "partials/languages/en.html" as fallback %}
+{#- 「同意」按钮的文案按语言改写。
+
+    同意表单的原意是让人选第三方 cookie，按钮写「同意」是合适的。
+    但本站没有任何可选项（见 zensical.toml 的 [project.extra.consent]）——
+    对一个只是把话说清楚的说明框，「同意」在语义上是错的。
+    改用公告体里表示「已阅知」的说法，不用「知道了」这类口语答复。
+    其余按键（管理设定 / 拒绝）本站在 actions 里没有启用，不改。 -#}
+{% set consent_ok = "Acknowledged" if is_en else "我已知悉" %}
+{% macro t(key) %}{{ lang_tag if key == "language" else (consent_ok if key == "consent.accept" else (lang.t(key) or fallback.t(key) or key)) }}{% endmacro %}

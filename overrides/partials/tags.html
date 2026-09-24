@@ -1,0 +1,48 @@
+{#-
+  模板覆盖：标签链接指回**当前语言**的标签页。
+
+  主题原版直接用标签插件给的 tag.url。而本站三棵语言树各有一份标签页，
+  插件只会挑其中一页生成 URL——实测中文页上的标签链到了 /en/tags/。
+  这里丢掉那一截路径，只保留锚点，再拼上当前语言的标签页路径。
+
+  标签词表本身是语言中立的标识符（集会日期、项目代号），
+  三份标签页列出的标签集合完全相同，所以锚点在哪种语言下都有效。
+
+  本文件其余部分与主题自带的 partials/tags.html 保持一致。
+-#}
+{% set here = page.url | default("", true) %}
+{% set lang_dir = "zh-hant" if here[:8] == "zh-hant/" else ("en" if here[:3] == "en/" else "") %}
+{% if page.meta and page.meta.hide %}
+  {% set hidden = "hidden" if "tags" in page.meta.hide %}
+{% endif %}
+{% if tags %}
+  <nav class="md-tags" {{ hidden }}>
+    {% for tag in tags %}
+      {% set class = "md-tag" %}
+      {% if tag.hidden %}
+        {% set class = class ~ " md-tag-shadow" %}
+      {% endif %}
+      {% if config.extra.tags %}
+        {% set class = class ~ " md-tag-icon" %}
+        {% if tag.name in config.extra.tags %}
+          {% set class = class ~ " md-tag--" ~ config.extra.tags[tag.name] %}
+        {% endif %}
+      {% endif %}
+      {% if tag.url %}
+        {#- tag.url 形如 en/tags/#tag:a4-flight。MiniJinja 没有 str.find / str.split，
+            所以用 replace 把三种可能的「标签页目录」前缀依次剥掉，留下 # 之后那一段。 -#}
+        {% set hash = tag.url | replace("zh-hant/tags/", "") | replace("en/tags/", "") | replace("tags/", "") %}
+        {#- 括号仍不能省：`~ hash | url` 是 `~ (hash | url)`（`|` 比 `~` 结合得紧），
+            那样 url 只作用在锚点上，路径前缀不会被转成相对路径，
+            /en/flight/ 下就会得到 /en/flight/en/tags/ 这种死链。 -#}
+        <a href="{{ (((lang_dir ~ "/tags/") if lang_dir else "tags/") ~ hash) | url }}" class="{{ class }}">
+          {{- tag.name -}}
+        </a>
+      {% else %}
+        <span class="{{ class }}">
+          {{- tag.name -}}
+        </span>
+      {% endif %}
+    {% endfor %}
+  </nav>
+{% endif %}

@@ -1,0 +1,148 @@
+{#-
+  模板覆盖：三种语言各自的入口与外壳。主题给的块名一个都没改，只填内容。
+
+  站名、版权、站点描述等 Zensical 里**全站唯一**的配置（config.site_name 之类），
+  另一语言的值放在 zensical.toml 的 [project.extra] 里，用键名后缀取用
+  （默认语言留空，其余语言 _en / _zh_hant）。整套模版都靠这一条约定取多语言文案。
+
+  加一种语言要动三处：tools/langs.py、这里的 is_en/is_hant/L 三行、
+  zensical.toml 里对应的 _<lang> 键。语言代码只到「文字」一级，不用地区标签。
+
+  注意：Zensical 的模板上下文里 `page.is_homepage` 未定义
+  （主题 base.html 自己也依赖它为空），因此一律用 `page.url` 判别。
+-#}
+{% extends "base.html" %}
+
+{% set here = page.url | default("", true) %}
+{% set is_en = here[:3] == "en/" %}
+{% set is_hant = here[:8] == "zh-hant/" %}
+{% set L = "_zh_hant" if is_hant else ("_en" if is_en else "") %}
+{% set site_name = config.extra["site_name" ~ L] | d(config.site_name, true) %}
+{% set is_home = here in ("", "en/", "zh-hant/") %}
+
+{% block extrahead %}
+  {#- 目录地址补正要排在 <head> 里最前面：它必须在正文被解析之前改掉地址栏。
+      理由与取舍见 partials/trailing-slash.html 的说明。 -#}
+  {% include "partials/trailing-slash.html" %}
+  {#- ── 社交分享与结构化数据 ─────────────────────────────────────────
+     og:locale 按 OG 规范本该写成 language_TERRITORY（zh_CN / zh_TW 之类），
+     但那是**地区**标记，与本站「语言代码只到文字一级」的政策冲突——地区标签
+     会把用词一起改掉。这里用 BCP-47 的文字子标签（zh_Hans / zh_Hant / en），
+     换取与 <html lang>、hreflang 的一致。个别抓取器可能忽略它。
+
+     分享图默认用一张留存合影；单页可用前置元数据 image: 覆盖。 -#}
+  {% set page_title = page.meta.title if page.meta and page.meta.title else (page.title | default(site_name, true) | striptags) %}
+  {% set page_desc = page.meta.description if page.meta and page.meta.description else (config.extra["site_description" ~ L] | d(config.site_description, true)) %}
+  {% set og_locale = "zh_Hant" if is_hant else ("en" if is_en else "zh_Hans") %}
+  {% set og_inlang = "zh-Hant" if is_hant else ("en" if is_en else "zh-Hans") %}
+  {#- 分享图：单页用前置元数据 image: 覆盖，否则取 config.extra.og_image；
+      两者都没有就整组 og:image 不输出，免得指向一张不存在的图。 -#}
+  {% set share_image = page.meta.image if page.meta and page.meta.image else config.extra.og_image | d("", true) %}
+  {% set share_abs = share_image if share_image[:4] == "http" else (config.site_url ~ share_image) %}
+  <meta property="og:type" content="{{ 'website' if is_home else 'article' }}">
+  <meta property="og:site_name" content="{{ site_name }}">
+  <meta property="og:title" content="{{ page_title }}">
+  <meta property="og:description" content="{{ page_desc }}">
+  {% if page.canonical_url %}<meta property="og:url" content="{{ page.canonical_url }}">{% endif %}
+  <meta property="og:locale" content="{{ og_locale }}">
+  {% for other in (["zh_Hans", "en"] if is_hant else (["zh_Hans", "zh_Hant"] if is_en else ["zh_Hant", "en"])) %}
+  <meta property="og:locale:alternate" content="{{ other }}">
+  {% endfor %}
+  {% if share_image %}
+  <meta property="og:image" content="{{ share_abs }}">
+  <meta property="og:image:alt" content="{{ page_title }}">
+  {% endif %}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ page_title }}">
+  <meta name="twitter:description" content="{{ page_desc }}">
+  <meta name="twitter:image" content="{{ share_abs }}">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": {{ config.site_url | tojson }},
+        "url": {{ config.site_url | tojson }},
+        "name": {{ site_name | tojson }},
+        "alternateName": {{ config.extra.site_subtitle | d("", true) | tojson }},
+        "description": {{ page_desc | tojson }},
+        "inLanguage": {{ og_inlang | tojson }}
+      },
+      {
+        "@type": "Organization",
+        "name": {{ config.extra["site_author" ~ L] | d(config.site_author, true) | tojson }},
+        "alternateName": {{ config.extra.site_subtitle | d("", true) | tojson }},
+        "url": {{ config.site_url | tojson }}
+        {%- if config.extra.og_image %},
+        "logo": {{ (config.site_url ~ config.extra.og_image) | tojson }}
+        {%- endif %}
+      }
+    ]
+  }
+  </script>
+{% endblock %}
+
+{# 站点 meta：描述、作者、hreflang 与 prev/next 都按页面语言取，
+   并避免上一页/下一页跨语言串台（三种语言是三棵独立的树） #}
+{% block site_meta %}
+{#- 当前页面在语言树内的相对路径（去掉语言前缀）-#}
+{% if is_hant %}{% set tail = here[8:] %}{% elif is_en %}{% set tail = here[3:] %}{% else %}{% set tail = here %}{% endif %}
+{% import "partials/lang-same.html" as langutil with context %}
+  {% set prev_page = page.previous_page if page.previous_page and langutil.same_lang(page.previous_page.url) | trim == "yes" else none %}
+  {% set next_page = page.next_page if page.next_page and langutil.same_lang(page.next_page.url) | trim == "yes" else none %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  {% if page.meta and page.meta.description %}
+    <meta name="description" content="{{ page.meta.description }}">
+  {% elif config.extra["site_description" ~ L] %}
+    <meta name="description" content="{{ config.extra["site_description" ~ L] }}">
+  {% elif config.site_description %}
+    <meta name="description" content="{{ config.site_description }}">
+  {% endif %}
+  {% if page.meta and page.meta.author %}
+    <meta name="author" content="{{ page.meta.author }}">
+  {% elif config.extra["site_author" ~ L] %}
+    <meta name="author" content="{{ config.extra["site_author" ~ L] }}">
+  {% elif config.site_author %}
+    <meta name="author" content="{{ config.site_author }}">
+  {% endif %}
+  {% if page.canonical_url %}
+    <link rel="canonical" href="{{ page.canonical_url }}">
+  {% endif %}
+  {% if prev_page %}
+    <link rel="prev" href="{{ prev_page.url | url }}">
+  {% endif %}
+  {% if next_page %}
+    <link rel="next" href="{{ next_page.url | url }}">
+  {% endif %}
+  {#- hreflang 指向对应页，而不是语言首页；也标出当前页自身 #}
+  {% for alt in config.extra.alternate %}
+    {% set alt_is_en = alt.lang == "en" %}
+    {% set alt_is_hant = alt.lang == "zh-Hant" %}
+    {% set is_current = (alt_is_en == is_en) and (alt_is_hant == is_hant) %}
+    {% if alt_is_en %}{% set target = "en/" ~ tail %}
+    {% elif alt_is_hant %}{% set target = "zh-hant/" ~ tail %}
+    {% else %}{% set target = tail %}{% endif %}
+    {% if not target %}{% set target = nav.homepage.url %}{% endif %}
+    <link rel="alternate" href="{{ './' if is_current else (target | url) }}" hreflang="{{ alt.lang }}">
+  {% endfor %}
+  {% set href = config.theme.favicon | d("assets/images/favicon.png") %}
+  <link rel="icon" href="{{ href | url }}">
+  <meta name="generator" content="{{ generator }}">
+{% endblock %}
+
+{# <title>：站名按页面语言取。
+   分隔符用「 · 」，全角间隔号，中英混排都不别扭。 #}
+{% block htmltitle %}
+  {% if page.meta and page.meta.title %}
+    <title>{{ page.meta.title }} · {{ site_name }}</title>
+  {% elif page.title %}
+    <title>{{ page.title | striptags }} · {{ site_name }}</title>
+  {% else %}
+    <title>{{ site_name }}</title>
+  {% endif %}
+{% endblock %}
+
+{#- 本模版不自定义 hero、tabs 与 container：首页就是一篇普通页面，
+    由 content/index.<lang>.md 的内容渲染。主题的默认结构够用。 -#}

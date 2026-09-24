@@ -1,0 +1,296 @@
+[project]
+site_url = "https://example.com/"
+site_name = "文档站模版"
+site_description = "一个三语（简中 / 英文 / 繁中）静态文档站模版：content/ 是唯一手写层，其余全部由脚本生成。"
+site_author = "Your Name"
+
+copyright = "文档站模版 · 示例内容"
+
+# 仓库入口（可选）：填了 repo_url，页眉搜索框旁就会出现一个「图标 + 仓库名」的链接
+# （见 overrides/partials/header.html 末尾那段判断，以及主题的 partials/source.html）。
+#
+# ⚠️ Zensical 对公开的 GitHub 仓库会自动去 api.github.com 取 star / fork / 最新
+# release 数并渲染在图标旁——那是每个访客一次第三方请求。本模版默认把这一项在
+# 同意表单里显式关掉（见下面 [project.extra.consent.cookies]），以维持
+# 「本模版默认不发起任何第三方请求」的姿势。要显示计数就删掉那里的一行。
+#
+# 不设 repo_name 时 Zensical 拿 URL 的域名推断，页眉那行字只剩「GitHub」；
+# 写上仓库名读者才知道点进去是哪儿。
+# repo_url = "https://github.com/you/your-repo"
+# repo_name = "your-repo"
+
+
+# extra_css / extra_javascript 必须在任何 [[project.*]] 表之前，
+# 否则会被 TOML 归入该表，导致 project.extra_css 为空。
+# glightbox 的自有副本排在最前，好让 extra.css 里的覆盖仍然压得住它。
+extra_css = [
+  "stylesheets/glightbox.min.css",
+  "stylesheets/fonts.css",
+  "stylesheets/extra.css",
+]
+# 原则：本站不引任何外部脚本或字体，全部自托管。
+# 原先这里挂了 unpkg 上的 MathJax，但站内没有一篇用到数学，
+# 却让每个访客在每次浏览时都向 unpkg 暴露一次 IP —— 与「数据隐私」页的
+# 声明直接冲突，故整个移除（见 docs/stylesheets/fonts.css 的同类说明）。
+#
+# 同样的账，图片灯箱也欠着：glightbox 插件在点开图片时默认从 unpkg 取
+# glightbox.min.js 与 .css（见 zensical/templates 里 bundle 的 Wp()/Dp()）。
+# 也就是说「脚本全部由本站自托管」这句话，此前在图片页上是不成立的。
+# 下面挂的是这两个文件的**本站副本**：bundle 里那两处都在下载前先看
+# typeof GLightbox，只要它已经存在就跳过网络请求、直接用现成的全局对象。
+# extra_javascript 在 bundle 之后、document$ 初始化之前执行，
+# 所以灯箱初始化时这个全局已经就位，无需改动主题。
+# ⚠️ 升级 glightbox 插件版本时要同步换掉这两个文件。
+extra_javascript = ["javascripts/glightbox.min.js"]
+
+# 链接与锚点校验：构建时就把断链/失效锚点报出来，而不是等读者点到。
+# Zensical 只支持链接相关的这几项（导航类的会被忽略）。
+[project.validation]
+invalid_links = true
+invalid_link_anchors = true
+
+# 分语种的外观文案。
+# Zensical 的 site_name / copyright 是全站唯一的，而本站中英共用一次构建，
+# 所以英文站名与版权行放在这里，由模板按页面语言取用
+# （见 overrides/partials/header.html、footer.html、main.html）。
+# ⚠️ 同样必须在 [[project.extra.alternate]] 之前，否则会被归入该表。
+# 键名后缀：默认语言（zh-hans）留空，其余语言用 _en / _zh_hant。
+# 模板里用 `config.extra["site_name" ~ L]` 取用，L 由页面语言决定。
+[project.extra]
+# 社名的罗马字写法。**不在页面上显示**——页眉只留站名一行。
+# 仅用于结构化数据里的 alternateName（见 overrides/main.html 的 JSON-LD），
+# 让检索端把默认语言站名与译文站名认成同一个实体。
+# 这个键通常三语同形，故不做分语种。
+site_subtitle = "DOCS TEMPLATE"
+
+site_name_en = "Docs Template"
+copyright_en = "Docs Template · sample content"
+site_author_en = "Your Name"
+consent_title_en = "Data & privacy"
+consent_description_en = "This site collects no visitor data. There is no analytics, no advertising, no cookie and no third-party request of any kind. Fonts, styles and scripts are all self-hosted, so any page contacts this site’s domain only. A single light/dark display preference is stored locally by the browser, and is removed when browser data is cleared."
+
+consent_title_zh_hant = "資料隱私"
+consent_description_zh_hant = "本站不收集任何存取資料：無統計、無廣告，亦不設定 cookie 或發起任何第三方請求。字型、樣式與腳本均由本站自行託管，存取任何頁面只連接本站一個網域。瀏覽器本機僅儲存一項深淺色顯示偏好，清除瀏覽器資料後即被移除。"
+
+# 页面包屑的根（默认语言的根标签，例如「首页」）
+nav_root_label_en = "Home"
+site_description_en = "A trilingual (Simplified Chinese / English / Traditional Chinese) static docs template: content/ is the only hand-written layer, everything else is generated."
+# 主题切换按钮的提示文案（config.theme.palette 里的 toggle.name 是全站唯一的）
+palette_toggle_auto_en = "Toggle light/dark"
+palette_toggle_light_en = "Switch to dark"
+palette_toggle_dark_en = "Switch to light"
+
+# 繁体（zh-hant）。键名后缀用下划线，因为语言代码里本来就有连字符。
+# 站名、版权、作者若与默认语言同形（如均为中文），该键可以省略、回落到默认值。
+copyright_zh_hant = "文檔站模版 · 示例內容"
+site_author_zh_hant = "Your Name"
+site_description_zh_hant = "一個三語（簡中 / 英文 / 繁中）靜態文檔站模版：content/ 是唯一手寫層，其餘全部由腳本生成。"
+nav_root_label_zh_hant = "首頁"
+palette_toggle_auto_zh_hant = "切換深淺色"
+palette_toggle_light_zh_hant = "切換到深色"
+palette_toggle_dark_zh_hant = "切換到淺色"
+
+# ── 页脚品牌区的自由文案（见 overrides/partials/footer.html）──────────────
+# 三段都是可选的：不填就不渲染那一段。键名后缀规则与上面完全一样。
+footer_tagline = "一份内容，三种语言。content/ 是唯一手写层。"
+footer_tagline_en = "One body of content, three languages. content/ is the only hand-written layer."
+footer_tagline_zh_hant = "一份內容，三種語言。content/ 是唯一手寫層。"
+
+footer_note = "由 Zensical 构建<br>字体与脚本全部自托管"
+footer_note_en = "Built with Zensical<br>Fonts and scripts are entirely self-hosted"
+footer_note_zh_hant = "由 Zensical 構建<br>字型與腳本全部自託管"
+
+footer_bottom = "文档站模版"
+footer_bottom_en = "DOCS TEMPLATE"
+footer_bottom_zh_hant = "文檔站模版"
+
+# 页脚品牌区左上角的徽标（可选）。路径相对 docs/。
+# footer_logo = "assets/logo.svg"
+
+# 社交分享图（可选）。单页可用前置元数据 image: 覆盖；
+# 都不给就整组 og:image 不输出，免得指向一张不存在的图。
+# og_image = "assets/share.png"
+
+# ── 数据隐私：Zensical 原生的同意表单 ─────────────────────────────────────
+# 这个表单的原意是「在向第三方发请求之前征得同意」，勾选项对应的是
+# Google Analytics / GitHub 这类 cookie。
+#
+# ⚠️ 本模版默认**没有任何需要同意的第三方请求**：字体、样式、脚本全部自托管，
+# 不设任何 cookie。文案按公告体写：陈述事实，不作排比宣传，不用口语动词。
+# 篇幅仍从短——这是人人都会看到的浮层，不是隐私政策的正文位。
+# 所以下面**刻意不列任何 cookie 勾选项**——把不存在的东西列进同意表单，
+# 才是真正的不诚实。这个表单在这里承担两件事：
+#   1. 首次访问时把「本站不收集什么」当面讲清楚；
+#   2. 提供 #__consent 这个锚点，让人随时能回到这份说明
+#      （页脚链过去）。
+# 将来若真的引入统计，再把对应的 cookie 加进 [project.extra.consent.cookies]。
+[project.extra.consent]
+title = "数据隐私"
+description = "本站不收集任何访问数据：无统计、无广告，亦不设置 cookie 或发起任何第三方请求。字体、样式与脚本均由本站自行托管，访问任何页面只连接本站一个域名。浏览器本机仅保存一项深浅色显示偏好，清除浏览器数据后即被移除。"
+# 只有一个按钮：这里没有可选项，给「拒绝」按钮是不诚实的。
+actions = ["accept"]
+
+# overrides/partials/consent.html 的逻辑是「repo_url 里有 github.com 就自动补一个
+# GitHub 勾选项」——那一项管的正是 api.github.com 取 star / fork 的那次请求。
+# 本模版默认不要那次请求（理由见文件开头 repo_url 处的注释），故显式关掉：
+# 键存在且为 false，consent.html 既不自动补这一项，也不会把它渲染出来。
+# 于是同意表单里**一个勾选项都没有**，「不发起任何第三方请求」句句为真。
+# 若你启用了 repo_url 并想让读者能用 star 计数，删掉下面这一行即可。
+[project.extra.consent.cookies]
+github = false
+
+# 同上：config 里的这套文案是全站唯一的，其余语种按 _en / _zh_hant 取用
+# （见 overrides/partials/consent.html）。
+
+# 语言代码用**文字**标签（zh-Hans / zh-Hant），不用 zh-CN / zh-TW 这类**地区**标签：
+# 地区标签会把用词一起改掉，那是替读者选定某一地的用法。
+[[project.extra.alternate]]
+name = "简体中文"
+link = "./"
+lang = "zh-Hans"
+
+[[project.extra.alternate]]
+name = "繁體中文"
+link = "zh-hant/"
+lang = "zh-Hant"
+
+[[project.extra.alternate]]
+name = "English"
+link = "en/"
+lang = "en"
+
+
+[project.plugins]
+awesome-nav = {}
+# 图片灯箱：原档与照片页点击放大
+glightbox = {}
+# 输出压缩
+minify = {}
+
+# 搜索。Zensical 只认 enabled / separator 两个选项（没有 lang）。
+# 默认分隔符是 [\s\-_,:!=\[\]()\\"`/]+|\.(?!\d) —— 它不切中文标点，
+# 于是「社团故事。飞行计划」会变成一个整词，中文检索基本失效。
+# 这里在默认集合上补进中文/全角标点，中英混排都能切。
+[project.plugins.search]
+enabled = true
+separator = '[\s\-_,:!=\[\]()\\"`/。，、；：！？…·「」『』（）【】《》〈〉—～]+|\.(?!\d)'
+
+# 标签：给页面打 tags，并在 docs/tags.md 里用 <!-- material/tags --> 汇成一页。
+[project.plugins.tags]
+enabled = true
+listings = true
+
+[project.theme]
+custom_dir = "overrides"
+# false = 不引 Google Fonts。字体自托管在 assets/fonts/，
+# 变量在 stylesheets/fonts.css 里给出（主题在这个分支下不再设置变量）。
+font = false
+variant = "modern"
+# 默认语言的界面文案语言。加语言时这里也要跟着改。
+language = "zh"
+# 站徽与站点图标：把两张图放进 docs/assets/ 再取消注释。
+# 不设就走主题默认（页眉显示一个内置图标，站点图标用主题自带的）。
+# logo = "assets/logo.svg"
+# favicon = "assets/favicon.png"
+# 仓库图标的默认值是通用 git 图标；填了 repo_url 且指向 GitHub 时换成品牌标更好认。
+# 图标是构建期内联进 HTML 的 SVG，不产生任何字体或图标请求。
+icon.repo = "fontawesome/brands/github"
+features = [
+  "announce.dismiss",
+  "content.code.annotate",
+  "content.code.copy",
+  "content.code.select",
+  "content.footnote.tooltips",
+  "content.tabs.link",
+  "content.tooltips",
+  "navigation.expand",
+  "navigation.footer",
+  "navigation.indexes",
+  "navigation.path",
+  "navigation.sections",
+  "navigation.tabs",
+  "navigation.top",
+  "navigation.tracking",
+  "search.highlight",
+  "toc.follow",
+]
+
+# Material 默认配色：跟随系统，浅色优先，无衬线字体。
+# 落地页不另立一套主题，而是直接使用这些变量（见 stylesheets/landing.css）。
+#
+# 强调色（accent）保持 Material 默认的 indigo，具体色值在
+# stylesheets/extra.css 里按色调覆盖，原因见那里的注释。
+# 注意：Zensical 的 palette.accent 只认 Material 的**颜色名**，
+# 写十六进制会被原样塞进 data-md-color-accent 属性而匹配不到任何规则，
+# 反而丢掉强调色。所以这里必须是 "indigo"。
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+accent = "indigo"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "切换深浅色"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+accent = "indigo"
+toggle.icon = "lucide/sun"
+toggle.name = "切换到深色"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+accent = "indigo"
+toggle.icon = "lucide/moon"
+toggle.name = "切换到浅色"
+
+# 页面前置元数据里的 status:，会在导航侧栏上显示一枚标签。
+# ⚠️ 标识符只能用字母数字、连字符与下划线。
+# 这两个都描述「这份材料本身处在什么状态」，而不是它重不重要：
+#   draft   —— 还在写，内容不完整
+#   partial —— 只写到一半，或只有一句话提及，不是本站漏抄
+[project.extra.status]
+draft = "草稿"
+partial = "未完成"
+
+# 分语种的状态文案。Zensical 的 extra.status 是全站唯一的，
+# 与 site_name / copyright 同理，由模板按页面语言取用（见 overrides/partials/nav.html）。
+# ⚠️ 必须另起一张表：键名若留在 [project.extra.status] 里，
+#    会被当成新的 status 标识符注册进去。
+[project.extra.status_label]
+draft_en = "Draft"
+partial_en = "Incomplete"
+draft_zh_hant = "草案"
+partial_zh_hant = "殘缺"
+
+[project.markdown_extensions]
+abbr = {}
+admonition = {}
+attr_list = {}
+def_list = {}
+footnotes = {}
+md_in_html = {}
+toc.permalink = true
+pymdownx.betterem = {}
+# 图片/表格题注：让「图 + 图说」成为一个 figure，而不是一行裸图。
+# 原档与社牌两组图都靠它来带图说（/// caption）。
+pymdownx.blocks.caption = {}
+pymdownx.caret = {}
+pymdownx.details = {}
+pymdownx.emoji.emoji_generator = "zensical.extensions.emoji.to_svg"
+pymdownx.emoji.emoji_index = "zensical.extensions.emoji.twemoji"
+pymdownx.highlight.anchor_linenums = true
+pymdownx.highlight.line_spans = "__span"
+pymdownx.highlight.pygments_lang_class = true
+pymdownx.inlinehilite = {}
+pymdownx.keys = {}
+pymdownx.magiclink = {}
+pymdownx.mark = {}
+pymdownx.smartsymbols = {}
+pymdownx.snippets.base_path = "includes"
+pymdownx.superfences.custom_fences = [
+  { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
+]
+pymdownx.tabbed.alternate_style = true
+pymdownx.tabbed.combine_header_slug = true
+pymdownx.tasklist.custom_checkbox = true
+pymdownx.tilde = {}

@@ -1,0 +1,57 @@
+{#-
+  模板覆盖：面包屑按页面语言走。
+
+  主题原版第一格永远渲染 nav.homepage——那是**默认语言**的首页，
+  其余语言的页面因此会看到「序章 › __lang:en › The Club's Story」这样一串：
+  根是别种语言的，中间还夹着语言分区那一层。
+
+  这里对其他语言做两件事：
+    1. 根改成指向该语言首页（文案见 config.extra.nav_root_label_*）；
+    2. 跳过语言分区那一层——它是挂了该语言的空 url 节点，不是页面。
+
+  默认语言保持主题原样。
+
+  本文件其余部分与主题的 partials/path.html 保持一致。
+-#}
+{% import "partials/path-item.html" as item with context %}
+{% if page.meta and page.meta.hide %}
+  {% set hidden = "hidden" if "path" in page.meta.hide %}
+{% endif %}
+{% set here = page.url | default("", true) %}
+{% set is_en = here[:3] == "en/" %}
+{% set is_hant = here[:8] == "zh-hant/" %}
+{% set lang_dir = "zh-hant" if is_hant else ("en" if is_en else "") %}
+{% set L = "_zh_hant" if is_hant else ("_en" if is_en else "") %}
+{% set depth = page.ancestors | length %}
+{% if nav.homepage %}
+  {% set depth = depth + 1 %}
+{% endif %}
+{% if depth > 1 %}
+  <nav class="md-path" aria-label="{{ lang.t('nav') }}" {{ hidden }}>
+    <ol class="md-path__list">
+      {% if lang_dir %}
+        <li class="md-path__item">
+          {#- 括号不能省：Jinja 里 `|` 比 `~` 结合得紧，写成 lang_dir ~ '/' | url
+              实际是 lang_dir ~ ('/' | url)，等于没过滤——页面上就出现 href="en/"，
+              在 /en/collection/design/ 这类内页里解析成 /en/design/en/，面包屑根节点点了 404。-#}
+          <a href="{{ (lang_dir ~ '/') | url }}" class="md-path__link">
+            <span class="md-ellipsis">{{ config.extra["nav_root_label" ~ L] | d(config.site_name, true) }}</span>
+          </a>
+        </li>
+        {% for nav_item in page.ancestors | reverse %}
+          {#- 语言分区不是页面，跳过；其余分区交给 path-item 下潜到它的 index 子页 -#}
+          {% if not ("__lang:" in (nav_item.title | default("", true))) %}
+            {{ item.render(nav_item) }}
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        {% if nav.homepage %}
+          {{ item.render(nav.homepage) }}
+        {% endif %}
+        {% for nav_item in page.ancestors | reverse %}
+          {{ item.render(nav_item) }}
+        {% endfor %}
+      {% endif %}
+    </ol>
+  </nav>
+{% endif %}

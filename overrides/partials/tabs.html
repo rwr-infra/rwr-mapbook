@@ -1,0 +1,36 @@
+{#-
+  模板覆盖：顶部标签栏（navigation.tabs）按语言过滤。
+
+  主题原版 tabs.html 直接遍历 nav.items，而本站的 nav 是全站唯一的一棵
+  语言分区树（见 overrides/partials/nav.html 的说明），根下挂着
+  __lang:en / __lang:zh-hant 两个分区——不过滤的话，标签栏里会直接多出
+  两颗写着「__lang:en」「__lang:zh-hant」的标签。
+
+  这里用与 nav.html 相同的语言判定，只渲染当前语言那一支：
+    默认语言（zh-hans）→ 除语言分区以外的全部顶层项
+    其余语言           → 对应语言分区里的子项
+
+  本文件其余部分与主题自带的 partials/tabs.html 保持一致，主题升级时需同步。
+-#}
+{% import "partials/tabs-item.html" as item with context %}
+{% set here = page.url | default("", true) %}
+{% set is_en = here[:3] == "en/" %}
+{% set is_hant = here[:8] == "zh-hant/" %}
+{% set lang_dir = "zh-hant" if is_hant else ("en" if is_en else "") %}
+<nav class="md-tabs" aria-label="{{ lang.t('tabs') }}" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      {% for nav_item in nav.items %}
+        {% set title = nav_item.title | default("", true) %}
+        {% set nav_is_lang = "__lang:" in title %}
+        {% if lang_dir and nav_is_lang and title == "__lang:" ~ lang_dir %}
+          {% for child in nav_item.children | default([], true) %}
+            {{ item.render(child) }}
+          {% endfor %}
+        {% elif not lang_dir and not nav_is_lang %}
+          {{ item.render(nav_item) }}
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</nav>

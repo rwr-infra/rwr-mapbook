@@ -1,0 +1,64 @@
+name: Documentation
+
+# 这个工作流**只做校验，不发布**。发布交给 deploy.yml（构建产物推 deploy 分支），
+# 或者你自己接的托管方。
+#
+# 之所以把发布从这里摘出去：把一个必然失败、又没有产物的部署步骤留在里面，
+# 比没有它更糟——它会把「校验过没过」这个唯一有用的信号埋在红叉底下。
+#
+# 若要用 GitHub Pages 发布：给仓库开启 Pages（Settings → Pages →
+# Source 选 "GitHub Actions"），加回 permissions 里的 pages / id-token
+# 与两步部署（upload-pages-artifact + deploy-pages），再把 path 指向 site。
+on:
+  push:
+    branches:
+      - master
+      - main
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # 用 uv + uv.lock 安装，和本地开发走同一套锁定版本。
+      # （原先的 pip install zensical 会绕开 uv.lock，本地与线上可能跑不同版本。）
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - run: uv sync --locked
+
+      # ⚠️ 必须先由 content/ 生成 docs/。
+      # docs/ 下的 .md 与 .nav.yml 都是生成物；直接 zensical build 会用仓库里
+      # 那份副本构建——content/ 改了而没重新生成时，校验过的就不是要发的东西。
+      - name: Generate build tree from content/
+        run: make gen
+
+      # 生成后比对：提交进仓库的 docs/ 必须与 content/ 一致。
+      # 不一致说明有人改了 content/ 却没重新生成，直接失败而不是发半成品。
+      - name: Verify generated tree is up to date
+        run: |
+          uv run python tools/docsgen.py --check
+          uv run python tools/navgen.py --check
+
+      - name: Build site
+        run: uv run zensical build --clean --strict
+
+      # ⚠️ 构建之后的这两步必须与 `make build` 完全一致。
+      # 此前 workflow 少了 tagfilter：线上一直发的是**没过滤过**的标签索引，
+      # 简体页上列着繁体与英文的篇目，而本地 `make build` 的产物是干净的——
+      # 「本地过得去就等于 CI 过得去」这句话因此是不成立的。
+      # 标签索引分语种：把别种语言的条目从 site/**/tags/index.html 里去掉。
+      - name: Filter tag index per language
+        run: uv run python tools/tagfilter.py
+
+      # 产物链接体检：站内引用、目录尾斜杠、跳转桩目标、目录地址补正脚本。
+      # 这些都是构建之后才定型的链接，源的校验（validation.invalid_links）看不到。
+      - name: Check built links
+        run: uv run python tools/linkcheck.py
+
+      # 翻译度体检：漏翻 / 过期 / 译文结构对不上，非零码退出。
+      # 只想预警不阻断的话，加 continue-on-error: true。
+      - name: Check translation coverage
+        run: uv run python tools/i18n_check.py --quiet

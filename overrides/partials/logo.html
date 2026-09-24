@@ -1,0 +1,15 @@
+{#-
+  模板覆盖：徽标的替代文字按页面语言显示。
+  主题原版写死 config.site_name，于是英文页上徽标的 alt 仍是默认语言的站名。
+
+  本文件其余部分与主题的 partials/logo.html 保持一致。
+-#}
+{% set here = page.url | default("", true) %}
+{% set L = "_zh_hant" if here[:8] == "zh-hant/" else ("_en" if here[:3] == "en/" else "") %}
+{% set site_name = config.extra["site_name" ~ L] | d(config.site_name, true) %}
+{% if config.theme.logo %}
+  <img src="{{ config.theme.logo | url }}" alt="{{ site_name }}">
+{% else %}
+  {% set icon = config.theme.icon.logo or "material/library" %}
+  {% include ".icons/" ~ icon ~ ".svg" %}
+{% endif %}

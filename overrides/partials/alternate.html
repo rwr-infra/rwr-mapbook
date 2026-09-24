@@ -1,0 +1,46 @@
+{#-
+  模板覆盖：语言切换器指向**对应页面**，而不是语言首页。
+
+  三种语言的目录结构完全镜像（content/ 下同名不同后缀视为同一篇，
+  由 tools/docsgen.py 生成 docs/、docs/en/、docs/zh-hant/ 三棵树），
+  所以对应页就是同一个路径换一个语言前缀：
+      /story/         ↔  /zh-hant/story/  ↔  /en/story/
+      /system/merit/ledger/  ↔  /zh-hant/system/merit/ledger/  ↔  /en/system/merit/ledger/
+
+  主题原版直接用 config.extra.alternate 里的 link（语言首页），
+  这里按当前页面推算对应页。hreflang 仍沿用配置里的语言标签。
+
+  本文件其余部分与主题的 partials/alternate.html 保持一致。
+-#}
+{% set here = page.url | default("", true) %}
+{% set is_en = here[:3] == "en/" %}
+{% set is_hant = here[:8] == "zh-hant/" %}
+{#- 当前页面在各语言树里的相对路径（去掉语言前缀） -#}
+{% set tail = here[8:] if is_hant else (here[3:] if is_en else here) %}
+<div class="md-header__option">
+  <div class="md-select">
+    {% set icon = config.theme.icon.alternate or "material/translate" %}
+    <button class="md-header__button md-icon" aria-label="{{ lang.t('select.language') }}">
+      {% include ".icons/" ~ icon ~ ".svg" %}
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        {% for alt in config.extra.alternate %}
+          {% set alt_is_en = alt.lang == "en" %}
+          {% set alt_is_hant = alt.lang == "zh-Hant" %}
+          {% set is_current = (alt_is_en == is_en) and (alt_is_hant == is_hant) %}
+          {% if alt_is_en %}{% set target = "en/" ~ tail %}
+          {% elif alt_is_hant %}{% set target = "zh-hant/" ~ tail %}
+          {% else %}{% set target = tail %}{% endif %}
+          {% if not target %}{% set target = nav.homepage.url %}{% endif %}
+          <li class="md-select__item">
+            <a href="{{ './' if is_current else (target | url) }}" hreflang="{{ alt.lang }}"
+               class="md-select__link"{% if is_current %} aria-current="true"{% endif %}>
+              {{ alt.name }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>

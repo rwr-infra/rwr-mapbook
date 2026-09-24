@@ -1,0 +1,39 @@
+{#-
+  404 页。
+
+  为什么要单独覆盖这一份
+  ----------------------
+  Zensical 把 `404.html` 当作 **static template** 渲染（见 config.py 的
+  `theme["static_templates"]`），主题的 `templates/404.html` 继承的是 `main.html`。
+  而本站的 `overrides/main.html` 用 `page.url` 判落地页，404 渲染时并没有页面对象，
+  `page.url` 同样是空串——于是 404 会被判成首页，正文被落地页 hero 顶掉，
+  站点实际上没有 404 页。
+
+  与其在 main.html 里靠「page.title 未定义」这类间接线索去区分两者，不如让 404
+  显式绕开 main.html：直接继承 base.html，自己给出一块正文。404 是站点根下的
+  单个文件，服务器无从得知访客原本在哪棵语言树里，因此三种语言并列给出。
+  这里也不加载落地页的样式与脚本。
+-#}
+{% extends "base.html" %}
+
+{% block extrahead %}
+  <meta name="robots" content="noindex">
+  {#- 404 是任意路径下的单页，同样可能以不带尾斜杠的目录地址被打开，
+      这条补正与本文件里的站内链接一样必须带上。 -#}
+  {% include "partials/trailing-slash.html" %}
+{% endblock %}
+
+{% block content %}
+  <h1>404</h1>
+  <p><strong>您请求的页面不存在。</strong></p>
+  <p><strong>The page you requested does not exist.</strong> Use the navigation above,
+     or start over from one of the home pages below.</p>
+  <p><strong>您請求的頁面不存在。</strong>請用上方導覽，或從下面任一首頁重新開始。</p>
+
+  <h2>返回首页 / Start over</h2>
+  <ul>
+    <li><a href="{{ '' | url }}">简体中文</a></li>
+    <li><a href="{{ 'zh-hant/' | url }}">繁體中文</a></li>
+    <li><a href="{{ 'en/' | url }}">English</a></li>
+  </ul>
+{% endblock %}

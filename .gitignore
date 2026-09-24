@@ -1,0 +1,22 @@
+# 构建产物
+site/
+.cache/
+
+# 体检报告：make check 现场产出，一条命令即可再生，不入库。
+# （入库只会多一份可能过期的副本，CI 又不比对它。）
+i18n-report.json
+i18n-report.md
+
+# 历史遗留：早期版本用一份清单记录哪些 docs/ 文件是生成的。
+# 现在判据是文件里那行生成横幅，两份记录会分叉、一份不会。
+.docsgen.json
+
+# Python / uv
+.venv/
+__pycache__/
+*.py[cod]
+
+# 编辑器与系统
+.DS_Store
+.idea/
+.vscode/

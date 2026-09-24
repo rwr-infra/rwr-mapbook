@@ -1,0 +1,9 @@
+[project]
+name = "zensical-trilang-template"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "pyyaml>=6.0.3",
+    "zensical>=0.0.62",
+    "zhconv>=1.4.3",
+]

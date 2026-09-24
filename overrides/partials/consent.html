@@ -1,0 +1,91 @@
+{#-
+  模板覆盖：同意表单按页面语言取文案，并且在没有勾选项时不渲染空设置框。
+
+  两处与主题原版不同：
+  1. config.extra.consent 是全站唯一的，本站三种语言共用一次构建，
+     所以标题与说明按 _en / _zh_hant 后缀另存一套，这里按页面语言选
+     （与 header / footer / main 的取法一致）。
+  2. 主题原版无条件渲染 <ul class="task-list">，本站刻意不列任何 cookie
+     （没有第三方请求可同意），空盒子看着像出了故障，故判空跳过。
+
+  本文件其余部分与主题自带的 partials/consent.html 保持一致。
+-#}
+{% macro render_cookie(cookie, type) %}
+  {% set checked = "" %}
+  {% if cookie is string %}
+    {% set name = cookie %}
+    {% set checked = "checked" %}
+  {% else %}
+    {% set name = cookie.name %}
+    {% if cookie.checked %}
+      {% set checked = "checked" %}
+    {% endif %}
+  {% endif %}
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="{{ type }}" {{ checked }}>
+      <span class="task-list-indicator"></span>
+      {{ name }}
+    </label>
+  </li>
+{% endmacro %}
+{% set here = page.url | default("", true) %}
+{% set L = "_zh_hant" if here[:8] == "zh-hant/" else ("_en" if here[:3] == "en/" else "") %}
+{% set title = config.extra["consent_title" ~ L] | d(config.extra.consent.title, true) %}
+{% set description = config.extra["consent_description" ~ L] | d(config.extra.consent.description, true) %}
+{% set actions = config.extra.consent.actions %}
+{% if not actions %}
+  {% set actions = ["accept", "manage"] %}
+{% endif %}
+{% if "manage" not in actions %}
+  {% set checked = "checked" %}
+{% endif %}
+{% set cookies = config.extra.consent.cookies %}
+{#- 实际会被渲染出来的勾选项：内置的两个要看有没有配 analytics / GitHub 仓库 -#}
+{% set extra_cookies = [] %}
+{% if "analytics" not in cookies and config.extra.analytics %}{% set _ = extra_cookies.append("analytics") %}{% endif %}
+{% if "github" not in cookies and config.repo_url and "github.com" in config.repo_url %}{% set _ = extra_cookies.append("github") %}{% endif %}
+{% for type in cookies %}{% if cookies[type] %}{% set _ = extra_cookies.append(type) %}{% endif %}{% endfor %}
+<h4>{{ title }}</h4>
+<p>{{ description }}</p>
+{% if extra_cookies %}
+  <input class="md-toggle" type="checkbox" id="__settings" {{ checked }}>
+  <div class="md-consent__settings">
+    <ul class="task-list">
+      {% if "analytics" not in cookies %}
+        {% if config.extra.analytics %}
+          {{ render_cookie("Google Analytics", "analytics") }}
+        {% endif %}
+      {% endif %}
+      {% if "github" not in cookies %}
+        {% if config.repo_url and "github.com" in config.repo_url %}
+          {{ render_cookie("GitHub", "github") }}
+        {% endif %}
+      {% endif %}
+      {% for type in cookies %}
+        {% if cookies[type] %}
+          {{ render_cookie(cookies[type], type) }}
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+<div class="md-consent__controls">
+  {% for action in actions %}
+    {% if action == "accept" %}
+      <button class="md-button md-button--primary">
+        {{- lang.t("consent.accept") -}}
+      </button>
+    {% endif %}
+    {% if action == "reject" %}
+      <button class="md-button">
+        {{- lang.t("consent.reject") -}}
+      </button>
+    {% endif %}
+    {% if action == "manage" %}
+      <label for="__settings" class="md-button">
+        {{- lang.t("consent.manage") -}}
+      </label>
+    {% endif %}
+  {% endfor %}
+</div>

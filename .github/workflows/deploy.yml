@@ -1,0 +1,71 @@
+name: Deploy
+
+# 构建在 CI 里做，产物推到 deploy 分支，由静态托管从那个分支发布。
+#
+# 为什么不直接让托管方构建：这是个 Python 站点（uv + Zensical），而多数静态托管
+# 的构建镜像只预装 Node，安装命令只认 npm / yarn / pnpm。让它们在容器里现装 uv
+# 再拉一个 Python 并非不可能，但那把「这次能不能发出去」押在一个没有文档保证的
+# 环境上；而这里的构建反而已经被 docs.yml 每次推送都在验。
+#
+# 所以 deploy 分支上**只有成品**，没有任何源码和依赖声明。托管那边要相应地把
+# 编译命令与安装命令都留空（见 README「部署」一节），它只负责搬运。
+#
+# 不用这条路的话，整个文件可以删掉——`site/` 是一个普通的静态目录。
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# 推 deploy 分支需要写权限；其余一律不给。
+permissions:
+  contents: write
+
+# 两次构建撞在一起时，新的一次顶掉旧的——否则两个 force-push 会互相打架。
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - run: uv sync --locked
+
+      # 与 docs.yml 同一条产线。构建不过就不发布——发出去的半成品比不发更糟。
+      - name: Generate build tree from content/
+        run: make gen
+
+      - name: Build site
+        run: uv run zensical build --clean --strict
+
+      - name: Filter tag index per language
+        run: uv run python tools/tagfilter.py
+
+      - name: Check built links
+        run: uv run python tools/linkcheck.py
+
+      - name: Check translation coverage
+        run: uv run python tools/i18n_check.py --quiet
+
+      # 产物单独起一个仓库推上去：deploy 分支永远只有一个提交，内容就是 site/ 的
+      # 当前样子。每次重建再 force-push，删掉的页面因此不会在线上阴魂不散——
+      # 若改成往旧分支上追加，线上就会留下一堆上一版才有的文件。
+      #
+      # ⚠️ site/ 在 .gitignore 里，所以父仓库不会把这里新起的 .git 当成嵌套仓库。
+      - name: Publish site/ to the deploy branch
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd site
+          git init -q -b deploy
+          git add -A -f
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -qm "构建产物 · 源提交 ${GITHUB_SHA}"
+          git push -q -f "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" deploy
+          echo "已推送 deploy 分支：$(git rev-parse --short HEAD)"

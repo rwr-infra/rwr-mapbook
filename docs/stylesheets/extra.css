@@ -1,0 +1,246 @@
+/**
+ * 文档站样式 · 少量补充
+ *
+ * 站点主体使用 **Material 默认主题**（浅色优先、无衬线）。
+ * 本文件只做少量补充，不覆盖配色与字体体系。
+ * 字体与脚本全部自托管，见 stylesheets/fonts.css。
+ */
+
+/* ══════════════════════════════════════════════════════════════
+   强调色的无障碍修正（唯一一处改配色）
+
+   Material 默认强调色 indigo #526cfe 的对比度不够正文使用：
+     对白底            4.26:1
+     对导航当前项底色  3.76:1   （浅色）
+     对导航当前项底色  4.22:1   （深色）
+   正文型文字与正文链接要求 4.5:1，所以按色调各降/升一档明度，
+   色相与饱和度保持不变，观感仍是同一个蓝。
+   两个值同时满足两种用法：作文字色（压在页面底色上）、
+   以及作底色（承载反相文字，例如强调块上的白字）。
+
+   ⚠️ 为什么写在这里而不是 zensical.toml 的 palette.accent：
+   Zensical 的 palette.accent 只接受 Material 的**颜色名**，
+   十六进制会被原样写进 data-md-color-accent 属性，匹配不到
+   [data-md-color-accent=…] 规则，结果是强调色整个失效。
+   而 Material 的 15 个候选强调色没有一个能达到 4.5:1
+   （最好的 deep-purple 也只有 4.81:1，且对导航底色只有 4.25:1）。
+
+   本文件在调色板样式表之后加载，同权重后到者生效。
+   ══════════════════════════════════════════════════════════════ */
+
+[data-md-color-scheme="default"] {
+  /* 白底 5.92:1 · 导航当前项底色 5.23:1 · 白字压其上 5.92:1 */
+  --md-accent-fg-color: #4358d0;
+  --md-accent-fg-color--transparent: #4358d01a;
+}
+
+[data-md-color-scheme="slate"] {
+  /* 页面底色 6.82:1 · 导航当前项底色 6.26:1 · 深字压其上 6.82:1 */
+  --md-accent-fg-color: #8291f5;
+  --md-accent-fg-color--transparent: #8291f51a;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   章节导语小标：写在正文里的一行大写小字，放在标题之前
+   用法：<p class="kicker">SECTION KICKER</p>
+   ══════════════════════════════════════════════════════════════ */
+
+.md-typeset .kicker {
+  margin: -0.5em 0 1.8em;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   内容元素微调
+   ══════════════════════════════════════════════════════════════ */
+
+/* 资料性表格：紧凑化，数值列不换行 */
+.md-typeset table:not([class]) {
+  font-size: 0.7rem;
+}
+
+.md-typeset table:not([class]) th {
+  white-space: nowrap;
+}
+
+.md-typeset table:not([class]) td {
+  vertical-align: top;
+}
+
+/* 图片说明 */
+.md-typeset figcaption {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.66rem;
+}
+
+/* 纯图片卡片：去掉内边距让原件铺满 */
+.md-typeset .grid.cards > ul > li > p:only-child > img,
+.md-typeset .grid.cards > ol > li > p:only-child > img {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+/* 首页右上角的徽标图 */
+.md-typeset .page-mark {
+  float: right;
+  margin: 0 0 1em 1.4em;
+}
+
+@media screen and (max-width: 44.9375em) {
+  .md-typeset .page-mark {
+    float: none;
+    display: block;
+    margin: 0 auto 1.4em;
+  }
+}
+
+}
+
+/* ══════════════════════════════════════════════════════════════
+   页脚：三段式的品牌区
+   ══════════════════════════════════════════════════════════════ */
+
+/* 主题页脚默认用主色底，这里回到内容底色，与站点其余部分一致 */
+.md-footer {
+  color: var(--md-default-fg-color);
+  background-color: var(--md-default-bg-color);
+}
+
+/* 上一页 / 下一页：保留主题结构，配色收回到中性 */
+.md-footer__inner {
+  padding: 0.6rem 0;
+  border-top: 0.05rem solid var(--md-default-fg-color--lightest);
+}
+
+.md-footer__link {
+  color: var(--md-default-fg-color--light);
+}
+
+.md-footer__link:is(:focus, :hover) .md-footer__title {
+  color: var(--md-accent-fg-color);
+}
+
+.md-footer__direction {
+  color: var(--md-default-fg-color--light);
+}
+
+.brand-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2.2rem;
+  padding: 3rem 5% 1.2rem;
+  border-top: 0.05rem solid var(--md-default-fg-color--lightest);
+}
+
+/* 品牌段：与原站 footer-title 同款 */
+.brand-footer__title {
+  display: block;
+  font-size: 1.75rem;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  color: var(--md-default-fg-color);
+}
+
+.brand-footer__title span {
+  margin-left: 0.7rem;
+  color: var(--md-accent-fg-color);
+}
+
+.brand-footer__logo {
+  width: 3.6rem;
+  height: 2.3rem;
+  margin-bottom: 0.85rem;
+  object-fit: contain;
+}
+
+.brand-footer__brand p {
+  margin-top: 0.6rem;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.68rem;
+  line-height: 1.8;
+}
+
+/* 结语段：原站 footer-meta 的等宽字样 */
+.brand-footer__meta {
+  color: var(--md-default-fg-color--light);
+  font-family: var(--md-code-font-family);
+  font-size: 0.62rem;
+  line-height: 1.9;
+  letter-spacing: 0.06em;
+}
+
+.brand-footer__meta a {
+  display: block;
+  margin-top: 0.8rem;
+  color: var(--md-default-fg-color);
+  font-family: var(--md-text-font-family);
+}
+
+.brand-footer__meta a:is(:focus, :hover) {
+  color: var(--md-accent-fg-color);
+}
+
+/* 底栏：版权与回到顶部 */
+.brand-footer__bottom {
+  display: flex;
+  flex-basis: 100%;
+  justify-content: space-between;
+  padding-top: 0.9rem;
+  border-top: 0.05rem solid var(--md-default-fg-color--lightest);
+  color: var(--md-default-fg-color--light);
+  font-size: 0.56rem;
+  letter-spacing: 0.06em;
+}
+
+.brand-footer__bottom a:is(:focus, :hover) {
+  color: var(--md-accent-fg-color);
+}
+
+@media screen and (max-width: 44.9375em) {
+  .brand-footer {
+    padding: 2rem 7% 1rem;
+    gap: 1.6rem;
+  }
+
+  .brand-footer__title {
+    font-size: 1.5rem;
+  }
+
+  .brand-footer__bottom {
+    font-size: 0.5rem;
+  }
+
+  .brand-footer__bottom span {
+    max-width: 70%;
+  }
+}
+
+/* ── 页面状态标签 ────────────────────────────────────────────────────────
+   前置元数据里的 status: 会在侧栏对应条目旁显示一枚图标。
+   主题内建了 new / deprecated 两个，本站在 [project.extra.status] 里加了
+   draft（原件就停在草案）与 partial（原件本身残缺）。
+   ⚠️ 主题只为内建的两个给了图标；自定义标识符必须在下面补上
+   --md-status--<标识符>，否则 .md-status:after 拿不到 mask-image，
+   标签会渲染成一个空元素——看不见任何东西。
+   字形取自主题自带的 lucide 图标集，做成内联 data URI，
+   因此不产生任何额外请求。
+   ──────────────────────────────────────────────────────────────────────── */
+:root {
+  --md-status--draft: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'><path d='M12.659 22H18a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v9.34'/><path d='M14 2v5a1 1 0 0 0 1 1h5M10.378 12.622a1 1 0 0 1 3 3.003L8.36 20.637a2 2 0 0 1-.854.506l-2.867.837a.5.5 0 0 1-.62-.62l.836-2.869a2 2 0 0 1 .506-.853z'/></svg>");
+  --md-status--partial: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'><path d='M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2zM12 17h.01'/><path d='M9.1 9a3 3 0 0 1 5.82 1c0 2-3 3-3 3'/></svg>");
+}
+
+.md-status--draft:after {
+  -webkit-mask-image: var(--md-status--draft);
+  mask-image: var(--md-status--draft);
+}
+
+.md-status--partial:after {
+  -webkit-mask-image: var(--md-status--partial);
+  mask-image: var(--md-status--partial);
+}

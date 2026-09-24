@@ -1,0 +1,91 @@
+{#-
+  页脚：三段式的品牌区，并在其上方保留主题的「上一页 / 下一页」导航。
+
+  全站统一使用本模板（覆盖主题的 partials/footer.html）。
+  页脚文案按页面语言取；站名与版权来自 zensical.toml 的 [project.extra]
+  （Zensical 的 site_name 是全站唯一的）。三语是三棵独立的导航树，
+  主题的 page.previous_page / next_page 会跨过去，这里按语言过滤。
+-#}
+{% set here = page.url | default("", true) %}
+{% set is_en = here[:3] == "en/" %}
+{% set is_hant = here[:8] == "zh-hant/" %}
+{% set lang_dir = "zh-hant" if is_hant else ("en" if is_en else "") %}
+{% set L = "_zh_hant" if is_hant else ("_en" if is_en else "") %}
+{% set site_name = config.extra["site_name" ~ L] | d(config.site_name, true) %}
+{% set home_url = lang_dir ~ "/" if lang_dir else nav.homepage.url %}
+{% import "partials/lang-same.html" as langutil with context %}
+{% set prev_page = page.previous_page if page.previous_page and langutil.same_lang(page.previous_page.url) | trim == "yes" else none %}
+{% set next_page = page.next_page if page.next_page and langutil.same_lang(page.next_page.url) | trim == "yes" else none %}
+<footer class="md-footer">
+  {% if "navigation.footer" in features %}
+    {% if prev_page or next_page %}
+      {% if page.meta and page.meta.hide %}
+        {% set hidden = "hidden" if "footer" in page.meta.hide %}
+      {% endif %}
+      <nav class="md-footer__inner md-grid" aria-label="{{ lang.t('footer') }}" {{ hidden }}>
+        {% if prev_page %}
+          {% set direction = lang.t("footer.previous") %}
+          <a href="{{ prev_page.url | url }}" class="md-footer__link md-footer__link--prev" aria-label="{{ direction }}: {{ prev_page.title | e }}">
+            <div class="md-footer__button md-icon">
+              {% set icon = config.theme.icon.previous or "material/arrow-left" %}
+              {% include ".icons/" ~ icon ~ ".svg" %}
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                {{ direction }}
+              </span>
+              <div class="md-ellipsis">
+                {{ prev_page.title }}
+              </div>
+            </div>
+          </a>
+        {% endif %}
+        {% if next_page %}
+          {% set direction = lang.t("footer.next") %}
+          <a href="{{ next_page.url | url }}" class="md-footer__link md-footer__link--next" aria-label="{{ direction }}: {{ next_page.title | e }}">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                {{ direction }}
+              </span>
+              <div class="md-ellipsis">
+                {{ next_page.title }}
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              {% set icon = config.theme.icon.next or "material/arrow-right" %}
+              {% include ".icons/" ~ icon ~ ".svg" %}
+            </div>
+          </a>
+        {% endif %}
+      </nav>
+    {% endif %}
+  {% endif %}
+
+  {#- 品牌页脚：三段式。
+      自由文案（标语 / 副注 / 底栏标签）全部来自 config.extra，按页面语言取
+      —— 也就是整套模版用的那个 `_en` / `_zh_hant` 后缀约定。
+      固定 UI 标签（标签页 / 隐私 / 回到顶部）留在模板里按语言分支，
+      和主题处理同类文案的方式一致。 -#}
+  <div class="brand-footer">
+    <div class="brand-footer__brand">
+      <a class="brand-footer__title" href="{{ home_url | url }}">
+        {% if config.extra.footer_logo %}
+        <img class="brand-footer__logo" src="{{ config.extra.footer_logo | url }}" alt="{{ site_name }}">
+        {% endif %}
+        {{ site_name }}<span>↗</span>
+      </a>
+      {% set tagline = config.extra["footer_tagline" ~ L] | d(config.extra.footer_tagline | d("", true), true) %}
+      {% if tagline %}<p>{{ tagline }}</p>{% endif %}
+    </div>
+    <div class="brand-footer__meta">
+      {% set note = config.extra["footer_note" ~ L] | d(config.extra.footer_note | d("", true), true) %}
+      {% if note %}{{ note }}<br>{% endif %}
+      <a href="{{ 'tags/' | url }}">{% if is_en %}Browse by tag ↗{% elif is_hant %}依標籤瀏覽 ↗{% else %}按标签浏览 ↗{% endif %}</a>
+    </div>
+    <div class="brand-footer__bottom">
+      <span>{{ config.extra["footer_bottom" ~ L] | d(config.extra.footer_bottom | d(site_name, true), true) }}</span>
+      <a href="#__consent">{% if is_en %}Privacy settings{% elif is_hant %}隱私設定{% else %}隐私设置{% endif %}</a>
+      <a href="#top">{% if is_en %}Back to top ↑{% elif is_hant %}回到頂部 ↑{% else %}回到顶部 ↑{% endif %}</a>
+    </div>
+  </div>
+</footer>
