@@ -3,4 +3,4 @@
 # 重新生成： uv run python tools/navgen.py
 nav:
 - Home: index.md
-- The egg: egg.md
+- Thank you: egg.md

@@ -1,51 +1,31 @@
 ---
-title: "The 060 build"
-description: "How big the 060 build was, how big its script DLL was, and what changed since."
+title: "Thank you"
+description: "A thank-you to the people who make maps, try the tools and write things down."
 translated: 2026-09-25
-nav_label: "The egg"
-icon: lucide/package
+source_sha256: 182a4f47d716ee0f7f60d315d9246e8c620f037c2b2a086e1571a755c031a24c
+nav_label: "Thank you"
+icon: lucide/heart
 # ⚠️ 由 tools/docsgen.py 从 content/versions/egg/egg.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
-hide: [navigation]
+hide: [navigation, toc]
 ---
 
-# The 060 build
+# Thank you
 
-<p class="kicker">2026-05-14 · how it looked five months ago</p>
+<p class="kicker">THANKS · for the people who made this possible</p>
 
-This page is a trial run of the freeze mechanism, but the numbers in it are **real** —
-read straight out of `060.zip`. It records one build of the editor, version 060.
+No single person wrote this handbook. Every panel in it, every row of the inventories,
+every blunt "crashes on load" and "no collision box" — somebody actually tried it,
+ran into it and wrote it down. That is why there is anything to read here at all.
 
-|  |  |
-| --- | --- |
-| Version | 060 |
-| Built | 2026-05-14 |
-| Archive | 30.6 MiB (`060.zip`) |
-| Unpacked | 81.8 MiB, 138 files |
-| `1007.exe` | 666,624 bytes |
-| `UnityPlayer.dll` | 31,100,840 bytes |
-| `Assembly-CSharp.dll` | 269,824 bytes |
-| SHA-256 of that DLL | `a8ea2a0e…ded4b` (full: `a8ea2a0ed1e5c4a9d916aca64b9943078098ca36280c073d09d2a05bb77ded4b`) |
+Thank you to **the people who make maps** — for going in and out of the game over and
+over and changing a config each time, until the editor became something you can learn.
 
-## What grew over those five months
+Thank you to **the people who write things down** — noting down the answer while you
+still have it looks effortless, and it saves everyone after you a great deal of guessing.
 
-`Assembly-CSharp.dll` is where the editor's behaviour lives — tools, panels, drawing
-logic. Its size is a rough scale for how many tools were added:
+Thank you to **the people who come back and fill things in** — each time one of those
+"untested" and "not tried, no idea what this is" lines gets an answer, this page becomes
+a little more useful than it was yesterday.
 
-| Version | Built | `Assembly-CSharp.dll` |
-| --- | --- | --- |
-| 060 | 2026-05-14 | 269,824 bytes |
-| 070 | 2026-05-20 | 305,152 bytes |
-| 080 | 2026-06-02 | 322,560 bytes |
-| 090 | 2026-07-26 | 372,224 bytes |
-| 091 | 2026-08-30 | 378,368 bytes |
-| 0100 | 2026-08-30 | 389,120 bytes |
-| 0101 | 2026-09-06 | 398,336 bytes |
-
-That is 47% growth from 060 to 0101, while `UnityPlayer.dll` did not change a single
-byte — **everything that grew is script**.
-
-## The one place the handbook changed with it
-
-As tools were added, the notes changed once too. The `TerrainBash` section of 0101
-records that "using this tool, there may be a spare adjuster bar in the bottom left,
-which does nothing at all" — 060 did not have that bar yet.
+!!! quote ""
+    The person doing the work matters more than the work.

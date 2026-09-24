@@ -1,7 +1,8 @@
 ---
 title: "The egg"
-description: "An egg: this branch holds one build's numbers from 2026-05-14."
+description: "An egg: there is one thank-you note in this branch."
 translated: 2026-09-25
+source_sha256: 77bb420c02af093180bef22dbb7666f5b9fe65a80c05b43a5a2c31ea0cf29be4
 nav_label: "Home"
 icon: lucide/egg
 nav: ["egg"]
@@ -11,10 +12,5 @@ nav: ["egg"]
 
 <p class="kicker">EGG · a trial run of the freeze mechanism</p>
 
-This branch is not an old release, it is an **egg** — a test of whether freezing a
-version works at all: add a snapshot, write a page, and the version menu grows an entry
-while language switching keeps working.
-
-!!! question "What is inside"
-    It holds **one build of the editor, version 060 (2026-05-14)**: how big it was, how
-    many files, how big its script DLL was, and how it differs from what you have now.
+This branch is not an old release, it is an **egg** — there is one thing in it we wanted
+to say. The entry on the left is it.
