@@ -11,7 +11,11 @@
 
   与其在 main.html 里靠「page.title 未定义」这类间接线索去区分两者，不如让 404
   显式绕开 main.html：直接继承 base.html，自己给出一块正文。404 是站点根下的
-  单个文件，服务器无从得知访客原本在哪棵语言树里，因此三种语言并列给出。
+  单个文件，服务器无从得知访客原本在哪棵语言树里，因此各语言并列给出——
+  那份清单**遍历 config.extra.alternate**，名字取 alt.name、地址取 alt.link，
+  与页眉的语言切换器同源。原先这里写死两条/三条链接，加语言时必漏。
+  ⚠️ 循环上的 `{%-` 是为了让产物**逐字节**和改前一样：404 这一块没被 minify
+     压成一行，循环多留一处缩进就会在条目之间多出一行空行。
   这里也不加载落地页的样式与脚本。
 -#}
 {% extends "base.html" %}
@@ -32,8 +36,8 @@
 
   <h2>返回首页 / Start over</h2>
   <ul>
-    <li><a href="{{ '' | url }}">简体中文</a></li>
-    <li><a href="{{ 'zh-hant/' | url }}">繁體中文</a></li>
-    <li><a href="{{ 'en/' | url }}">English</a></li>
+    {%- for alt in config.extra.alternate | d([], true) %}
+    <li><a href="{{ alt.link | d('./', true) | url }}">{{ alt.name }}</a></li>
+    {%- endfor %}
   </ul>
 {% endblock %}

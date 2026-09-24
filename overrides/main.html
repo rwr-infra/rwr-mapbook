@@ -5,8 +5,10 @@
   另一语言的值放在 zensical.toml 的 [project.extra] 里，用键名后缀取用
   （默认语言留空，其余语言 _en / _zh_hant）。整套模版都靠这一条约定取多语言文案。
 
-  加一种语言要动三处：tools/langs.py、这里的 is_en/is_hant/L 三行、
-  zensical.toml 里对应的 _<lang> 键。语言代码只到「文字」一级，不用地区标签。
+  加一种语言要动的只有 zensical.toml：补一条 alternate、补一组 `_<lang>` 文案
+  （含 footer_* 三段与 lang_pack）。**语言名、语言代码、界面文案包都不在本文件里**，
+  一律从配置派生——模板里再出现写死的语言名就是漏改了。
+  语言代码只到「文字」一级，不用地区标签。
 
   注意：Zensical 的模板上下文里 `page.is_homepage` 未定义
   （主题 base.html 自己也依赖它为空），因此一律用 `page.url` 判别。
@@ -17,8 +19,6 @@
 {% import "partials/route.html" as route with context %}
 {% set vdir = route.version(here) | trim %}
 {% set ldir = route.lang(here) | trim %}
-{% set is_en = ldir == "en" %}
-{% set is_hant = ldir == "zh-hant" %}
 {% set L = route.suffix(ldir) | trim %}
 {% set site_name = config.extra["site_name" ~ L] | d(config.site_name, true) %}
 {#- 落地页判据：去掉了版本与语言两层前缀之后，路径为空就是某一支的首页。
@@ -29,17 +29,41 @@
   {#- 目录地址补正要排在 <head> 里最前面：它必须在正文被解析之前改掉地址栏。
       理由与取舍见 partials/trailing-slash.html 的说明。 -#}
   {% include "partials/trailing-slash.html" %}
+  {#- ── 交给脚本的那份「本站有哪几种语言」 ──────────────────────────────
+     搜索面板是主题用 JS 渲染进 shadow root 的，模板插不进去，只能由
+     docs/javascripts/search-lang.js 事后把标签按语言分段。那份脚本原先自己
+     写死了三语言——加一种语言就得去改 JS，还要担心中文名写成「简体」而不是
+     「简体中文」。现在改成在这里把配置交出去：
+       · languages 直接来自 config.extra.alternate（与页眉的语言切换器同源），
+         name 就是「简体中文 / 繁體中文 / English」，prefix 是网址里那一段；
+       · ui 是按页面语言取的 search_* 文案（后缀约定与页脚那几组一样）。
+     加语言因此只需要动 zensical.toml：加一条 alternate、补一组 `_<lang>` 文案，
+     脚本一行都不用改。 -#}
+  <script id="__rwr" type="application/json">{{ {
+    "languages": config.extra.alternate | d([], true),
+    "ui": {
+      "search": config.extra["search_text" ~ L] | d(config.extra.search_text, true),
+      "filters": config.extra["search_filters" ~ L] | d(config.extra.search_filters, true),
+      "results": config.extra["search_results" ~ L] | d(config.extra.search_results, true),
+      "close": config.extra["search_close" ~ L] | d(config.extra.search_close, true),
+      "tag": config.extra["search_filter_by_tag" ~ L] | d(config.extra.search_filter_by_tag, true)
+    }
+  } | tojson }}</script>
   {#- ── 社交分享与结构化数据 ─────────────────────────────────────────
      og:locale 按 OG 规范本该写成 language_TERRITORY（zh_CN / zh_TW 之类），
      但那是**地区**标记，与本站「语言代码只到文字一级」的政策冲突——地区标签
      会把用词一起改掉。这里用 BCP-47 的文字子标签（zh_Hans / zh_Hant / en），
      换取与 <html lang>、hreflang 的一致。个别抓取器可能忽略它。
 
+     这一行与下面 inLanguage 都用 route.code() 从 alternate 的 lang 派生：
+     og 那一套要下划线，把连字符换掉就是，**不再各写一份三支判断**——
+     那种写法加语言时会漏，而漏了只是内容悄悄变成默认语言，构建不报错。
+
      分享图默认用一张留存合影；单页可用前置元数据 image: 覆盖。 -#}
   {% set page_title = page.meta.title if page.meta and page.meta.title else (page.title | default(site_name, true) | striptags) %}
   {% set page_desc = page.meta.description if page.meta and page.meta.description else (config.extra["site_description" ~ L] | d(config.site_description, true)) %}
-  {% set og_locale = "zh_Hant" if is_hant else ("en" if is_en else "zh_Hans") %}
-  {% set og_inlang = "zh-Hant" if is_hant else ("en" if is_en else "zh-Hans") %}
+  {% set og_inlang = route.code(ldir) | trim %}
+  {% set og_locale = og_inlang | replace("-", "_") %}
   {#- 分享图：单页用前置元数据 image: 覆盖，否则取 config.extra.og_image；
       两者都没有就整组 og:image 不输出，免得指向一张不存在的图。 -#}
   {% set share_image = page.meta.image if page.meta and page.meta.image else config.extra.og_image | d("", true) %}
@@ -50,8 +74,19 @@
   <meta property="og:description" content="{{ page_desc }}">
   {% if page.canonical_url %}<meta property="og:url" content="{{ page.canonical_url }}">{% endif %}
   <meta property="og:locale" content="{{ og_locale }}">
-  {% for other in (["zh_Hans", "en"] if is_hant else (["zh_Hans", "zh_Hant"] if is_en else ["zh_Hant", "en"])) %}
+  {#- 其余语言**遍历 alternate 得出**，跳过自己那一支。
+      顺序因此就是配置里的顺序，加语言不用回来改这一行；
+      而原先那三串写死的列表，顺序恰好也等于「alternate 去掉自己」，
+      所以换成遍历之后产物一字不差（三种语言都核过）。
+      ⚠️ 行内的 `{%-` 与 `-%}` 是为了让产物**逐字节**和改前一样：
+         minify 只压得掉标签之间的空白，<head> 里这几处压不掉，
+         多一个缩进就会在 og:locale 与 alternate 之间多出一行空行。 -#}
+  {% for alt in config.extra.alternate | d([], true) %}
+  {%- set alt_dir = alt.link | d("./", true) | replace("./", "") | replace("/", "") %}
+  {%- set other = (alt.lang | d("", true)) | replace("-", "_") %}
+  {%- if alt_dir != ldir %}
   <meta property="og:locale:alternate" content="{{ other }}">
+  {%- endif %}
   {% endfor %}
   {% if share_image %}
   <meta property="og:image" content="{{ share_abs }}">

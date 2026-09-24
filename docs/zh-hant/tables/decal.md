@@ -25,7 +25,7 @@ hide: [toc]
 | ![](../../assets/tables/decal/001.png) | 停機坪<br>template = heliped |  |
 | ![](../../assets/tables/decal/002.png) | 三葉草草坪<br>template = clover |  |
 | ![](../../assets/tables/decal/003.png) | 人行道<br>template = pavement |  |
-| ![](../../assets/tables/decal/004.png) | 花<br>template = flower | 和上面的一樣，這個貼圖引用有bug |
+| ![](../../assets/tables/decal/004.png) | 花<br>template = flower | 與上一條相同；該貼圖引用存在 bug |
 | ![](../../assets/tables/decal/005.png) | 人行道<br>template = pavement_tile1 | 正方形磚塊紋理 |
 | ![](../../assets/tables/decal/006.png) | 屋頂<br>template = roof_tile1 | 長方形磚塊紋理 |
 | ![](../../assets/tables/decal/007.png) | 檢修井<br>template = manhole |  |
@@ -41,4 +41,4 @@ hide: [toc]
 | ![](../../assets/tables/decal/017.png) | 燒焦地面<br>template = burned_ground |  |
 | ![](../../assets/tables/decal/018.png) | 樹蔭<br>template = tree_ground_base1 | 一個淡黑色圓 |
 | ![](../../assets/tables/decal/019.png) | 一大片網球場<br>template = tennis_court |  |
-| ![](../../assets/tables/decal/020.png) | 神秘棕色方塊<br>template = ee_8 | <br>實際上是KILROY WAS HERE彩蛋圖標<br>在地圖文件內放了ee_8才會正常顯示<br>![](../../assets/tables/decal/021.png) |
+| ![](../../assets/tables/decal/020.png) | 神秘棕色方塊<br>template = ee_8 | <br>實際上是 KILROY WAS HERE 彩蛋圖標<br>地圖文件裡放了 ee_8 才會正常顯示<br>![](../../assets/tables/decal/021.png) |

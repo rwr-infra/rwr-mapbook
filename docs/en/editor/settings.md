@@ -1,7 +1,7 @@
 ---
 title: "The main panel"
 description: "A button-by-button account of Save / ViewMap / Select / PinMan / WallE / BuildingE and the rest."
-source_sha256: d2da5230928f69e0deeccb438b44584b13f2d9a237d000c04e2c678ae6de1bd6
+source_sha256: 958d40e912420abadd60e501f1997e6c59974e79d6a27ec73639eef9890042f6
 translated: 2026-09-25
 nav_label: "Main panel"
 icon: lucide/sliders-horizontal
@@ -152,14 +152,14 @@ guessed from the interface text.
 
 ## Save { #save }
 
-Simply saves the map; when it is done you get a sound.
+Saves the map; when it is done you get a sound.
 
 ## ViewMap { #viewmap }
 
 Generates the tactical preview image of the map — the map you look at in RWR by pressing Tab.
 
-!!! question "Doubtful"
-    You probably have to tweak the file name yourself?
+!!! question "Not verified"
+    The file name has to be adjusted by hand (not verified item by item).
 
 ## Select { #select }
 
@@ -171,7 +171,7 @@ Generates the tactical preview image of the map — the map you look at in RWR b
 - In any other tool mode, the Shift+1 shortcut jumps quickly back to the Select tool.
 - You cannot select several platforms at once.
 - In top-down view (orthographic) some platforms will not display or select properly; you have to switch to free camera (perspective) to select them.
-- Moving and rotating in free camera (perspective) is not recommended; the interaction is a bit of a pain.
+- Moving and rotating in free camera (perspective) is not recommended; the interaction is poor.
 
 ## PinMan { #pinman }
 
@@ -247,12 +247,14 @@ LadderScatter and LadderEraser place ladders and delete ladders. A placed ladder
 automatically to nearby buildings, platforms and anything else with fixed collision.
 
 !!! warning "Needs optimisation"
-    Right now the snapping is about as well-behaved as a cat, and there are problems.
+    The ladders' automatic snapping is currently unreliable.
+
+    <span class="redact" tabindex="0">Right now the snapping is about as well-behaved as a cat, and there are problems.</span>
 
 - ItemSupplyScatter places the trigger area of a stash or an armory: stash is the stash, weapon_rack is the armory; once selected, click ChangeType below to switch.
 - CrateScatter and CrateEraser place wooden crates and delete wooden crates; the items inside are random and cannot be specified.
 - SpawnScatter and SpawnEraser create spawn points and delete spawn points; a spawn point should not sit too close to the map edge.
-- BaseScatter creates a base by left-dragging. With it selected by Select, you can change the base's displayed name and specify which faction captured this base first; fill in 0, 1 or 2 — which one is which I honestly do not know either haha XD
+- BaseScatter creates a base by left-dragging. With it selected by Select, you can change the base's displayed name and specify which faction captured this base first; fill in 0, 1 or 2, <span class="redact" tabindex="0">which one is which I honestly do not know either haha XD</span>
 
 ![Main panel 14](../../assets/editor/030.png)
 
@@ -292,9 +294,9 @@ automatically to nearby buildings, platforms and anything else with fixed collis
 ## TerrainBash { #terrainbash }
 
 - Pathpainter is the path ground-texture brush; it is used like the Wall tool, the top left explains the relevant values and you can try it yourself.
-- The decay exponent is adjusted with [ and ], it is not a description typed twice that turned into [[/]].
+- The decay exponent is adjusted with [ and ]; it is not a description typed twice that turned into [[/]].
 - painter is the ground-texture brush: Chg Index is the material kind, a number; Chg Rng is the range; Chg Har is the hardness.
-- In version 0101, when you use this tool there may be a spare adjustment bar in the bottom left; it does nothing at all.
+- In version 0101, when you use this tool there may be a spare adjustment bar in the bottom left; it has no effect at all.
 - Smooth flattens the ground texture over the whole map.
 
 ![Main panel 22](../../assets/editor/038.png)
@@ -303,7 +305,7 @@ automatically to nearby buildings, platforms and anything else with fixed collis
 
 ## offroadbuilder { #offroadbuilder }
 
-Used to tell the AI that this route is a driving route, so it can let loose behind the wheel.
+Used to tell the AI that this route is a driving route.
 
 It is used like the Wall tool.
 
@@ -331,7 +333,10 @@ Add and Name are unavailable for now, with no effect.
 
 Take a transition cliff platform as the example:
 
-This time we want to get from the high ground on the left down a gentle slope into the water at the bottom of the valley. You can see that to the left of the arrow direction there is a slope that is not all that gentle, and to the right a sheer cliff, so we should make a transition cliff taking the height of the slope on the left as the baseline.
+The goal here is to get from the high ground on the left down a gentle slope into the water
+at the bottom of the valley. To the left of the arrow direction there is a slope that is not
+all that gentle, and to the right a sheer cliff, so the transition cliff should take the
+height of the slope on the left as its baseline.
 
 ![Main panel 25](../../assets/editor/041.png)
 
@@ -349,14 +354,17 @@ Then fine-tune the platform to make it reasonable.
 
 (The blue points are the reference points, that is the points generated by the first line drawn; the line between a blue point and a pink point is the terrain's transition.)
 
-(If your platform is that purple-and-black broken render colour, then congratulations, you placed it the wrong way round — please note once more that when drawing a platform you have to make sure the end edge is to the right of the direction the start edge travels in.)
+(If your platform is that purple-and-black broken render colour, <span class="redact" tabindex="0">then congratulations, you placed it the wrong way round</span> — please note once more that when drawing a platform you have to make sure the end edge is to the right of the direction the start edge travels in.)
 
-(The images are not compressed anyway, so zoom in and look at the details yourself.)
+(The images are not compressed, so the details can be zoomed in on.)
 
 ![Main panel 29](../../assets/editor/045.png)
 
-Let's go look in game~
+Looking at it in game, the terrain still came out poorly; adding a few more anchors and
+polishing the terrain matters.
 
-Sure enough it came out a total mess — which shows how important it is to add a few more anchors and polish the terrain. Let this be a warning to you all :(
+??? note "The author's aside"
+    Sure enough it came out a total mess — which shows how important it is to add a few more
+    anchors and polish the terrain. Let this be a warning to you all :(
 
 ![Main panel 30](../../assets/editor/046.png)

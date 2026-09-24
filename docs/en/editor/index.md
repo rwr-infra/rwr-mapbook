@@ -1,7 +1,7 @@
 ---
 title: "The editor"
 description: "The toolbar, the main panel\"s buttons, key bindings and ID search."
-source_sha256: c63a6d30ac2b6c8e1f732d743d166c9a84c041ac3a641786f38e8e10d6890169
+source_sha256: a23d24cedaf9ce43e29d46738d936ec3f4562116213528cb48870a6a6c08bac9
 translated: 2026-09-25
 nav_label: "The editor"
 icon: lucide/layout-grid
@@ -52,7 +52,7 @@ then troubleshooting.
 
     ---
 
-    What to do when an error throws an ID at you.
+    What to do when an error gives you an ID.
 
     [:octicons-arrow-right-24: Read](id-search.md)
 

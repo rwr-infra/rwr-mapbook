@@ -9,45 +9,45 @@ tags: [配置文件, 材質]
 
 # 3rdParSettings 說明（用來加載細緻模型以及部分材質，可不用） { #third-party }
 
-<p class="kicker">SETTINGS · 可選，但開了好看得多</p>
+<p class="kicker">SETTINGS · 可選，但啟用後效果明顯更好</p>
 
 !!! info "這一步可以跳過"
-    不配這個，地編照樣能用，只是模型與材質顯示得粗一些。
-    配它需要先下 [OgreSDK](../prepare/index.md#ogresdk)。
+    不配這個，地編照樣能用，只是模型與材質顯示得比較粗略。
+    配置前需要先下載 [OgreSDK](../prepare/index.md#ogresdk)。
 
-三處路徑要指，缺一處對應的東西就加載不出來。
+三處路徑都要指定，缺一處，對應的資源就加載不出來。
 
 ## 一、OgreXMLConverter.exe Path 選擇 { #ogreref }
 
-1. 點擊 Select，回想一下 `OgreSDK_vc10_v1-7-4.zip` 解壓到哪了，找到它的根目錄。
+1. 點擊 Select，確認 `OgreSDK_vc10_v1-7-4.zip` 解壓到了哪裡，找到它的根目錄。
 2. 順着 `OgreSDK_vc10_v1-7-4\bin\release` 找到 `OgreXMLConverter.exe`，選中它。
-3. 基礎工作完成，繼續第二、三步。
+3. 基礎設置完成，繼續第二、三步。
 
-!!! example "我的路徑，僅供參考"
+!!! example "示例路徑，僅供參考"
     ```text
     D:\RWRMap\OgreSDK_vc10_v1-7-4\bin\release
     ```
 
 ## 二、Mesh files path 選擇 { #mesh-path }
 
-1. 找到你 Steam 上小兵步槍的根目錄。可以在 Steam 界面裡「管理 → 瀏覽本地文件」定位。
+1. 找到 Steam 上小兵步槍的根目錄。可以在 Steam 界面裡「管理 → 瀏覽本地文件」定位。
 
     ![瀏覽本地文件](../../assets/editor/047.png)
 
 2. 順着 `RunningWithRifles\media\packages\vanilla` 找到 `models` 文件夾，選中它。
 3. 點擊 **load mesh**。
 
-!!! example "我的路徑，僅供參考"
+!!! example "示例路徑，僅供參考"
     ```text
     D:\steam\steamapps\common\RunningWithRifles\media\packages\vanilla
     ```
 
-設好之後效果是這樣（以 Mesh 為例）：
+設置完成後效果如下（以 Mesh 為例）：
 
 ![加載 mesh 之後](../../assets/editor/048.png)
 
 /// caption
-模型不再是方塊，能看到原本的形體了。
+模型不再是方塊，可以看到原本的形體。
 ///
 
 ## 三、textures path 選擇 { #textures-path }
@@ -56,12 +56,12 @@ tags: [配置文件, 材質]
 2. 順着 `RunningWithRifles\media\packages\vanilla` 找到 `textures` 文件夾，選中它。
 3. 點擊 **load textures**。
 
-!!! example "我的路徑，僅供參考"
+!!! example "示例路徑，僅供參考"
     ```text
     D:\steam\steamapps\common\RunningWithRifles\media\packages\vanilla
     ```
 
-設好之後效果是這樣（以 Decal 為例）：
+設置完成後效果如下（以 Decal 為例）：
 
 ![加載 textures 之後](../../assets/editor/049.png)
 

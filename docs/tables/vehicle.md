@@ -25,7 +25,7 @@ hide: [toc]
 |  | 机枪悍马<br>humvee.vehicle |  |
 |  | 榴弹悍马<br>humvee_gl.vehicle |  |
 |  | 重生车<br>armored_truck.vehicle |  |
-|  | 信号车<br>radar_truck.vehicle | 只在Invasion有效，快速比赛模式无法正常生成<br>下面标未生成的也可能是这个特性 |
+|  | 信号车<br>radar_truck.vehicle | 只在 Invasion 有效；快速比赛模式无法正常生成<br><span class="redact" tabindex="0">下面标「未生成」的也可能同属这一特性</span> |
 |  | 军械车<br>mobile_armory.vehicle |  |
 |  | 气垫船<br>rubber_boat.vehicle |  |
 |  | 巡逻艇<br>patrol_ship.vehicle |  |
@@ -33,23 +33,23 @@ hide: [toc]
 |  | 全地形车<br>atv_base.vehicle |  |
 |  | 补给车<br>atv_armory.vehicle |  |
 |  | “陶”式反坦克导弹<br>tow.vehicle |  |
-|  | “陶”式反坦克导弹<br>tow_2.vehicle | 与上一个相比这个可以看作是一次性部署物，被摧毁后十小时才会再次生成 |
+|  | “陶”式反坦克导弹<br>tow_2.vehicle | 与上一条相比，可视为一次性部署物：被摧毁后十小时才会再次生成 |
 |  | 沙袋<br>cover1.vehicle |  |
 |  | 重机枪<br>deployable_mg.vehicle |  |
-|  | 重机枪<br>deployable_mg_2.vehicle | 与上一个相比这个可以看作是一次性部署物，被摧毁后十小时才会再次生成 |
+|  | 重机枪<br>deployable_mg_2.vehicle | 与上一条相比，可视为一次性部署物：被摧毁后十小时才会再次生成 |
 |  | M134加特林机枪<br>deployable_minig.vehicle |  |
-|  | M134加特林机枪<br>deployable_minig_2.vehicle | 与上一个相比这个可以看作是一次性部署物，被摧毁后十小时才会再次生成 |
+|  | M134加特林机枪<br>deployable_minig_2.vehicle | 与上一条相比，可视为一次性部署物：被摧毁后十小时才会再次生成 |
 |  | 迫击炮<br>mortar.vehicle |  |
-|  | 迫击炮<br>mortar_2.vehicle | 与上一个相比这个可以看作是一次性部署物，被摧毁后十小时才会再次生成 |
+|  | 迫击炮<br>mortar_2.vehicle | 与上一条相比，可视为一次性部署物：被摧毁后十小时才会再次生成 |
 |  | 自动榴弹发射器<br>deployable_gl.vehicle |  |
-|  | 自动榴弹发射器<br>deployable_gl_2.vehicle | 与上一个相比这个可以看作是一次性部署物，被摧毁后十小时才会再次生成 |
+|  | 自动榴弹发射器<br>deployable_gl_2.vehicle | 与上一条相比，可视为一次性部署物：被摧毁后十小时才会再次生成 |
 |  | 信号塔<br>radar_tower.vehicle |  |
 |  | 油罐<br>gas_tank.vehicle |  |
 |  | 无线电干扰发生器<br>radio_jammer.vehicle |  |
-|  | 无线电干扰发生器<br>radio_jammer2.vehicle | 与上一个相比这个可以看作是一次性部署物，被摧毁后十小时才会再次生成 |
+|  | 无线电干扰发生器<br>radio_jammer2.vehicle | 与上一条相比，可视为一次性部署物：被摧毁后十小时才会再次生成 |
 |  | 水塔<br>water_tower.vehicle |  |
 |  | 迫击炮弹药箱<br>mortar_ammunition_crates.vehicle |  |
-|  | 重生信号弹<br>para_spawn.vehicle | 是已激活的重生信号弹 |
+|  | 重生信号弹<br>para_spawn.vehicle | 这是已激活状态的重生信号弹 |
 | ![](../assets/tables/vehicle-scatter/001.png) | 款式一棕色轿车<br>deco_car1_brown.vehicle |  |
 | ![](../assets/tables/vehicle-scatter/002.png) | 款式一蓝色轿车<br>deco_car1_blue.vehicle |  |
 | ![](../assets/tables/vehicle-scatter/003.png) | 款式一黄色轿车<br>deco_car1_yellow.vehicle |  |
@@ -174,26 +174,26 @@ hide: [toc]
 |  | 沙漠巡逻车<br>buggy.vehicle |  |
 |  | 武装皮卡<br>technical.vehicle |  |
 |  | 陶氏鼬鼠<br>wiesel_tow.vehicle |  |
-|  | 陶氏鼬鼠空投信标<br>wiesel_spawn.vehicle | 会有间隔的一直生成 |
+|  | 陶氏鼬鼠空投信标<br>wiesel_spawn.vehicle | 会间隔性地持续生成 |
 |  | 香蕉车<br>banana_car.vehicle |  |
-|  | 香蕉车空投信标<br>banana_car_spawn.vehicle | 会有间隔的一直生成 |
-| ![](../assets/tables/vehicle-scatter/050.png) | 香蕉皮生成器<br>banana_peel_spawner.vehicle | 就是一直往外蹦香蕉车爆炸的香蕉皮<br>会有间隔的一直生成，间隔很短 |
+|  | 香蕉车空投信标<br>banana_car_spawn.vehicle | 会间隔性地持续生成 |
+| ![](../assets/tables/vehicle-scatter/050.png) | 香蕉皮生成器<br>banana_peel_spawner.vehicle | 会不断吐出爆炸香蕉车的香蕉皮<br>会间隔性地持续生成，间隔很短 |
 |  | G17/A1两栖战车<br>aav7.vehicle |  |
-|  | G17/A1两栖战车空投信标<br>aav7_spawn.vehicle | 会有间隔的一直生成 |
-| ![](../assets/tables/vehicle-scatter/051.png)<br>![](../assets/tables/vehicle-scatter/052.png) | 掩体空投信标<br>cover_crate_para.vehicle | 会有间隔的一直生成 |
+|  | G17/A1两栖战车空投信标<br>aav7_spawn.vehicle | 会间隔性地持续生成 |
+| ![](../assets/tables/vehicle-scatter/051.png)<br>![](../assets/tables/vehicle-scatter/052.png) | 掩体空投信标<br>cover_crate_para.vehicle | 会间隔性地持续生成 |
 |  | emp中介<br>emp.vehicle | 未生成 |
 |  | 武装卡车<br>guntruck.vehicle |  |
-|  | 武装卡车空投中介<br>guntruck_para.vehicle | 武装卡车空投中介，只会开局生成一次，效果就是刷个武卡下来 |
-|  | 武装卡车空投信标<br>guntruck_spawn.vehicle | 会有间隔的一直生成 |
+|  | 武装卡车空投中介<br>guntruck_para.vehicle | 武装卡车空投中介；只在开局生成一次，效果是投放一辆武装卡车 |
+|  | 武装卡车空投信标<br>guntruck_spawn.vehicle | 会间隔性地持续生成 |
 |  | “黄蜂”导弹发射器<br>hornet.vehicle |  |
-|  | “黄蜂”导弹发射器<br>hornet_2.vehicle | 与上一个相比这个可以看作是一次性部署物，被摧毁后十小时才会再次生成 |
+|  | “黄蜂”导弹发射器<br>hornet_2.vehicle | 与上一条相比，可视为一次性部署物：被摧毁后十小时才会再次生成 |
 |  | ACAV步兵战车<br>m113_tank_acav.vehicle |  |
 |  | 冰淇淋车<br>icecream.vehicle | 未生成 |
 |  | 救护车<br>medivan.vehicle | 未生成 |
 |  | [不到是啥]<br>repair.vehicle | 未生成 |
 |  | 修理臂<br>repair_crane.vehicle | 未生成 |
-|  | ACAV步兵战车空投信标<br>vulcan_acav_spawn.vehicle | 会有间隔的一直生成 |
-|  | 维修车<br>zjx19.vehicle | 未生成<br>此为老版本已被删掉的维修车<br>而新版本的zjx19_auto.vehicle没被记录到common.resources里，也无法生成 |
+|  | ACAV步兵战车空投信标<br>vulcan_acav_spawn.vehicle | 会间隔性地持续生成 |
+|  | 维修车<br>zjx19.vehicle | 未生成<br>这是老版本中已被删除的维修车<br>新版本 zjx19_auto.vehicle 未记录在 common.resources 中，同样无法生成 |
 |  | 维修车空投信标<br>zjx19_spawn.vehicle | 未生成，原因同上 |
 |  | 机炮鼬鼠<br>wiesel_mk20.vehicle |  |
 |  | NOXE Ghost导弹发射车<br>noxe.vehicle |  |
@@ -206,13 +206,13 @@ hide: [toc]
 |  | 圣诞快乐车空投信标<br>jeep_xmas_spawn.vehicle | 未生成 |
 | ![](../assets/tables/vehicle-scatter/053.png) | 导弹发射器<br>missile_launcher.vehicle |  |
 | ![](../assets/tables/vehicle-scatter/054.png) | 军工铲刨的小掩体<br>sandbag_cover.vehicle |  |
-| ![](../assets/tables/vehicle-scatter/055.png) | 狗狗箱子<br>dogcrate_para.vehicle | 在地上生成，然后破裂刷出一只狗子<br>会有间隔的一直生成 |
+| ![](../assets/tables/vehicle-scatter/055.png) | 狗狗箱子<br>dogcrate_para.vehicle | 在地面生成，随后破裂并生成一只狗<br>会间隔性地持续生成 |
 |  | 一级圆程式赛车<br>f1.vehicle |  |
-|  | 一级圆程式赛车空投信标<br>f1_spawn.vehicle | 会有间隔的一直生成 |
+|  | 一级圆程式赛车空投信标<br>f1_spawn.vehicle | 会间隔性地持续生成 |
 |  | LAI-109多管火箭炮车<br>lai-109.vehicle |  |
-|  | LAI-109多管火箭炮车空投信标<br>lai-109_spawn.vehicle | 会有间隔的一直生成 |
+|  | LAI-109多管火箭炮车空投信标<br>lai-109_spawn.vehicle | 会间隔性地持续生成 |
 |  | LAILV-002装甲运兵车<br>lailv-002.vehicle |  |
-|  | LAILV-002装甲运兵车空投信标<br>lailv-002_spawn.vehicle | 会有间隔的一直生成 |
+|  | LAILV-002装甲运兵车空投信标<br>lailv-002_spawn.vehicle | 会间隔性地持续生成 |
 |  | MMLS-528自行布雷系统<br>mmls-528.vehicle |  |
-|  | MMLS-528自行布雷系统空投信标<br>mmls-528_spawn.vehicle | 会有间隔的一直生成 |
-| ![](../assets/tables/vehicle-scatter/056.png) | 雪人<br>snowman.vehicle | 圣诞活动的休眠状态小雪人，但是因为没脚本刷出来这个也只能被推着跑<br>无法激活 |
+|  | MMLS-528自行布雷系统空投信标<br>mmls-528_spawn.vehicle | 会间隔性地持续生成 |
+| ![](../assets/tables/vehicle-scatter/056.png) | 雪人<br>snowman.vehicle | 圣诞活动里的休眠状态小雪人；没有脚本将它生成，因此只能被推着移动<br>无法激活 |

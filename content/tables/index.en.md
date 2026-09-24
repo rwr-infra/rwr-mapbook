@@ -1,7 +1,7 @@
 ---
 title: "Model inventories"
 description: "Mesh E, Wall E, Building E, Vehicle Scatter and Decal."
-source_sha256: c1a81fb8095602ae94ec55d83fd734991244e6319693d9f9e2abb7c6e04bd7fb
+source_sha256: 88c7499feb677fb55f6a027f45867e105e82ed8f3ab2bed5d757bd4577c0d753
 translated: 2026-09-25
 nav_label: "Model inventories"
 icon: lucide/table
@@ -14,7 +14,7 @@ tags: [Models]
 <p class="kicker">TABLES · six hundred objects, and whether they work</p>
 
 Five sheets, **template version vao0822**. Each row is one object: a preview, what it is,
-and whatever was measured about it in the editor.
+and the notes taken while testing it in the editor.
 
 | Page | What is in it | Entries |
 | --- | --- | --- |
@@ -25,10 +25,10 @@ and whatever was measured about it in the editor.
 | [Decal](decal.md) | Ground decals | 20 |
 
 !!! warning "How to read the previews"
-    The left image is an oblique view looking down; the right one faces the normal
-    directly — what the editor shows you. Judge by the **horizontal** line: the vertical
-    one is in perspective and can make an object look tilted.
+    The left image looks down at an oblique angle; the right one faces the normal
+    directly — the view you get in the editor. Judge the shape by the **horizontal** line:
+    the vertical one is in perspective and can make an object look tilted.
 
 !!! tip "The name column"
-    Before the slash is what the thing is; after it is the `template = …` reference.
-    That is the name you look up in the editor.
+    Before the slash is what the thing is; after it is the `template = …` reference name.
+    That is the name you look it up by in the editor.

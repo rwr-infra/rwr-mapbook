@@ -1,7 +1,7 @@
 ---
 title: "Overview"
 description: "An overview of the editor's toolbar and its buttons."
-source_sha256: f4ad65797bc11dc076d1372a0ddb58361d2189240df4f5aefdd9bffb8d59ab0a
+source_sha256: eb4caad62fe647c43be50daeabc2e4689cd530d9f9ba61df683dcc975d90e6b0
 translated: 2026-09-25
 nav_label: "Overview"
 icon: lucide/compass
@@ -82,7 +82,7 @@ The editor's main panel. That row on the toolbar is the tools below.
 
     ---
 
-    Track an object down by ID when an error is thrown.
+    Locate an object by ID when an error is thrown.
 
     [:octicons-arrow-right-24: Read](id-search.md)
 

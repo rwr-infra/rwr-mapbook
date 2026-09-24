@@ -28,7 +28,7 @@ tags: [模型, 牆體]
 
 
 !!! note "寫這張表的時候記下的"
-    註：模板版本vao0822，視角為側視，爆炸物摧毀判定貌似需要靠近中間，在兩邊可能炸不掉，如果牆是隱形的或者形狀/材質奇奇怪怪的那大概率是跟平臺結合使用的
+    註：模板版本 vao0822，視角為側視。爆炸物摧毀判定似乎需要靠近中間；兩側可能炸不掉（未逐項驗證）。如果牆是隱形的，或者形狀/材質看起來異常，多半是配合平臺使用的。
 
 ## 正常牆 { #normal }
 
@@ -46,7 +46,7 @@ tags: [模型, 牆體]
 | ![](../../assets/tables/wall-e/019.png) | 一號懸崖牆<br>template = CliffWall1 |  |
 | ![](../../assets/tables/wall-e/021.png) | 二號懸崖牆<br>template = CliffWall2 |  |
 | ![](../../assets/tables/wall-e/023.png) | 一號複合牆<br>template = CompoundWall1 |  |
-| ![](../../assets/tables/wall-e/025.png) | 可破壞的一號複合牆<br>template = CompoundWallDestructible1 | 可破壞是指代碼破壞，正常玩弄不壞 |
+| ![](../../assets/tables/wall-e/025.png) | 可破壞的一號複合牆<br>template = CompoundWallDestructible1 | 可破壞指代碼層面的破壞，正常遊玩時打不壞 |
 | ![](../../assets/tables/wall-e/027.png) | 斑馬紋圍欄<br>template = CorrugatedFence |  |
 | ![](../../assets/tables/wall-e/029.png) | 一號農場圍欄<br>template = FarmFence1 |  |
 | ![](../../assets/tables/wall-e/031.png) | 二號農場圍欄<br>template = FarmFence2 |  |

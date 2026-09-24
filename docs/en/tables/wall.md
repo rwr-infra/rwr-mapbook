@@ -1,7 +1,7 @@
 ---
 title: "Wall E"
 description: "Normal walls and special walls, including notes on what destroys them."
-source_sha256: 8b6e22ca3720da00a26125c42c49aed96f1968111115d3463c3433f3752fb672
+source_sha256: a0db826700fc813cc81c1b00697a1c0fc4ed7d8efc9edf09be688a124905b186
 translated: 2026-09-25
 nav_label: "Wall E"
 icon: lucide/box
@@ -33,7 +33,7 @@ tags: [Models, Walls]
 
 
 !!! note "Noted while writing this table"
-    Note: template version vao0822, the views are side-on. Destroying a wall with explosives seems to need hitting it near the middle — hits at the edges may fail to blow it up. If a wall is invisible, or its shape/material looks odd, it is most likely meant to be used together with a platform.
+    Note: template version vao0822; the views are side-on. Destroying a wall with explosives seems to need hitting it near the middle; hits at the edges may fail to blow it up (not verified case by case). If a wall is invisible, or its shape/material looks odd, it is most likely meant to be used together with a platform.
 
 ## Normal walls { #normal }
 
@@ -51,7 +51,7 @@ tags: [Models, Walls]
 | ![](../../assets/tables/wall-e/019.png) | Cliff wall 1<br>template = CliffWall1 |  |
 | ![](../../assets/tables/wall-e/021.png) | Cliff wall 2<br>template = CliffWall2 |  |
 | ![](../../assets/tables/wall-e/023.png) | Compound wall 1<br>template = CompoundWall1 |  |
-| ![](../../assets/tables/wall-e/025.png) | Destructible compound wall 1<br>template = CompoundWallDestructible1 | "Destructible" means destructible in code — you cannot break it by playing around normally |
+| ![](../../assets/tables/wall-e/025.png) | Destructible compound wall 1<br>template = CompoundWallDestructible1 | "Destructible" means destructible in code; normal play cannot break it |
 | ![](../../assets/tables/wall-e/027.png) | Zebra-striped fence<br>template = CorrugatedFence |  |
 | ![](../../assets/tables/wall-e/029.png) | Farm fence 1<br>template = FarmFence1 |  |
 | ![](../../assets/tables/wall-e/031.png) | Farm fence 2<br>template = FarmFence2 |  |

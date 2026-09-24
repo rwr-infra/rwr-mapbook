@@ -47,7 +47,7 @@ tags: [界面, 工具]
 
     ---
 
-    报错里甩给你一个 ID 时，怎么把它揪出来。
+    报错里给出一个 ID 时，怎么把它找出来。
 
     [:octicons-arrow-right-24: 去看](id-search.md)
 

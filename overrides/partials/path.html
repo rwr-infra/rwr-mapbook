@@ -21,8 +21,6 @@
 {% import "partials/route.html" as route with context %}
 {% set vdir = route.version(here) | trim %}
 {% set ldir = route.lang(here) | trim %}
-{% set is_en = ldir == "en" %}
-{% set is_hant = ldir == "zh-hant" %}
 {% set lang_dir = ldir %}
 {% set L = route.suffix(ldir) | trim %}
 {% set depth = page.ancestors | length %}

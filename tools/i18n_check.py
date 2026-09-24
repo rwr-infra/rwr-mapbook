@@ -486,19 +486,30 @@ def inspect_rendered_output() -> dict:
     missing = []
     for rel, needle, label in SMOKE:
         page = site / rel
-        if not page.exists():
-            missing.append(f"{rel} 不存在，无法检查{label}")
-        elif needle not in page.read_text(encoding="utf-8"):
+        try:
+            text = page.read_text(encoding="utf-8")
+        except OSError:                                  # 正被 serve 重建，见下
+            continue
+        if needle not in text:
             missing.append(f"{rel} 缺少{label}（模板里的条件可能恒为假）")
 
     # 全站内部链接：把每一条 href/src 解析成绝对路径，看文件在不在。
     # 这一类 bug（模板里相对路径写错、`~ x | url` 少了括号、派生语种深一层…）
     # 已经出现过三次，而构建阶段一律不报错，只在读者点到时才 404，所以在这里兜住。
+    # ⚠️ 本脚本常常与 `make serve` 同时开着跑，而 zensical serve 会**整棵重建
+    #    site/**：遍历到一半文件被删掉是常态（报错长这样：FileNotFoundError，
+    #    指向某个 index.html）。体检的判据是「链接指向的东西在不在」，
+    #    不是「构建期间文件够不够稳」，所以这里只跳过当场读不到的文件，
+    #    不让它把整份报告带崩——否则预览一开着就没法体检了。
     broken: list[str] = []
     for page in sorted(site.rglob("*.html")):
         rel = page.relative_to(site).as_posix()
         base = "/" + (rel[: -len("index.html")] if rel.endswith("index.html") else rel)
-        for match in re.finditer(r'(?:href|src)="([^"]+)"', page.read_text(encoding="utf-8", errors="ignore")):
+        try:
+            html = page.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            continue
+        for match in re.finditer(r'(?:href|src)="([^"]+)"', html):
             raw = match.group(1)
             if not raw or raw[0] in "#?" or raw.startswith(("http://", "https://", "mailto:", "data:", "javascript:")):
                 continue

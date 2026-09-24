@@ -23,7 +23,7 @@ tags: [模型, 贴花]
 | ![](../assets/tables/decal/001.png) | 停机坪<br>template = heliped |  |
 | ![](../assets/tables/decal/002.png) | 三叶草草坪<br>template = clover |  |
 | ![](../assets/tables/decal/003.png) | 人行道<br>template = pavement |  |
-| ![](../assets/tables/decal/004.png) | 花<br>template = flower | 和上面的一样，这个贴图引用有bug |
+| ![](../assets/tables/decal/004.png) | 花<br>template = flower | 与上一条相同；该贴图引用存在 bug |
 | ![](../assets/tables/decal/005.png) | 人行道<br>template = pavement_tile1 | 正方形砖块纹理 |
 | ![](../assets/tables/decal/006.png) | 屋顶<br>template = roof_tile1 | 长方形砖块纹理 |
 | ![](../assets/tables/decal/007.png) | 检修井<br>template = manhole |  |
@@ -39,4 +39,4 @@ tags: [模型, 贴花]
 | ![](../assets/tables/decal/017.png) | 烧焦地面<br>template = burned_ground |  |
 | ![](../assets/tables/decal/018.png) | 树荫<br>template = tree_ground_base1 | 一个淡黑色圆 |
 | ![](../assets/tables/decal/019.png) | 一大片网球场<br>template = tennis_court |  |
-| ![](../assets/tables/decal/020.png) | 神秘棕色方块<br>template = ee_8 | <br>实际上是KILROY WAS HERE彩蛋图标<br>在地图文件内放了ee_8才会正常显示<br>![](../assets/tables/decal/021.png) |
+| ![](../assets/tables/decal/020.png) | 神秘棕色方块<br>template = ee_8 | <br>实际上是 KILROY WAS HERE 彩蛋图标<br>地图文件里放了 ee_8 才会正常显示<br>![](../assets/tables/decal/021.png) |

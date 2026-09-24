@@ -1,7 +1,7 @@
 ---
 title: "Building E"
 description: "Placeable houses."
-source_sha256: 308620a31cc8b0f226310e0098ba43e49aa2d9ce221b0a2d71834a16c1b97eb3
+source_sha256: 24bb004bb5754fa51023ff1297ea49653014dede4ca002cd1b79dbc591dfce5d
 translated: 2026-09-25
 nav_label: "Building E"
 icon: lucide/box
@@ -17,7 +17,7 @@ tags: [Models, Buildings]
     oblique angle, the right one faces the normal directly. Judge the shape by the
     **horizontal** line; the vertical one is in perspective.
 
-    One table. The Notes column says what is wrong with each house.
+    One table. The Notes column records what is wrong with each house.
 
 *[template]: the name an object is referred to by in `template = …`; that is how you look it up
 

@@ -1,7 +1,7 @@
 ---
 title: "About"
 description: "Which editor version this handbook covers, how the URLs are laid out, and what has not been verified yet."
-source_sha256: 274df00b18166b04881fa338abf06df427ffca7849cf72a87258fc61ee4329fe
+source_sha256: c1fe55ae844715f3dd6e0aeb70d3178796ba2952a464dbf64504daa5b234993a
 translated: 2026-09-25
 nav_label: "About"
 icon: lucide/info
@@ -56,8 +56,18 @@ Not every line has been tried. Where that is the case, the page says so — read
 The "it is said that…" passages are kept as written too.
 **This handbook does not second-guess the source.**
 
-!!! quote "Why it reads so bluntly"
-    These notes were written for people who actually build maps: "crashes on load",
-    "no collision box", "whatever you do, do not file every material error under
-    template meshes". All of it is kept as written, not polished into formal prose —
-    polished, a reader could no longer tell how certain the author was.
+!!! quote "What is written straight, and what you have to click open"
+    These notes are written for people who build maps: conclusions are written
+    straight, with the wording left alone — "crashes on load", "no collision box",
+    "whatever you do, do not file every material error under template meshes" all
+    stay exactly as written. Polished into formal prose, a reader could no longer
+    tell how certain the author was.
+
+    Anything unverified still carries its marker: "untested", "not tried". The
+    meaning has not changed — it means nobody has tried it yet, which is not the
+    same as "it works" or "it does not".
+
+    The author's own asides and complaints are a separate case: they affect no
+    conclusion, but left in the body they make the whole page read like something
+    other than a manual, so they go into **click-to-open** blocks. Clicking one still
+    shows the original wording, so a reader can still tell how certain the author was.

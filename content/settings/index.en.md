@@ -1,7 +1,7 @@
 ---
 title: "Configuration files"
 description: "mapSettings, 3rdParSettings and RefpM."
-source_sha256: 8aa9da491bb5815e4b779f5b5d001c0814d0c379714a18a97b3549db12178d8a
+source_sha256: c6d119afc04368e4e0162eafc030925d69ec386359df500aed1886e4e93f248c
 translated: 2026-09-25
 nav_label: "Configuration files"
 icon: lucide/settings
@@ -11,7 +11,7 @@ tags: [Config files]
 
 # Configuration files
 
-<p class="kicker">SETTINGS · three places you have to fill in</p>
+<p class="kicker">SETTINGS · three configurations to fill in</p>
 
 Three configurations, one job each: one for the map itself, one for models and materials
 that live outside the editor, and one for a reference image you lay underneath.
@@ -24,9 +24,8 @@ that live outside the editor, and one for a reference image you lay underneath.
 
     The map's own settings: name, description, day and night colours, ambient sound.
 
-    !!! warning "**Untested**"
-        This page is marked "untested", and several rows still read
-        "not tried, no idea what this is".
+    !!! warning "**Untested**: not verified item by item"
+        Several rows still read "not tried, no idea what this is".
 
     [:octicons-arrow-right-24: Read](map-settings.md)
 
@@ -34,7 +33,8 @@ that live outside the editor, and one for a reference image you lay underneath.
 
     ---
 
-    Loads detailed models and some materials. Optional, but it looks far better with it.
+    Loads detailed models and some materials. Optional, but the models and materials
+    clearly look better with it.
 
     [:octicons-arrow-right-24: Read](third-party.md)
 

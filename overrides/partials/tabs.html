@@ -17,8 +17,6 @@
 {% import "partials/route.html" as route with context %}
 {% set vdir = route.version(here) | trim %}
 {% set ldir = route.lang(here) | trim %}
-{% set is_en = ldir == "en" %}
-{% set is_hant = ldir == "zh-hant" %}
 {% set lang_dir = ldir %}
 <nav class="md-tabs" aria-label="{{ lang.t('tabs') }}" data-md-component="tabs">
   <div class="md-grid">

@@ -1,7 +1,7 @@
 ---
 title: "Key bindings"
 description: "What the mouse and keyboard each do in the editor."
-source_sha256: e30ba26957a8f43dc8167e1bb95042a7a0652fd33dbd050c80da7090627bb09d
+source_sha256: bef4ee1dad7dbcf57f4fc6ea721717cb76a07b08c01b1cd65c21a9351b072d26
 translated: 2026-09-25
 nav_label: "Key bindings"
 icon: lucide/keyboard
@@ -12,11 +12,12 @@ hide: [toc]
 
 # Key bindings { #keys }
 
-<p class="kicker">EDITOR · where to put your hands</p>
+<p class="kicker">EDITOR · what the mouse and keyboard do</p>
 
 !!! question "Is this table complete?"
-    The top of this page leaves a line blank, "(is it really complete?)" — which means it is
-    **not verified**. If you find one missing while using it, just add it to the table below.
+    This page originally left a line blank, "(is it really complete?)" — meaning the table is
+    **not verified item by item**. If you find something missing while using it, add it to
+    the table below.
 
 | Key | Action |
 | --- | --- |

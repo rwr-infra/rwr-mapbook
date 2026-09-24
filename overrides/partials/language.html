@@ -9,13 +9,16 @@
   —— base.html 里写的是 <html lang="{{ lang.t('language') }}">。
 
   语言判定用 page.url 前缀（默认语言在根，网址没有前缀）：
-      ''          → zh-hans（简体，默认）
-      'zh-hant/'  → zh-hant（繁体）
-      'en/'       → en（英文）
+      ''          → 默认语言（简体）
+      'zh-hant/'  → 繁体
+      'en/'       → 英文
+  判据本身在 partials/route.html；这里不比对任何语言名。
 
-  <html lang> 用 BCP-47 的**文字**标签 zh-Hans / zh-Hant / en。
-  主题自带的 zh 语言包返回的是裸 "zh"，这里按页面改写为带文字子标签的值；
-  繁体用主题自带的 zh-Hant 包。
+  <html lang> 用 BCP-47 的**文字**标签，从 alternate 的 lang 派生（route.code）。
+  主题自带的 zh 语言包返回的是裸 "zh"，而这里要的是 zh-Hans，所以**语言包与
+  语言代码是两件事**：包名由 lang_pack 那组配置给出（见 route.pack 的说明），
+  代码由 lang 派生——原先这一段是「is_en / is_hant / 否则」的三支判断，
+  加第四种语言时两样都得回来补。
 
   回退链保持主题原样：当前语言包 → 英文包 → 键名本身。
 -#}
@@ -23,18 +26,9 @@
 {% import "partials/route.html" as route with context %}
 {% set vdir = route.version(here) | trim %}
 {% set ldir = route.lang(here) | trim %}
-{% set is_en = ldir == "en" %}
-{% set is_hant = ldir == "zh-hant" %}
-{% if is_en %}
-  {% set pack = "en" %}
-  {% set lang_tag = "en" %}
-{% elif is_hant %}
-  {% set pack = "zh-Hant" %}
-  {% set lang_tag = "zh-Hant" %}
-{% else %}
-  {% set pack = "zh" %}
-  {% set lang_tag = "zh-Hans" %}
-{% endif %}
+{% set L = route.suffix(ldir) | trim %}
+{% set lang_tag = route.code(ldir) | trim %}
+{% set pack = route.pack(ldir) | trim %}
 {% import "partials/languages/" ~ pack ~ ".html" as lang %}
 {% import "partials/languages/en.html" as fallback %}
 {#- 「同意」按钮的文案按语言改写。
@@ -44,5 +38,5 @@
     对一个只是把话说清楚的说明框，「同意」在语义上是错的。
     改用公告体里表示「已阅知」的说法，不用「知道了」这类口语答复。
     其余按键（管理设定 / 拒绝）本站在 actions 里没有启用，不改。 -#}
-{% set consent_ok = "Acknowledged" if is_en else "我已知悉" %}
+{% set consent_ok = config.extra["consent_accept" ~ L] | d(config.extra.consent_accept, true) %}
 {% macro t(key) %}{{ lang_tag if key == "language" else (consent_ok if key == "consent.accept" else (lang.t(key) or fallback.t(key) or key)) }}{% endmacro %}

@@ -71,7 +71,7 @@ nav: ["prepare", "editor", "tables", "settings", "about"]
 | 语言 | 右侧的翻译图标 | 只换语言，版本留着 |
 
 版本这一格现在只有两项：**地编版本 0101**（就是你在看的这份）与**彩蛋**。
-彩蛋不是历史版，是砍版机制的试用品——那一支里只有一页话，想说给一些人听。
+彩蛋不是历史版，是砍版机制的试用品——那一支里只有一页话<span class="redact" tabindex="0">，想说给一些人听</span>。
 
 [从准备工作开始](prepare/index.md){ .md-button .md-button--primary }
 [直接翻模型清单](tables/index.md){ .md-button }

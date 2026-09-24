@@ -80,7 +80,7 @@ tags: [界面, 工具]
 
     ---
 
-    报错时按 ID 把物件揪出来。
+    报错时按 ID 定位物件。
 
     [:octicons-arrow-right-24: 去看](id-search.md)
 

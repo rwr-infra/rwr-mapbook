@@ -81,7 +81,7 @@ tags: [界面, 工具]
 
     ---
 
-    報錯時按 ID 把物件揪出來。
+    報錯時按 ID 定位物件。
 
     [:octicons-arrow-right-24: 去看](id-search.md)
 

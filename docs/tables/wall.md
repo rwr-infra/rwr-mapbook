@@ -28,7 +28,7 @@ tags: [模型, 墙体]
 
 
 !!! note "写这张表的时候记下的"
-    注：模板版本vao0822，视角为侧视，爆炸物摧毁判定貌似需要靠近中间，在两边可能炸不掉，如果墙是隐形的或者形状/材质奇奇怪怪的那大概率是跟平台结合使用的
+    注：模板版本 vao0822，视角为侧视。爆炸物摧毁判定似乎需要靠近中间；两侧可能炸不掉（未逐项验证）。如果墙是隐形的，或者形状/材质看起来异常，多半是配合平台使用的。
 
 ## 正常墙 { #normal }
 
@@ -46,7 +46,7 @@ tags: [模型, 墙体]
 | ![](../assets/tables/wall-e/019.png) | 一号悬崖墙<br>template = CliffWall1 |  |
 | ![](../assets/tables/wall-e/021.png) | 二号悬崖墙<br>template = CliffWall2 |  |
 | ![](../assets/tables/wall-e/023.png) | 一号复合墙<br>template = CompoundWall1 |  |
-| ![](../assets/tables/wall-e/025.png) | 可破坏的一号复合墙<br>template = CompoundWallDestructible1 | 可破坏是指代码破坏，正常玩弄不坏 |
+| ![](../assets/tables/wall-e/025.png) | 可破坏的一号复合墙<br>template = CompoundWallDestructible1 | 可破坏指代码层面的破坏，正常游玩时打不坏 |
 | ![](../assets/tables/wall-e/027.png) | 斑马纹围栏<br>template = CorrugatedFence |  |
 | ![](../assets/tables/wall-e/029.png) | 一号农场围栏<br>template = FarmFence1 |  |
 | ![](../assets/tables/wall-e/031.png) | 二号农场围栏<br>template = FarmFence2 |  |

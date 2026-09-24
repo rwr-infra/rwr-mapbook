@@ -8,13 +8,14 @@
 #   make versions 版本清单体检：声明与 content/versions/ 是否对得上
 #   make links   产物链接体检：站内引用 / 目录尾斜杠 / 跳转桩目标 / 补正脚本
 #   make build   生成 → 构建站点 → 标签过滤 → 链接体检 → 翻译度检查
+#   make watch   盯着 content/，改了自动重新生成 docs/（配合 make serve 用）
 #   make serve   本地预览 http://127.0.0.1:8000（根域；线上带子路径，见文件末尾）
 #   make serve-subpath  同上，但按线上的子路径预览
 #   make sync    为缺失的译文建立骨架，然后重新生成
 
 UV ?= uv
 
-.PHONY: gen docs nav check versions links build serve serve-subpath sync clean
+.PHONY: gen docs nav check versions links build serve serve-subpath watch sync clean
 
 gen: docs nav
 
@@ -42,6 +43,12 @@ build: gen
 	$(UV) run zensical build --clean --strict
 	$(UV) run python tools/linkcheck.py
 	$(UV) run python tools/i18n_check.py
+
+# 预览时另开一个终端跑这个：`zensical serve` 只盯 docs/（生成物），
+# 改 content/ 下的源文件它看不见——这一步把「content/ → docs/」自动接上。
+# 两个一起开，改完存盘就能在浏览器里看到。
+watch:
+	$(UV) run python tools/watch.py
 
 # ⚠️ `zensical serve` 跳过后处理链，所以**预览里没有链接体检**——它是构建之后
 #    才做得了的事。标签索引不在此列：它由 docsgen 各自生成，预览与线上一致。

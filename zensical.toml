@@ -46,7 +46,11 @@ extra_css = [
 # 三种语言混在一个列表里的。这个脚本把标签**按语言分段**（当前页面的语言排最前），
 # 并把面板上写死的英文换成页面语言的词。它得挂进主题搜索面板的 shadow root，
 # 原理与「升级时要跟着看」的提醒都写在那个文件的头部。
-extra_javascript = ["javascripts/glightbox.min.js", "javascripts/search-lang.js"]
+extra_javascript = [
+  "javascripts/glightbox.min.js",
+  "javascripts/search-lang.js",
+  "javascripts/redact.js",
+]
 
 # 链接与锚点校验：构建时就把断链/失效锚点报出来，而不是等读者点到。
 # Zensical 只支持链接相关的这几项（导航类的会被忽略）。
@@ -104,6 +108,69 @@ footer_tagline_zh_hant = "有人試過，才寫下來。"
 footer_note = "由 Zensical 构建<br>字体与脚本全部自托管"
 footer_note_en = "Built with Zensical<br>Fonts and scripts are entirely self-hosted"
 footer_note_zh_hant = "由 Zensical 構建<br>字型與腳本全部自託管"
+
+# 页脚底栏的三段固定 UI 文案。以前是模板里的三支判断（is_en / is_hant / 否则），
+# 加一种语言要回去补三处，漏了也不报错（页面照常出，只是静静退回默认语言的
+# 文案）——所以挪到这里，模板只按后缀取。
+# 「按标签浏览」是页脚那个回标签索引的链接文字。
+footer_browse_tags = "按标签浏览 ↗"
+footer_browse_tags_en = "Browse by tag ↗"
+footer_browse_tags_zh_hant = "依標籤瀏覽 ↗"
+
+# 「隐私设置」指向 #__consent，也就是那份数据隐私说明（见 consent 一节）。
+footer_privacy = "隐私设置"
+footer_privacy_en = "Privacy settings"
+footer_privacy_zh_hant = "隱私設定"
+
+# 「回到顶部」也就是回 #top。
+footer_back_top = "回到顶部 ↑"
+footer_back_top_en = "Back to top ↑"
+footer_back_top_zh_hant = "回到頂部 ↑"
+
+# 同意表单「接受」按钮的文字（主题键名是 consent.accept，见 partials/language.html）。
+# 表单原意是让人选第三方 cookie，但本站没有任何可选项（见下面的 consent 一节），
+# 对一个只是把话说清楚的说明框，「同意」在语义上是错的——所以这里换成公告体里
+# 表示「已阅知」的说法，不用「知道了」这类口语答复。
+consent_accept = "我已知悉"
+consent_accept_en = "Acknowledged"
+consent_accept_zh_hant = "我已知悉"
+
+# ── 主题界面文案包 ────────────────────────────────────────────────────────
+# 主题自带的界面文案包是 partials/languages/<包名>.html，包名**不等于**语言代码：
+# 简体那一包叫 `zh`（不是 `zh-Hans`），繁体 `zh-Hant`、英文 `en`。
+# 因此这一项**无法从 alternate 的 lang 派生**，只能由配置给出（见
+# overrides/partials/route.html 的 pack 宏：MiniJinja 的 import 没有
+# `ignore missing`，模板里也问不到「这个模板存在吗」，硬拼只会在构建期报错）。
+# ⚠️ 主题那几包是「自动生成、不要手改」的上游产物，这里只存包名、不存内容；
+#    加语言时若主题没有与之同名的包，就补一条 `_<lang>` 指向最接近的那包。
+lang_pack = "zh"
+lang_pack_en = "en"
+lang_pack_zh_hant = "zh-Hant"
+
+# ── 搜索面板的文案 ────────────────────────────────────────────────────────
+# 主题的搜索面板（`search.json` 那一套）文案是**写死英文**的，没有多语言入口。
+# 这几个词由 overrides/main.html 按页面语言取出来交给
+# docs/javascripts/search-lang.js 换上去，加语言时照着加一行 `_<lang>` 即可
+# ——那边不再有自己的文案表。
+search_text = "搜索"
+search_text_en = "Search"
+search_text_zh_hant = "搜尋"
+
+search_filters = "筛选"
+search_filters_en = "Filters"
+search_filters_zh_hant = "篩選"
+
+search_results = "条结果"
+search_results_en = "results"
+search_results_zh_hant = "條結果"
+
+search_close = "关闭搜索"
+search_close_en = "Close search"
+search_close_zh_hant = "關閉搜尋"
+
+search_filter_by_tag = "按标签筛选"
+search_filter_by_tag_en = "Filter by tag"
+search_filter_by_tag_zh_hant = "依標籤篩選"
 
 footer_bottom = "RWR 地图编辑器手册"
 footer_bottom_en = "RWR MAP EDITOR'S HANDBOOK"

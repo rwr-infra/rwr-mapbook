@@ -51,7 +51,7 @@ hide: [navigation]
 
 ## <span class="md-tag">未验证</span> { #tag:未验证 }
 
-- [mapSettings 说明（待试）](../settings/map-settings.md)
+- [mapSettings 说明](../settings/map-settings.md)
 
 ## <span class="md-tag">材质</span> { #tag:材质 }
 
@@ -89,6 +89,6 @@ hide: [navigation]
 ## <span class="md-tag">配置文件</span> { #tag:配置文件 }
 
 - [设置文件](../settings/index.md)
-- [mapSettings 说明（待试）](../settings/map-settings.md)
+- [mapSettings 说明](../settings/map-settings.md)
 - [RefpM 说明](../settings/reference-images.md)
 - [3rdParSettings 说明](../settings/third-party.md)

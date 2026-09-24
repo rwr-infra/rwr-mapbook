@@ -73,7 +73,7 @@ hide: [navigation]
 | 語言 | 右側的翻譯圖標 | 只換語言，版本留着 |
 
 版本這一格現在只有兩項：**地編版本 0101**（就是你在看的這份）與**彩蛋**。
-彩蛋不是歷史版，是砍版機制的試用品——那一支裡只有一頁話，想說給一些人聽。
+彩蛋不是歷史版，是砍版機制的試用品——那一支裡只有一頁話<span class="redact" tabindex="0">，想說給一些人聽</span>。
 
 [從準備工作開始](prepare/index.md){ .md-button .md-button--primary }
 [直接翻模型清單](tables/index.md){ .md-button }

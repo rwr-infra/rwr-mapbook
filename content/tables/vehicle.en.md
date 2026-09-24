@@ -1,7 +1,7 @@
 ---
 title: "Vehicle Scatter"
 description: "The vehicle scatter list."
-source_sha256: a276516ba82e6a65c88974ba80ac92010269a2e484bf2c806d6b88bcfb16c4f7
+source_sha256: 47cce1c5e40d279ba80a9403537fbbb625b9ebf1495a430ba920b6dbb8532959
 translated: 2026-09-25
 nav_label: "Vehicle Scatter"
 icon: lucide/box
@@ -27,31 +27,31 @@ tags: [Models, Vehicles]
 |  | Machine-gun Humvee<br>humvee.vehicle |  |
 |  | Grenade-launcher Humvee<br>humvee_gl.vehicle |  |
 |  | Respawn truck<br>armored_truck.vehicle |  |
-|  | Signal truck<br>radar_truck.vehicle | Only works in Invasion; Quick Match cannot spawn it properly<br>The ones marked as not spawning below may be the same quirk |
+|  | Signal truck<br>radar_truck.vehicle | Only works in Invasion; Quick Match cannot spawn it properly<br><span class="redact" tabindex="0">The ones marked as not spawning below may be the same quirk</span> |
 |  | Armory truck<br>mobile_armory.vehicle |  |
 |  | Hovercraft<br>rubber_boat.vehicle |  |
 |  | Patrol boat<br>patrol_ship.vehicle |  |
 |  | M113 mortar carrier<br>m113_tank_mortar.vehicle |  |
 |  | ATV<br>atv_base.vehicle |  |
 |  | Supply truck<br>atv_armory.vehicle |  |
-|  | "TOW" anti-tank missile<br>tow.vehicle |  |
-|  | "TOW" anti-tank missile<br>tow_2.vehicle | Compared with the one above, treat this as a one-use deployable — after being destroyed it only respawns ten hours later |
+|  | “TOW” anti-tank missile<br>tow.vehicle |  |
+|  | “TOW” anti-tank missile<br>tow_2.vehicle | Compared with the entry above, treat this as a one-use deployable: after being destroyed it only respawns ten hours later |
 |  | Sandbags<br>cover1.vehicle |  |
 |  | Heavy machine gun<br>deployable_mg.vehicle |  |
-|  | Heavy machine gun<br>deployable_mg_2.vehicle | Compared with the one above, treat this as a one-use deployable — after being destroyed it only respawns ten hours later |
+|  | Heavy machine gun<br>deployable_mg_2.vehicle | Compared with the entry above, treat this as a one-use deployable: after being destroyed it only respawns ten hours later |
 |  | M134 Gatling gun<br>deployable_minig.vehicle |  |
-|  | M134 Gatling gun<br>deployable_minig_2.vehicle | Compared with the one above, treat this as a one-use deployable — after being destroyed it only respawns ten hours later |
+|  | M134 Gatling gun<br>deployable_minig_2.vehicle | Compared with the entry above, treat this as a one-use deployable: after being destroyed it only respawns ten hours later |
 |  | Mortar<br>mortar.vehicle |  |
-|  | Mortar<br>mortar_2.vehicle | Compared with the one above, treat this as a one-use deployable — after being destroyed it only respawns ten hours later |
+|  | Mortar<br>mortar_2.vehicle | Compared with the entry above, treat this as a one-use deployable: after being destroyed it only respawns ten hours later |
 |  | Automatic grenade launcher<br>deployable_gl.vehicle |  |
-|  | Automatic grenade launcher<br>deployable_gl_2.vehicle | Compared with the one above, treat this as a one-use deployable — after being destroyed it only respawns ten hours later |
+|  | Automatic grenade launcher<br>deployable_gl_2.vehicle | Compared with the entry above, treat this as a one-use deployable: after being destroyed it only respawns ten hours later |
 |  | Signal tower<br>radar_tower.vehicle |  |
 |  | Fuel tank<br>gas_tank.vehicle |  |
 |  | Radio jammer<br>radio_jammer.vehicle |  |
-|  | Radio jammer<br>radio_jammer2.vehicle | Compared with the one above, treat this as a one-use deployable — after being destroyed it only respawns ten hours later |
+|  | Radio jammer<br>radio_jammer2.vehicle | Compared with the entry above, treat this as a one-use deployable: after being destroyed it only respawns ten hours later |
 |  | Water tower<br>water_tower.vehicle |  |
 |  | Mortar ammunition crates<br>mortar_ammunition_crates.vehicle |  |
-|  | Respawn flare<br>para_spawn.vehicle | This is an activated respawn flare |
+|  | Respawn flare<br>para_spawn.vehicle | This is a respawn flare in its activated state |
 | ![](../assets/tables/vehicle-scatter/001.png) | Style 1 brown sedan<br>deco_car1_brown.vehicle |  |
 | ![](../assets/tables/vehicle-scatter/002.png) | Style 1 blue sedan<br>deco_car1_blue.vehicle |  |
 | ![](../assets/tables/vehicle-scatter/003.png) | Style 1 yellow sedan<br>deco_car1_yellow.vehicle |  |
@@ -176,26 +176,26 @@ tags: [Models, Vehicles]
 |  | Desert patrol buggy<br>buggy.vehicle |  |
 |  | Armed pickup<br>technical.vehicle |  |
 |  | TOW Wiesel<br>wiesel_tow.vehicle |  |
-|  | TOW Wiesel airdrop beacon<br>wiesel_spawn.vehicle | Keeps spawning over and over at intervals |
+|  | TOW Wiesel airdrop beacon<br>wiesel_spawn.vehicle | Keeps spawning periodically |
 |  | Banana car<br>banana_car.vehicle |  |
-|  | Banana car airdrop beacon<br>banana_car_spawn.vehicle | Keeps spawning over and over at intervals |
-| ![](../assets/tables/vehicle-scatter/050.png) | Banana peel spawner<br>banana_peel_spawner.vehicle | It is the banana peel that keeps spitting out exploding banana cars<br>Keeps spawning over and over at intervals, with a very short gap between them |
+|  | Banana car airdrop beacon<br>banana_car_spawn.vehicle | Keeps spawning periodically |
+| ![](../assets/tables/vehicle-scatter/050.png) | Banana peel spawner<br>banana_peel_spawner.vehicle | A banana peel that keeps spitting out exploding banana cars<br>Keeps spawning periodically, with a very short gap between them |
 |  | G17/A1 amphibious assault vehicle<br>aav7.vehicle |  |
-|  | G17/A1 amphibious assault vehicle airdrop beacon<br>aav7_spawn.vehicle | Keeps spawning over and over at intervals |
-| ![](../assets/tables/vehicle-scatter/051.png)<br>![](../assets/tables/vehicle-scatter/052.png) | Cover airdrop beacon<br>cover_crate_para.vehicle | Keeps spawning over and over at intervals |
+|  | G17/A1 amphibious assault vehicle airdrop beacon<br>aav7_spawn.vehicle | Keeps spawning periodically |
+| ![](../assets/tables/vehicle-scatter/051.png)<br>![](../assets/tables/vehicle-scatter/052.png) | Cover airdrop beacon<br>cover_crate_para.vehicle | Keeps spawning periodically |
 |  | EMP intermediary<br>emp.vehicle | Does not spawn |
 |  | Armed truck<br>guntruck.vehicle |  |
-|  | Armed truck airdrop intermediary<br>guntruck_para.vehicle | Armed truck airdrop intermediary; only spawns once at the start of the round, and all it does is drop an armed truck in |
-|  | Armed truck airdrop beacon<br>guntruck_spawn.vehicle | Keeps spawning over and over at intervals |
-|  | "Hornet" missile launcher<br>hornet.vehicle |  |
-|  | "Hornet" missile launcher<br>hornet_2.vehicle | Compared with the one above, treat this as a one-use deployable — after being destroyed it only respawns ten hours later |
+|  | Armed truck airdrop intermediary<br>guntruck_para.vehicle | Armed truck airdrop intermediary; only spawns once at the start of the round, and its effect is to drop one armed truck |
+|  | Armed truck airdrop beacon<br>guntruck_spawn.vehicle | Keeps spawning periodically |
+|  | “Hornet” missile launcher<br>hornet.vehicle |  |
+|  | “Hornet” missile launcher<br>hornet_2.vehicle | Compared with the entry above, treat this as a one-use deployable: after being destroyed it only respawns ten hours later |
 |  | ACAV infantry fighting vehicle<br>m113_tank_acav.vehicle |  |
 |  | Ice cream truck<br>icecream.vehicle | Does not spawn |
 |  | Ambulance<br>medivan.vehicle | Does not spawn |
 |  | [No idea what this is]<br>repair.vehicle | Does not spawn |
 |  | Repair arm<br>repair_crane.vehicle | Does not spawn |
-|  | ACAV infantry fighting vehicle airdrop beacon<br>vulcan_acav_spawn.vehicle | Keeps spawning over and over at intervals |
-|  | Repair vehicle<br>zjx19.vehicle | Does not spawn<br>This is the old repair vehicle that has already been deleted from the game<br>The new version, zjx19_auto.vehicle, is not recorded in common.resources, and cannot spawn either |
+|  | ACAV infantry fighting vehicle airdrop beacon<br>vulcan_acav_spawn.vehicle | Keeps spawning periodically |
+|  | Repair vehicle<br>zjx19.vehicle | Does not spawn<br>This is the old repair vehicle, already deleted from the game<br>The new version, zjx19_auto.vehicle, is not recorded in common.resources, and cannot spawn either |
 |  | Repair vehicle airdrop beacon<br>zjx19_spawn.vehicle | Does not spawn, same reason as above |
 |  | Autocannon Wiesel<br>wiesel_mk20.vehicle |  |
 |  | NOXE Ghost missile launcher vehicle<br>noxe.vehicle |  |
@@ -208,13 +208,13 @@ tags: [Models, Vehicles]
 |  | Merry Christmas car airdrop beacon<br>jeep_xmas_spawn.vehicle | Does not spawn |
 | ![](../assets/tables/vehicle-scatter/053.png) | Missile launcher<br>missile_launcher.vehicle |  |
 | ![](../assets/tables/vehicle-scatter/054.png) | Small cover dug with an entrenching tool<br>sandbag_cover.vehicle |  |
-| ![](../assets/tables/vehicle-scatter/055.png) | Dog crate<br>dogcrate_para.vehicle | Spawns on the ground, then bursts open and spawns a dog<br>Keeps spawning over and over at intervals |
+| ![](../assets/tables/vehicle-scatter/055.png) | Dog crate<br>dogcrate_para.vehicle | Spawns on the ground, then bursts open and spawns one dog<br>Keeps spawning periodically |
 |  | Formula One racing car<br>f1.vehicle |  |
-|  | Formula One racing car airdrop beacon<br>f1_spawn.vehicle | Keeps spawning over and over at intervals |
+|  | Formula One racing car airdrop beacon<br>f1_spawn.vehicle | Keeps spawning periodically |
 |  | LAI-109 multiple rocket launcher vehicle<br>lai-109.vehicle |  |
-|  | LAI-109 multiple rocket launcher vehicle airdrop beacon<br>lai-109_spawn.vehicle | Keeps spawning over and over at intervals |
+|  | LAI-109 multiple rocket launcher vehicle airdrop beacon<br>lai-109_spawn.vehicle | Keeps spawning periodically |
 |  | LAILV-002 armoured personnel carrier<br>lailv-002.vehicle |  |
-|  | LAILV-002 armoured personnel carrier airdrop beacon<br>lailv-002_spawn.vehicle | Keeps spawning over and over at intervals |
+|  | LAILV-002 armoured personnel carrier airdrop beacon<br>lailv-002_spawn.vehicle | Keeps spawning periodically |
 |  | MMLS-528 self-propelled mine-laying system<br>mmls-528.vehicle |  |
-|  | MMLS-528 self-propelled mine-laying system airdrop beacon<br>mmls-528_spawn.vehicle | Keeps spawning over and over at intervals |
-| ![](../assets/tables/vehicle-scatter/056.png) | Snowman<br>snowman.vehicle | The little snowman in its dormant state from the Christmas event, but since nothing scripts it into spawning, this one can only be pushed around<br>It cannot be activated |
+|  | MMLS-528 self-propelled mine-laying system airdrop beacon<br>mmls-528_spawn.vehicle | Keeps spawning periodically |
+| ![](../assets/tables/vehicle-scatter/056.png) | Snowman<br>snowman.vehicle | The little snowman in its dormant state from the Christmas event; nothing scripts it into spawning, so it can only be pushed around<br>It cannot be activated |

@@ -16,8 +16,6 @@
 {% import "partials/route.html" as route with context %}
 {% set vdir = route.version(here) | trim %}
 {% set ldir = route.lang(here) | trim %}
-{% set is_en = ldir == "en" %}
-{% set is_hant = ldir == "zh-hant" %}
 {#- 当前页面在各语言树里的相对路径（去掉语言前缀） -#}
 {% set tail = route.tail(here) | trim %}
 <div class="md-header__option">

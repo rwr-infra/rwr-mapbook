@@ -1,7 +1,7 @@
 ---
 title: "RWR Map Editor's Handbook"
 description: "The handbook for the Running With Rifles map editor: what every panel does, the model and wall inventories, key bindings and common workflows."
-source_sha256: 10bf4f9b3643b02443cbe137633f3c3e1c692170e47db229568a07446a70c397
+source_sha256: a9754ab1efe545c0de592cb0d75a8d25dae8edc353dd9db583d9c43435e3ac01
 translated: 2026-09-25
 nav_label: "Home"
 icon: lucide/house
@@ -77,8 +77,9 @@ and switching language keeps your version.
 | Language | the translate icon on the right | only the language; version stays |
 
 The version menu holds two entries right now: **地编版本 0101** (this handbook) and
-**彩蛋** — not an old release but a trial run of the freeze mechanism, holding nothing
-but one page of thanks.
+**彩蛋** — not an old release but a trial run of the freeze mechanism; that branch
+holds a single page<span class="redact" tabindex="0">, meant to say something to
+particular readers</span>.
 
 [Start with getting ready](prepare/index.md){ .md-button .md-button--primary }
 [Go straight to the inventories](tables/index.md){ .md-button }

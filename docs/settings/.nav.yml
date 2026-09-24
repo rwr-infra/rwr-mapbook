@@ -3,6 +3,6 @@
 # 重新生成： uv run python tools/navgen.py
 nav:
 - 设置文件: index.md
-- mapSettings 说明（待试）: map-settings.md
+- mapSettings 说明: map-settings.md
 - 3rdParSettings 说明: third-party.md
 - RefpM 说明: reference-images.md

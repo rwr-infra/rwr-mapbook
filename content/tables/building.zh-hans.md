@@ -13,7 +13,7 @@ tags: [模型, 建筑]
 !!! tip "怎么读这张表"
     「预览」列按两张图并排给：左侧斜向下视角，右侧正对法线。判断形状请以**水平线**为准，垂直线是点透视。
 
-    一张表。备注列里写着这个房子有什么毛病。
+    一张表。备注列记录每个房子有什么问题。
 
 *[模板]: 物件在 `template = …` 里引用的名字，地编里按这个名字找它
 
@@ -25,7 +25,7 @@ tags: [模型, 建筑]
 | ![](../assets/tables/building-e/003.png) | 砖瓦作坊<br>template = BuildingFactory1 |  |
 | ![](../assets/tables/building-e/004.png) | 贴一堆小广告的白房子<br>template = BuildingWhite1RoofStory1 |  |
 | ![](../assets/tables/building-e/005.png) | 沙漠房子<br>template = BuildingDesert |  |
-| ![](../assets/tables/building-e/006.png) | 不开窗的的沙漠房子<br>template = BuildingDesertroofstory |  |
+| ![](../assets/tables/building-e/006.png) | 不开窗的沙漠房子<br>template = BuildingDesertroofstory |  |
 | ![](../assets/tables/building-e/007.png) | 大窗户房子<br>template = BuildingWhite2 |  |
 | ![](../assets/tables/building-e/008.png) | 窗户更多点的大窗户房子<br>template = BuildingWhite2Busy |  |
 | ![](../assets/tables/building-e/009.png) | 窗户更少点的大窗户房子<br>template = BuildingWhite2Empty |  |

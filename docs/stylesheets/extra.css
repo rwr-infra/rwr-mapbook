@@ -269,3 +269,37 @@
 .md-header__button.md-logo img {
   height: 1.4rem;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   遮挡块（`<span class="redact">…</span>`）
+
+   笔记里有些话是作者的私房话、吐槽与不确定的猜测：留着有用（读者能判断
+   这话有多确定），但摆在正文里会让整页读起来不像一份说明书。
+   这类片段一律遮起来，**点一下才展开**——想看的看得到，不想看的不碍事。
+
+   做成黑块而不是 `???` 折叠框，是因为它常常落在**表格单元格**里
+   （折叠框塞不进表格）。整段的私房话仍然用折叠框，两处各用各的。
+   ══════════════════════════════════════════════════════════════ */
+.md-typeset .redact {
+  padding: 0 0.15em;
+  border-radius: 0.1rem;
+  color: transparent;
+  background-color: var(--md-default-fg-color);
+  cursor: pointer;
+  transition: color 0.15s, background-color 0.15s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.md-typeset .redact:focus-visible {
+  outline: 0.1rem solid var(--md-accent-fg-color);
+  outline-offset: 0.1rem;
+}
+
+.md-typeset .redact.is-open {
+  color: inherit;
+  background-color: var(--md-default-fg-color--lightest);
+  cursor: auto;
+  -webkit-user-select: auto;
+  user-select: auto;
+}

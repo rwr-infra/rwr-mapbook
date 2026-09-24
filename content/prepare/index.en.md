@@ -1,7 +1,7 @@
 ---
 title: "Getting ready"
 description: "How to configure the editor once it is downloaded, sync it with your RWR folder, switch on the built-in camera mod, and download the OgreSDK."
-source_sha256: 32deeed05551f337ba640c9e82bf58249b3b3e7d96d3024892bf2d99dad8b5ec
+source_sha256: 828ccfd24088ae5e7b7e94b023537a6b457455f896bc8c1441bd446ea486d30f
 translated: 2026-09-25
 nav_label: "Getting ready"
 icon: lucide/download
@@ -71,7 +71,7 @@ this gets stuck.
 
 4. Pick a map you like and put it in the editor's `map` folder — **only one** — and throw
     in every relevant file from that map's folder. If you are not sure, use `map7`: it is
-    the basis of the template above, and it sidesteps a few odd problems.
+    the basis of the template above, and it sidesteps a few problems of unclear origin.
 
     ![Put the map files into map](../assets/editor/004.png)
 
@@ -88,8 +88,8 @@ this gets stuck.
         as a base.
 
     ??? quote "The .meta files in the example images above"
-        The pile of `.meta` files in my editor folder in the example images is nothing
-        to worry about, it is only an example. Just throw the whole of the left side into
+        The pile of `.meta` files in the editor folder in the example images is nothing
+        to worry about, it is only an example. Just put the whole of the left side into
         the editor folder on the right.
 
 ## 2. How to sync the editor folder with RWR's { #sync }
@@ -173,7 +173,7 @@ Not needed right now — come back when
 
     ![Unzip the OgreSDK](../assets/editor/015.png)
 
-2. That is it. 3rdParSettings will need it later; not getting into that now :)
+2. That is all. 3rdParSettings will need it later; not covered here.
 
 *[template]: the name an object is referred to by in `template = …`; that is how you look it up
 *[RWR]: Running With Rifles

@@ -1,7 +1,7 @@
 ---
 title: "ID search"
-description: "Tracking an object down by ID when an error is thrown."
-source_sha256: 2e591d7f856f0123a97334e7b3d31c7657955a63f59d2541838d873c24c5400f
+description: "Locating an object by ID when an error is thrown."
+source_sha256: bf8f25bb1b7ac8e6dc9ca61cd8c6d22f4959ae876e0f39abf9c1ce18fd7507b8
 translated: 2026-09-25
 nav_label: "ID search"
 icon: lucide/search
@@ -12,8 +12,8 @@ tags: [Troubleshooting, Tools]
 
 <p class="kicker">EDITOR · what that number in the error is</p>
 
-An editor error usually throws an ID at you. With that ID you can find the matching
-object on the map — this is the trick you will use most when fixing a map.
+An editor error usually gives you an ID. With that ID you can find the matching object on
+the map — this is the method you will use most when fixing a map.
 
 1. First read the ID in the error message (or look at where the ID appears in the
    "finding problems" images below).
@@ -37,5 +37,5 @@ to locate it:
 
 !!! tip "IDs change"
     The editor re-numbers every ID each time it saves, so the number may differ from the
-    last one. So **what you wrote down is this moment's ID**; save once and search again,
-    and it may not be it any more.
+    last one. So **what you wrote down is the ID at that moment**; after one more save,
+    searching again may not find it.

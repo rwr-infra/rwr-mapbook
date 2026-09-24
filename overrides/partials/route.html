@@ -90,6 +90,43 @@
 {{- ("_" ~ lang_dir | replace("-", "_") | replace(".", "_")) if lang_dir else "" -}}
 {% endmacro %}
 
+{#- 语言目录 → 该语言的 BCP-47 代码（`zh-Hans` / `zh-Hant` / `en`）。
+    取自 config.extra.alternate 的 lang 字段——语言清单里唯一写着 BCP-47 的地方。
+    `<html lang>`、og:locale（下划线写法由调用方 replace 出来）、hreflang 与
+    JSON-LD 的 inLanguage 全从它派生，一处都不再自己写语言名。
+
+    为什么单开一个宏：原先这几样在模板里各写一遍「is_en / is_hant / 否则」的
+    三支判断，加一种语言就得把每一处都补上；而漏掉的那一处**不报错**——
+    页面照常渲染，只是静静地退回默认语言的代码，抓取端看到的是错的。
+    现在只有这一段知道语言代码长什么样。 -#}
+{% macro code(lang_dir) %}
+{%- set wanted = lang_dir | default("", true) -%}
+{%- set ns = namespace(found="") -%}
+{%- for alt in config.extra.alternate | d([], true) -%}
+{%- set d = alt.link | d("./", true) | replace("./", "") | replace("/", "") -%}
+{%- if d == wanted -%}{%- set ns.found = alt.lang | d("", true) -%}{%- endif -%}
+{%- endfor -%}
+{{- ns.found -}}
+{% endmacro %}
+
+{#- 语言目录 → 主题自带的**界面文案包**名（partials/languages/<包>.html）。
+    与 code() 分开，是因为这两件事在主题那边并不是同一个名字：主题把简体那一包
+    叫 `zh`（不是 `zh-Hans`），繁体叫 `zh-Hant`、英文叫 `en`。
+    也就是「zh-Hans → zh」这一处**没有可推导的规则**，只能由配置给出；于是走
+    [project.extra] 的 `_<lang>` 后缀约定（lang_pack / _en / _zh_hant），
+    与页脚那几组文案同一套取法，加语言时补一行就是。
+
+    ⚠️ 不能改成「拿 code() 拼模板名，拼不到再退回主语言子标签」：MiniJinja 的
+       import 语句没有 `ignore missing`（写了是语法错误），模板里也没有
+       「这个模板存在吗」的判据（本文件说明里那两个坑之外，这是第三个）。
+       硬拼的结果是构建期直接失败——宁可把这一处显式写进配置，让它可查。
+       另：主题那几包是「自动生成、不要手改」的上游产物，整包搬进
+       zensical.toml 只会得到一份会过期的副本，所以这里只存包名。 -#}
+{% macro pack(lang_dir) %}
+{%- set sfx = suffix(lang_dir) | trim -%}
+{{- config.extra["lang_pack" ~ sfx] | d(config.extra.lang_pack | d("", true), true) -}}
+{% endmacro %}
+
 {#- 只取版本前缀（带尾斜杠）。**语言切换器**要用的是这个，不是 base()：
     语言那一层是要被替换掉的，接在 base() 后面会拼出 `zh-hant/en/` 这种
     根本不存在的地址，而链接看上去还挺像回事。版本切换器反过来——

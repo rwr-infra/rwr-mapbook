@@ -10,8 +10,6 @@
 {% import "partials/route.html" as route with context %}
 {% set vdir = route.version(here) | trim %}
 {% set ldir = route.lang(here) | trim %}
-{% set is_en = ldir == "en" %}
-{% set is_hant = ldir == "zh-hant" %}
 {% set lang_dir = ldir %}
 {% set L = route.suffix(ldir) | trim %}
 {% set site_name = config.extra["site_name" ~ L] | d(config.site_name, true) %}
@@ -68,8 +66,12 @@
   {#- 品牌页脚：三段式。
       自由文案（标语 / 副注 / 底栏标签）全部来自 config.extra，按页面语言取
       —— 也就是整套模版用的那个 `_en` / `_zh_hant` 后缀约定。
-      固定 UI 标签（标签页 / 隐私 / 回到顶部）留在模板里按语言分支，
-      和主题处理同类文案的方式一致。 -#}
+      三段固定 UI 标签（标签页 / 隐私 / 回到顶部）同样来自配置，不带模板分支。
+      它们以前是三条三支判断（is_en / is_hant / 否则）：加一种语言就要回来补三处，
+      而且漏了**不报错**——页面照常出，只是静静退回默认语言的文案。
+      ⚠️ 三处取值一律**写在使用点上**、不另起 `{% set %}`：单独成行的
+         set 会在 <footer> 里多留一行空白，而 minify 压不掉它——
+         改前改后的产物因此对不上（试过，就差这一行）。 -#}
   <div class="brand-footer">
     <div class="brand-footer__brand">
       <a class="brand-footer__title" href="{{ home_url | url }}">
@@ -84,12 +86,12 @@
     <div class="brand-footer__meta">
       {% set note = config.extra["footer_note" ~ L] | d(config.extra.footer_note | d("", true), true) %}
       {% if note %}{{ note }}<br>{% endif %}
-      <a href="{{ ((route.base(here) | trim) ~ 'tags/') | url }}">{% if is_en %}Browse by tag ↗{% elif is_hant %}依標籤瀏覽 ↗{% else %}按标签浏览 ↗{% endif %}</a>
+      <a href="{{ ((route.base(here) | trim) ~ 'tags/') | url }}">{{ config.extra["footer_browse_tags" ~ L] | d(config.extra.footer_browse_tags, true) }}</a>
     </div>
     <div class="brand-footer__bottom">
       <span>{{ config.extra["footer_bottom" ~ L] | d(config.extra.footer_bottom | d(site_name, true), true) }}</span>
-      <a href="#__consent">{% if is_en %}Privacy settings{% elif is_hant %}隱私設定{% else %}隐私设置{% endif %}</a>
-      <a href="#top">{% if is_en %}Back to top ↑{% elif is_hant %}回到頂部 ↑{% else %}回到顶部 ↑{% endif %}</a>
+      <a href="#__consent">{{ config.extra["footer_privacy" ~ L] | d(config.extra.footer_privacy, true) }}</a>
+      <a href="#top">{{ config.extra["footer_back_top" ~ L] | d(config.extra.footer_back_top, true) }}</a>
     </div>
   </div>
 </footer>

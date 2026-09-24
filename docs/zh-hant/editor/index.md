@@ -49,7 +49,7 @@ hide: [toc]
 
     ---
 
-    報錯裡甩給你一個 ID 時，怎麼把它揪出來。
+    報錯裡給出一個 ID 時，怎麼把它找出來。
 
     [:octicons-arrow-right-24: 去看](id-search.md)
 

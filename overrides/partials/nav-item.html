@@ -13,8 +13,6 @@
 {% import "partials/route.html" as route with context %}
 {% set vdir = route.version(here) | trim %}
 {% set ldir = route.lang(here) | trim %}
-  {% set is_en = ldir == "en" %}
-  {% set is_hant = ldir == "zh-hant" %}
   {% set L = route.suffix(ldir) | trim %}
   {% set key = type ~ L %}
   {% set label = config.extra.status_label[key] if config.extra.status_label and config.extra.status_label[key]
