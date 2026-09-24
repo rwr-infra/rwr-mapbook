@@ -18,7 +18,7 @@
 
 UV ?= uv
 
-.PHONY: gen docs nav check versions archives downloads links build serve serve-subpath watch sync offline clean
+.PHONY: gen docs nav check versions archives downloads links build serve serve-subpath watch sync offline offline-check clean
 
 gen: docs nav
 
@@ -132,7 +132,9 @@ sync:
 #      留着只是一页断链。file:// 下打不开某个文件，浏览器给的是它自己的错误页。
 #
 # ⚠️ 它**不跑** linkcheck 与 i18n_check：那两条都假定目录式地址（`…/page/`），
-#    离线版全是 `.html`，跑了只会满屏假警报。离线版拿浏览器验。
+#    离线版全是 `.html`，跑了只会满屏假警报。它跑的是 tools/offline_check.py——
+#    同一套判据（每条站内引用都得落地）另写的一遍，外加锚点。
+#    （此前是拿临时脚本在 /tmp 里验的，那种东西验完就没了；判据该留在仓库里。）
 OFFLINE_CONFIG = zensical.offline.toml
 OFFLINE_DIR = site-offline
 OFFLINE_ZIP = rwr-mapbook-offline.zip
@@ -142,10 +144,15 @@ offline: gen $(OFFLINE_CONFIG)
 	$(UV) run zensical build -f $(OFFLINE_CONFIG) --strict
 	$(UV) run python tools/offline_stubs.py $(OFFLINE_DIR)
 	@rm -rf $(OFFLINE_DIR)/downloads $(OFFLINE_DIR)/404.html
+	$(UV) run python tools/offline_check.py $(OFFLINE_DIR)
 	@rm -f $(OFFLINE_ZIP)
 	@cd $(OFFLINE_DIR) && zip -qr ../$(OFFLINE_ZIP) . && cd ..
 	@printf '离线包：%s\n' "$(OFFLINE_ZIP)"
 	@du -sh $(OFFLINE_DIR) $(OFFLINE_ZIP)
+
+# 只体检现有的 site-offline/，不重打。
+offline-check:
+	$(UV) run python tools/offline_check.py $(OFFLINE_DIR)
 
 # 与预览配置同一套办法：sed，只改该改的两行，其余一行不动。
 # 第二行的注释尾巴是**锚点**，免得 sed 撞上别处恰好也是 `enabled = false` 的行。

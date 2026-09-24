@@ -486,6 +486,14 @@ def inspect_rendered_output() -> dict:
     missing = []
     for rel, needle, label in SMOKE:
         page = site / rel
+        # ⚠️ 「文件不在」与「文件正被重建、这一瞬读不到」是两件事，不能一起吞掉。
+        #    这里原先只有一句 `except OSError: continue`，于是**断言表指向的页面根本
+        #    不存在时它一声不吭**：SMOKE 里若留着已改名或已挪走的旧页名，体检照样报
+        #    「全绿」，而它本该说的那句话正是「这一页没有」。
+        #    所以先判存在（不存在就是问题），只有存在却读不到才当作 serve 在重建。
+        if not page.exists():
+            missing.append(f"{rel} 不存在，无法检查{label}")
+            continue
         try:
             text = page.read_text(encoding="utf-8")
         except OSError:                                  # 正被 serve 重建，见下
