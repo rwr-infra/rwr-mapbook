@@ -181,13 +181,30 @@ def sources() -> list[Source]:
     return found
 
 
+def has_front_matter(text: str) -> bool:
+    """文件是不是以 YAML 前置元数据开头。
+
+    ⚠️ 判据是**第一个字符**就是 `---`。文件开头多一个空行——写内容时手滑、
+    或者用脚本生成时字符串带了个前导换行——前置元数据就整块不算数了：
+    `nav_label` / `icon` / `description` 静默失效，页面标题退回头一个 h1，
+    构建一声不吭。这一处踩过：`content/prepare/index.zh-hans.md` 因此丢了
+    导航名与图标，也丢了下一条的 `hide:`（见 insert_hide）。
+    """
+    return text.startswith("---")
+
+
 def insert_banner(text: str, source: Path, note: str = "") -> str:
     banner = BANNER_FMT.format(source=source.relative_to(ROOT).as_posix()) + note
-    if text.startswith("---"):
+    if has_front_matter(text):
         end = text.find("\n---", 3)
         if end == -1:
             raise SystemExit(f"{source}: 前置元数据没有闭合")
         return f"{text[: end + 1]}{banner}\n{text[end + 1:]}"
+    if text[:1] in ("\n", "\r") or text.startswith("\ufeff"):
+        # 只差一个空行/字节序标记：这几乎必然是意外，直接说清楚
+        print(f"warn: {source.relative_to(ROOT)} 开头有空行或 BOM，"
+              f"前置元数据不算数（nav_label / icon / description 都会失效）",
+              file=sys.stderr)
     return f"<!-- {banner.lstrip('# ')} -->\n\n{text}"
 
 
@@ -278,6 +295,74 @@ def render_stub(name: str, lang: str, version: Version, source_rel: str, has_hom
         "</body>\n"
         "</html>\n"
     )
+
+
+# ── 空左栏 ────────────────────────────────────────────────────────────────
+
+HIDE_NAV = "hide: [navigation]"
+
+
+def inert_sidebar(name: str, names: set[str]) -> bool:
+    """这一页的左栏会不会是**空的**。
+
+    左栏铺的是「当前顶层分区的其它页」。所以有两种页的左栏必然是空的：
+
+    * 顶层页（首页，或任何直接躺在树根上的单篇）——它们没有分区；
+    * **单页分区**的首页——这个分区里除它自己再没有第二篇。
+
+    空着也是空着：左栏会实打实占掉 242px，正文被挤成 688px。
+    拦掉它，正文自会铺到三分之二宽（见 partials/route.html 同款的推导思路）。
+
+    判据放在构建层而不是各页的前置元数据里：分区里加一篇新页时，
+    左栏该自己回来——写死在前置元数据里就不会，而且每加一种语言、
+    每个历史版都要各写一遍。作者自己在前置元数据里写了 `hide:` 的，
+    这里不覆盖（见 insert_hide）。
+    """
+    section, sep, _ = name.partition("/")
+    if not sep:
+        # 顶层页：它自己就是一颗标签，左栏没有东西可铺
+        return True
+    head = f"{section}/"
+    return not any(n.startswith(head) and n != f"{head}index" for n in names)
+
+
+def tree_names() -> dict[tuple[str, str], set[str]]:
+    """每棵树（版本 × 语言）里有哪几页。
+
+    「这一页的左栏会不会是空的」要按**同一棵树**里还有没有别的页来判，
+    所以这份集合是那条判据的输入。tools/i18n_check.py 复核派生语种时
+    要重跑同一条流水线，也用它——判据必须只有一处，否则两边会分叉，
+    而分叉的表现是构建红着、却看不出谁对。
+    """
+    derived_of: dict[str, set[str]] = {}
+    for dst_lang, src_lang, _ in DERIVATIONS:
+        derived_of.setdefault(src_lang, set()).add(dst_lang)
+    found: dict[tuple[str, str], set[str]] = {}
+    for source in sources():
+        for lang in {source.lang} | derived_of.get(source.lang, set()):
+            found.setdefault((source.version.id, lang), set()).add(source.name)
+    return found
+
+
+def insert_hide(text: str, source: Path) -> str:
+    """往生成物的前置元数据里加一行 `hide: [navigation]`。
+
+    作者已经在源文件里写了 `hide:` 的，原样不动——那是有意为之，不是这里的推导。
+    """
+    if not has_front_matter(text):
+        # 没有前置元数据就加不了 hide:，这一页的左栏会一直空着占 242px。
+        # 不在这里抛错（模版允许无前置元数据的内容），但要说出来——
+        # 否则「左栏怎么没藏」会变成一个找不着原因的现象。
+        print(f"warn: {source.relative_to(ROOT)} 没有 YAML 前置元数据，"
+              f"因此加不了 {HIDE_NAV}（这一页的左栏会是空的）", file=sys.stderr)
+        return text
+    end = text.find("\n---", 3)
+    if end == -1:
+        raise SystemExit(f"{source}: 前置元数据没有闭合")
+    front = text[:end]
+    if re.search(r"^hide\s*:", front, re.M):
+        return text
+    return f"{front}\n{HIDE_NAV}{text[end:]}"
 
 
 # ── 认领与清理 ────────────────────────────────────────────────────────────
@@ -380,7 +465,14 @@ def main() -> int:
     changed: list[Path] = []
     errors: list[str] = []
 
-    def emit(target: Path, content: str) -> None:
+    #: 一次算好，别在 emit 里每页重扫一遍 content/
+    trees = tree_names()
+
+    def emit(target: Path, content: str, name: str | None = None,
+             version: Version | None = None, lang: str | None = None) -> None:
+        if name is not None and version is not None and lang is not None:
+            if inert_sidebar(name, trees.get((version.id, lang), set())):
+                content = insert_hide(content, target)
         wanted.add(target.relative_to(ROOT).as_posix())
         existing = target.read_text(encoding="utf-8") if target.exists() else None
         if existing == content:
@@ -401,7 +493,7 @@ def main() -> int:
             errors.append(f"{source.path} 与 {seen[target]} 都要生成 {target}")
         seen[target] = source.path
         stub_sources.setdefault(source.name, source.path.relative_to(ROOT).as_posix())
-        emit(target, render(source))
+        emit(target, render(source), source.name, source.version, source.lang)
 
         # 由这一族语言派生的其它语言（如 zh-hans → zh-hant）
         for dst_lang, src_lang, convert in DERIVATIONS:
@@ -411,6 +503,7 @@ def main() -> int:
             emit(
                 output_of(source.name, dst_lang, source.version),
                 render(source, out_lang=dst_lang, convert=convert, note=note),
+                source.name, source.version, dst_lang,
             )
 
     # 每棵树（版本 × 语言）手里有哪些页面。派生语种跟着源语言一起记，

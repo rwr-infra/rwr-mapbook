@@ -67,7 +67,8 @@ import tomllib
 
 import yaml
 
-from docsgen import depth_of, lang_prefix, rewrite_shared
+from docsgen import (depth_of, inert_sidebar, insert_hide, lang_prefix,
+                     rewrite_shared, tree_names)
 from linkcheck import site_base
 from hant import to_hant
 from langs import CONTENT, DEFAULT_LANG, DERIVATIONS, LANG_RE, ROOT, other_languages
@@ -299,6 +300,12 @@ def inspect_derived(source: Path, lang: str, version: Version) -> dict:
     base = "" if base == "." else base
     expected = strip_banner(to_hant(rewrite_shared(
         source.read_text(encoding="utf-8"), base, depth_of(version, lang))))
+    # 构建层还会往空左栏的页上补一行 hide: ——复核时要走同一条流水线，
+    # 否则「派生失同步」会误报，而误报的修法是「跑 make gen」，
+    # 跑完还是不一致，人就只能去改产物了。
+    rel_name = name.with_suffix("").as_posix()
+    if inert_sidebar(rel_name, tree_names().get((version.id, lang), set())):
+        expected = insert_hide(expected, source)
     actual = strip_banner(target.read_text(encoding="utf-8"))
     if expected == actual:
         record["status"] = "ok"
@@ -366,6 +373,86 @@ for _version in all_versions():
         continue
     SMOKE += [(f"{_version.id}/index.html", "brand-footer",
                f"历史版 {_version.id} 的首页")]
+
+CARD_BLOCK_RE = re.compile(r'class="grid cards"')
+
+
+def card_blocks(html: str) -> list[str]:
+    """把产物里每一个 `grid cards` 容器整段切出来（按 <div> 的嵌套深度收口）。
+
+    正则切不了嵌套标签，数深度可以：从那个 div 的 `<` 起，遇到 `<div` 加一、
+    遇到 `</div>` 减一，归零处就是它的结尾。
+    """
+    found: list[str] = []
+    for match in CARD_BLOCK_RE.finditer(html):
+        open_at = html.rfind("<div", 0, match.start())
+        if open_at == -1:
+            continue
+        depth, i = 0, open_at
+        while i < len(html):
+            nxt_open = html.find("<div", i)
+            nxt_close = html.find("</div>", i)
+            if nxt_close == -1:
+                break
+            if nxt_open != -1 and nxt_open < nxt_close:
+                depth += 1
+                i = nxt_open + 4
+            else:
+                depth -= 1
+                i = nxt_close + 6
+                if depth == 0:
+                    found.append(html[open_at:i])
+                    break
+    return found
+
+
+def inspect_card_blocks() -> dict:
+    """卡片索引页的「卡片有没有被拆散」体检。
+
+    卡片是这么写的：
+
+        <div class="grid cards" markdown>
+
+        -   __标题__
+
+            ---
+
+            一句话
+
+            [:octicons-arrow-right-24: 去读](xxx.md)
+
+        </div>
+
+    一旦中间那几行被当成**并列的**列表项（缩进写错、或者被别的脚本按行重排过），
+    Markdown 会老老实实生成一堆**空卡片**：标题还在，分隔线、说明与链接全掉了。
+    构建不报错、链接体检也查不到（那个链接压根没生成），页面上只是变成一整屏
+    光秃秃的标题——这一处踩过。所以在这里按产物兜住。
+    """
+    site = ROOT / "site"
+    record = {"source": "site/（卡片索引）", "target": "site/", "lang": "all", "kind": "cards"}
+    if not site.is_dir():
+        record["status"] = "ok"; record["next"] = ""; record["skipped"] = "site/ 不存在"
+        return record
+
+    problems: list[str] = []
+    total = 0
+    for page in sorted(site.rglob("*.html")):
+        html = page.read_text(encoding="utf-8", errors="ignore")
+        for block in card_blocks(html):
+            items = re.findall(r"<li>(.*?)</li>", block, re.S)
+            total += len(items)
+            gutted = [i for i in items if "<a " not in i]
+            if gutted:
+                rel = page.relative_to(site).as_posix()
+                problems.append(
+                    f"{rel}: {len(gutted)}/{len(items)} 张卡片里没有链接"
+                    f"（分隔线、说明与链接多半被拆成了并列的列表项）"
+                )
+    record["status"] = "drift" if problems else "ok"
+    record["cards"] = total
+    record["next"] = "；".join(problems[:6])
+    return record
+
 
 def inspect_rendered_output() -> dict:
     """对构建产物做一组「该有的东西真的在」的断言。"""
@@ -465,6 +552,7 @@ def main() -> int:
         for lang in sorted(set(languages) & set(DERIVATIONS)):
             pages.append(inspect_derived(source, lang, version))
     pages.append(inspect_rendered_output())
+    pages.append(inspect_card_blocks())
 
     counts: dict[str, int] = {}
     for page in pages:
