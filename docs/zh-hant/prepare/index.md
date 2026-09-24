@@ -60,7 +60,7 @@ hide: [navigation]
 
     ![建 templates 與 map 兩個文件夾](../../assets/editor/002.png)
 
-3. 下載群內的最新模板（目前是 `vao0822.svg`），放進地編的 `templates` 文件夾中。
+3. 下載最新模板 [`vao0822.svg`](../download/index.md#materials)（本站可直接下載，也可照舊從群文件拿），放進地編的 `templates` 文件夾中。
 
     ![把模板放進 templates](../../assets/editor/003.png)
 
@@ -158,7 +158,7 @@ hide: [navigation]
 
 ![OgreSDK 包](../../assets/editor/014.png)
 
-1. 從群文件下載 `OgreSDK_vc10_v1-7-4.zip`，解壓到自己喜歡的路徑，
+1. 下載 [`OgreSDK_vc10_v1-7-4.zip`](../download/index.md#materials)（本站可直接下載，也可照舊從群文件拿），解壓到自己喜歡的路徑，
    推薦和地編文件夾放在一塊。
 
     ![解壓 OgreSDK](../../assets/editor/015.png)

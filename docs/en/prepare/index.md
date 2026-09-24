@@ -1,7 +1,7 @@
 ---
 title: "Getting ready"
 description: "How to configure the editor once it is downloaded, sync it with your RWR folder, switch on the built-in camera mod, and download the OgreSDK."
-source_sha256: 828ccfd24088ae5e7b7e94b023537a6b457455f896bc8c1441bd446ea486d30f
+source_sha256: f688bd665b43c0d34e38c961f6a0269cc5f748948f9a0babd2b6610247ef116e
 translated: 2026-09-25
 nav_label: "Getting ready"
 icon: lucide/download
@@ -63,8 +63,9 @@ this gets stuck.
 
     ![Create the two folders, templates and map](../../assets/editor/002.png)
 
-3. Download the latest template from the group files (currently `vao0822.svg`) and put it
-    in the editor's `templates` folder.
+3. Download the latest template [`vao0822.svg`](../download/index.md#materials) — straight
+    from this site, or from the group files as before — and put it in the editor's
+    `templates` folder.
 
     ![Put the template into templates](../../assets/editor/003.png)
 
@@ -170,8 +171,9 @@ Not needed right now — come back when
 
 ![The OgreSDK package](../../assets/editor/014.png)
 
-1. Download `OgreSDK_vc10_v1-7-4.zip` from the group files and unzip it to whatever path
-    you like — preferably alongside the editor folder.
+1. Download [`OgreSDK_vc10_v1-7-4.zip`](../download/index.md#materials) — straight from this
+    site, or from the group files as before — and unzip it to whatever path you like,
+    preferably alongside the editor folder.
 
     ![Unzip the OgreSDK](../../assets/editor/015.png)
 

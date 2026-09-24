@@ -1,7 +1,7 @@
 ---
 title: "Previous versions"
 description: "Complete archives of every editor version, plus the two companion files: one click fetches the parts, checks them, and joins them into a single package."
-source_sha256: 38737a847b3592f6f79eb1c4ba09cd1ac2df817620763fa024b9183e0c6d560e
+source_sha256: 3513a772d32e258d86122fcc4e0f3ccdc9b99c0b774dcd957b25b76a965c4b39
 translated: 2026-09-25
 nav_label: "Previous versions"
 icon: lucide/archive
@@ -37,7 +37,7 @@ tool to merge them.
     not change afterwards. The handbook itself describes the current version; against an
     older editor the interface and the inventories may not line up.
 
-## The two companion files
+## The two companion files { #materials }
 
 The other two things modelling and configuration call for. [Getting ready](../prepare/index.md)
 covers how they are used: the template goes into the editor's `templates` folder, and the
