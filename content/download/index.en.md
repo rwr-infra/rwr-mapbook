@@ -1,7 +1,7 @@
 ---
 title: "Previous versions"
 description: "Complete archives of every editor version, plus the two companion files: one click fetches the parts, checks them, and joins them into a single package."
-source_sha256: f86420beaecbcece92dc693c646fb6f8744c52a47cda5aeaa06cc43f0ac2649d
+source_sha256: f58d9849c5bdb36307077ed4a17dddca73734b5eed85718cc0a429cf3f63820f
 translated: 2026-09-25
 nav_label: "Previous versions"
 icon: lucide/archive
@@ -15,12 +15,12 @@ tags: [Setup]
 Complete archives of every editor version, from 060 to 0101. Each one holds the whole
 set of files for that version, exactly as it was posted in the group files.
 
-"Download" is usually a plain **direct link**: the package sits in the repository as an
-ordinary file, so a browser can fetch it and so can a download manager. Only a package over
-the host's single-file limit is split; that one the page fetches piece by piece, checks
-every hash, and joins into a package **under the original file name**. Either way what lands
-in your download folder is one whole package — never `.partNNN` files, and never anything
-you have to join by hand.
+"Download" goes one of two ways. A package under the deploy limit is **an ordinary file**,
+and that button is a direct link — a browser can fetch it, and so can a download manager.
+A package over the limit is stored as several pieces, and that one the page fetches piece by
+piece, checks every hash, and joins into a package **under the original file name**. Either
+way what lands in your download folder is one whole package — never `.partNNN` files, and
+never anything you have to join by hand.
 
 | Version | Archive | Download |
 | --- | --- | --- |
@@ -50,11 +50,14 @@ OgreSDK is only needed once `3rdParSettings` comes into play.
 | OgreSDK | `OgreSDK_vc10_v1-7-4.zip`<br><span data-dl-size="OgreSDK_vc10_v1-7-4">—</span> | <button type="button" class="md-button md-button--primary" data-dl="OgreSDK_vc10_v1-7-4">Download</button> <span class="dl-status" data-dl-status="OgreSDK_vc10_v1-7-4"></span> |
 
 !!! note "A direct link, or the page joins it"
-    **A package under the limit is just an ordinary file**, and that button is a direct
-    link: a browser can fetch it, and so can a download manager (right-click hands it over),
-    giving you the whole package at once. Only a package over the limit is stored as several
-    parts, and that one **only the page can join**: the parts are real URLs, but they are
-    several pieces, so a download manager would hand you several `.partNNN` files to merge
-    yourself. The page fetches every part, checks each hash, and joins them into one package;
-    if any part fails its check it stops and reports the error rather than giving you half a
-    package.
+    This site is deployed on EdgeOne Pages, where **a single file may be at most 25 MB**,
+    while the editor packages run 26–84 MB — they do not fit in one file. So:
+
+    * A file under the limit (the 441 kB template, say) is **an ordinary file**, and the
+      button is a direct link: a browser can fetch it, and so can a download manager
+      (right-click hands it over);
+    * A file over the limit is stored as several pieces, and that one **only the page can
+      join**. The pieces are real URLs, but they are several pieces, so a download manager
+      would hand you several `.partNNN` files to merge yourself. The page fetches every
+      piece, checks each hash, and joins them into one package; if any piece fails its
+      check it stops and reports the error rather than giving you half a package.

@@ -42,9 +42,10 @@ versions:
 archives:
 	$(UV) run python tools/chunker.py --check
 
-# 切分片。源归档放在 DOWNLOADS_SRC 下（默认 ~/Downloads），要切哪几个由
-# DOWNLOADS 列着。产物 docs/downloads/ 是**要进仓库**的：托管方不给传大文件，
-# 所以分片就是最终形态，不是中间产物。
+# 存整包 / 切分片。源归档放在 DOWNLOADS_SRC 下（默认 ~/Downloads），有哪几个由
+# DOWNLOADS 列着。产物 docs/downloads/ 是**要进仓库**的：部署方不给传大文件，
+# 所以整包与分片都是最终形态，不是中间产物。
+# ⚠️ 25 MB 的上限来自 **EdgeOne Pages 的单文件限制**，不是 git 的；要调得有理由。
 DOWNLOADS_SRC ?= $(HOME)/Downloads
 DOWNLOADS ?= 060.zip 070.rar 080.rar 081.rar 090.rar 091.rar 0100.rar 0101.rar \
              vao0822.svg OgreSDK_vc10_v1-7-4.zip
