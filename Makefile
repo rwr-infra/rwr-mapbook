@@ -46,7 +46,15 @@ build: gen
 
 # ⚠️ zensical serve 自己构建、自己服务，插不进 tagfilter 与 linkcheck，
 #    所以预览里的 /tags/ 仍会列出全部三种语言的篇目（线上产物不会）。
+#
+# ⚠️ serve 也认 zensical.toml 里的 site_url，而它带一个子路径
+#    （GitHub Pages 项目站是 /<repo>/）。所以 http://127.0.0.1:8000/ 会 302 到
+#    下面这个地址——**入口是它，不是根**。serve 没有覆盖 site_url 的选项，
+#    要换成根地址预览，就把 site_url 临时改成 http://127.0.0.1:8000/。
+SERVE_URL = http://127.0.0.1:8000/rwr-mapbook/
+
 serve: gen
+	@echo "预览入口： $(SERVE_URL)"
 	$(UV) run zensical serve -a 127.0.0.1:8000
 
 sync:
