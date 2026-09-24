@@ -4,7 +4,6 @@ title: "mapSettings 說明（待試）"
 description: "地圖自身的設置項。這一頁標註「待試」，尚未逐項驗證。"
 status: "partial"
 # ⚠️ 由 tools/docsgen.py 從 content/settings/map-settings.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
-hide: [toc]
 ---
 
 # mapSettings 說明（待試） { #map-settings }
@@ -14,6 +13,8 @@ hide: [toc]
 !!! warning "這一頁是**待試**的"
     下面每一行的「說明」列都照原樣留着，其中好幾條直接標着「沒試」「不知道這是啥」。
     照原樣留着——**沒試過就是沒試過**，不要照着猜。
+
+## 字段一覽 { #fields }
 
 | 字段 | 示例 | 備註 | 說明 |
 | --- | --- | --- | --- |
@@ -30,6 +31,8 @@ hide: [toc]
 | `show_base_names_in_map_view` | `0` |  | 不知道這是啥，沒試 |
 | `starting_day_phase` | `0.1`<br>`6` |  | 戰役開始的時間 |
 | `visible_in_menu` | `0`<br>`1` |  | 是否在列表可見 |
+
+## 顏色那兩行的第三種寫法 { #colour-forms }
 
 !!! tip "顏色那兩行的第三種寫法"
     `day_color` 與 `night_color` 的示例裡除了色值還有一個 `fill` / `stroke`——

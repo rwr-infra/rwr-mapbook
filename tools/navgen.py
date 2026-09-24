@@ -11,28 +11,23 @@
 
 也就是说：一个文件夹的全部导航元数据，就写在它自己的 index.md 里。
 
-两种「分区」
-------------
-本站的导航树是**一棵**（Zensical 的 nav 是全站唯一的），而语言与版本各自需要
-独立的顺序。做法是在树里挂一批**从不显示**的分区节点，标题带机器可识别的标记
-前缀，由模板按当前页面决定渲染哪一支、跳过哪一支：
+分区
+----
+本站的导航树是**一棵**（Zensical 的 nav 是全站唯一的），而每种语言需要独立的顺序。
+做法是在树里挂一批**从不显示**的分区节点，标题带机器可识别的标记前缀，
+由模板按当前页面决定渲染哪一支、跳过哪一支：
 
-    __lang:en        语言分区（docs/en、docs/0101/en …）
-    __ver:0101       版本分区（docs/0101 …）
+    __lang:en        语言分区（docs/en）
 
-两者可以嵌套：站根的版本分区里再挂该版本自己的语言分区。于是树形是
+于是树形是
 
     docs/.nav.yml
-      ├── 各内容分区                        ← 当前版 · 简体
-      ├── __lang:en      → en/             ← 当前版 · 英文
-      ├── __lang:zh-hant → zh-hant/        ← 当前版 · 繁体
-      └── __ver:0101     → 0101/
-            ├── 各内容分区                  ← 0101 版 · 简体
-            ├── __lang:en      → 0101/en/
-            └── __lang:zh-hant → 0101/zh-hant/
+      ├── 各内容分区                        ← 简体
+      ├── __lang:en      → en/             ← 英文
+      └── __lang:zh-hant → zh-hant/        ← 繁体
 
 模板侧的对应逻辑在 overrides/partials/nav.html、tabs.html（只渲染当前那一支）
-与 path.html（面包屑跳过这两层）里。
+与 path.html（面包屑跳过这一层）里。
 
 生成物
 ------
@@ -53,7 +48,6 @@ from pathlib import Path
 import yaml
 
 from langs import DEFAULT_LANG, other_languages
-from versions import all_versions
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
@@ -63,8 +57,6 @@ DOCS = ROOT / "docs"
 #: （overrides/partials/path.html）。所以这里刻意用一个可机器识别的标记前缀，
 #: 而不是会随人改动的显示名：模板靠 `"__lang:" in title` 认出语言分区。
 LANG_MARKER = "__lang:"
-#: 版本分区同理。历史版在导航里同样不该占一格，读者靠页眉的版本切换器进去。
-VER_MARKER = "__ver:"
 
 
 BANNER = (
@@ -126,34 +118,20 @@ def lang_dirs_under(base: Path) -> tuple[Path, ...]:
     return tuple(base / lang for lang in other_languages() if (base / lang).is_dir())
 
 
-def version_dirs() -> tuple[Path, ...]:
-    """历史版的产物根（当前版在 docs/ 根，不是分区）。"""
-    return tuple(DOCS / v.id for v in all_versions() if not v.current and (DOCS / v.id).is_dir())
-
-
 def trees() -> list[tuple[Path, list[tuple[str, Path]]]]:
     """(树根, 该树根末尾要挂的分区)。
 
-    一棵树 = 一个「导航顺序的辖区」。站根之外，每个语言目录、每个版本目录、
-    每个版本的语言目录都是一棵独立的树，各自有一份 .nav.yml。
+    一棵树 = 一个「导航顺序的辖区」。站根之外，每个语言目录都是一棵独立的树，
+    各自有一份 .nav.yml。
     """
     out: list[tuple[Path, list[tuple[str, Path]]]] = []
     if not DOCS.is_dir():
         return out
 
     root_langs = lang_dirs_under(DOCS)
-    versions = version_dirs()
-    out.append((DOCS, [(LANG_MARKER + d.name, d) for d in root_langs]
-                       + [(VER_MARKER + d.name, d) for d in versions]))
+    out.append((DOCS, [(LANG_MARKER + d.name, d) for d in root_langs]))
     for directory in root_langs:
         out.append((directory, []))
-
-    for version_dir in versions:
-        langs = lang_dirs_under(version_dir)
-        out.append((version_dir, [(LANG_MARKER + d.name, d) for d in langs]))
-        for directory in langs:
-            out.append((directory, []))
-
     return out
 
 
@@ -161,8 +139,8 @@ def discover(directory: Path, *, excluded: tuple[Path, ...]) -> list[Path]:
     """目录的直接子项：带 index.md 的子目录、以及除 index.md 外的 .md 文件。
 
     下划线或点开头的名字视为不参与导航（草稿、片段、生成物）。
-    语言分区与版本分区被排除，改由 build_nav 单独挂在末尾——
-    它们的显示名与显示时机由模板按页面决定。
+    语言分区被排除，改由 build_nav 单独挂在末尾——
+    它的显示名与显示时机由模板按页面决定。
     """
     found: list[Path] = []
     for entry in sorted(directory.iterdir()):
@@ -234,9 +212,9 @@ def build_nav(directory: Path, partitions: list[tuple[str, Path]]) -> tuple[list
         else:
             nav.append({nav_label(child): child.name})
 
-    # 语言分区与版本分区挂在树末尾，具体显示哪一支由模板按页面决定
+    # 语言分区挂在树末尾，具体显示哪一支由模板按页面决定
     # （见 overrides/partials/nav.html 与 tabs.html）。
-    # ⚠️ 标题带标记前缀：模板靠它认出这两类分区，并在只该渲染一支时跳过其余。
+    # ⚠️ 标题带标记前缀：模板靠它认出这类分区，并在只该渲染一支时跳过其余。
     for marker, path in partitions:
         nav.append({marker: path.name})
 
@@ -286,17 +264,17 @@ def render(nav: list) -> str:
 def targets() -> list[tuple[Path, list[tuple[str, Path]]]]:
     """需要生成 .nav.yml 的目录：每棵树根，以及它下面每个含 index.md 的目录。
 
-    子目录（非树根）不挂分区——分区只在树根这一层表达「语言 / 版本」的横向切换。
+    子目录（非树根）不挂分区——分区只在树根这一层表达语言的横向切换。
 
     两处要当心：
 
     1. **不能在站根的 rglob 里走进别的树。** 站根那一次遍历沿着整个 docs/ 往下，
-       会顺手把 `docs/0100/`、`docs/en/` 这些**别的树根**也收进来，而且是以
+       会顺手把 `docs/en/`、`docs/zh-hant/` 这些**别的树根**也收进来，而且是以
        「没有分区」的样子收的——于是同一个目录被排两遍，后一遍（空分区）
-       盖掉前一遍，`0100/.nav.yml` 里的语言分区就没了，而它看上去只是一份
+       盖掉前一遍，`en/.nav.yml` 里的顺序就没了，而它看上去只是一份
        普通的 .nav.yml。所以遍历时要把别的树根整个剪掉。
-    2. **还是没有页面的树？那也必须给一份空的。** 历史版的某个语种一篇内容都没有
-       （读者由跳转桩送走），这里只剩一个 index.html 桩。⚠️ 这时候**恰恰不能跳过**：
+    2. **还没有内容的语言树也必须给一份空的。** 某个语种可能一篇都没翻
+       （读者由跳转桩送走），那里只剩一个 index.html 桩。⚠️ 这时候**恰恰不能跳过**：
        awesome-nav 找不到 .nav.yml 就自己去扫目录，扫到一个 html 也没有的目录，
        会把 nav 解析成非列表并以 `nav must be a list` 让整个构建失败——
        报错点在主题里，看不出是这个语种缺文件。空目录写一份空清单，

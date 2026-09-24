@@ -11,7 +11,6 @@
       取不到再退回 config.extra.status。 -#}
   {% set here = page.url | default("", true) %}
 {% import "partials/route.html" as route with context %}
-{% set vdir = route.version(here) | trim %}
 {% set ldir = route.lang(here) | trim %}
   {% set is_en = ldir == "en" %}
   {% set is_hant = ldir == "zh-hant" %}

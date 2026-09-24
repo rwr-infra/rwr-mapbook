@@ -12,7 +12,6 @@
 -#}
 {% set here = page.url | default("", true) %}
 {% import "partials/route.html" as route with context %}
-{% set vdir = route.version(here) | trim %}
 {% set ldir = route.lang(here) | trim %}
 {% set lang_dir = route.lang(here) | trim %}
 {% if page.meta and page.meta.hide %}

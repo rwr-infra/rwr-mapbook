@@ -13,6 +13,8 @@ status: "partial"
     下面每一行的「说明」列都照原样留着，其中好几条直接标着「没试」「不知道这是啥」。
     照原样留着——**没试过就是没试过**，不要照着猜。
 
+## 字段一览 { #fields }
+
 | 字段 | 示例 | 备注 | 说明 |
 | --- | --- | --- | --- |
 | `ambience_alert_day_sound` | `ambient_alert_daytime.wav`<br>`ambient_lightrain_alert.wav` |  | 没试，不知道这是啥 |
@@ -28,6 +30,8 @@ status: "partial"
 | `show_base_names_in_map_view` | `0` |  | 不知道这是啥，没试 |
 | `starting_day_phase` | `0.1`<br>`6` |  | 战役开始的时间 |
 | `visible_in_menu` | `0`<br>`1` |  | 是否在列表可见 |
+
+## 颜色那两行的第三种写法 { #colour-forms }
 
 !!! tip "颜色那两行的第三种写法"
     `day_color` 与 `night_color` 的示例里除了色值还有一个 `fill` / `stroke`——

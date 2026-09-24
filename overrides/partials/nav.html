@@ -17,7 +17,6 @@
 {% import "partials/nav-item.html" as item with context %}
 {% set here = page.url | default("", true) %}
 {% import "partials/route.html" as route with context %}
-{% set vdir = route.version(here) | trim %}
 {% set ldir = route.lang(here) | trim %}
 {% set is_en = ldir == "en" %}
 {% set is_hant = ldir == "zh-hant" %}
@@ -45,28 +44,17 @@
     </div>
   {% endif %}
   <ul class="md-nav__list" data-md-scrollfix>
-    {#- 第一步：历史版的内容挂在自己的 __ver: 分区里，先把它取出来当这一页的根。
-        当前版没有版本分区，直接用整棵树。 -#}
-    {% set tree = namespace(items=nav.items) %}
-    {% if vdir %}
-      {% for nav_item in nav.items %}
-        {% if (nav_item.title | default("", true)) == "__ver:" ~ vdir %}
-          {% set tree.items = nav_item.children | default([], true) %}
-        {% endif %}
-      {% endfor %}
-    {% endif %}
-    {#- 第二步：在这一版的树里只渲染当前语言那一支 -#}
-    {% for nav_item in tree.items %}
+    {% for nav_item in nav.items %}
       {% set kids = nav_item.children | default([], true) %}
       {% set title = nav_item.title | default("", true) %}
-      {% set nav_is_partition = "__lang:" in title or "__ver:" in title %}
+      {% set nav_is_partition = "__lang:" in title %}
       {% if lang_dir and title == "__lang:" ~ lang_dir %}
         {#- 当前语言的页面：直接铺开该语言分区的子项，不显示语言分区这一层 -#}
         {% for child in kids %}
           {{ item.render(child, "__nav_" ~ lang_dir ~ "_" ~ loop.index, 1) }}
         {% endfor %}
       {% elif not lang_dir and not nav_is_partition %}
-        {#- 默认语言：渲染除语言分区与版本分区以外的全部顶层项 -#}
+        {#- 默认语言：渲染除语言分区以外的全部顶层项 -#}
         {{ item.render(nav_item, "__nav_" ~ loop.index, 1) }}
       {% endif %}
     {% endfor %}

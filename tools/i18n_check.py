@@ -8,18 +8,7 @@
 3. **结构对不对得上** —— 各语种的章节、表格、提示框、链接是否与默认语言一一对应
    （漏掉一段、少一行表格，光看字符数是看不出来的）；
 4. **派生语种有没有跟上** —— 繁体不是翻译，是从简体**脚本转换**出来的，
-   所以它必须**逐字节等于**对当前简体原文做一次转换的结果；
-5. **历史版有没有被回改** —— 历史版是冻结的快照，它的派生语种同样要逐字节对得上。
-
-两条轴
-------
-内容有**版本**与**语言**两条轴（见 tools/versions.py）。本检查器只管后者，
-但两者的交集要说清楚：
-
-* **当前版**（content/ 根）的每一篇都要求有译文；
-* **历史版**（content/versions/<id>/）是冻结快照，**不要求**译文——
-  砍版那一刻它是什么样就永远是什么样，逼迫后人去补一版十年前的手册没有意义。
-  但它的**派生**语种（繁体）照样要逐字节对得上：那一支是脚本算出来的，不花人力。
+   所以它必须**逐字节等于**对当前简体原文做一次转换的结果。
 
 语种「还在补齐」怎么算
 ----------------------
@@ -72,8 +61,6 @@ from docsgen import (depth_of, hide_sides, insert_hide, lang_prefix,
 from linkcheck import site_base
 from hant import to_hant
 from langs import CONTENT, DEFAULT_LANG, DERIVATIONS, LANG_RE, ROOT, other_languages
-from versions import (ARCHIVE, Version, all_versions, current as current_version,
-                      source_root, url_prefix)
 
 DOCS = ROOT / "docs"
 REPORT_JSON = ROOT / "i18n-report.json"
@@ -177,26 +164,8 @@ def structure_diff(source: dict, target: dict) -> list[str]:
 # ── 对照 ──────────────────────────────────────────────────────────────────
 
 def source_pages() -> list[Path]:
-    """**当前版**的默认语言源文件，按路径排序。
-
-    历史版在 content/versions/ 下，是冻结快照，不参与「有没有译文」这一问；
-    它们只走派生语种的比对（见 archived_pages）。
-    """
-    return sorted(path for path in CONTENT.rglob(f"*.{DEFAULT_LANG}.md")
-                  if ARCHIVE not in path.parents)
-
-
-def archived_pages() -> list[tuple[Path, Version]]:
-    """历史版的默认语言源文件，连同它所属的版本。"""
-    out: list[tuple[Path, Version]] = []
-    for version in all_versions():
-        if version.current:
-            continue
-        root = source_root(version)
-        if not root.is_dir():
-            continue
-        out += [(path, version) for path in sorted(root.rglob(f"*.{DEFAULT_LANG}.md"))]
-    return out
+    """默认语言的源文件，按路径排序。"""
+    return sorted(CONTENT.rglob(f"*.{DEFAULT_LANG}.md"))
 
 
 def target_of(source: Path, lang: str) -> Path:
@@ -277,17 +246,16 @@ def inspect_translation(source: Path, lang: str, *, sync: bool) -> dict:
     return record
 
 
-def inspect_derived(source: Path, lang: str, version: Version) -> dict:
+def inspect_derived(source: Path, lang: str) -> dict:
     """派生语种：产物必须逐字节等于「对当前原文做一次转换」的结果。"""
-    root = source_root(version)
-    name = source.relative_to(root).with_name(source.name[: -len(f".{DEFAULT_LANG}.md")] + ".md")
-    target = DOCS / url_prefix(version) / lang_prefix(lang) / name
+    name = source.relative_to(CONTENT).with_name(
+        source.name[: -len(f".{DEFAULT_LANG}.md")] + ".md")
+    target = DOCS / lang_prefix(lang) / name
     record: dict = {
         "source": source.relative_to(ROOT).as_posix(),
         "target": target.relative_to(ROOT).as_posix(),
         "lang": lang,
         "kind": "derived",
-        "version": version.id,
     }
 
     if not target.exists():
@@ -296,15 +264,15 @@ def inspect_derived(source: Path, lang: str, version: Version) -> dict:
         return record
 
     # 期望值要按 docsgen 的同一条流水线算：先补共享资产的相对层级，再转换
-    base = source.parent.relative_to(root).as_posix()
+    base = source.parent.relative_to(CONTENT).as_posix()
     base = "" if base == "." else base
     expected = strip_banner(to_hant(rewrite_shared(
-        source.read_text(encoding="utf-8"), base, depth_of(version, lang))))
+        source.read_text(encoding="utf-8"), base, depth_of(lang))))
     # 构建层还会往空侧栏的页上补一行 hide: ——复核时要走同一条流水线，
     # 否则「派生失同步」会误报，而误报的修法是「跑 make gen」，
     # 跑完还是不一致，人就只能去改产物了。
     rel_name = name.with_suffix("").as_posix()
-    sides = hide_sides(rel_name, tree_names().get((version.id, lang), set()),
+    sides = hide_sides(rel_name, tree_names().get(lang, set()),
                        source.read_text(encoding="utf-8"))
     expected = insert_hide(expected, source, sides)
     actual = strip_banner(target.read_text(encoding="utf-8"))
@@ -368,12 +336,6 @@ for _lang in [DEFAULT_LANG, *other_languages()]:
         (f"{_prefix}editor/keys/index.html", "md-footer__link--next", f"{_lang} 页脚的「下一页」"),
         (f"{_prefix}editor/keys/index.html", 'rel="prev"', f"{_lang} 的 <link rel=prev>"),
     ]
-#: 历史版的树也要真的生成出来：切换器指向它，它不在就等于切换器全是死链。
-for _version in all_versions():
-    if _version.current:
-        continue
-    SMOKE += [(f"{_version.id}/index.html", "brand-footer",
-               f"历史版 {_version.id} 的首页")]
 
 CARD_BLOCK_RE = re.compile(r'class="grid cards"')
 
@@ -534,24 +496,14 @@ def main() -> int:
     declared = set(languages) - set(DERIVATIONS)
     relaxing = in_progress_languages() & set(declared)
 
-    current = current_version()
-    if current is None:
-        print("error: zensical.toml 里没有一个版本标了 current = true，"
-              "先跑 uv run python tools/versions.py 看体检结果。", file=sys.stderr)
-        return 1
-
     pages: list[dict] = []
-    # 当前版：手写的译文要查漏翻 / 过期 / 结构，派生语种要查逐字节一致
+    # 手写的译文要查漏翻 / 过期 / 结构，派生语种要查逐字节一致
     for source in source_pages():
         for lang in languages:
             if lang in declared:
                 pages.append(inspect_translation(source, lang, sync=args.sync))
             else:
-                pages.append(inspect_derived(source, lang, current))
-    # 历史版：冻结快照，不要求译文；但派生语种照样要逐字节对得上（那是脚本算的）
-    for source, version in archived_pages():
-        for lang in sorted(set(languages) & set(DERIVATIONS)):
-            pages.append(inspect_derived(source, lang, version))
+                pages.append(inspect_derived(source, lang))
     pages.append(inspect_rendered_output())
     pages.append(inspect_card_blocks())
 
