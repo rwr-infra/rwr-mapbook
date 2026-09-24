@@ -144,14 +144,14 @@ version_aria_zh_hant = "切換地編版本"
 #    label 随便取，切换器与页面标题用它，历史版叫「彩蛋」也无所谓。
 #
 # 现在只有两条：`0101` 是当前版，`egg` 是砍版机制的试用品（一枚彩蛋，
-# 里面冻着 060 那次构建的真实数字）。要放真正的历史版，按 README 的
+# 里面只有一页谢谢）。要放真正的历史版，按 README 的
 # 「加一个版本」加一条，并把当时那棵树整份复制进 content/versions/<id>/；
 # 缺的页由 tools/docsgen.py 补跳转桩，不会让人点进 404。
 
 
 
-# 页脚品牌区左上角的徽标（可选）。路径相对 docs/。
-# footer_logo = "assets/logo.svg"
+# 页脚品牌区左上角的徽标（可选）。路径相对 docs/。与页眉的 logo 是同一张。
+footer_logo = "assets/rwricon.png"
 
 # 社交分享图（可选）。单页可用前置元数据 image: 覆盖；
 # 都不给就整组 og:image 不输出，免得指向一张不存在的图。
@@ -245,10 +245,15 @@ font = false
 variant = "modern"
 # 默认语言的界面文案语言。加语言时这里也要跟着改。
 language = "zh"
-# 站徽与站点图标：把两张图放进 docs/assets/ 再取消注释。
-# 不设就走主题默认（页眉显示一个内置图标，站点图标用主题自带的）。
-# logo = "assets/logo.svg"
-# favicon = "assets/favicon.png"
+# 站徽与站点图标。不设就走主题默认（页眉显示一个内置图标，站点图标用主题自带的）。
+#
+# 两张图是同一次改动加进来的：
+#   logo   —— 原始素材 600×300，透明底，直接放 docs/assets/rwricon.png；
+#   favicon —— 浏览器只认方形格子，宽图塞进去会被压成一条，所以另存了一份
+#              256×256 的方形版（整图按比例缩到 256 宽、上下透明补边，不裁不拉伸）。
+#              要换素材时**两张都要重出**，别只换 logo。
+logo = "assets/rwricon.png"
+favicon = "assets/favicon.png"
 # 仓库图标的默认值是通用 git 图标；填了 repo_url 且指向 GitHub 时换成品牌标更好认。
 # 图标是构建期内联进 HTML 的 SVG，不产生任何字体或图标请求。
 icon.repo = "fontawesome/brands/github"
