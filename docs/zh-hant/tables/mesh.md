@@ -6,12 +6,36 @@ icon: "lucide/box"
 # ⚠️ 由 tools/docsgen.py 從 content/tables/mesh.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
 ---
 
-# MESH E
+# MESH E { #mesh }
+
+<p class="kicker">EDITOR · 石頭、植物、小物件、大物件、特殊物件</p>
+
+<div class="grid" markdown>
+
+[:octicons-arrow-right-24: 自然類（石頭/植物）](#nature){ .card }
+
+[:octicons-arrow-right-24: 小物件](#small){ .card }
+
+[:octicons-arrow-right-24: 大物件](#large){ .card }
+
+[:octicons-arrow-right-24: 特殊物件](#special){ .card }
+
+[:octicons-arrow-right-24: 有嚴重問題的物件](#broken){ .card }
+
+</div>
+
+!!! tip "怎麼讀這張表"
+    「預覽」列按原文的兩張圖並排給：左側斜向下視角，右側正對法線。判斷形狀請以**水平線**為準，垂直線是點透視。
+
+    五個組並排放在同一張表裡，所以同一個物件在這一頁可能出現兩次（它同時屬於兩組時）。
+
+*[模板]: 物件在 `template = …` 裡引用的名字，地編裡按這個名字找它
+
 
 !!! note "原文標註"
     註：模板版本vao0822，預覽圖左側為斜向下視角，預覽圖右側為正對法線也就是地編視角（請以水平線為參考，垂直線因為是點透視所以可能會導致物品看起來傾斜的視誤差），千萬別把材質錯誤全部歸類成是模板類Mesh，冷杉樹和海報牌這類錯誤肯定不屬於這種 :/
 
-## 自然類（石頭/植物）
+## 自然類（石頭/植物） { #nature }
 
 | 預覽 | 名稱 | 備註 |
 | --- | --- | --- |
@@ -73,7 +97,7 @@ icon: "lucide/box"
 | ![](../../assets/tables/mesh-e/341.png)<br>![](../../assets/tables/mesh-e/342.png) | 十三號熱帶植物<br>template = tropical_plant_13 |  |
 | ![](../../assets/tables/mesh-e/346.png)<br>![](../../assets/tables/mesh-e/347.png) | 小麥<br>template = wheat |  |
 
-## 小物件
+## 小物件 { #small }
 
 | 預覽 | 名稱 | 備註 |
 | --- | --- | --- |
@@ -214,7 +238,7 @@ icon: "lucide/box"
 | ![](../../assets/tables/mesh-e/536.png)<br>![](../../assets/tables/mesh-e/537.png) | 車3<br>template = car3 | 不是載具，炸不壞也推不動<br>疑似材質錯誤 |
 | ![](../../assets/tables/mesh-e/538.png)<br>![](../../assets/tables/mesh-e/539.png) | 車4<br>template = car4 | 不是載具，炸不壞也推不動<br>疑似材質錯誤 |
 
-## 大物件
+## 大物件 { #large }
 
 | 預覽 | 名稱 | 備註 |
 | --- | --- | --- |
@@ -245,7 +269,7 @@ icon: "lucide/box"
 | ![](../../assets/tables/mesh-e/184.png)<br>![](../../assets/tables/mesh-e/185.png) | 聖殿<br>template = temple | 門口一小部分無碰撞箱 |
 | ![](../../assets/tables/mesh-e/191.png)<br>![](../../assets/tables/mesh-e/192.png) | 隧道<br>template = tunnel | 無碰撞箱 |
 
-## 特殊物件
+## 特殊物件 { #special }
 
 | 預覽 | 名稱 | 備註 |
 | --- | --- | --- |
@@ -254,7 +278,7 @@ icon: "lucide/box"
 | ![](../../assets/tables/mesh-e/026.png)<br>![](../../assets/tables/mesh-e/027.png) | 三線電線杆子<br>template = post1_3 |  |
 | ![](../../assets/tables/mesh-e/036.png)<br>![](../../assets/tables/mesh-e/037.png) | 大臂電線杆子<br>template = post1_4 |  |
 
-## 有嚴重問題的物件
+## 有嚴重問題的物件 { #broken }
 
 | 預覽 | 名稱 | 備註 |
 | --- | --- | --- |

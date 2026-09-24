@@ -1,7 +1,7 @@
 ---
 title: "Model inventories"
 description: "Mesh E, Wall E, Building E, Vehicle Scatter and Decal."
-source_sha256: c3510e088e11b8633ccaa1a33bbac3336488283a9b1607d036b4968e21f7b61f
+source_sha256: 05680777553957081d0af97251a4f293cb161da0dae52ee2a2f3d9b5cbb37279
 translated: 2026-09-25
 nav_label: "Model inventories"
 icon: lucide/table
@@ -10,8 +10,11 @@ nav: ["mesh", "wall", "building", "vehicle", "decal"]
 
 # Model inventories
 
-Five sheets, taken from the spreadsheet the editing group maintains
-(the original marks it **template version vao0822**).
+<p class="kicker">TABLES · seven hundred objects, and whether they work</p>
+
+Five sheets, taken from the spreadsheet the editing group maintains (the original marks it
+**template version vao0822**). Each row is one object: a preview, what it is, and whatever
+the group wrote down about it.
 
 | Page | What is in it | Entries |
 | --- | --- | --- |
@@ -23,8 +26,8 @@ Five sheets, taken from the spreadsheet the editing group maintains
 
 !!! warning "How to read the previews"
     The left image is an oblique view looking down; the right one faces the normal
-    directly — that is, what the editor shows you. Judge by the **horizontal** line:
-    the vertical one is in perspective and can make an object look tilted.
+    directly — what the editor shows you. Judge by the **horizontal** line: the vertical
+    one is in perspective and can make an object look tilted.
 
 !!! tip "The name column"
     Before the slash is what the thing is; after it is the `template = …` reference.

@@ -6,12 +6,30 @@ icon: "lucide/box"
 # ⚠️ 由 tools/docsgen.py 從 content/tables/wall.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
 ---
 
-# Wall E
+# Wall E { #wall }
+
+<p class="kicker">EDITOR · 牆，以及能不能被打掉</p>
+
+<div class="grid" markdown>
+
+[:octicons-arrow-right-24: 正常牆](#normal){ .card }
+
+[:octicons-arrow-right-24: 特殊牆](#special){ .card }
+
+</div>
+
+!!! tip "怎麼讀這張表"
+    「預覽」列按原文的兩張圖並排給：左側斜向下視角，右側正對法線。判斷形狀請以**水平線**為準，垂直線是點透視。
+
+    兩張表：正常牆與特殊牆。備註列裡原文寫的是待測項（能否翻越、被爆炸摧毀的閾值）。
+
+*[模板]: 物件在 `template = …` 裡引用的名字，地編裡按這個名字找它
+
 
 !!! note "原文標註"
     註：模板版本vao0822，視角為側視，爆炸物摧毀判定貌似需要靠近中間，在兩邊可能炸不掉，如果牆是隱形的或者形狀/材質奇奇怪怪的那大概率是跟平臺結合使用的
 
-## 正常牆
+## 正常牆 { #normal }
 
 | 預覽 | 名稱 | 備註 |
 | --- | --- | --- |
@@ -65,7 +83,7 @@ icon: "lucide/box"
 | ![](../../assets/tables/wall-e/076.png) | 三號戰壕牆<br>template = TrenchWall3 |  |
 | ![](../../assets/tables/wall-e/077.png) | 木柱圍欄1<br>template = WoodPostFence1 |  |
 
-## 特殊牆
+## 特殊牆 { #special }
 
 | 預覽 | 名稱 | 備註 |
 | --- | --- | --- |

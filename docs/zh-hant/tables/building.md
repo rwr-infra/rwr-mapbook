@@ -6,7 +6,17 @@ icon: "lucide/box"
 # ⚠️ 由 tools/docsgen.py 從 content/tables/building.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
 ---
 
-# Building E
+# Building E { #building }
+
+<p class="kicker">EDITOR · 能放的房子</p>
+
+!!! tip "怎麼讀這張表"
+    「預覽」列按原文的兩張圖並排給：左側斜向下視角，右側正對法線。判斷形狀請以**水平線**為準，垂直線是點透視。
+
+    一張表。備註列裡寫着這個房子有什麼毛病。
+
+*[模板]: 物件在 `template = …` 裡引用的名字，地編裡按這個名字找它
+
 
 | 預覽 | 名稱 | 備註 |
 | --- | --- | --- |

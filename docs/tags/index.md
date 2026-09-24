@@ -1,11 +1,12 @@
 ---
 nav_label: "标签"
-title: 标签
-icon: lucide/tags
-description: 按语言中立的线索横向浏览本站各页。
+title: "标签"
+icon: "lucide/tags"
+description: "按语言中立的线索横向浏览本站各页。"
 nav: []
 nav_hidden: true
 # ⚠️ 由 tools/docsgen.py 从 content/tags/index.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
+hide: [navigation]
 ---
 
 # 标签

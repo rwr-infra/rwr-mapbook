@@ -1,7 +1,7 @@
 ---
 title: "The editor"
-description: "The toolbar, the main panel's buttons, key bindings and ID search."
-source_sha256: effaace7167ae07284e5beeacecc97b27de23ffa50ab65774792761f60b377c9
+description: "The toolbar, the main panel\"s buttons, key bindings and ID search."
+source_sha256: a63712d892d6c37f1467dd027d799570794aa11ca9d3a27d66f2e0a5c1fdbbbf
 translated: 2026-09-25
 nav_label: "The editor"
 icon: lucide/layout-grid
@@ -10,14 +10,47 @@ nav: ["interface", "settings", "keys", "id-search"]
 
 # The editor
 
-This group is "what is on screen, and what happens when you press it".
+<p class="kicker">EDITOR · what is on screen, and what happens when you press it</p>
 
-1. [Overview](interface.md) — the toolbar and the tool buttons at a glance;
-2. [Main panel](settings.md) — Save / ViewMap / Select / PinMan / WallE, one by one;
-3. [Key bindings](keys.md) — what the mouse and keyboard each do;
-4. [ID search](id-search.md) — finding an object by its ID.
+Four pages: the toolbar first, then each tool one by one, then the keyboard and mouse,
+then troubleshooting.
 
-!!! info "Two words"
-    Throughout these pages, *the editor* means RWR's official Map Editor, and
-    *template* means the name an object is referred to by in `template = …`.
-    The inventories give both in the name column.
+!!! info "Two words first"
+    **The editor** means RWR's official Map Editor; **template** means the name an object
+    is referred to by in `template = …`. The name column of the inventories gives you both.
+
+<div class="grid cards" markdown>
+
+-   :material-compass-outline:{ .lg .middle } __Overview__
+
+    ---
+
+    The fourteen buttons on the toolbar, one job each.
+
+    [:octicons-arrow-right-24: Read](interface.md)
+
+-   :material-sliders-horizontal:{ .lg .middle } __Main panel__
+
+    ---
+
+    Save, ViewMap, Select, all the way to Assaum — one by one.
+
+    [:octicons-arrow-right-24: Read](settings.md)
+
+-   :material-keyboard-outline:{ .lg .middle } __Key bindings__
+
+    ---
+
+    What the mouse and keyboard each do, and the few that are easy to confuse.
+
+    [:octicons-arrow-right-24: Read](keys.md)
+
+-   :material-magnify:{ .lg .middle } __ID search__
+
+    ---
+
+    What to do when an error throws an ID at you.
+
+    [:octicons-arrow-right-24: Read](id-search.md)
+
+</div>

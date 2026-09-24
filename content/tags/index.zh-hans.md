@@ -1,8 +1,8 @@
 ---
 nav_label: "标签"
-title: 标签
-icon: lucide/tags
-description: 按语言中立的线索横向浏览本站各页。
+title: "标签"
+icon: "lucide/tags"
+description: "按语言中立的线索横向浏览本站各页。"
 nav: []
 nav_hidden: true
 ---

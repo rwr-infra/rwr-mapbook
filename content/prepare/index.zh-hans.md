@@ -5,96 +5,162 @@ icon: "lucide/download"
 description: "下载后的配置、与 RWR 文件夹同步、开启自带相机 mod，以及 OgreSDK 下载。"
 ---
 
-# 准备工作
+# 准备工作 { #prepare }
 
-## 一、地编下载后如何配置
+<p class="kicker">PREPARE · 装好，然后才谈画图</p>
 
-1.将下载后的文件解压到你自己喜欢的路径。
+四件事，按顺序做完就能开工。前三件不做完，后面每一步都会卡住。
 
-![准备工作 1](../assets/shushu/001.png)
+<div class="grid cards" markdown>
 
-2.在1007_Data中创建一个templates文件夹与map文件夹。
+-   __1 · 配置地编__
 
-![准备工作 2](../assets/shushu/002.png)
+    ---
 
-3.下载群内的最新模板，目前是vao0822.svg，放入地编的templates文件夹中。
+    解压，建两个文件夹，把模板与地图放进去。
 
-> 注：目前只有原版正常地图模板，沙漠与雪地的模板暂未制作完成。
+    [:octicons-arrow-right-24: 跳到这一节](#setup)
 
-![准备工作 3](../assets/shushu/003.png)
+-   __2 · 同步文件夹__
 
-4.选择你喜欢的地图放入地编的map文件夹里，注意只能选一个，并且将那个地图文件夹下所有的相关文件都扔进去，如果拿不准就扔map7，因为这就是上面模板的底稿，可以防止出现一些诡异问题。
+    ---
 
-> 注：RWR原版地图分为三个类型（原版中的原版、原版中的沙漠、原版中的雪地），用哪个类型就要装载对应的模板，目前只做了原版中的原版类型模板，所以只能使用\vanilla\maps中的文件，过于特殊的 map19与\vanilla.desert\maps路径和\vanilla.winter\maps路径中的地图可能会出现适配问题（当然不影响只是打开看看，但是以这些地图为底子去做还是算了）。
+    一条 `mklink` 命令，把地编直接接到 RWR 的地图目录上。
 
-![准备工作 4](../assets/shushu/004.png)
+    [:octicons-arrow-right-24: 跳到这一节](#sync)
 
-![准备工作 5](../assets/shushu/005.png)
+-   __3 · 开相机 mod__
 
-> *上面例子图我地编文件夹里一堆.meta文件用不着管，只是个示例，把左边的全扔右边地编文件夹里就行
+    ---
 
-## 二、如何同步地编与RWR的文件夹
+    启动项里加一行，游戏里就能自由飞、切法线。
 
-1.首先Win+R，输入cmd打开命令提示符界面。
+    [:octicons-arrow-right-24: 跳到这一节](#camera-mod)
 
-![准备工作 6](../assets/shushu/006.png)
+-   __4 · 下 OgreSDK__
 
-![准备工作 7](../assets/shushu/007.png)
+    ---
 
-2.之后输入命令：
+    现在用不上，等 3rdParSettings 要用时再回来。
 
-```text
-mklink /J "你的小兵步枪要创建的地图文件夹" "地编的文件夹"
-```
+    [:octicons-arrow-right-24: 跳到这一节](#ogresdk)
 
-> 注：<br>每个人路径都不一样，按自己的来；<br>第一个文件夹路径需要保证输入命令前是未被创建的。
+</div>
 
-![准备工作 8](../assets/shushu/008.png)
+## 一、地编下载后如何配置 { #setup }
 
-3.完成后效果。
+1. 将下载后的文件解压到你自己喜欢的路径。
 
-![准备工作 9](../assets/shushu/009.png)
+    ![解压到任意路径](../assets/shushu/001.png)
 
-## 三、如何开启RWR自带的相机mod
+2. 在 `1007_Data` 中创建一个 `templates` 文件夹与 `map` 文件夹。
 
-1.steam游戏库界面，在左侧列表找到右键RWR，打开属性，输入：
+    ![建 templates 与 map 两个文件夹](../assets/shushu/002.png)
 
-```text
-skip_nat_server_usage debugmode no_simulation auto_update_tree_foliage big_water
-```
+3. 下载群内的最新模板（目前是 `vao0822.svg`），放进地编的 `templates` 文件夹中。
 
-![准备工作 10](../assets/shushu/010.png)
+    ![把模板放进 templates](../assets/shushu/003.png)
 
-2.打开游戏，点击开始新的快速比赛模式，然后点击加载模组。
+    !!! note "目前只有原版地图的模板"
+        沙漠与雪地的模板暂未制作完成。
 
-![准备工作 11](../assets/shushu/011.png)
+4. 选一个你喜欢的地图放进地编的 `map` 文件夹，**只能选一个**，并且要把那个地图
+   文件夹下所有相关文件都扔进去。拿不准就用 `map7`——它就是上面那份模板的底稿，
+   可以避开一些诡异问题。
 
-3.选中Camera mod。
+    ![把地图文件放进 map](../assets/shushu/004.png)
 
-![准备工作 12](../assets/shushu/012.png)
+    ![放好之后的样子](../assets/shushu/005.png)
 
-4.进入地图，按下F4动动鼠标看看有没有效果。
+    !!! warning "地图分三类，模板要对得上"
+        RWR 原版地图分为三个类型：原版中的原版、原版中的沙漠、原版中的雪地。
+        用哪个类型就要装对应的模板，而目前**只做了「原版中的原版」这一类**，
+        所以只能用 `\vanilla\maps` 里的文件。
 
-![准备工作 13](../assets/shushu/013.png)
+        `map19`、`\vanilla.desert\maps`、`\vanilla.winter\maps` 里的地图
+        可能会有适配问题——打开看看不影响，但拿它们当底子做就算了。
 
-其中：
+    ??? quote "上面例图里的 .meta 文件"
+        例图里我地编文件夹中那一堆 `.meta` 用不着管，只是示例。
+        把左边的整个扔进右边地编文件夹就行。
 
-F3是开关用于拍摄宣传片的滤镜
+## 二、如何同步地编与 RWR 的文件夹 { #sync }
 
-F4是开关自由视角
+地编与游戏的目录分开管太麻烦，用一条符号链接把它们接在一起。之后在游戏里就能
+直接玩到自己刚画的地图。
 
-F5是开关法线模式，用于查看碰撞箱等
+1. 按 ++win+r++，输入 `cmd`，打开命令提示符。
 
-F6是切换到凌晨/傍晚
+    ![Win+R 运行框](../assets/shushu/006.png)
 
-F7是开关GUI显示
+    ![输入 cmd](../assets/shushu/007.png)
 
-## OgreSDK下载
+2. 输入下面这条命令：
 
-![准备工作 14](../assets/shushu/014.png)
+    ```text
+    mklink /J "你的小兵步枪要创建的地图文件夹" "地编的文件夹"
+    ```
 
-1.群文件下载OgreSDK_vc10_v1-7-4.zip，解压在自己喜欢的路径，推荐和地编文件夹一块。
+    !!! note "两个路径都要按自己的来"
+        每个人的路径都不一样，按自己的填。这里用的是 `\J`——**目录联接**，
+        不是 `\D` 的软链接；前者不要求管理员权限，跨盘符也没问题。
 
-![准备工作 15](../assets/shushu/015.png)
+        第一个路径要保证**执行命令之前它不存在**，否则会报「文件已存在」。
 
-2.没了，之后3rdParSettings要用，现在先不说 :)
+    ![输入 mklink 命令](../assets/shushu/008.png)
+
+3. 完成后应该是这样：
+
+    ![创建成功](../assets/shushu/009.png)
+
+## 三、如何开启 RWR 自带的相机 mod { #camera-mod }
+
+相机 mod 是游戏自带的，只是默认不加载。开起来，进了地图就能自由飞。
+
+1. 在 Steam 游戏库里右键 RWR → 属性，在**启动选项**里填入：
+
+    ```text
+    skip_nat_server_usage debugmode no_simulation auto_update_tree_foliage big_water
+    ```
+
+    ![填启动选项](../assets/shushu/010.png)
+
+2. 打开游戏，点「开始新的快速比赛模式」，然后点「加载模组」。
+
+    ![开始快速比赛](../assets/shushu/011.png)
+
+3. 选中 Camera mod。
+
+    ![选中 Camera mod](../assets/shushu/012.png)
+
+4. 进入地图，按 ++f4++ 动动鼠标，看看有没有反应。
+
+    ![进入地图按 F4](../assets/shushu/013.png)
+
+    | 按键 | 作用 |
+    | --- | --- |
+    | ++f3++ | 开关拍摄宣传片用的滤镜 |
+    | ++f4++ | 开关自由视角 |
+    | ++f5++ | 开关法线模式，用来查看[碰撞箱](#camera-mod "物件的碰撞体积；地编里靠它判断能不能站上去、能不能被打到") |
+    | ++f6++ | 在凌晨 / 傍晚之间切换 |
+    | ++f7++ | 开关 GUI 显示 |
+
+    !!! tip "F5 是同一个键，两回事"
+        在地编里 ++f5++ 是**刷新界面**，在相机 mod 里是**开法线模式**。
+        取决于你现在在哪个窗口里。
+
+## OgreSDK 下载 { #ogresdk }
+
+现在用不到，等[3rdParSettings](../settings/third-party.md#third-party)要用的时候再回来。
+
+![OgreSDK 包](../assets/shushu/014.png)
+
+1. 从群文件下载 `OgreSDK_vc10_v1-7-4.zip`，解压到自己喜欢的路径，
+   推荐和地编文件夹放在一块。
+
+    ![解压 OgreSDK](../assets/shushu/015.png)
+
+2. 没了。之后 3rdParSettings 要用，现在先不说 :)
+
+*[模板]: 物件在 `template = …` 里引用的名字，地编里按这个名字找它
+*[RWR]: Running With Rifles，小兵步枪

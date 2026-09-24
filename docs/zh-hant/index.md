@@ -4,42 +4,74 @@ icon: "lucide/house"
 description: "小兵步槍地圖編輯器手冊：地編界面逐項說明、模型與牆體清單、交互按鍵與常用流程。"
 nav: ["prepare", "editor", "tables", "settings", "about"]
 # ⚠️ 由 tools/docsgen.py 從 content/index.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
+hide: [navigation]
 ---
 
 # 鼠書
 
-做地圖之前的準備工作（主要是改善交互體驗用）
+<p class="kicker">RWR 地圖編輯組 · 內部資料</p>
 
-編輯日期：20260922 | 地編版本0101
+做地圖之前的準備工作——主要是把地編的交互體驗調順。
 
-當前編輯者：HamSter
+|  |  |
+| --- | --- |
+| 編輯日期 | 20260922 |
+| 地編版本 | 0101 |
+| 當前編輯者 | HamSter |
+
+!!! warning "先說清楚這是什麼"
+    這是編輯組的**內部工作記錄**，不是官方說明書。原文標着「待試」「未錄入」的地方
+    照原樣留着——那表示**組裡還沒試過**，不代表能用，也不代表不能用。
 
 ## 從哪裡開始
 
 <div class="grid cards" markdown>
 
--   __第一次裝地編__
+-   :material-download:{ .lg .middle } __剛拿到地編__
 
     ---
 
-    下載、配置路徑、與 RWR 的文件夾同步，以及怎麼開自帶相機 mod。
+    解壓、配置、與 RWR 的文件夾同步，再把自帶的相機 mod 打開。
 
     [:octicons-arrow-right-24: 準備工作](prepare/index.md)
 
--   __界面上的按鈕都是什麼__
+-   :material-cursor-default-click:{ .lg .middle } __界面上都是什麼__
 
     ---
 
-    主界面、Mesh E / Wall E / Decal 等工具，交互按鍵與 ID 搜索。
+    主界面各工具、交互按鍵、按 ID 找物件。
 
     [:octicons-arrow-right-24: 地編界面](editor/index.md)
 
--   __有哪些模型可以用__
+-   :material-cube-outline:{ .lg .middle } __有哪些模型能擺__
 
     ---
 
-    Mesh E、Wall E、Building E、Vehicle Scatter、Decal 五張清單，含預覽圖與備註。
+    五張清單、七百多個物件，帶預覽圖與組裡記的備註。
 
     [:octicons-arrow-right-24: 模型清單](tables/index.md)
 
+-   :material-cog-outline:{ .lg .middle } __三個配置文件__
+
+    ---
+
+    mapSettings 管地圖本身，3rdParSettings 與 RefpM 管外部資源。
+
+    [:octicons-arrow-right-24: 設置文件](settings/index.md)
+
 </div>
+
+## 這個站有兩條軸
+
+**版本**決定你看到哪一版地編的說明，**語言**決定用哪種文字讀。兩者互不幹涉：
+換版本不會換語言，換語言也不會回版本。
+
+| 軸 | 在頁眉哪一側 | 切換之後 |
+| --- | --- | --- |
+| 版本 | 左側的標簽圖標 | 只換版本，語言留着 |
+| 語言 | 右側的翻譯圖標 | 只換語言，版本留着 |
+
+[從準備工作開始](prepare/index.md){ .md-button .md-button--primary }
+[直接翻模型清單](tables/index.md){ .md-button }
+
+*[模板]: 物件在 `template = …` 裡引用的名字，地編裡按這個名字找它

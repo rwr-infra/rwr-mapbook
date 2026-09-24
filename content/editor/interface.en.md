@@ -1,9 +1,9 @@
 ---
-title: 总导航
-description: 地编顶栏与工具按钮的总览。
+title: "总导航"
+description: "地编顶栏与工具按钮的总览。"
 source_sha256: b545355e18256dcc7fbed042ea93cf9d582120210f75b6fcff1b93e4babf1c68
 translated: null
-nav_label: 总导航
+nav_label: "总导航"
 icon: lucide/compass
 ---
 

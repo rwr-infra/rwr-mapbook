@@ -1,16 +1,26 @@
 ---
 nav_label: "RefpM 說明"
 title: "RefpM 說明"
+icon: "lucide/image"
 description: "用來加參考圖。"
 # ⚠️ 由 tools/docsgen.py 從 content/settings/reference-images.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
 ---
 
-# RefpM說明（用來加參考圖）
+# RefpM 說明（用來加參考圖） { #reference-images }
 
-使用Import導入參考圖，Clear移除。
+<p class="kicker">SETTINGS · 把底圖墊在地編裡</p>
 
-ScaleX與ScaleY的作用為橫向與縱向壓縮或拉長參考圖，值填倍率，例如ScaleX填0.5就是橫向把參考圖壓刀一半。
+做地圖時把一張衛星圖或手繪稿墊在下面，照着擺物件。用 **Import** 導入參考圖，
+**Clear** 移除。
 
-OffsetX與OffsetX其實是Y的作用為橫向與縱向偏移參考圖，值填距離，第一項為X軸向右增長、第二項為Y軸向上增長。
+| 控件 | 作用 | 填什麼 |
+| --- | --- | --- |
+| `ScaleX` | 橫向壓縮或拉長參考圖 | 倍率。填 `0.5` 就是橫向壓到一半 |
+| `ScaleY` | 縱向壓縮或拉長參考圖 | 倍率 |
+| `OffsetX` | 橫向偏移參考圖 | 距離。X 軸向右增長 |
+| `OffsetY` | 縱向偏移參考圖 | 距離。Y 軸向上增長 |
+| `Alpha` | 更改參考圖透明度 | 向左淡化，向右實體化 |
 
-Alpha作用為更改參考圖透明度，向左淡化向右軀體化。
+!!! note "原文在這裡寫錯了兩處"
+    原文寫的是「OffsetX 與 OffsetX 其實是 Y 的作用」「向右軀體化」——
+    從上下文看是筆誤，這裡按 `OffsetY` 與「實體化」寫。要改回去說一聲。

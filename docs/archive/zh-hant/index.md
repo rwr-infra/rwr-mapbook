@@ -5,6 +5,7 @@ icon: lucide/archive
 description: "版本機制的一份示例快照：這一支的內容被凍結在砍版那一刻，之後不再回改。"
 nav: ["prepare"]
 # ⚠️ 由 tools/docsgen.py 從 content/versions/archive/index.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
+hide: [navigation]
 ---
 
 # 歷史版快照（示例）

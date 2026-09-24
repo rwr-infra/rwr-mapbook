@@ -1,9 +1,9 @@
 ---
-title: Wall E
-description: 正常墙与特殊墙，含爆炸物摧毁判定等备注。
+title: "Wall E"
+description: "正常墙与特殊墙，含爆炸物摧毁判定等备注。"
 source_sha256: b1108996be3553e648409dda3de84bae8c1e269fcf1d0337607b9d207f7b84c4
 translated: null
-nav_label: Wall E
+nav_label: "Wall E"
 icon: lucide/box
 # ⚠️ 由 tools/docsgen.py 从 content/tables/wall.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
 ---

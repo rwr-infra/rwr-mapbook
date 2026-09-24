@@ -9,13 +9,46 @@ nav: ["interface", "settings", "keys", "id-search"]
 
 # 地編界面
 
-這一組是「界面上有什麼、按下去會怎樣」。
+<p class="kicker">EDITOR · 界面上有什麼，按下去會怎樣</p>
 
-1. [總導航](interface.md) —— 地編頂欄與工具按鈕的總覽；
-2. [主界面](settings.md) —— Save / ViewMap / Select / PinMan / WallE… 逐項說明；
-3. [交互按鍵表](keys.md) —— 鼠標與鍵盤在地編裡各做什麼；
-4. [ID 搜索功能說明](id-search.md) —— 按 ID 找物件。
+這一組是四頁：先看頂欄有什麼，再逐個工具看它們做什麼，最後是鍵盤鼠標與排錯。
 
-!!! info "術語"
-    文中「地編」指 RWR 官方地圖編輯器（Map Editor），「模板」指物件在
-    `template = …` 裡引用的名字。清單頁上的名稱列直接給出這兩個東西。
+!!! info "兩個詞先說明白"
+    **地編**指 RWR 官方的地圖編輯器（Map Editor）；**模板**指物件在
+    `template = …` 裡引用的名字。清單頁的「名稱」列把這兩個東西一起給你。
+
+<div class="grid cards" markdown>
+
+-   :material-compass-outline:{ .lg .middle } __總導航__
+
+    ---
+
+    頂欄上那十四個按鈕，各管一件事。
+
+    [:octicons-arrow-right-24: 去看](interface.md)
+
+-   :material-sliders-horizontal:{ .lg .middle } __主界面__
+
+    ---
+
+    Save、ViewMap、Select 一直到 Assaum，逐項說明。
+
+    [:octicons-arrow-right-24: 去看](settings.md)
+
+-   :material-keyboard-outline:{ .lg .middle } __交互按鍵表__
+
+    ---
+
+    鼠標與鍵盤各做什麼，以及幾個容易記混的。
+
+    [:octicons-arrow-right-24: 去看](keys.md)
+
+-   :material-magnify:{ .lg .middle } __ID 搜索__
+
+    ---
+
+    報錯裡甩給你一個 ID 時，怎麼把它揪出來。
+
+    [:octicons-arrow-right-24: 去看](id-search.md)
+
+</div>

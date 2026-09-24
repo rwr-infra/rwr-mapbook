@@ -6,12 +6,36 @@ icon: "lucide/box"
 # ⚠️ 由 tools/docsgen.py 从 content/tables/mesh.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
 ---
 
-# MESH E
+# MESH E { #mesh }
+
+<p class="kicker">EDITOR · 石头、植物、小物件、大物件、特殊物件</p>
+
+<div class="grid" markdown>
+
+[:octicons-arrow-right-24: 自然类（石头/植物）](#nature){ .card }
+
+[:octicons-arrow-right-24: 小物件](#small){ .card }
+
+[:octicons-arrow-right-24: 大物件](#large){ .card }
+
+[:octicons-arrow-right-24: 特殊物件](#special){ .card }
+
+[:octicons-arrow-right-24: 有严重问题的物件](#broken){ .card }
+
+</div>
+
+!!! tip "怎么读这张表"
+    「预览」列按原文的两张图并排给：左侧斜向下视角，右侧正对法线。判断形状请以**水平线**为准，垂直线是点透视。
+
+    五个组并排放在同一张表里，所以同一个物件在这一页可能出现两次（它同时属于两组时）。
+
+*[模板]: 物件在 `template = …` 里引用的名字，地编里按这个名字找它
+
 
 !!! note "原文标注"
     注：模板版本vao0822，预览图左侧为斜向下视角，预览图右侧为正对法线也就是地编视角（请以水平线为参考，垂直线因为是点透视所以可能会导致物品看起来倾斜的视误差），千万别把材质错误全部归类成是模板类Mesh，冷杉树和海报牌这类错误肯定不属于这种 :/
 
-## 自然类（石头/植物）
+## 自然类（石头/植物） { #nature }
 
 | 预览 | 名称 | 备注 |
 | --- | --- | --- |
@@ -73,7 +97,7 @@ icon: "lucide/box"
 | ![](../assets/tables/mesh-e/341.png)<br>![](../assets/tables/mesh-e/342.png) | 十三号热带植物<br>template = tropical_plant_13 |  |
 | ![](../assets/tables/mesh-e/346.png)<br>![](../assets/tables/mesh-e/347.png) | 小麦<br>template = wheat |  |
 
-## 小物件
+## 小物件 { #small }
 
 | 预览 | 名称 | 备注 |
 | --- | --- | --- |
@@ -214,7 +238,7 @@ icon: "lucide/box"
 | ![](../assets/tables/mesh-e/536.png)<br>![](../assets/tables/mesh-e/537.png) | 车3<br>template = car3 | 不是载具，炸不坏也推不动<br>疑似材质错误 |
 | ![](../assets/tables/mesh-e/538.png)<br>![](../assets/tables/mesh-e/539.png) | 车4<br>template = car4 | 不是载具，炸不坏也推不动<br>疑似材质错误 |
 
-## 大物件
+## 大物件 { #large }
 
 | 预览 | 名称 | 备注 |
 | --- | --- | --- |
@@ -245,7 +269,7 @@ icon: "lucide/box"
 | ![](../assets/tables/mesh-e/184.png)<br>![](../assets/tables/mesh-e/185.png) | 圣殿<br>template = temple | 门口一小部分无碰撞箱 |
 | ![](../assets/tables/mesh-e/191.png)<br>![](../assets/tables/mesh-e/192.png) | 隧道<br>template = tunnel | 无碰撞箱 |
 
-## 特殊物件
+## 特殊物件 { #special }
 
 | 预览 | 名称 | 备注 |
 | --- | --- | --- |
@@ -254,7 +278,7 @@ icon: "lucide/box"
 | ![](../assets/tables/mesh-e/026.png)<br>![](../assets/tables/mesh-e/027.png) | 三线电线杆子<br>template = post1_3 |  |
 | ![](../assets/tables/mesh-e/036.png)<br>![](../assets/tables/mesh-e/037.png) | 大臂电线杆子<br>template = post1_4 |  |
 
-## 有严重问题的物件
+## 有严重问题的物件 { #broken }
 
 | 预览 | 名称 | 备注 |
 | --- | --- | --- |

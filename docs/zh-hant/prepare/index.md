@@ -4,98 +4,165 @@ title: "準備工作"
 icon: "lucide/download"
 description: "下載後的配置、與 RWR 文件夾同步、開啟自帶相機 mod，以及 OgreSDK 下載。"
 # ⚠️ 由 tools/docsgen.py 從 content/prepare/index.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
+hide: [navigation]
 ---
 
-# 準備工作
+# 準備工作 { #prepare }
 
-## 一、地編下載後如何配置
+<p class="kicker">PREPARE · 裝好，然後才談畫圖</p>
 
-1.將下載後的文件解壓到你自己喜歡的路徑。
+四件事，按順序做完就能開工。前三件不做完，後面每一步都會卡住。
 
-![準備工作 1](../../assets/shushu/001.png)
+<div class="grid cards" markdown>
 
-2.在1007_Data中創建一個templates文件夾與map文件夾。
+-   __1 · 配置地編__
 
-![準備工作 2](../../assets/shushu/002.png)
+    ---
 
-3.下載群內的最新模板，目前是vao0822.svg，放入地編的templates文件夾中。
+    解壓，建兩個文件夾，把模板與地圖放進去。
 
-> 註：目前只有原版正常地圖模板，沙漠與雪地的模板暫未製作完成。
+    [:octicons-arrow-right-24: 跳到這一節](#setup)
 
-![準備工作 3](../../assets/shushu/003.png)
+-   __2 · 同步文件夾__
 
-4.選擇你喜歡的地圖放入地編的map文件夾裡，注意只能選一個，並且將那個地圖文件夾下所有的相關文件都扔進去，如果拿不準就扔map7，因為這就是上面模板的底稿，可以防止出現一些詭異問題。
+    ---
 
-> 註：RWR原版地圖分為三個類型（原版中的原版、原版中的沙漠、原版中的雪地），用哪個類型就要裝載對應的模板，目前只做了原版中的原版類型模板，所以只能使用\vanilla\maps中的文件，過於特殊的 map19與\vanilla.desert\maps路徑和\vanilla.winter\maps路徑中的地圖可能會出現適配問題（當然不影響只是打開看看，但是以這些地圖為底子去做還是算了）。
+    一條 `mklink` 命令，把地編直接接到 RWR 的地圖目錄上。
 
-![準備工作 4](../../assets/shushu/004.png)
+    [:octicons-arrow-right-24: 跳到這一節](#sync)
 
-![準備工作 5](../../assets/shushu/005.png)
+-   __3 · 開相機 mod__
 
-> *上面例子圖我地編文件夾裡一堆.meta文件用不着管，只是個示例，把左邊的全扔右邊地編文件夾裡就行
+    ---
 
-## 二、如何同步地編與RWR的文件夾
+    啟動項裡加一行，遊戲裡就能自由飛、切法線。
 
-1.首先Win+R，輸入cmd打開命令提示符界面。
+    [:octicons-arrow-right-24: 跳到這一節](#camera-mod)
 
-![準備工作 6](../../assets/shushu/006.png)
+-   __4 · 下 OgreSDK__
 
-![準備工作 7](../../assets/shushu/007.png)
+    ---
 
-2.之後輸入命令：
+    現在用不上，等 3rdParSettings 要用時再回來。
 
-```text
-mklink /J "你的小兵步槍要創建的地圖文件夾" "地編的文件夾"
-```
+    [:octicons-arrow-right-24: 跳到這一節](#ogresdk)
 
-> 註：<br>每個人路徑都不一樣，按自己的來；<br>第一個文件夾路徑需要保證輸入命令前是未被創建的。
+</div>
 
-![準備工作 8](../../assets/shushu/008.png)
+## 一、地編下載後如何配置 { #setup }
 
-3.完成後效果。
+1. 將下載後的文件解壓到你自己喜歡的路徑。
 
-![準備工作 9](../../assets/shushu/009.png)
+    ![解壓到任意路徑](../../assets/shushu/001.png)
 
-## 三、如何開啟RWR自帶的相機mod
+2. 在 `1007_Data` 中創建一個 `templates` 文件夾與 `map` 文件夾。
 
-1.steam遊戲庫界面，在左側列表找到右鍵RWR，打開屬性，輸入：
+    ![建 templates 與 map 兩個文件夾](../../assets/shushu/002.png)
 
-```text
-skip_nat_server_usage debugmode no_simulation auto_update_tree_foliage big_water
-```
+3. 下載群內的最新模板（目前是 `vao0822.svg`），放進地編的 `templates` 文件夾中。
 
-![準備工作 10](../../assets/shushu/010.png)
+    ![把模板放進 templates](../../assets/shushu/003.png)
 
-2.打開遊戲，點擊開始新的快速比賽模式，然後點擊加載模組。
+    !!! note "目前只有原版地圖的模板"
+        沙漠與雪地的模板暫未製作完成。
 
-![準備工作 11](../../assets/shushu/011.png)
+4. 選一個你喜歡的地圖放進地編的 `map` 文件夾，**只能選一個**，並且要把那個地圖
+   文件夾下所有相關文件都扔進去。拿不準就用 `map7`——它就是上面那份模板的底稿，
+   可以避開一些詭異問題。
 
-3.選中Camera mod。
+    ![把地圖文件放進 map](../../assets/shushu/004.png)
 
-![準備工作 12](../../assets/shushu/012.png)
+    ![放好之後的樣子](../../assets/shushu/005.png)
 
-4.進入地圖，按下F4動動鼠標看看有沒有效果。
+    !!! warning "地圖分三類，模板要對得上"
+        RWR 原版地圖分為三個類型：原版中的原版、原版中的沙漠、原版中的雪地。
+        用哪個類型就要裝對應的模板，而目前**只做了「原版中的原版」這一類**，
+        所以只能用 `\vanilla\maps` 裡的文件。
 
-![準備工作 13](../../assets/shushu/013.png)
+        `map19`、`\vanilla.desert\maps`、`\vanilla.winter\maps` 裡的地圖
+        可能會有適配問題——打開看看不影響，但拿它們當底子做就算了。
 
-其中：
+    ??? quote "上面例圖裡的 .meta 文件"
+        例圖裡我地編文件夾中那一堆 `.meta` 用不着管，只是示例。
+        把左邊的整個扔進右邊地編文件夾就行。
 
-F3是開關用於拍攝宣傳片的濾鏡
+## 二、如何同步地編與 RWR 的文件夾 { #sync }
 
-F4是開關自由視角
+地編與遊戲的目錄分開管太麻煩，用一條符號鏈接把它們接在一起。之後在遊戲裡就能
+直接玩到自己剛畫的地圖。
 
-F5是開關法線模式，用於查看碰撞箱等
+1. 按 ++win+r++，輸入 `cmd`，打開命令提示符。
 
-F6是切換到凌晨/傍晚
+    ![Win+R 運行框](../../assets/shushu/006.png)
 
-F7是開關GUI顯示
+    ![輸入 cmd](../../assets/shushu/007.png)
 
-## OgreSDK下載
+2. 輸入下面這條命令：
 
-![準備工作 14](../../assets/shushu/014.png)
+    ```text
+    mklink /J "你的小兵步槍要創建的地圖文件夾" "地編的文件夾"
+    ```
 
-1.群文件下載OgreSDK_vc10_v1-7-4.zip，解壓在自己喜歡的路徑，推薦和地編文件夾一塊。
+    !!! note "兩個路徑都要按自己的來"
+        每個人的路徑都不一樣，按自己的填。這裡用的是 `\J`——**目錄聯接**，
+        不是 `\D` 的軟鏈接；前者不要求管理員權限，跨盤符也沒問題。
 
-![準備工作 15](../../assets/shushu/015.png)
+        第一個路徑要保證**執行命令之前它不存在**，否則會報「文件已存在」。
 
-2.沒了，之後3rdParSettings要用，現在先不說 :)
+    ![輸入 mklink 命令](../../assets/shushu/008.png)
+
+3. 完成後應該是這樣：
+
+    ![創建成功](../../assets/shushu/009.png)
+
+## 三、如何開啟 RWR 自帶的相機 mod { #camera-mod }
+
+相機 mod 是遊戲自帶的，只是默認不加載。開起來，進了地圖就能自由飛。
+
+1. 在 Steam 遊戲庫裡右鍵 RWR → 屬性，在**啟動選項**裡填入：
+
+    ```text
+    skip_nat_server_usage debugmode no_simulation auto_update_tree_foliage big_water
+    ```
+
+    ![填啟動選項](../../assets/shushu/010.png)
+
+2. 打開遊戲，點「開始新的快速比賽模式」，然後點「加載模組」。
+
+    ![開始快速比賽](../../assets/shushu/011.png)
+
+3. 選中 Camera mod。
+
+    ![選中 Camera mod](../../assets/shushu/012.png)
+
+4. 進入地圖，按 ++f4++ 動動鼠標，看看有沒有反應。
+
+    ![進入地圖按 F4](../../assets/shushu/013.png)
+
+    | 按鍵 | 作用 |
+    | --- | --- |
+    | ++f3++ | 開關拍攝宣傳片用的濾鏡 |
+    | ++f4++ | 開關自由視角 |
+    | ++f5++ | 開關法線模式，用來查看[碰撞箱](#camera-mod "物件的碰撞體積；地編裡靠它判斷能不能站上去、能不能被打到") |
+    | ++f6++ | 在凌晨 / 傍晚之間切換 |
+    | ++f7++ | 開關 GUI 顯示 |
+
+    !!! tip "F5 是同一個鍵，兩回事"
+        在地編裡 ++f5++ 是**刷新界面**，在相機 mod 裡是**開法線模式**。
+        取決於你現在在哪個窗口裡。
+
+## OgreSDK 下載 { #ogresdk }
+
+現在用不到，等[3rdParSettings](../settings/third-party.md#third-party)要用的時候再回來。
+
+![OgreSDK 包](../../assets/shushu/014.png)
+
+1. 從群文件下載 `OgreSDK_vc10_v1-7-4.zip`，解壓到自己喜歡的路徑，
+   推薦和地編文件夾放在一塊。
+
+    ![解壓 OgreSDK](../../assets/shushu/015.png)
+
+2. 沒了。之後 3rdParSettings 要用，現在先不說 :)
+
+*[模板]: 物件在 `template = …` 裡引用的名字，地編裡按這個名字找它
+*[RWR]: Running With Rifles，小兵步槍

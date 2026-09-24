@@ -5,12 +5,30 @@ description: "正常墙与特殊墙，含爆炸物摧毁判定等备注。"
 icon: "lucide/box"
 ---
 
-# Wall E
+# Wall E { #wall }
+
+<p class="kicker">EDITOR · 墙，以及能不能被打掉</p>
+
+<div class="grid" markdown>
+
+[:octicons-arrow-right-24: 正常墙](#normal){ .card }
+
+[:octicons-arrow-right-24: 特殊墙](#special){ .card }
+
+</div>
+
+!!! tip "怎么读这张表"
+    「预览」列按原文的两张图并排给：左侧斜向下视角，右侧正对法线。判断形状请以**水平线**为准，垂直线是点透视。
+
+    两张表：正常墙与特殊墙。备注列里原文写的是待测项（能否翻越、被爆炸摧毁的阈值）。
+
+*[模板]: 物件在 `template = …` 里引用的名字，地编里按这个名字找它
+
 
 !!! note "原文标注"
     注：模板版本vao0822，视角为侧视，爆炸物摧毁判定貌似需要靠近中间，在两边可能炸不掉，如果墙是隐形的或者形状/材质奇奇怪怪的那大概率是跟平台结合使用的
 
-## 正常墙
+## 正常墙 { #normal }
 
 | 预览 | 名称 | 备注 |
 | --- | --- | --- |
@@ -64,7 +82,7 @@ icon: "lucide/box"
 | ![](../assets/tables/wall-e/076.png) | 三号战壕墙<br>template = TrenchWall3 |  |
 | ![](../assets/tables/wall-e/077.png) | 木柱围栏1<br>template = WoodPostFence1 |  |
 
-## 特殊墙
+## 特殊墙 { #special }
 
 | 预览 | 名称 | 备注 |
 | --- | --- | --- |

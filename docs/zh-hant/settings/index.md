@@ -9,8 +9,37 @@ nav: ["map-settings", "third-party", "reference-images"]
 
 # 設置文件
 
-地編的三處配置文件：地圖自身設置、第三方模型與材質路徑、參考圖。
+<p class="kicker">SETTINGS · 三個地方要填東西</p>
 
-1. [mapSettings 說明（待試）](map-settings.md)；
-2. [3rdParSettings 說明](third-party.md) —— 用來加載細緻模型以及部分材質，可不用；
-3. [RefpM 說明](reference-images.md) —— 用來加參考圖。
+三處配置，各管一段：一處管地圖本身，一處管外部的模型與材質，一處管墊在底下的參考圖。
+
+<div class="grid cards" markdown>
+
+-   :material-map-outline:{ .lg .middle } __mapSettings__
+
+    ---
+
+    地圖自身的設置：名字、描述、晝夜顏色、背景音效。
+
+    !!! warning "**待試**"
+        原文自己標了「待試」，好幾行還是「沒試，不知道這是啥」。
+
+    [:octicons-arrow-right-24: 去看](map-settings.md)
+
+-   :material-puzzle-outline:{ .lg .middle } __3rdParSettings__
+
+    ---
+
+    加載細緻的模型與部分材質。可不用，但開了好看得多。
+
+    [:octicons-arrow-right-24: 去看](third-party.md)
+
+-   :material-image-outline:{ .lg .middle } __RefpM__
+
+    ---
+
+    把衛星圖或手稿墊在地編裡，照着擺物件。
+
+    [:octicons-arrow-right-24: 去看](reference-images.md)
+
+</div>
