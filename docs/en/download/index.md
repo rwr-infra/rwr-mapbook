@@ -1,13 +1,13 @@
 ---
 title: "Previous versions"
-description: "Complete archives of every editor version: one click fetches the parts, checks them, and joins them into a single package."
-source_sha256: ff9c1ce57fbacd2df9297ee4109423bddc96d23569207759a5dafbf491c9def6
+description: "Complete archives of every editor version, plus the two companion files: one click fetches the parts, checks them, and joins them into a single package."
+source_sha256: 38737a847b3592f6f79eb1c4ba09cd1ac2df817620763fa024b9183e0c6d560e
 translated: 2026-09-25
 nav_label: "Previous versions"
 icon: lucide/archive
 tags: [Setup]
 # ⚠️ 由 tools/docsgen.py 从 content/download/index.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
-hide: [navigation, toc]
+hide: [navigation]
 ---
 
 # Previous version archives { #download }
@@ -32,13 +32,24 @@ tool to merge them.
 | Editor 0100 | `0100.rar`<br><span data-dl-size="0100">—</span> | <button type="button" class="md-button md-button--primary" data-dl="0100">Download</button> <span class="dl-status" data-dl-status="0100"></span> |
 | Editor 0101 | `0101.rar`<br><span data-dl-size="0101">—</span> | <button type="button" class="md-button md-button--primary" data-dl="0101">Download</button> <span class="dl-status" data-dl-status="0101"></span> |
 
+!!! warning "Check which version you are looking at"
+    The archives are **frozen**: each one is that version's complete file set, and it will
+    not change afterwards. The handbook itself describes the current version; against an
+    older editor the interface and the inventories may not line up.
+
+## The two companion files
+
+The other two things modelling and configuration call for. [Getting ready](../prepare/index.md)
+covers how they are used: the template goes into the editor's `templates` folder, and the
+OgreSDK is only needed once `3rdParSettings` comes into play.
+
+| Item | File | Download |
+| --- | --- | --- |
+| Template (inventory version vao0822) | `vao0822.svg`<br><span data-dl-size="vao0822">—</span> | <button type="button" class="md-button md-button--primary" data-dl="vao0822">Download</button> <span class="dl-status" data-dl-status="vao0822"></span> |
+| OgreSDK | `OgreSDK_vc10_v1-7-4.zip`<br><span data-dl-size="OgreSDK_vc10_v1-7-4">—</span> | <button type="button" class="md-button md-button--primary" data-dl="OgreSDK_vc10_v1-7-4">Download</button> <span class="dl-status" data-dl-status="OgreSDK_vc10_v1-7-4"></span> |
+
 !!! note "Why the packages are split"
     The host caps how large a single file may be, so archives bigger than that cap are
     stored as several parts. That happens **on the server side only**: the page fetches
     every part, checks each hash, and hands you one joined package. If any part fails its
     check it stops and reports the error rather than giving you half a package.
-
-!!! warning "Check which version you are looking at"
-    The archives are **frozen**: each one is that version's complete file set, and it will
-    not change afterwards. The handbook itself describes the current version; against an
-    older editor the interface and the inventories may not line up.
