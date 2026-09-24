@@ -32,8 +32,7 @@ check:
 versions:
 	$(UV) run python tools/versions.py
 
-# 产物链接体检。构建会一页页重写 site/，所以它必须在 zensical 之后跑；
-# tagfilter 又会在事后改标签索引，所以也排在 tagfilter 之后。
+# 产物链接体检。构建会一页页重写 site/，所以它必须在 zensical 之后跑。
 links: versions
 	$(UV) run python tools/linkcheck.py
 
@@ -41,12 +40,11 @@ links: versions
 # ⚠️ --clean 会清空 site/，所以 serve 还开着的时候不要跑这个目标。
 build: gen
 	$(UV) run zensical build --clean --strict
-	$(UV) run python tools/tagfilter.py
 	$(UV) run python tools/linkcheck.py
 	$(UV) run python tools/i18n_check.py
 
-# ⚠️ zensical serve 自己构建、自己服务，插不进 tagfilter 与 linkcheck，
-#    所以预览里的 /tags/ 仍会列出全部三种语言的篇目（线上产物不会）。
+# ⚠️ `zensical serve` 跳过后处理链，所以**预览里没有链接体检**——它是构建之后
+#    才做得了的事。标签索引不在此列：它由 docsgen 各自生成，预览与线上一致。
 #
 # 为什么线上在子路径下
 # ----------------------

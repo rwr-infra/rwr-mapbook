@@ -3,6 +3,7 @@ nav_label: "Vehicle Scatter"
 title: "Vehicle Scatter"
 description: "载具散布清单。"
 icon: "lucide/box"
+tags: [模型, 载具]
 ---
 
 # Vehicle Scatter { #vehicle }

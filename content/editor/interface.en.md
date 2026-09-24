@@ -1,10 +1,11 @@
 ---
 title: "Overview"
 description: "An overview of the editor's toolbar and its buttons."
-source_sha256: 143d89a0e233be8d874a51e09d087373465f9b62d0f415c478cb7662fff0896d
+source_sha256: f4ad65797bc11dc076d1372a0ddb58361d2189240df4f5aefdd9bffb8d59ab0a
 translated: 2026-09-25
 nav_label: "Overview"
 icon: lucide/compass
+tags: [Interface, Tools]
 ---
 
 # Overview { #overview }

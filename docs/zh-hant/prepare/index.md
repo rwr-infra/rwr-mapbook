@@ -3,6 +3,7 @@ nav_label: "準備工作"
 title: "準備工作"
 icon: "lucide/download"
 description: "下載後的配置、與 RWR 文件夾同步、開啟自帶相機 mod，以及 OgreSDK 下載。"
+tags: [安裝與配置, 相機 mod]
 # ⚠️ 由 tools/docsgen.py 從 content/prepare/index.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
 hide: [navigation]
 ---

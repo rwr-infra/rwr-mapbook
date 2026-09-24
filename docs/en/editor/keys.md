@@ -1,10 +1,11 @@
 ---
 title: "Key bindings"
 description: "What the mouse and keyboard each do in the editor."
-source_sha256: cd87f85b80e2d9811d436f747a942f6c31ee43467718017abc4ef271b79fb40e
+source_sha256: e30ba26957a8f43dc8167e1bb95042a7a0652fd33dbd050c80da7090627bb09d
 translated: 2026-09-25
 nav_label: "Key bindings"
 icon: lucide/keyboard
+tags: [Interface, Key bindings]
 # ⚠️ 由 tools/docsgen.py 从 content/editor/keys.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
 hide: [toc]
 ---

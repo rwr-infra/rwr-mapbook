@@ -1,10 +1,11 @@
 ---
 title: "3rdParSettings"
 description: "Loads detailed models and some materials. Optional, but it looks far better with it."
-source_sha256: 57b4fe8585f303d1cb561fadb5972809314360b6710a770ed225280ecb7cd459
+source_sha256: b438f4baa8788d072b4bf811852e202a8926a85cde2dbaf693638b2c3a8ee997
 translated: 2026-09-25
 nav_label: "3rdParSettings"
 icon: "lucide/puzzle"
+tags: [Config files, Materials]
 # ⚠️ 由 tools/docsgen.py 从 content/settings/third-party.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
 ---
 

@@ -3,6 +3,7 @@ nav_label: "Wall E"
 title: "Wall E"
 description: "正常墙与特殊墙，含爆炸物摧毁判定等备注。"
 icon: "lucide/box"
+tags: [模型, 墙体]
 # ⚠️ 由 tools/docsgen.py 从 content/tables/wall.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
 ---
 

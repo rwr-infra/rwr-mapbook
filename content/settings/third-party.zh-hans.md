@@ -3,6 +3,7 @@ nav_label: "3rdParSettings 说明"
 title: "3rdParSettings 说明"
 icon: "lucide/puzzle"
 description: "用来加载细致模型以及部分材质，可不用。"
+tags: [配置文件, 材质]
 ---
 
 # 3rdParSettings 说明（用来加载细致模型以及部分材质，可不用） { #third-party }

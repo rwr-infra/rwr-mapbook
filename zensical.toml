@@ -41,7 +41,12 @@ extra_css = [
 # extra_javascript 在 bundle 之后、document$ 初始化之前执行，
 # 所以灯箱初始化时这个全局已经就位，无需改动主题。
 # ⚠️ 升级 glightbox 插件版本时要同步换掉这两个文件。
-extra_javascript = ["javascripts/glightbox.min.js"]
+#
+# search-lang.js 是本站自己的：搜索索引全站只有一份，筛选栏里的标签因此是
+# 三种语言混在一个列表里的。这个脚本把标签**按语言分段**（当前页面的语言排最前），
+# 并把面板上写死的英文换成页面语言的词。它得挂进主题搜索面板的 shadow root，
+# 原理与「升级时要跟着看」的提醒都写在那个文件的头部。
+extra_javascript = ["javascripts/glightbox.min.js", "javascripts/search-lang.js"]
 
 # 链接与锚点校验：构建时就把断链/失效锚点报出来，而不是等读者点到。
 # Zensical 只支持链接相关的这几项（导航类的会被忽略）。
@@ -92,9 +97,9 @@ palette_toggle_dark_zh_hant = "切換到淺色"
 
 # ── 页脚品牌区的自由文案（见 overrides/partials/footer.html）──────────────
 # 三段都是可选的：不填就不渲染那一段。键名后缀规则与上面完全一样。
-footer_tagline = "修图之前先看这一页。三种语言，两份版本。"
-footer_tagline_en = "Read this before you start mapping. Three languages, two versions."
-footer_tagline_zh_hant = "修圖之前先看這一頁。三種語言，兩份版本。"
+footer_tagline = "有人试过，才写下来。"
+footer_tagline_en = "Written down because someone tried it."
+footer_tagline_zh_hant = "有人試過，才寫下來。"
 
 footer_note = "由 Zensical 构建<br>字体与脚本全部自托管"
 footer_note_en = "Built with Zensical<br>Fonts and scripts are entirely self-hosted"

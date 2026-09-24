@@ -4,6 +4,7 @@ title: "地編界面"
 icon: "lucide/layout-grid"
 description: "地編的界面總覽、主界面各按鈕、交互按鍵與 ID 搜索。"
 nav: ["interface", "settings", "keys", "id-search"]
+tags: [界面, 工具]
 # ⚠️ 由 tools/docsgen.py 從 content/editor/index.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
 hide: [toc]
 ---

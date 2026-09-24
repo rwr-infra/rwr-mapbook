@@ -1,10 +1,11 @@
 ---
 title: "Vehicle Scatter"
 description: "The vehicle scatter list."
-source_sha256: bd9deacb9fb749a88d7e82db82b090a47d3476b20265a6fbe8097cc8fbe25082
+source_sha256: a276516ba82e6a65c88974ba80ac92010269a2e484bf2c806d6b88bcfb16c4f7
 translated: 2026-09-25
 nav_label: "Vehicle Scatter"
 icon: lucide/box
+tags: [Models, Vehicles]
 ---
 
 # Vehicle Scatter { #vehicle }

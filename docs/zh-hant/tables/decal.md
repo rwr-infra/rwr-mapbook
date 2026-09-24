@@ -3,6 +3,7 @@ nav_label: "Decal"
 title: "Decal"
 description: "地面貼花清單。"
 icon: "lucide/box"
+tags: [模型, 貼花]
 # ⚠️ 由 tools/docsgen.py 從 content/tables/decal.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
 hide: [toc]
 ---

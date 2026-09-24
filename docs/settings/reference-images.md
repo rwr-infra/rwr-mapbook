@@ -3,6 +3,7 @@ nav_label: "RefpM 说明"
 title: "RefpM 说明"
 icon: "lucide/image"
 description: "用来加参考图。"
+tags: [配置文件, 参考图]
 # ⚠️ 由 tools/docsgen.py 从 content/settings/reference-images.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
 hide: [toc]
 ---

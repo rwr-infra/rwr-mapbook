@@ -3,11 +3,12 @@ nav_label: "mapSettings 說明（待試）"
 title: "mapSettings 說明（待試）"
 description: "地圖自身的設置項。這一頁標註「待試」，尚未逐項驗證。"
 status: "partial"
+tags: [配置文件, 未驗證]
 # ⚠️ 由 tools/docsgen.py 從 content/settings/map-settings.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
 hide: [toc]
 ---
 
-# mapSettings 說明（待試） { #map-settings }
+# mapSettings 說明 { #map-settings }
 
 <p class="kicker">SETTINGS · 地圖自己的那份配置</p>
 

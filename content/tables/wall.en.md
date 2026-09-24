@@ -1,10 +1,11 @@
 ---
 title: "Wall E"
 description: "Normal walls and special walls, including notes on what destroys them."
-source_sha256: 5f77f392cfdd36c8ffe3a60f87f889795e1a5709a32dcf21c72575f95b2a76f1
+source_sha256: 8b6e22ca3720da00a26125c42c49aed96f1968111115d3463c3433f3752fb672
 translated: 2026-09-25
 nav_label: "Wall E"
 icon: lucide/box
+tags: [Models, Walls]
 ---
 
 # Wall E { #wall }

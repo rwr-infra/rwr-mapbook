@@ -1,11 +1,12 @@
 ---
 title: "Configuration files"
 description: "mapSettings, 3rdParSettings and RefpM."
-source_sha256: c378402e84bf25967f44cb64737798da0b37cf966ae7344a3881817f1f6cfe87
+source_sha256: 8aa9da491bb5815e4b779f5b5d001c0814d0c379714a18a97b3549db12178d8a
 translated: 2026-09-25
 nav_label: "Configuration files"
 icon: lucide/settings
 nav: ["map-settings", "third-party", "reference-images"]
+tags: [Config files]
 # ⚠️ 由 tools/docsgen.py 从 content/settings/index.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
 hide: [toc]
 ---

@@ -3,6 +3,7 @@ nav_label: "3rdParSettings 說明"
 title: "3rdParSettings 說明"
 icon: "lucide/puzzle"
 description: "用來加載細緻模型以及部分材質，可不用。"
+tags: [配置文件, 材質]
 # ⚠️ 由 tools/docsgen.py 從 content/settings/third-party.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
 ---
 

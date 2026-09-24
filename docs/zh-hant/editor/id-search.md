@@ -3,6 +3,7 @@ nav_label: "ID 搜索功能說明"
 title: "ID 搜索功能說明"
 icon: "lucide/search"
 description: "報錯時按 ID 把物件揪出來。"
+tags: [排錯, 工具]
 # ⚠️ 由 tools/docsgen.py 從 content/editor/id-search.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
 ---
 

@@ -80,6 +80,13 @@ DERIVATIONS = [(dst, src, DERIVED_CONVERTERS[dst]) for dst, src in DERIVATIONS.i
 #: 内容根下这些前缀指向共享资产，而不是镜像页面。
 SHARED_PREFIXES = ("assets/",)
 
+#: 标签索引的占位符。主题的 tags 插件会把它展开成整站所有标签——**整站**，
+#: 也就是三种语言的标签一起列。那种页面在语言轴上没有意义：简体页上列着
+#: 英文和繁体的标签，点进去还是别的语言。所以这里不用插件的展开，
+#: 由本脚本按（版本，语言）各自生成一份，见 tag_index()。
+#: 插件仍然开着：页面标题下的标签、搜索索引里的 tags 字段都靠它。
+TAG_MARKER = "<!-- material/tags -->"
+
 BANNER_FMT = "# ⚠️ 由 tools/docsgen.py 从 {source} 生成，请勿手改；要改请改 content/ 下的源文件。"
 DERIVED_BANNER = "（本页由 {source_lang} 版脚本转换而来，不是另译）"
 
@@ -92,6 +99,80 @@ OWNED_RE = re.compile(r"^# ⚠️ 由 tools/docsgen\.py ", re.M)
 STUB_OWNED_RE = re.compile(r"<!-- ⚠️ 由 tools/docsgen\.py ", re.M)
 
 _LINK = re.compile(r'(\]\(|(?:\bsrc|\bhref)=")(?P<target>[^")\s]+)')
+
+
+# ── 标签 ──────────────────────────────────────────────────────────────────
+
+def front_matter_of(text: str) -> str:
+    """取前置元数据那一段（不含两头的 `---`）；没有就返回空串。"""
+    if not has_front_matter(text):
+        return ""
+    end = text.find("\n---", 3)
+    return text[3:end] if end > 0 else ""
+
+
+def front_matter_value(fm: str, key: str) -> str:
+    """取一个标量字段的值，去掉包裹的引号。"""
+    match = re.search(rf"(?m)^{re.escape(key)}:\s*(.+?)\s*$", fm)
+    return match.group(1).strip().strip("\"'") if match else ""
+
+
+def front_matter_tags(fm: str) -> list[str]:
+    """取 `tags: [a, b]`。只认这一种写法——本站的标签都这么写。"""
+    match = re.search(r"(?m)^tags:\s*\[(.*?)\]\s*$", fm)
+    if not match:
+        return []
+    return [tag.strip().strip("\"'") for tag in match.group(1).split(",") if tag.strip()]
+
+
+def tag_slug(name: str) -> str:
+    """标签的锚点名，与主题给页面标签生成的锚点必须**逐字符**一致。
+
+    ⚠️ 对不上就是全站标签链接落空。判据取 pymdownx 的 Unicode 版 slugify
+    （与 zensical.toml 的 toc.slugify 同一个函数、同一个 case），
+    中文标签原样保留，英文转小写、空格变连字符。
+    取不到 pymdownx 时退回同规则的手写实现，绝不会静默产出别的形状。
+    """
+    try:
+        from pymdownx.slugs import slugify
+        return slugify(name, case="lower")
+    except Exception:                                   # pragma: no cover
+        return re.sub(r"[^0-9a-zA-Z\u4e00-\u9fff]+", "-", name.lower()).strip("-")
+
+
+def tag_index(entries: list["Source"]) -> dict[tuple[str, str], str]:
+    """(版本 id, 语言) → 该份标签页的正文。
+
+    只收**同一种语言、同一个版本**的篇目：标签页是给这一种语言的读者看的。
+    """
+    grouped: dict[tuple[str, str], dict[str, list[tuple[str, str]]]] = {}
+    for source in entries:
+        text = source.path.read_text(encoding="utf-8")
+        fm = front_matter_of(text)
+        tags = front_matter_tags(fm)
+        if not tags:
+            continue
+        title = (front_matter_value(fm, "title")
+                 or front_matter_value(fm, "nav_label")
+                 or source.name.rsplit("/", 1)[-1])
+        link = f"../{source.name}.md"
+        bucket = grouped.setdefault((source.version.id, source.lang), {})
+        for tag in tags:
+            bucket.setdefault(tag, []).append((title, link))
+
+    out: dict[tuple[str, str], str] = {}
+    for key, bucket in grouped.items():
+        lines: list[str] = []
+        # 顺序按**锚点**排（与主题的标签索引同一顺位）。
+        for tag in sorted(bucket, key=tag_slug):
+            slug = tag_slug(tag)
+            lines.append(f'## <span class="md-tag">{tag}</span> {{ #tag:{slug} }}')
+            lines.append("")
+            for title, link in bucket[tag]:
+                lines.append(f"- [{title}]({link})")
+            lines.append("")
+        out[key] = "\n".join(lines).rstrip() + "\n"
+    return out
 
 
 # ── 源 ────────────────────────────────────────────────────────────────────
@@ -209,7 +290,8 @@ def insert_banner(text: str, source: Path, note: str = "") -> str:
 
 
 def render(source: Source, *, out_lang: str | None = None,
-           convert: Callable[[str], str] | None = None, note: str = "") -> str:
+           convert: Callable[[str], str] | None = None, note: str = "",
+           tags: str = "") -> str:
     """把一篇手写内容渲染成产物。
 
     `out_lang` 是**产物**这一份的语言，不是源文件的语言。两者只在派生语种上不同
@@ -222,8 +304,21 @@ def render(source: Source, *, out_lang: str | None = None,
     base = source.path.parent.relative_to(source.content_root).as_posix()
     base = "" if base == "." else base
     text = insert_banner(text, source.path, note)
+    text = apply_tags(text, tags)
     text = rewrite_shared(text, base, depth_of(source.version, lang))
     return convert(text) if convert else text
+
+
+def apply_tags(text: str, tags: str) -> str:
+    """把标签占位符换成生成好的那一份。
+
+    单独成一个函数是为了让 tools/i18n_check.py 复核派生语种时能走**同一条**流水线：
+    它要重算一遍产物，判据分两处写迟早会分叉，而分叉的表现是构建红着、
+    却看不出谁对（这条理由在 hide_sides 那里也写过一次）。
+    """
+    if tags and TAG_MARKER in text:
+        return text.replace(TAG_MARKER, tags.rstrip())
+    return text
 
 
 def output_of(name: str, lang: str, version: Version) -> Path:
@@ -382,7 +477,12 @@ def has_sections(text: str) -> bool:
     （`{% set first = toc | first %}` 之后取 `first.children`），剩下的空目录
     照样渲染成一个「目录」标签——看着有东西，点开只有它自己，却实打实
     占掉右侧 242px。所以判据是「有没有 h2 及以下」，不是「有没有标题」。
+
+    标签页是例外判据的另一半：它的二级标题是**生成**出来的（每个标签一个），
+    源文件里只有一个占位符，所以看源文件看不出它有目录。
     """
+    if TAG_MARKER in text:
+        return True
     return _SECTION_RE.search(body_without_fences(text)) is not None
 
 
@@ -549,6 +649,8 @@ def main() -> int:
             target.write_text(content, encoding="utf-8")
 
     entries = sources()
+    #: 标签页正文：按（版本，语言）算好，各语言各取自己那份。
+    tags_of = tag_index(entries)
     seen: dict[Path, Path] = {}
     #: 每个页面名字对应的源文件，写进桩的注释里，方便回头查它是从哪儿补的。
     stub_sources: dict[str, str] = {}
@@ -559,8 +661,8 @@ def main() -> int:
             errors.append(f"{source.path} 与 {seen[target]} 都要生成 {target}")
         seen[target] = source.path
         stub_sources.setdefault(source.name, source.path.relative_to(ROOT).as_posix())
-        emit(target, render(source), source.name, source.version, source.lang,
-             source=source)
+        emit(target, render(source, tags=tags_of.get((source.version.id, source.lang), "")),
+             source.name, source.version, source.lang, source=source)
 
         # 由这一族语言派生的其它语言（如 zh-hans → zh-hant）
         for dst_lang, src_lang, convert in DERIVATIONS:
@@ -569,7 +671,8 @@ def main() -> int:
             note = " " + DERIVED_BANNER.format(source_lang=src_lang)
             emit(
                 output_of(source.name, dst_lang, source.version),
-                render(source, out_lang=dst_lang, convert=convert, note=note),
+                render(source, out_lang=dst_lang, convert=convert, note=note,
+                       tags=tags_of.get((source.version.id, source.lang), "")),
                 source.name, source.version, dst_lang, source=source,
             )
 

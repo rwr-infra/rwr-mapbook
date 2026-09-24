@@ -3,6 +3,7 @@ nav_label: "Decal"
 title: "Decal"
 description: "地面贴花清单。"
 icon: "lucide/box"
+tags: [模型, 贴花]
 ---
 
 # Decal { #decal }

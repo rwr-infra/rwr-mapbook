@@ -4,6 +4,7 @@ title: "地编界面"
 icon: "lucide/layout-grid"
 description: "地编的界面总览、主界面各按钮、交互按键与 ID 搜索。"
 nav: ["interface", "settings", "keys", "id-search"]
+tags: [界面, 工具]
 ---
 
 # 地编界面

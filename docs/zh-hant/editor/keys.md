@@ -3,6 +3,7 @@ nav_label: "交互按鍵表"
 title: "交互按鍵表"
 icon: "lucide/keyboard"
 description: "鼠標與鍵盤在地編裡各做什麼。"
+tags: [界面, 按鍵]
 # ⚠️ 由 tools/docsgen.py 從 content/editor/keys.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
 hide: [toc]
 ---

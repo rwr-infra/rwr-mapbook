@@ -4,6 +4,7 @@ title: "模型清单"
 icon: "lucide/table"
 description: "Mesh E、Wall E、Building E、Vehicle Scatter、Decal 五张清单。"
 nav: ["mesh", "wall", "building", "vehicle", "decal"]
+tags: [模型]
 # ⚠️ 由 tools/docsgen.py 从 content/tables/index.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
 hide: [toc]
 ---

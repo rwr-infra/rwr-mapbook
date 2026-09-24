@@ -20,7 +20,7 @@ make gen      # content/ → docs/，并重建导航
 make serve    # 预览 http://127.0.0.1:8000/（根域）
 make serve-subpath  # 同上，但按线上的子路径 /rwr-mapbook/ 预览
 
-make build    # 生成 → 构建 → 标签过滤 → 链接体检 → 翻译度体检
+make build    # 生成 → 构建 → 链接体检 → 翻译度体检
 make versions # 只看版本清单体检
 ```
 
@@ -200,13 +200,12 @@ refresh 目标当成一条必须落地的引用去验。桩写成 HTML 而不是
 
 ---
 
-## 四条会挡住你的体检
+## 三条会挡住你的体检
 
-前三条跑在**构建产物**上——源级校验看不到它们。
+前两条跑在**构建产物**上——源级校验看不到它们。
 
 | 脚本 | 守什么 |
 | --- | --- |
-| [`tools/tagfilter.py`](tools/tagfilter.py) | 标签页只列本语言的篇目（tags 插件没有语言概念） |
 | [`tools/linkcheck.py`](tools/linkcheck.py) | 站内引用落地、目录引用带尾斜杠、跳转桩目标存在、每页都带地址补正脚本 |
 | [`tools/i18n_check.py`](tools/i18n_check.py) | 漏翻 / 过期 / 结构对不上 / 派生失同步 / 产物缺件（SMOKE 断言） |
 | [`tools/versions.py`](tools/versions.py) | 版本清单与 `content/versions/` 对齐、版本条目里没有混进别处的配置 |

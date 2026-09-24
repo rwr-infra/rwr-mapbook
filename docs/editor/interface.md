@@ -3,6 +3,7 @@ nav_label: "总导航"
 title: "总导航"
 icon: "lucide/compass"
 description: "地编顶栏与工具按钮的总览。"
+tags: [界面, 工具]
 # ⚠️ 由 tools/docsgen.py 从 content/editor/interface.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
 ---
 

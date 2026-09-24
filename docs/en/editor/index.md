@@ -1,11 +1,12 @@
 ---
 title: "The editor"
 description: "The toolbar, the main panel\"s buttons, key bindings and ID search."
-source_sha256: a63712d892d6c37f1467dd027d799570794aa11ca9d3a27d66f2e0a5c1fdbbbf
+source_sha256: c63a6d30ac2b6c8e1f732d743d166c9a84c041ac3a641786f38e8e10d6890169
 translated: 2026-09-25
 nav_label: "The editor"
 icon: lucide/layout-grid
 nav: ["interface", "settings", "keys", "id-search"]
+tags: [Interface, Tools]
 # ⚠️ 由 tools/docsgen.py 从 content/editor/index.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
 hide: [toc]
 ---

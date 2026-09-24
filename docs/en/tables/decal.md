@@ -1,10 +1,11 @@
 ---
 title: "Decal"
 description: "Ground decals."
-source_sha256: eb15900f11862fad5a7daf8ab8f23d1d8aa087caeb4220e8598704a685bbf611
+source_sha256: 79662645a5bfa5c7ad6b960bcd60c523834301410d7e5458571c6857dea3ac17
 translated: 2026-09-25
 nav_label: "Decal"
 icon: lucide/box
+tags: [Models, Decals]
 # ⚠️ 由 tools/docsgen.py 从 content/tables/decal.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
 hide: [toc]
 ---

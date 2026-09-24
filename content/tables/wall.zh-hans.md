@@ -3,6 +3,7 @@ nav_label: "Wall E"
 title: "Wall E"
 description: "正常墙与特殊墙，含爆炸物摧毁判定等备注。"
 icon: "lucide/box"
+tags: [模型, 墙体]
 ---
 
 # Wall E { #wall }

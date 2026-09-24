@@ -3,6 +3,7 @@ nav_label: "RefpM 说明"
 title: "RefpM 说明"
 icon: "lucide/image"
 description: "用来加参考图。"
+tags: [配置文件, 参考图]
 ---
 
 # RefpM 说明（用来加参考图） { #reference-images }

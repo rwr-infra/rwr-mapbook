@@ -4,6 +4,7 @@ title: "设置文件"
 icon: "lucide/settings"
 description: "mapSettings、3rdParSettings 与 RefpM 三处配置。"
 nav: ["map-settings", "third-party", "reference-images"]
+tags: [配置文件]
 ---
 
 # 设置文件

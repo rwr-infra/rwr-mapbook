@@ -4,6 +4,7 @@ title: "設置文件"
 icon: "lucide/settings"
 description: "mapSettings、3rdParSettings 與 RefpM 三處配置。"
 nav: ["map-settings", "third-party", "reference-images"]
+tags: [配置文件]
 # ⚠️ 由 tools/docsgen.py 從 content/settings/index.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
 hide: [toc]
 ---

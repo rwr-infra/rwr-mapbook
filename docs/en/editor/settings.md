@@ -1,10 +1,11 @@
 ---
 title: "The main panel"
 description: "A button-by-button account of Save / ViewMap / Select / PinMan / WallE / BuildingE and the rest."
-source_sha256: 35335fa568c9aab59eb6c2f1037bf22c6ed1df760138e96c372a81cd4f06afc7
+source_sha256: d2da5230928f69e0deeccb438b44584b13f2d9a237d000c04e2c678ae6de1bd6
 translated: 2026-09-25
 nav_label: "Main panel"
 icon: lucide/sliders-horizontal
+tags: [Interface, Tools]
 # ⚠️ 由 tools/docsgen.py 从 content/editor/settings.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
 ---
 

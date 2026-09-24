@@ -3,6 +3,7 @@ nav_label: "MESH E"
 title: "MESH E"
 description: "石頭、植物、小物件、大物件、特殊物件與有嚴重問題的物件。"
 icon: "lucide/box"
+tags: [模型, 材質]
 # ⚠️ 由 tools/docsgen.py 從 content/tables/mesh.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
 ---
 

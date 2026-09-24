@@ -3,6 +3,7 @@ nav_label: "主界面"
 title: "主界面"
 icon: "lucide/sliders-horizontal"
 description: "Save / ViewMap / Select / PinMan / WallE / BuildingE 等按钮的逐项说明。"
+tags: [界面, 工具]
 ---
 
 # 主界面

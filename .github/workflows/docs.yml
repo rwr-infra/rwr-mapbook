@@ -45,14 +45,9 @@ jobs:
       - name: Build site
         run: uv run zensical build --clean --strict
 
-      # ⚠️ 构建之后的这两步必须与 `make build` 完全一致。
-      # 此前 workflow 少了 tagfilter：线上一直发的是**没过滤过**的标签索引，
-      # 简体页上列着繁体与英文的篇目，而本地 `make build` 的产物是干净的——
-      # 「本地过得去就等于 CI 过得去」这句话因此是不成立的。
-      # 标签索引分语种：把别种语言的条目从 site/**/tags/index.html 里去掉。
-      - name: Filter tag index per language
-        run: uv run python tools/tagfilter.py
-
+      # ⚠️ 这一步必须与 `make build` 完全一致。
+      # （标签索引按语言分家原先靠构建后另跑一个脚本，现在由 docsgen 生成，
+      #   所以这里不再有那一步——本地与 CI 的差别也就少了一处。）
       # 产物链接体检：站内引用、目录尾斜杠、跳转桩目标、目录地址补正脚本。
       # 这些都是构建之后才定型的链接，源的校验（validation.invalid_links）看不到。
       - name: Check built links

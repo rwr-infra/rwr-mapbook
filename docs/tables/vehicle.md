@@ -3,6 +3,7 @@ nav_label: "Vehicle Scatter"
 title: "Vehicle Scatter"
 description: "载具散布清单。"
 icon: "lucide/box"
+tags: [模型, 载具]
 # ⚠️ 由 tools/docsgen.py 从 content/tables/vehicle.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
 hide: [toc]
 ---

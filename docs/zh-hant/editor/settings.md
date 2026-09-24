@@ -3,6 +3,7 @@ nav_label: "主界面"
 title: "主界面"
 icon: "lucide/sliders-horizontal"
 description: "Save / ViewMap / Select / PinMan / WallE / BuildingE 等按鈕的逐項說明。"
+tags: [界面, 工具]
 # ⚠️ 由 tools/docsgen.py 從 content/editor/settings.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
 ---
 

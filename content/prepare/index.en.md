@@ -1,10 +1,11 @@
 ---
 title: "Getting ready"
 description: "How to configure the editor once it is downloaded, sync it with your RWR folder, switch on the built-in camera mod, and download the OgreSDK."
-source_sha256: 813596fc94a7ca172ceca1d068f2a0bd3f096c2fc01b456f1809ef163b0aa7ce
+source_sha256: 32deeed05551f337ba640c9e82bf58249b3b3e7d96d3024892bf2d99dad8b5ec
 translated: 2026-09-25
 nav_label: "Getting ready"
 icon: lucide/download
+tags: [Setup, Camera mod]
 ---
 
 # Getting ready { #prepare }

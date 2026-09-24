@@ -1,10 +1,11 @@
 ---
 title: "RefpM"
 description: "Used for adding a reference image."
-source_sha256: 79da6c8c9791aab8fa8d5305723b22d7dbaa7058aff5e59b8620f1b2024e992d
+source_sha256: d23919f20700fd816396c4812155ee587915c93b417002988d6cbc11c17158be
 translated: 2026-09-25
 nav_label: "RefpM"
 icon: "lucide/image"
+tags: [Config files, Reference image]
 ---
 
 # RefpM { #reference-images }

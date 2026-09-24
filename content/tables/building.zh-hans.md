@@ -3,6 +3,7 @@ nav_label: "Building E"
 title: "Building E"
 description: "可放置的房子。"
 icon: "lucide/box"
+tags: [模型, 建筑]
 ---
 
 # Building E { #building }

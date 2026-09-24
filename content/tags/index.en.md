@@ -1,7 +1,7 @@
 ---
 title: "Tags"
 description: "Browse the site sideways along language-neutral threads."
-source_sha256: 7ad4c8f289241091d3210324bf4901adaf6b2eb537c41dcc34bc34ff9099ff91
+source_sha256: 38ae2a7de7b8fa707b0cdd826a4f56abac5516610c6deac0017967f00c7288ee
 translated: 2026-09-25
 nav_label: "Tags"
 icon: lucide/tags
@@ -14,10 +14,9 @@ nav_hidden: true
 <p class="kicker">TAGS · SIDEWAYS</p>
 
 Sections run vertically; tags are the threads that run across them, because one subject
-usually scatters over several sections.
+usually scatters over several sections. Following one thread beats walking the tree.
 
-Each language's tag page lists **only pages in that language**, so the default language's
-tag page never mixes in English or Traditional Chinese entries — that cut is made after
-the build, by `tools/tagfilter.py`.
+Each language's tag page lists **only pages in that language**: the Simplified pages never
+mix in English or Traditional Chinese entries.
 
 <!-- material/tags -->

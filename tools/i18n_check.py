@@ -67,8 +67,9 @@ import tomllib
 
 import yaml
 
-from docsgen import (depth_of, hide_sides, insert_hide, lang_prefix,
-                     rewrite_shared, tree_names)
+from docsgen import (apply_tags, depth_of, hide_sides, insert_hide, lang_prefix,
+                     rewrite_shared, sources as docs_sources,
+                     tag_index, tree_names)
 from linkcheck import site_base
 from hant import to_hant
 from langs import CONTENT, DEFAULT_LANG, DERIVATIONS, LANG_RE, ROOT, other_languages
@@ -277,6 +278,17 @@ def inspect_translation(source: Path, lang: str, *, sync: bool) -> dict:
     return record
 
 
+_TAGS: dict[tuple[str, str], str] | None = None
+
+
+def tags_of(version_id: str, lang: str) -> str:
+    """docsgen 生成标签页时用的那份正文。只算一次，之后查表。"""
+    global _TAGS
+    if _TAGS is None:
+        _TAGS = tag_index(docs_sources())
+    return _TAGS.get((version_id, lang), "")
+
+
 def inspect_derived(source: Path, lang: str, version: Version) -> dict:
     """派生语种：产物必须逐字节等于「对当前原文做一次转换」的结果。"""
     root = source_root(version)
@@ -299,7 +311,8 @@ def inspect_derived(source: Path, lang: str, version: Version) -> dict:
     base = source.parent.relative_to(root).as_posix()
     base = "" if base == "." else base
     expected = strip_banner(to_hant(rewrite_shared(
-        source.read_text(encoding="utf-8"), base, depth_of(version, lang))))
+        apply_tags(source.read_text(encoding="utf-8"), tags_of(version.id, DEFAULT_LANG)),
+        base, depth_of(version, lang))))
     # 构建层还会往空侧栏的页上补一行 hide: ——复核时要走同一条流水线，
     # 否则「派生失同步」会误报，而误报的修法是「跑 make gen」，
     # 跑完还是不一致，人就只能去改产物了。

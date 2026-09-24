@@ -1,10 +1,11 @@
 ---
 title: "ID search"
 description: "Tracking an object down by ID when an error is thrown."
-source_sha256: 0261b4bbb01e0645352a6456019e877d71391f8add0efe931e5b429881a8066b
+source_sha256: 2e591d7f856f0123a97334e7b3d31c7657955a63f59d2541838d873c24c5400f
 translated: 2026-09-25
 nav_label: "ID search"
 icon: lucide/search
+tags: [Troubleshooting, Tools]
 # ⚠️ 由 tools/docsgen.py 从 content/editor/id-search.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
 ---
 

@@ -4,6 +4,7 @@ title: "模型清单"
 icon: "lucide/table"
 description: "Mesh E、Wall E、Building E、Vehicle Scatter、Decal 五张清单。"
 nav: ["mesh", "wall", "building", "vehicle", "decal"]
+tags: [模型]
 ---
 
 # 模型清单

@@ -1,10 +1,11 @@
 ---
 title: "mapSettings"
 description: "The map's own settings. This page is marked \"untested\", and has not been verified item by item."
-source_sha256: 266d9ad8bb0f448a2928f4db897b0bb335e9812f8efacbdf729e5fe7fb763875
+source_sha256: 25f8db77bca2783045bbffd4e8e2ac9982fe66568105148953725e831bd73b9f
 translated: 2026-09-25
 nav_label: "mapSettings"
 status: "partial"
+tags: [Config files, Unverified]
 # ⚠️ 由 tools/docsgen.py 从 content/settings/map-settings.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
 hide: [toc]
 ---

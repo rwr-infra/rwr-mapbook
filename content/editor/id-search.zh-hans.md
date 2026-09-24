@@ -3,6 +3,7 @@ nav_label: "ID 搜索功能说明"
 title: "ID 搜索功能说明"
 icon: "lucide/search"
 description: "报错时按 ID 把物件揪出来。"
+tags: [排错, 工具]
 ---
 
 # ID 搜索功能说明 { #id-search }
