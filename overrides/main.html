@@ -190,5 +190,25 @@
   {% endif %}
 {% endblock %}
 
+{#- ── polyfill：外部的那些一律不渲染 ──────────────────────────────────
+    Zensical 的 offline 插件（`make offline` 时打开）会往 config.extra.polyfills
+    里塞一条 **unpkg 上的** iframe-worker 垫片。两件事与本站的规矩冲突：
+
+      · 本站不引任何外部脚本或字体（见 zensical.toml 开头与「数据隐私」页），
+        网上那一份现在也是自托管的（glightbox 那次就是这么处理的）；
+      · 离线版连不上任何网，那条请求本来也发不出去，留着只是白等一次超时。
+
+    所以这里只渲染**本站自托管**的那些，`http` 开头的一律跳过。
+    线上构建里这个列表本来就是空的，产物一字不变。
+
+    垫片是给 Safari / 部分浏览器在 file:// 下起 Web Worker 用的。跳过它，
+    离线版在那些浏览器里**搜索**用不了——而搜索本来也用不了：索引 search.json
+    是 fetch 来的，file:// 下会被跨域策略拦掉。要自托管那份垫片随时可以补。 -#}
+{% block libs %}
+  {%- for script in config.extra.polyfills | d([], true) %}
+    {%- if (script.path | d("", true) | string)[:4] != "http" %}{{ script | script_tag }}{% endif %}
+  {%- endfor %}
+{% endblock %}
+
 {#- 本模版不自定义 hero、tabs 与 container：首页就是一篇普通页面，
     由 content/index.<lang>.md 的内容渲染。主题的默认结构够用。 -#}

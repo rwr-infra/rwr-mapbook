@@ -604,6 +604,32 @@ def collisions() -> list[str]:
                 f"版本 id “{version.id}” 与 content/ 顶层的页面同名："
                 f"docs/{version.id} 既是目录又是页面"
             )
+
+    # 还有一类撞车：**某一版根下有个页面，名字恰好是另一个版本的 id**。
+    #
+    # 页面在「别的版本」里缺页时要补一个跳转桩，桩落在**同一个相对地址**上
+    # （docs/<目标版本前缀>/<页面名>/index.html）。所以版本 `egg` 里那篇叫 `egg`
+    # 的页面，在每一棵别的版本树里都会生成一份 `docs/egg/index.html`——而那正是
+    # 版本 `egg` 自己的目录，和它的首页 docs/egg/index.md 抢同一个产物
+    # `site/egg/index.html`。
+    #
+    # 谁赢取决于构建顺序，两版还可能不一样：线上是首页赢，离线（use_directory_urls
+    # 关掉）是桩赢，于是彩蛋支的首页变成一页「本页无此版本」。这种「同一条路径两处
+    # 都要写」的事生成期就该拦下，不能靠运气。
+    archived_ids = {v.id for v in all_versions() if not v.current and v.id}
+    for version in all_versions():
+        root = source_root(version)
+        if not root.is_dir():
+            continue
+        for path in sorted(root.glob("*.md")):
+            name = split_lang(path.stem)[0]
+            if name and name in archived_ids:
+                where = "content/" if version.current else f"content/versions/{version.id}/"
+                problems.append(
+                    f"{where}{path.name} 的页名 “{name}” 与版本 id 撞车：它在别的版本里"
+                    f"缺页时，跳转桩会落到 docs/{name}/index.html，正好压住版本 “{name}”"
+                    f"自己的首页。给这一页换个名字（页面名改了，网址跟着改）"
+                )
     return problems
 
 

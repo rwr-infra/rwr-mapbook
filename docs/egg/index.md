@@ -3,7 +3,7 @@ nav_label: "首页"
 title: "彩蛋"
 icon: "lucide/egg"
 description: "一枚彩蛋：这一支里只有一页谢谢。"
-nav: ["egg"]
+nav: ["thanks"]
 # ⚠️ 由 tools/docsgen.py 从 content/versions/egg/index.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
 hide: [navigation, toc]
 ---

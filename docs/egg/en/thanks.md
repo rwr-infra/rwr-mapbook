@@ -5,7 +5,7 @@ translated: 2026-09-25
 source_sha256: 8a820b70a984e27b0aebb3f7276b1d6719ceef292641a136fdda768eaef0464e
 nav_label: "Thank you"
 icon: lucide/heart
-# ⚠️ 由 tools/docsgen.py 从 content/versions/egg/egg.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
+# ⚠️ 由 tools/docsgen.py 从 content/versions/egg/thanks.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
 hide: [navigation, toc]
 ---
 

@@ -4,6 +4,10 @@ site_name = "RWR 地编手册"
 site_description = "小兵步枪（Running With Rifles）地图编辑器手册：地编界面逐项说明、模型与墙体清单、交互按键与常用流程。"
 site_author = "RWR 地图编辑组"
 
+# 构建产物落在哪。写出来是为了让 `make offline` 能用 sed 换成 site-offline/——
+# 那一版要另起一份配置（见 Makefile），两版不能互相覆盖。
+site_dir = "site"
+
 copyright = "RWR 地编手册 · 由 RWR 地图编辑组维护"
 
 # 仓库入口（可选）：填了 repo_url，页眉搜索框旁就会出现一个「图标 + 仓库名」的链接
@@ -341,6 +345,22 @@ separator = '[\s\-_,:!=\[\]()\\"`/。，、；：！？…·「」『』（）�
 [project.plugins.tags]
 enabled = true
 listings = true
+
+# 离线打包（`make offline`）。**线上构建里它是关的**，这一条只是把开关写在配置里，
+# 好让 Makefile 用 sed 把它翻成 true，另起一份 zensical.offline.toml。
+#
+# 打开之后 Zensical 会把 use_directory_urls 关掉——页面从 `editor/` 变成 `editor.html`。
+# 这一条对离线版是必需的：file:// 下面浏览器不会把 `editor/` 解析到 `editor/index.html`，
+# 目录式地址整站都点不动。
+#
+# ⚠️ 它同时会往 config.extra.polyfills 里塞一条 unpkg 上的 iframe-worker 垫片。
+#    本站不引任何外部脚本（见 zensical.toml 开头与「数据隐私」页），离线版更是
+#    连不上任何网——所以 overrides/main.html 的 libs 块把外部的那些一律跳过。
+#
+# ⚠️ 下面这一行的行尾注释是 sed 的**锚点**，别删：Makefile 靠它把这一条翻成 true。
+#    （写死 `^enabled = false` 会连别处的同名行一起改中；没有锚点则改了也不知道。）
+[project.plugins.offline]
+enabled = false  # 离线
 
 [project.theme]
 custom_dir = "overrides"

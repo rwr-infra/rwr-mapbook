@@ -3,7 +3,7 @@ nav_label: "首页"
 title: "彩蛋"
 icon: "lucide/egg"
 description: "一枚彩蛋：这一支里只有一页谢谢。"
-nav: ["egg"]
+nav: ["thanks"]
 ---
 
 # 彩蛋

@@ -3,7 +3,7 @@ nav_label: "彩蛋"
 title: "谢谢"
 icon: "lucide/heart"
 description: "给做地图、试工具、写笔记的人说一声谢谢。"
-# ⚠️ 由 tools/docsgen.py 从 content/versions/egg/egg.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
+# ⚠️ 由 tools/docsgen.py 从 content/versions/egg/thanks.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
 hide: [navigation, toc]
 ---
 

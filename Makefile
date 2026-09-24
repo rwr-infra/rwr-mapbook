@@ -13,11 +13,12 @@
 #   make watch   盯着 content/，改了自动重新生成 docs/（配合 make serve 用）
 #   make serve   本地预览 http://127.0.0.1:8000（根域；线上带子路径，见文件末尾）
 #   make serve-subpath  同上，但按线上的子路径预览
+#   make offline 打一份不带归档、解压就能看的离线站（rwr-mapbook-offline.zip）
 #   make sync    为缺失的译文建立骨架，然后重新生成
 
 UV ?= uv
 
-.PHONY: gen docs nav check versions archives downloads links build serve serve-subpath watch sync clean
+.PHONY: gen docs nav check versions archives downloads links build serve serve-subpath watch sync offline clean
 
 gen: docs nav
 
@@ -112,5 +113,55 @@ sync:
 	$(UV) run python tools/i18n_check.py --sync
 	$(MAKE) gen
 
+# ── 离线文件版 ────────────────────────────────────────────────────────────
+# `make offline` 出一份**解压就能看**的整站，给不能上网／不想开服务器的人：
+#
+#     offline:  生成 → 用离线配置构建 → 去掉归档 → 打成一个 zip
+#
+# 与线上版的三处不同，都在 zensical.offline.toml 里（由 zensical.toml 用 sed 生成）：
+#
+#   1. **site_dir 换成 site-offline/**，两版互不覆盖；
+#   2. **打开 offline 插件**：它把 use_directory_urls 关掉，页面从 `editor/` 变成
+#      `editor.html`。file:// 下面浏览器不会把 `editor/` 解析到 `editor/index.html`，
+#      不关这一项整站的导航都点不动；
+#   3. **删掉 downloads/**：归档 318 MB，占了整包的九成，而离线包本来也下载不了
+#      （分片是 25 MB 一块的，拼装靠页面里的 fetch，file:// 下会被跨域拦掉）。
+#      历史版本那一页留着，当一份版本清单看；按钮点不动是意料之中的。
+#   4. **删掉 404.html**：它的站内引用是绝对路径（`/rwr-mapbook/…`，因为它要能在
+#      任意目录下被服务器拿出来用），离线版没有服务器，它永远不会被渲染出来，
+#      留着只是一页断链。file:// 下打不开某个文件，浏览器给的是它自己的错误页。
+#
+# ⚠️ 它**不跑** linkcheck 与 i18n_check：那两条都假定目录式地址（`…/page/`），
+#    离线版全是 `.html`，跑了只会满屏假警报。离线版拿浏览器验。
+OFFLINE_CONFIG = zensical.offline.toml
+OFFLINE_DIR = site-offline
+OFFLINE_ZIP = rwr-mapbook-offline.zip
+
+offline: gen $(OFFLINE_CONFIG)
+	@rm -rf $(OFFLINE_DIR)
+	$(UV) run zensical build -f $(OFFLINE_CONFIG) --strict
+	$(UV) run python tools/offline_stubs.py $(OFFLINE_DIR)
+	@rm -rf $(OFFLINE_DIR)/downloads $(OFFLINE_DIR)/404.html
+	@rm -f $(OFFLINE_ZIP)
+	@cd $(OFFLINE_DIR) && zip -qr ../$(OFFLINE_ZIP) . && cd ..
+	@printf '离线包：%s\n' "$(OFFLINE_ZIP)"
+	@du -sh $(OFFLINE_DIR) $(OFFLINE_ZIP)
+
+# 与预览配置同一套办法：sed，只改该改的两行，其余一行不动。
+# 第二行的注释尾巴是**锚点**，免得 sed 撞上别处恰好也是 `enabled = false` 的行。
+#
+# ⚠️ 判据用 awk 对着**那一节**看，不写 `grep -q '^enabled = true$'`：
+#      · make 会把 `$'` 当成「名为 ' 的变量」吃掉，正则尾巴那个 $ 连带着收尾的引号
+#        一起消失，于是 shell 收到一个不闭合的引号——报错还指不到这里；
+#      · 更要紧的是**假绿灯**：search 与 tags 那两节本来就写着 `enabled = true`，
+#        拿它当判据的话，offline 那一节压根没改成也会一路放行（踩过一次，
+#        结果是整包生成了目录式地址，file:// 下点导航变成浏览器的目录列表）。
+$(OFFLINE_CONFIG): zensical.toml
+	@sed -e 's|^site_dir = .*|site_dir = "$(OFFLINE_DIR)"|' \
+	     -e 's|^enabled = false.*离线|enabled = true|' zensical.toml > $@
+	@grep -q '^site_dir = "$(OFFLINE_DIR)"' $@ || { echo "离线配置没换掉 site_dir"; rm -f $@; exit 1; }
+	@awk '/^\[project\.plugins\.offline\]/{getline; if ($$0 == "enabled = true") ok = 1} \
+	      END{exit !ok}' $@ || { echo "离线配置没打开 offline 插件（那一行的行尾锚点注释还在吗）"; rm -f $@; exit 1; }
+
 clean:
-	rm -rf site $(PREVIEW_CONFIG)
+	rm -rf site $(OFFLINE_DIR) $(OFFLINE_ZIP) $(PREVIEW_CONFIG) $(OFFLINE_CONFIG)

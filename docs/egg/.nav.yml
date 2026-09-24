@@ -3,6 +3,6 @@
 # 重新生成： uv run python tools/navgen.py
 nav:
 - 首页: index.md
-- 彩蛋: egg.md
+- 彩蛋: thanks.md
 - __lang:en: en
 - __lang:zh-hant: zh-hant
