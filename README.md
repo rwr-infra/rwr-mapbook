@@ -1,6 +1,7 @@
 # RWR 地编手册
 
-> 小兵步枪（Running With Rifles）地图编辑器的手册，三种语言各一份。
+> 小兵步枪（Running With Rifles）地图编辑器的手册，做成了一个**双轴**静态站：
+> **版本**（你装的是哪一版地编）与**语言**（你用哪种文字读）互不干涉，各切各的。
 
 内容只讲编辑器本身：准备工作、界面与工具、模型清单、配置文件。写法一个字没改——
 标着「待试」的地方仍然标着（导航里挂「未完成」），「据说是这样」的说法也照原样留着。
@@ -16,33 +17,55 @@
 uv sync --locked
 
 make gen      # content/ → docs/，并重建导航
-make serve    # 预览 http://127.0.0.1:8000/（根域）
-make serve-subpath  # 同上，但按线上的子路径 /rwr-mapbook/ 预览
+make serve    # 预览 http://127.0.0.1:8000/rwr-mapbook/（带子路径，与线上一致）
+make serve-root  # 同上，但按本地根域 127.0.0.1:8000 预览（另生成一份预览配置）
 
 make build    # 生成 → 构建 → 标签过滤 → 链接体检 → 翻译度体检
+make versions # 只看版本清单体检
 ```
 
 `make build` 的产物是一个纯静态目录 `site/`。
 
 ---
 
-## 语言是怎么排的
+## 两条切换轴
 
-网址只有语言一层前缀，**默认语言没有前缀**：
+网址是两个正交维度的拼接，**版本在前、语言在后**：
 
 ```
-/                     简体（默认）      /en/                英文
-/zh-hant/             繁体
-/prepare/             简体 · 准备工作   /en/prepare/        英文
+/                     当前版 · 简体        /en/              当前版 · 英文
+/0100/                历史版 · 简体        /0100/en/         历史版 · 英文
+/0100/zh-hant/        历史版 · 繁体
 ```
 
-页眉上有一个下拉切换语言；它只改「语言」这一层前缀，页内路径原样带过去——
-在 `/en/editor/keys/` 上切到繁体，落点是 `/zh-hant/editor/keys/`，不是首页。
+### 这个子路径是怎么回事
 
-判据只有一份：`overrides/partials/route.html`。它从 `page.url` 解析出语言目录，
-语言清单从 `config.extra.alternate` 推导，不硬编码。**十来个模板里原先各写一遍的
-`here[:3] == "en/"` 已经全部收拢过去**——那种写法在语言目录不止两三个字符时会
-静默判错，把页面当成默认语言。
+线上是 GitHub Pages 的**项目站**，地址本来就是
+`https://<用户名>.github.io/<仓库名>/`——站点根落在那一层，而不是域名根。
+所以 `site_url` 里必须带着 `/rwr-mapbook/`：站内绝对引用、sitemap、canonical
+都按这个根拼。**少了它，本地看着一切正常，一上线全是断链**，所以它不能靠
+「本地预览方便」来取舍。
+
+`zensical serve` 没有覆盖 `site_url` 的选项，于是它按配置把
+`http://127.0.0.1:8000/` 302 到 `http://127.0.0.1:8000/rwr-mapbook/`：
+**预览入口是带子路径的那个，不是根。** 要按根域预览（比如与别的本地站并排开），
+用 `make serve-root`——它另外生成一份 `zensical.preview.toml`（只把 `site_url`
+换成本地根域），其余配置一行不动。那份文件是生成物，不入库。
+
+页眉上有两个下拉，**各改一层前缀**：
+
+| 切换器 | 改哪一层 | 保留哪一层 | 代码 |
+| --- | --- | --- | --- |
+| 版本 | `0101/` ↔ 无前缀 | 语言原样 | `overrides/partials/version.html` |
+| 语言 | `en/` ↔ `zh-hant/` ↔ 无前缀 | 版本原样 | `overrides/partials/alternate.html` |
+
+从 0101 版切到历史版，读者留在同一种语言里；从简体切到英文，读者留在同一版里。
+两层都改会一次把读者带走两格，那不是他点的。
+
+判据只有一份：`overrides/partials/route.html`。它从 `page.url` 解析出版本与语言，
+版本清单与语言目录都从配置推导，不硬编码。**十来个模板里原先各写一遍的
+`here[:3] == "en/"` 已经全部收拢过去**——在 `archive/en/…` 这种网址上，
+`here[:3]` 是 `arc`，那种判据会静默判错，把页面当成默认语言。
 
 ---
 
@@ -69,6 +92,66 @@ make build    # 生成 → 构建 → 标签过滤 → 链接体检 → 翻译�
 
 ---
 
+## 版本是怎么一回事
+
+版本是**冻结快照**，不是一份持续回改的文档：读者装的是哪一版地编，
+就该看到哪一版当时的说明。
+
+现在清单里有八条：`0101`（当前版）与 `060`、`070`、`080`、`081`、`090`、`091`、
+`0100` 七个历史版。历史版这一支冻的是**那一版的构建信息**——版本号、构建日期、
+压缩包与解压后的大小与文件数、`Assembly-CSharp.dll` 的字节数（它逐版变大，
+是「手上这份是不是我切到的那一版」最省事的对照）。手册正文与当前版共用一份：
+工具条目从 060 到 0101 没变过，说明也就没跟着变。
+
+```
+content/
+  index.zh-hans.md          ← 当前版：就在 content/ 根下，网址没有前缀
+  editor/ tables/ …
+  versions/
+    0100/index.zh-hans.md   ← 历史版：砍版那一刻那棵树的副本
+    …                       （当前每个版本只有一页构建信息）
+```
+
+对应产物：
+
+```
+docs/index.md               → /                （当前版 · 简体）
+docs/en/index.md            → /en/
+docs/0100/index.md          → /0100/
+docs/0100/en/index.md       → /0100/en/
+```
+
+> ⚠️ **版本 id 不能长得像数字。** `0100`、`100`、`0` 这类 id 写进 `.nav.yml` 之后，
+> YAML 会把光秃秃的值解析成**数字**，awesome-nav 拿到手的是一个数而不是目录名字符串，
+> 于是找不到那棵树、退回成一个标量，最后以 `nav must be a list` 让整个构建失败。
+> 诡异的是**只有一部分版本号中招**：`080`、`091` 里的 8、9 不是八进制数字，
+> YAML 不认它是数，于是原样留着字符串、构建正常；`060`、`0100` 只含 0-7，构建就红。
+> 所以 `tools/navgen.py` 的 `render()` 会把这类值**无条件加引号**再写出去，
+> 并读回来比对一次。这条踩过一次，报错信息指不到原因。
+
+### 加一个版本
+
+1. 把当前版的内容复制成快照：`cp -r content/{index,editor,tables,…} content/versions/<id>/`
+   （**不要**把 `content/versions/` 本身复制进去）；
+2. 在 `zensical.toml` 的 `[[project.extra.version]]` 里加一条：
+
+   ```toml
+   [[project.extra.version]]
+   id = "0102"
+   label = "地编版本 0102"
+   date = "2027-01-15"
+   ```
+
+3. `make build`。
+
+判据由 `tools/versions.py` 的 `audit()` 守着：**声明了没有目录**、
+**有目录没声明**、id 重复、一个 `current` 都没有、有多个 `current`——
+每一条都以非零码退出，不会静默分成两家账。
+
+> 历史版的首页不写 `nav:`：这一支里除首页外全是跳转桩，**桩会把读者送回首页**，
+> 声明成分区只会让人点进一个「正在返回首页…」的空页。不声明，那几节就从导航里消失，
+> 剩下的只有首页——这正是「这一版没有说明」该有的样子。
+
 ### 空侧栏会自己收掉
 
 **左栏**铺的是「当前分区的其它页」。单页分区（`准备工作`、`关于`）与首页没有别的页可铺，
@@ -89,9 +172,9 @@ make build    # 生成 → 构建 → 标签过滤 → 链接体检 → 翻译�
 
 ### 缺页怎么办
 
-不是每种语言都翻齐了：英文还差十几篇。
-而语言切换器出现在**每一页**上，所以缺的那些页由 `tools/docsgen.py` 补一个
-**跳转桩**（`<meta http-equiv="refresh">`）落到该语言的首页——而不是把读者送进 404。
+历史版是冻结的，它的页面集合与当前版对不上是常态：当前版新加的分区，旧版自然没有。
+而版本切换器出现在**每一页**上，所以缺的那些页由 `tools/docsgen.py` 补一个
+**跳转桩**（`<meta http-equiv="refresh">`）落到该版本的首页——而不是把读者送进 404。
 
 桩是生成物，带生成横幅，由 `docsgen` 自己 prune；`tools/linkcheck.py` 会把它的
 refresh 目标当成一条必须落地的引用去验。桩写成 HTML 而不是页面，是因为它要占住
@@ -108,11 +191,13 @@ refresh 目标当成一条必须落地的引用去验。桩写成 HTML 而不是
 | [`tools/tagfilter.py`](tools/tagfilter.py) | 标签页只列本语言的篇目（tags 插件没有语言概念） |
 | [`tools/linkcheck.py`](tools/linkcheck.py) | 站内引用落地、目录引用带尾斜杠、跳转桩目标存在、每页都带地址补正脚本 |
 | [`tools/i18n_check.py`](tools/i18n_check.py) | 漏翻 / 过期 / 结构对不上 / 派生失同步 / 产物缺件（SMOKE 断言） |
+| [`tools/versions.py`](tools/versions.py) | 版本清单与 `content/versions/` 对齐、版本条目里没有混进别处的配置 |
 | `zensical build --strict` | 断链、失效锚点 |
 
 ```bash
 make check     # 翻译度体检
 make links     # 链接体检（需先构建）
+make versions  # 版本清单体检
 ```
 
 ---
@@ -121,12 +206,11 @@ make links     # 链接体检（需先构建）
 
 ```
 content/              唯一手写层
+  versions/<id>/      历史版的冻结树
 docs/                 构建层（.md 与跳转桩是生成物）+ 手写资产
   assets/editor/      界面与流程的 54 张图
   assets/tables/      清单里的 705 张图
   stylesheets/ javascripts/   手写
-  assets/fonts/       自托管字体
-
 tools/                生成器与体检；langs.py 是语言清单的唯一出处
 overrides/            主题模板覆盖
 site/                 构建产物，不入库
@@ -154,7 +238,7 @@ site/                 构建产物，不入库
 ## 这个仓库对模版改了什么
 
 本站基于 [`zensical-trilang-template`](https://github.com/bananaxiao2333/zensical-trilang-template)
-（`content/` 是唯一手写层、四种会非零码退出的体检）。
+（`content/` 是唯一手写层、四种会非零码退出的体检）。在它之上加了**版本轴**，
 过程中在模版里翻出并修掉了四处**静默**缺陷——它们都不报错，只是悄悄发错东西：
 
 1. **派生语种的共享资产链接少一层 `../`。**
@@ -179,8 +263,9 @@ site/                 构建产物，不入库
    两个脚本原先一律按站点根去解，于是全站的绝对链接都被判成落空。子路径是部署形态，
    不是内容错误，判据现在跟着 `site_url` 走。
 
-另外新增：`overrides/partials/route.html`（语言前缀的唯一判据）、
-`translation_in_progress`（语种补齐进度这条刻意的放宽）、空侧栏的自动推导
+另外新增：`tools/versions.py`（版本清单与体检）、`overrides/partials/route.html`
+（两条轴的唯一判据）、`overrides/partials/version.html`（版本切换器）、
+`translation_in_progress`（语种补齐进度这条刻意的放宽）、空左栏的自动推导
 （见上）、以及标题锚点的显式钉住。
 
 ---
@@ -189,7 +274,8 @@ site/                 构建产物，不入库
 
 1. `content/` 下换成本站的内容，文件名带语言后缀；
 2. `zensical.toml` 里改 `site_url` / `site_name` / `site_description` /
-   `site_author` / `copyright`、`[project.extra]` 的多语言值；
+   `site_author` / `copyright`、`[project.extra]` 的多语言值、
+   `[[project.extra.version]]` 的版本清单；
 3. `docs/assets/` 换成本站的图；
 4. `tools/i18n_check.py` 的 `SMOKE` 断言表指向**本站的固定页**
    （首页、`editor/index`、`editor/keys`），换内容结构时同步改；

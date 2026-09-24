@@ -1,7 +1,7 @@
 ---
 title: "RWR Map Editor's Handbook"
 description: "The handbook for the Running With Rifles map editor: what every panel does, the model and wall inventories, key bindings and common workflows."
-source_sha256: a70985645d887f5b842077e5e765c16ae0817e5d654983b0c6f99e0b792712d6
+source_sha256: 104fa2bd3c9eef3e85a7b04d587608b91685cae785755d3e5e1822acfac705f7
 translated: 2026-09-25
 nav_label: "Home"
 icon: lucide/house
@@ -67,16 +67,16 @@ What to do before you start making a map — mostly to make the editor less pain
 
 </div>
 
-## Three languages, one handbook
+## This site has two axes
 
-The translate icon at the top right switches language, and the three languages point at
-the same page — you stay where you are instead of being dropped back on the home page.
+**Version** decides which release of the editor you are reading about; **language**
+decides which script you read it in. The two do not touch: switching version keeps your
+language, and switching language keeps your version.
 
-| Language | URL | Who writes it |
+| Axis | Which side of the header | What changes |
 | --- | --- | --- |
-| Simplified Chinese | `/` | the original, hand-written |
-| Traditional Chinese | `/zh-hant/` | scripted from the Simplified text, not a translation |
-| English | `/en/` | hand-written translation, still being filled in |
+| Version | the tag icon on the left | only the version; language stays |
+| Language | the translate icon on the right | only the language; version stays |
 
 [Start with getting ready](prepare/index.md){ .md-button .md-button--primary }
 [Go straight to the inventories](tables/index.md){ .md-button }

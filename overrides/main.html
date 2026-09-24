@@ -15,13 +15,14 @@
 
 {% set here = page.url | default("", true) %}
 {% import "partials/route.html" as route with context %}
+{% set vdir = route.version(here) | trim %}
 {% set ldir = route.lang(here) | trim %}
 {% set is_en = ldir == "en" %}
 {% set is_hant = ldir == "zh-hant" %}
 {% set L = route.suffix(ldir) | trim %}
 {% set site_name = config.extra["site_name" ~ L] | d(config.site_name, true) %}
-{#- 落地页判据：去掉语言前缀之后路径为空，就是这一支的首页。
-    原先写死三串网址，加一种语言就判错。 -#}
+{#- 落地页判据：去掉了版本与语言两层前缀之后，路径为空就是某一支的首页。
+    原先写死三串网址，历史版一进来就判错（0101/ 不在那三串里）。 -#}
 {% set is_home = (route.tail(here) | trim) == "" %}
 
 {% block extrahead %}
@@ -124,7 +125,7 @@
   {% for alt in config.extra.alternate %}
     {% set alt_dir = alt.link | d("./", true) | replace("./", "") | replace("/", "") %}
     {% set is_current = alt_dir == ldir %}
-    {% set target = (alt_dir ~ "/" if alt_dir else "") ~ tail %}
+    {% set target = (route.version_prefix(here) | trim) ~ (alt_dir ~ "/" if alt_dir else "") ~ tail %}
     {% if not target %}{% set target = nav.homepage.url %}{% endif %}
     <link rel="alternate" href="{{ './' if is_current else (target | url) }}" hreflang="{{ alt.lang }}">
   {% endfor %}

@@ -92,9 +92,9 @@ palette_toggle_dark_zh_hant = "切換到淺色"
 
 # ── 页脚品牌区的自由文案（见 overrides/partials/footer.html）──────────────
 # 三段都是可选的：不填就不渲染那一段。键名后缀规则与上面完全一样。
-footer_tagline = "修图之前先看这一页。三种语言，同一份内容。"
-footer_tagline_en = "Read this before you start mapping. Three languages, one handbook."
-footer_tagline_zh_hant = "修圖之前先看這一頁。三種語言，同一份內容。"
+footer_tagline = "修图之前先看这一页。三种语言，两份版本。"
+footer_tagline_en = "Read this before you start mapping. Three languages, two versions."
+footer_tagline_zh_hant = "修圖之前先看這一頁。三種語言，兩份版本。"
 
 footer_note = "由 Zensical 构建<br>字体与脚本全部自托管"
 footer_note_en = "Built with Zensical<br>Fonts and scripts are entirely self-hosted"
@@ -114,12 +114,113 @@ footer_bottom_zh_hant = "RWR 地圖編輯器手冊"
 # 名单为空或整条删掉，就是「所有语种都要求翻完」。
 translation_in_progress = ["en"]
 
+# 切换器的无障碍标签。版本切换器是本站独有的（overrides/partials/version.html），
+# 主题没有对应原版，所以这三条文案也由本站自己给。
+version_aria = "切换地编版本"
+version_aria_en = "Switch editor version"
+version_aria_zh_hant = "切換地編版本"
+
+# ── 版本清单 ──────────────────────────────────────────────────────────────
+# 本站的第二条切换轴。读者装的是哪一版地编，就该看到哪一版的说明。
+#
+# ⚠️ 这张表是版本清单的**唯一出处**（tools/versions.py 读它），而 content/ 里
+#    有没有对应的内容目录由 tools/versions.py 的 audit() 对齐：声明了没有目录、
+#    或有目录没声明，都以非零码退出。不会静默分成两家账。
+#
+# 标记规则：标了 current = true 的那一条是**当前版**，它的内容就在 content/ 根下，
+# 网址没有前缀（`/`）；其余各条是历史版，内容在 content/versions/<id>/，网址带
+# 前缀（`/0100/`）。当前版必须**恰好一个**。
+#
+# 顺序就是切换器里的顺序——最新的排在最前。这里不排序：版本号不是都能比大小的，
+# `vao0822` 与 `0101` 谁大只有作者知道。
+#
+# ⚠️ 版本是「冻结快照」：砍一版之后，那一支不再回改。本站现在的历史版是各版
+#    **构建信息**的快照（见 content/versions/<id>/index.zh-hans.md），手册正文与
+#    当前版共用一份——工具条目在 060 到 0101 之间没变过，说明也就没跟着变。
+#    哪天某一版真的改了做法，再把当时那棵树整份复制进 content/versions/<id>/，
+#    此后就不动它了；tools/docsgen.py 会给缺失的页补跳转桩，不会让人点进 404。
+
+
+
 # 页脚品牌区左上角的徽标（可选）。路径相对 docs/。
 # footer_logo = "assets/logo.svg"
 
 # 社交分享图（可选）。单页可用前置元数据 image: 覆盖；
 # 都不给就整组 og:image 不输出，免得指向一张不存在的图。
 # og_image = "assets/share.png"
+
+# ── 数据隐私：Zensical 原生的同意表单 ─────────────────────────────────────
+# 这个表单的原意是「在向第三方发请求之前征得同意」，勾选项对应的是
+# Google Analytics / GitHub 这类 cookie。
+#
+# ⚠️ 本模版默认**没有任何需要同意的第三方请求**：字体、样式、脚本全部自托管，
+# 不设任何 cookie。文案按公告体写：陈述事实，不作排比宣传，不用口语动词。
+# 篇幅仍从短——这是人人都会看到的浮层，不是隐私政策的正文位。
+# 所以下面**刻意不列任何 cookie 勾选项**——把不存在的东西列进同意表单，
+# 才是真正的不诚实。这个表单在这里承担两件事：
+#   1. 首次访问时把「本站不收集什么」当面讲清楚；
+#   2. 提供 #__consent 这个锚点，让人随时能回到这份说明
+#      （页脚链过去）。
+# 将来若真的引入统计，再把对应的 cookie 加进 [project.extra.consent.cookies]。
+[project.extra.consent]
+title = "数据隐私"
+description = "本站不收集任何访问数据：无统计、无广告，亦不设置 cookie 或发起任何第三方请求。字体、样式与脚本均由本站自行托管，访问任何页面只连接本站一个域名。浏览器本机仅保存一项深浅色显示偏好，清除浏览器数据后即被移除。"
+# 只有一个按钮：这里没有可选项，给「拒绝」按钮是不诚实的。
+actions = ["accept"]
+
+# overrides/partials/consent.html 的逻辑是「repo_url 里有 github.com 就自动补一个
+# GitHub 勾选项」——那一项管的正是 api.github.com 取 star / fork 的那次请求。
+# 本模版默认不要那次请求（理由见文件开头 repo_url 处的注释），故显式关掉：
+# 键存在且为 false，consent.html 既不自动补这一项，也不会把它渲染出来。
+# 于是同意表单里**一个勾选项都没有**，「不发起任何第三方请求」句句为真。
+# 若你启用了 repo_url 并想让读者能用 star 计数，删掉下面这一行即可。
+[project.extra.consent.cookies]
+github = false
+
+# 同上：config 里的这套文案是全站唯一的，其余语种按 _en / _zh_hant 取用
+# （见 overrides/partials/consent.html）。
+
+[[project.extra.version]]
+id = "0101"
+label = "地编版本 0101"
+date = "2026-09-06"
+current = true
+
+[[project.extra.version]]
+id = "0100"
+label = "地编版本 0100"
+date = "2026-08-30"
+
+[[project.extra.version]]
+id = "091"
+label = "地编版本 091"
+date = "2026-08-30"
+
+[[project.extra.version]]
+id = "090"
+label = "地编版本 090"
+date = "2026-07-26"
+
+[[project.extra.version]]
+id = "081"
+label = "地编版本 081"
+date = "2026-06-08"
+
+[[project.extra.version]]
+id = "080"
+label = "地编版本 080"
+date = "2026-06-02"
+
+[[project.extra.version]]
+id = "070"
+label = "地编版本 070"
+date = "2026-05-20"
+
+[[project.extra.version]]
+id = "060"
+label = "地编版本 060"
+date = "2026-05-14"
+
 
 # 语言代码用**文字**标签（zh-Hans / zh-Hant），不用 zh-CN / zh-TW 这类**地区**标签：
 # 地区标签会把用词一起改掉，那是替读者选定某一地的用法。

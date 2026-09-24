@@ -1,7 +1,7 @@
 ---
 title: "About"
 description: "Which editor version this handbook covers, how the URLs are laid out, and what has not been verified yet."
-source_sha256: 675bea105a5cef3a30005eece0ef7ff0759557cd68fd8d111c6ba370d877c70b
+source_sha256: 058a380098185bd420b9610842c9114349177387dcb545db8a4fcd220f4f4759
 translated: 2026-09-25
 nav_label: "About"
 icon: lucide/info
@@ -33,13 +33,16 @@ It was written by people who make maps, not by the developers.
 
 ## How the URLs are laid out
 
-Language is the only prefix, and the default language has none. The same page has its
-own address in each of the three languages:
+Version first, language second — so the same page has its own address in every version
+and every language:
 
 ```mermaid
 graph TD
-  A["/ · Simplified"] --> B["/en/ · English"]
-  A --> C["/zh-hant/ · Traditional"]
+  A["/ · current · Simplified"] --> B["/en/ · current · English"]
+  A --> C["/zh-hant/ · current · Traditional"]
+  A --> D["/0100/ · archived · Simplified"]
+  D --> E["/0100/en/"]
+  D --> F["/0100/zh-hant/"]
 ```
 
 ## What has not been verified
