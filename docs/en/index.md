@@ -1,63 +1,50 @@
 ---
-title: A Trilingual Docs Template
-description: "A ready-to-use Zensical template for a three-language docs site: content/ is the only hand-written layer, everything else is generated."
-source_sha256: c3decac83ab752cefd104194d223397101cf00fcc963f53f4787d88062e2e1e0
-translated: 2026-01-01
+title: "Rat Book"
+description: "The handbook for the Running With Rifles map editor: what every panel does, the model and wall inventories, key bindings and common workflows."
+source_sha256: 9b3f6e952007dade6d795b72eec0eaa19e87bb2f74a92ecff9197cf703201cde
+translated: 2026-09-25
 nav_label: "Home"
 icon: lucide/house
-nav: ["guide", "reference", "about"]
+nav: ["prepare", "editor", "tables", "settings", "about"]
 # ⚠️ 由 tools/docsgen.py 从 content/index.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
 ---
 
-# A Trilingual Docs Template
+# Rat Book
 
-<p class="kicker">ZENSICAL · ZH-HANS / EN / ZH-HANT · STARTER</p>
+What to do before you start making a map (mostly to make the editor less painful).
 
-This template turns “one body of content, three languages” into a maintainable
-pipeline: **`content/` is the only hand-written layer**, and every `.md` under
-`docs/` is produced by a script. Editing content never means touching build output.
+Edited 20260922 | map editor version 0101
 
-!!! info "The one problem it solves"
-    The usual failure of a multilingual docs site is that **translations quietly go
-    stale**: the default language changes, the translation does not, and the build
-    stays green. Here, “is the translation stale?” becomes a check that exits non-zero.
+Current editor: HamSter
 
-## Three languages, two sources
+## Where to start
 
 <div class="grid cards" markdown>
 
--   __Default language: hand-written__
+-   __Setting the editor up__
 
     ---
 
-    `content/**/*.zh-hans.md` — the only thing a human has to write.
+    Unpacking it, pointing it at the right paths, syncing it with your RWR folder,
+    and turning on the built-in camera mod.
 
-    [:octicons-arrow-right-24: Start with the guide](guide/index.md)
+    [:octicons-arrow-right-24: Getting ready](prepare/index.md)
 
--   __Translations: hand-written, with a fingerprint__
-
-    ---
-
-    `content/**/*.en.md`, recording in its front matter the digest of the source it follows.
-
-    [:octicons-arrow-right-24: How translating works](guide/translating.md)
-
--   __Derived language: converted by script__
+-   __What the buttons do__
 
     ---
 
-    `zh-hant` is not a translation; it is converted from Simplified Chinese automatically.
+    The main panel, the Mesh E / Wall E / Decal tools, the key bindings and ID search.
 
-    [:octicons-arrow-right-24: Fields and commands](reference/index.md)
+    [:octicons-arrow-right-24: The editor](editor/index.md)
+
+-   __Which models you can place__
+
+    ---
+
+    Five inventories — Mesh E, Wall E, Building E, Vehicle Scatter, Decal — with previews
+    and notes.
+
+    [:octicons-arrow-right-24: Model inventories](tables/index.md)
 
 </div>
-
-## Get it running
-
-```bash
-uv sync --locked     # install dependencies (zensical and zhconv)
-make gen             # generate docs/ and the navigation from content/
-make serve           # preview at http://127.0.0.1:8000
-```
-
-The build output lands in `site/` — a plain static directory you can hand to any host.

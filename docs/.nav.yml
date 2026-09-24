@@ -3,8 +3,11 @@
 # 重新生成： uv run python tools/navgen.py
 nav:
 - 首页: index.md
-- 指南: guide
-- 参考: reference
+- 准备工作: prepare
+- 地编界面: editor
+- 模型清单: tables
+- 设置文件: settings
 - 关于: about
 - __lang:en: en
 - __lang:zh-hant: zh-hant
+- __ver:archive: archive

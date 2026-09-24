@@ -3,6 +3,8 @@
 # 重新生成： uv run python tools/navgen.py
 nav:
 - 首頁: index.md
-- 指南: guide
-- 參考: reference
+- 準備工作: prepare
+- 地編界面: editor
+- 模型清單: tables
+- 設置文件: settings
 - 關於: about
