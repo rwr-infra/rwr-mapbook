@@ -90,12 +90,12 @@
     </div>
     <div class="brand-footer__bottom">
       <span>{{ config.extra["footer_bottom" ~ L] | d(config.extra.footer_bottom | d(site_name, true), true) }}</span>
-      {#- 站点地址明写出来：手册常被摘一句话贴到别处（群公告、issue、README），
-          贴过去的往往只有内容，所以这里把「这话是从哪儿来的」摆在页脚上。
-          文字是给人认的、链接是给机器取的，两样都要：链接文字取地址本身，
-          `https://` 与结尾的斜杠去掉只是为了念起来顺（`replace` 是 MiniJinja
-          里就有的，至于切 URL 的 split / find 它没有）。 -#}
-      {% if config.extra.footer_site_url %}<a href="{{ config.extra.footer_site_url }}">{{ config.extra["footer_site" ~ L] | d(config.extra.footer_site, true) }} {{ config.extra.footer_site_url | replace("https://", "") | replace("http://", "") | replace("/", "") }} ↗</a>{% endif %}
+      {#- 文档仓库入口：页眉那个指向地编程序，这一条指向**这份手册自己**——
+          谁发现哪句话写错了、哪张表缺了一行，顺着它就能找过来改。
+          链接文字取仓库短名（`https://github.com/` 去掉就是 `owner/repo`）；
+          去掉 `https://` 只是为了念起来顺（`replace` 是 MiniJinja 里就有的，
+          至于切 URL 的 split / find 它没有）。 -#}
+      {% if config.extra.footer_repo_url %}<a href="{{ config.extra.footer_repo_url }}">{{ config.extra["footer_repo" ~ L] | d(config.extra.footer_repo, true) }} {{ config.extra.footer_repo_url | replace("https://github.com/", "") | replace("http://github.com/", "") }} ↗</a>{% endif %}
       <a href="#__consent">{{ config.extra["footer_privacy" ~ L] | d(config.extra.footer_privacy, true) }}</a>
       <a href="#top">{{ config.extra["footer_back_top" ~ L] | d(config.extra.footer_back_top, true) }}</a>
     </div>

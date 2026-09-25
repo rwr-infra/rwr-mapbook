@@ -134,18 +134,18 @@ footer_back_top = "回到顶部 ↑"
 footer_back_top_en = "Back to top ↑"
 footer_back_top_zh_hant = "回到頂部 ↑"
 
-# ── 页脚上的「文档站」入口 ────────────────────────────────────────────────
-# 页脚的地址是给**引用本站的人**看的：手册常常被摘一句话贴到别处（群公告、
-# issue、README），贴上来的往往只有内容，所以页脚把站点地址明写出来——
-# 文字是给人认的，链接是给机器取的，两样都要有。
+# ── 页脚上的「文档仓库」入口 ──────────────────────────────────────────────
+# 页眉那个入口指向**地编程序**的仓库（读者要下载、要提 issue 的是那个）；
+# 页脚这一条指向**这份手册自己的仓库**：谁发现哪句话写错了、哪张表缺了一行，
+# 顺着它就能找过来改。两个入口各服务一种人，不要合成一个。
 #
-# 地址只有这一份：`site_url` 是它推导不出来的（`site_url` 是给构建用的，
-# 而且要跟着部署形态走），所以另存一条。**改域名时要同时改「站点根在哪儿」
-# 那一节说的 `site_url` 与这一条**，两处对不上会各自指向不同的地方。
-footer_site = "文档站"
-footer_site_en = "Documentation"
-footer_site_zh_hant = "文檔站"
-footer_site_url = "https://rwrme.rwr-infra.uk/"
+# 链接文字取仓库的短名（`https://github.com/` 去掉就是 `owner/repo`），
+# 地址只有这一份配置。⚠️ 仓库改名或再换组织时，除了这里，还有本地 remote
+# 与 README 里那几处要一起改。
+footer_repo = "文档仓库"
+footer_repo_en = "Docs repository"
+footer_repo_zh_hant = "文檔倉庫"
+footer_repo_url = "https://github.com/rwr-infra/rwr-mapbook"
 
 # 同意表单「接受」按钮的文字（主题键名是 consent.accept，见 partials/language.html）。
 # 表单原意是让人选第三方 cookie，但本站没有任何可选项（见下面的 consent 一节），
