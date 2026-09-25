@@ -391,30 +391,46 @@ site/                 构建产物，不入库
 
 ## 部署
 
-!!! warning "本仓库**没有**部署"
-    按需求撤掉了：GitHub Pages 站点已删除，`deploy` 分支已删除，
-    `.github/workflows/deploy.yml` 也已从仓库移除。现在推 `main` 只会跑校验，
-    不会发布任何东西。
+`make build` 产出的 `site/` 是一个普通静态目录，与托管商无关。线上由
+**EdgeOne Pages** 托管，链路是：
 
-`make build` 产出的 `site/` 是一个普通静态目录，与托管商无关。要重新发布时，
-两件事：
+```
+main ──push──► .github/workflows/deploy.yml
+                 ├─ 与 make build 同一条产线：gen → build → linkcheck → archives → i18n
+                 └─ 把 site/ 的成品 force-push 到 deploy 分支（永远只有一个提交）
+                                    │
+                                    ▼
+                 EdgeOne Pages 的 Production 环境盯 deploy 分支，只管搬运
+```
 
-1. 取回发布工作流——它在提交 `881ae35`（模版基线）里：
+**EdgeOne 那侧不构建。** 项目设置里编译命令与安装命令都留空；若留空仍会去跑
+`npm install`，就显式写成 `echo "产物分支，无需构建"`。输出目录留空（分支根目录
+就是站点根），Production 环境的分支关联选 `deploy`。
 
-   ```bash
-   git show 881ae35:.github/workflows/deploy.yml > .github/workflows/deploy.yml
-   ```
+这么分的理由：本站是 Python 站点（uv + Zensical），而 EdgeOne 的构建镜像只预装
+Node，安装命令只认 npm / yarn / pnpm。在它的容器里现装 uv、再拉一个 Python 3.14
+并非不行，只是把「这次能不能发出去」押在一个没有文档保证的环境上；GitHub 这边的
+构建则是 `docs.yml` 每次推送都在验的那条。
 
-   它在 CI 里跑完整条产线，然后把 `site/` 作为**一个全新的孤儿提交** force-push
-   到 `deploy` 分支（每次都是新提交而不是追加，上一版才有的文件因此不会在线上
-   阴魂不散）；
-2. 在仓库设置里开启 Pages，来源选 `deploy` 分支。
+`.github/workflows/docs.yml` 只做校验、**不发布**，挂在 push 与 PR 上。
 
-也可以不用那条工作流：让托管商盯 `main`，构建命令填 `make gen && make build`、
-输出目录填 `site` 即可。
+**两个 workflow 的步骤都必须与 `make build` 逐条对齐**（顺序也一样）。这里出过
+一次静默的错位：workflow 少了构建后的一步，于是线上发的一直与本地全绿的产物不同，
+而「本地过得去就等于 CI 过得去」在当时并不成立。现在三处都是
+`gen → zensical build → linkcheck → chunker --check → i18n_check`，
+加步骤时请同时改 `Makefile`、`docs.yml` 与 `deploy.yml`。
 
-`.github/workflows/docs.yml` 只做校验、**不发布**，挂在 push 与 PR 上——它一直留着。
+!!! warning "deploy 分支上是 318 MB 的成品"
+    `docs/downloads/` 那 318 MB 历史版本归档会一起进 `site/`，所以 `deploy` 分支
+    上有这些二进制。两条影响：
+
+    * 每次 CI 运行 checkout 都要拉这一份（校验用的 `docs.yml` 同样如此）；
+      `deploy` 分支**永远只有一个提交**（孤儿提交 + force-push），所以它自己不会
+      越滚越大；
+    * 但**重复推送几乎不传东西**：分片逐字节没变 → blob 的 SHA 不变 → 服务端已经有
+      了，git 只传这次真变了的文件。日常改文档，推的是文档那一部分。
 
 > `zensical.toml` 里的 `site_url` 目前是 `https://bananaxiao2333.github.io/rwr-mapbook/`，
-> 即带一个子路径（GitHub Pages 项目站）。换域名或换成用户站（`<user>.github.io`）时
-> 要改它——`linkcheck` 与 `i18n_check` 都按它解析绝对链接。
+> 带一个子路径。canonical / sitemap / 站内**绝对**引用都按它拼——正式域名与它不一致
+> 时要先改 `site_url` 再发一次，否则线上那些绝对地址指向别处。
+> `linkcheck` 与 `i18n_check` 也按它解析绝对链接。

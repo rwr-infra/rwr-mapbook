@@ -1,0 +1,89 @@
+name: Deploy
+
+# 构建在 GitHub 这边做，产物推到 deploy 分支，由 EdgeOne Pages 从那个分支发布。
+#
+# 为什么不由 EdgeOne 自己构建：本站是 Python 站点（uv + Zensical），而 EdgeOne
+# 的构建镜像只预装 Node，安装命令只认 npm / yarn / pnpm。在它的容器里现装 uv、
+# 再拉一个 Python 3.14 并非不行，但那把「这次能不能发出去」押在一个没有文档保证
+# 的环境上；而 GitHub 这边的构建，正是 docs.yml 每次推送都在验的那一条。
+#
+# 所以 deploy 分支上**只有成品**：没有 content/、没有 tools/、没有 zensical.toml，
+# 就是 site/ 的样子。EdgeOne 那边要把编译命令与安装命令都留空（见 README「部署」一节），
+# 它只负责搬运。
+#
+# ⚠️ 这个站比一般文档站重得多：docs/downloads/ 里是 318 MB 的历史版本归档（分片），
+#    它们会一起进 site/，所以 deploy 分支上就是 318 MB 的二进制。两件事要知道：
+#      · 每次运行 checkout 都要拉这一份（校验用的 docs.yml 同样如此）；
+#      · 但**重复推送几乎不传东西**：分片逐字节没变 → blob 的 SHA 不变 → 服务端
+#        已经有了，git 只传这次真的变了的文件。日常改文档推的是文档那一部分。
+#
+# ⚠️ zensical.toml 里的 site_url 目前是 `https://bananaxiao2333.github.io/rwr-mapbook/`
+#    （带子路径）。canonical、sitemap 与站内**绝对**引用都按它拼——正式域名与它不一致时，
+#    先改 site_url 再让这个工作流发一次，否则线上那些绝对地址指向别处。
+#
+# 不要这条路的话，把这个文件删掉即可：`site/` 就是一个普通的静态目录。
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# 推 deploy 分支需要写权限；其余一律不给。
+permissions:
+  contents: write
+
+# 两次构建撞在一起时，新的一次顶掉旧的——否则两个 force-push 会互相打架。
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - run: uv sync --locked
+
+      # ⚠️ 这几步必须与 `make build` 逐条对齐（顺序也一样）。
+      # 出过一次静默的错位：workflow 少了一步，于是线上发的一直是不一样的东西，
+      # 而本地 `make build` 的产物是干净的——「本地过得去就等于 CI 过得去」当时并不成立。
+      # 加步骤时同时改 Makefile、docs.yml 与这个文件，别只改一边。
+      - name: Generate build tree from content/
+        run: make gen
+
+      - name: Build site
+        run: uv run zensical build --clean --strict
+
+      - name: Check built links
+        run: uv run python tools/linkcheck.py
+
+      - name: Check version archives
+        run: uv run python tools/chunker.py --check
+
+      - name: Check translation coverage
+        run: uv run python tools/i18n_check.py --quiet
+
+      # 产物单独起一个仓库推上去：deploy 分支永远只有一个提交，内容就是 site/
+      # 的当前样子。每次重建再 force-push，删掉的页面因此不会在线上阴魂不散——
+      # 若改成往旧分支上追加，线上就会留下一堆上一版才有的文件。
+      #
+      # ⚠️ site/ 在 .gitignore 里，所以父仓库不会把这里新起的 .git 当成嵌套仓库。
+      #    `git add -A -f` 里的 -f 是给 docs/downloads/ 那些分片用的：它们虽然不在
+      #    .gitignore 里，但万一将来有人往里加规则，成品也不该跟着少文件。
+      - name: Publish site/ to the deploy branch
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          test -f site/index.html || { echo "site/ 里没有 index.html，构建没产出东西"; exit 1; }
+          cd site
+          git init -q -b deploy
+          git add -A -f
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -qm "构建产物 · 源提交 ${GITHUB_SHA}"
+          git push -q -f "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" deploy
+          echo "已推送 deploy 分支：$(git rev-parse --short HEAD)"
+          echo "共 $(git ls-files | wc -l) 个文件、$(du -sh . | cut -f1)"
