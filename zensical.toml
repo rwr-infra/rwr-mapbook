@@ -13,15 +13,18 @@ copyright = "RWR 地编手册 · 由 RWR 地图编辑组维护"
 # 仓库入口（可选）：填了 repo_url，页眉搜索框旁就会出现一个「图标 + 仓库名」的链接
 # （见 overrides/partials/header.html 末尾那段判断，以及主题的 partials/source.html）。
 #
+# 这里指向的是**地编程序自己的仓库**（Autumnsnail/rwrme），不是这份手册的源码仓库：
+# 读者要找的是能下载、能提 issue 的那个项目，手册的源码在哪儿对他没用。
+#
 # ⚠️ Zensical 对公开的 GitHub 仓库会自动去 api.github.com 取 star / fork / 最新
-# release 数并渲染在图标旁——那是每个访客一次第三方请求。本模版默认把这一项在
-# 同意表单里显式关掉（见下面 [project.extra.consent.cookies]），以维持
-# 「本模版默认不发起任何第三方请求」的姿势。要显示计数就删掉那里的一行。
+# release 数并渲染在图标旁——那是每个访客一次第三方请求。本站把这一项在同意表单里
+# 显式关掉（见下面 [project.extra.consent.cookies] 的 github = false），以维持
+# 「本站不发起任何第三方请求」这句话。要显示计数就删掉那里的一行。
 #
 # 不设 repo_name 时 Zensical 拿 URL 的域名推断，页眉那行字只剩「GitHub」；
 # 写上仓库名读者才知道点进去是哪儿。
-repo_url = "https://github.com/bananaxiao2333/rwr-mapbook"
-repo_name = "rwr-mapbook"
+repo_url = "https://github.com/Autumnsnail/rwrme"
+repo_name = "rwrme"
 
 
 # extra_css / extra_javascript 必须在任何 [[project.*]] 表之前，
@@ -130,6 +133,19 @@ footer_privacy_zh_hant = "隱私設定"
 footer_back_top = "回到顶部 ↑"
 footer_back_top_en = "Back to top ↑"
 footer_back_top_zh_hant = "回到頂部 ↑"
+
+# ── 页脚上的「文档站」入口 ────────────────────────────────────────────────
+# 页脚的地址是给**引用本站的人**看的：手册常常被摘一句话贴到别处（群公告、
+# issue、README），贴上来的往往只有内容，所以页脚把站点地址明写出来——
+# 文字是给人认的，链接是给机器取的，两样都要有。
+#
+# 地址只有这一份：`site_url` 是它推导不出来的（`site_url` 是给构建用的，
+# 而且要跟着部署形态走），所以另存一条。**改域名时要同时改「站点根在哪儿」
+# 那一节说的 `site_url` 与这一条**，两处对不上会各自指向不同的地方。
+footer_site = "文档站"
+footer_site_en = "Documentation"
+footer_site_zh_hant = "文檔站"
+footer_site_url = "https://rwrme.rwr-infra.uk/"
 
 # 同意表单「接受」按钮的文字（主题键名是 consent.accept，见 partials/language.html）。
 # 表单原意是让人选第三方 cookie，但本站没有任何可选项（见下面的 consent 一节），

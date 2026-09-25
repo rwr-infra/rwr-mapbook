@@ -190,6 +190,10 @@
   display: flex;
   flex-basis: 100%;
   justify-content: space-between;
+  /* 底栏从三格变成四格（多了一条站点地址）之后，窄屏上会挤成一团：
+     允许换行，并在换行后给出行距与列距。 */
+  flex-wrap: wrap;
+  gap: 0.35rem 1.2rem;
   padding-top: 0.9rem;
   border-top: 0.05rem solid var(--md-default-fg-color--lightest);
   color: var(--md-default-fg-color--light);
