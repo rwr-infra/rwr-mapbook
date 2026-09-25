@@ -2,7 +2,7 @@
 nav_label: "历史版本"
 title: "历史版本"
 icon: "lucide/archive"
-description: "历次地编版本的完整归档与两份配套材料：点一次下载，分包自动取回、校验并拼成一个整包。"
+description: "历次地编版本的完整归档与两份配套材料，放在站外的对象存储上，每一条都是直链。"
 tags: [安装与配置]
 ---
 
@@ -13,21 +13,21 @@ tags: [安装与配置]
 这里是历次地编版本的完整归档，从 060 到 0101。每个包就是那一版地编的全套文件，
 与当时发在群文件里的一致。
 
-「下载」有两种走法。没超过部署上限的整包是**一个普通文件**，按钮就是直链——浏览器
-能下，下载器也能下。超过上限的会存成若干片段，那种由页面把分片取回、逐片核对哈希，
-拼成一个**与原文件同名**的整包。两种情况落到下载文件夹里的都是一个整包，
-不会出现 `.partNNN`，也不需要手工合并。
+归档**不在本站的仓库里**。单是这十份就有 318 MB，跟着仓库走的话，每个想改文档的人
+都得先下几百 MB，而这份仓库里真正会变的是正文。所以它们放在站外的对象存储上
+（Cloudflare R2），下面每一条都是**直链**：浏览器能下，下载器（IDM、aria2、迅雷）
+也能下，右键就能交给它们。
 
 | 版本 | 归档 | 下载 |
 | --- | --- | --- |
-| 地编 060 | `060.zip`<br><span data-dl-size="060">—</span> | <button type="button" class="md-button md-button--primary" data-dl="060">下载</button> <span class="dl-status" data-dl-status="060"></span> |
-| 地编 070 | `070.rar`<br><span data-dl-size="070">—</span> | <button type="button" class="md-button md-button--primary" data-dl="070">下载</button> <span class="dl-status" data-dl-status="070"></span> |
-| 地编 080 | `080.rar`<br><span data-dl-size="080">—</span> | <button type="button" class="md-button md-button--primary" data-dl="080">下载</button> <span class="dl-status" data-dl-status="080"></span> |
-| 地编 081 | `081.rar`<br><span data-dl-size="081">—</span> | <button type="button" class="md-button md-button--primary" data-dl="081">下载</button> <span class="dl-status" data-dl-status="081"></span> |
-| 地编 090 | `090.rar`<br><span data-dl-size="090">—</span> | <button type="button" class="md-button md-button--primary" data-dl="090">下载</button> <span class="dl-status" data-dl-status="090"></span> |
-| 地编 091 | `091.rar`<br><span data-dl-size="091">—</span> | <button type="button" class="md-button md-button--primary" data-dl="091">下载</button> <span class="dl-status" data-dl-status="091"></span> |
-| 地编 0100 | `0100.rar`<br><span data-dl-size="0100">—</span> | <button type="button" class="md-button md-button--primary" data-dl="0100">下载</button> <span class="dl-status" data-dl-status="0100"></span> |
-| 地编 0101 | `0101.rar`<br><span data-dl-size="0101">—</span> | <button type="button" class="md-button md-button--primary" data-dl="0101">下载</button> <span class="dl-status" data-dl-status="0101"></span> |
+| 地编 060 | `060.zip`　32.1 MB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/060.zip){ .md-button .md-button--primary } |
+| 地编 070 | `070.rar`　26.2 MB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/070.rar){ .md-button .md-button--primary } |
+| 地编 080 | `080.rar`　30.7 MB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/080.rar){ .md-button .md-button--primary } |
+| 地编 081 | `081.rar`　30.7 MB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/081.rar){ .md-button .md-button--primary } |
+| 地编 090 | `090.rar`　30.7 MB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/090.rar){ .md-button .md-button--primary } |
+| 地编 091 | `091.rar`　26.2 MB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/091.rar){ .md-button .md-button--primary } |
+| 地编 0100 | `0100.rar`　31.2 MB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/0100.rar){ .md-button .md-button--primary } |
+| 地编 0101 | `0101.rar`　26.2 MB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/0101.rar){ .md-button .md-button--primary } |
 
 !!! warning "先看清是哪一版"
     归档是**冻结的**：哪一版就是当时那一版的全部文件，之后不会再改。
@@ -40,16 +40,30 @@ tags: [安装与配置]
 
 | 材料 | 文件 | 下载 |
 | --- | --- | --- |
-| 模板（清单版本 vao0822） | `vao0822.svg`<br><span data-dl-size="vao0822">—</span> | <button type="button" class="md-button md-button--primary" data-dl="vao0822">下载</button> <span class="dl-status" data-dl-status="vao0822"></span> |
-| OgreSDK | `OgreSDK_vc10_v1-7-4.zip`<br><span data-dl-size="OgreSDK_vc10_v1-7-4">—</span> | <button type="button" class="md-button md-button--primary" data-dl="OgreSDK_vc10_v1-7-4">下载</button> <span class="dl-status" data-dl-status="OgreSDK_vc10_v1-7-4"></span> |
+| 模板（清单版本 vao0822） | `vao0822.svg`　441 kB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/vao0822.svg){ .md-button .md-button--primary } |
+| OgreSDK | `OgreSDK_vc10_v1-7-4.zip`　83.9 MB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/OgreSDK_vc10_v1-7-4.zip){ .md-button .md-button--primary } |
 
-!!! note "直链，还是由页面拼"
-    本站部署在 EdgeOne Pages，**单个文件最大 25 MB**，而地编的整包是 26–84 MB，
-    塞不进一个文件里。所以：
+??? note "校验用哈希（sha256）"
+    下完想确认拿到的是原件，可以对一下：
 
-    * 没超上限的（比如那份 441 kB 的模板）就是一个**普通文件**，按钮是直链：
-      浏览器能下，下载器也能下（右键就能交给它）；
-    * 超了上限的存成若干片段，那种**只能由页面拼**。分片是仓库里的真实地址没错，
-      但那是几段，交给下载器只会拿到几段 `.partNNN`，还得自己合并。页面把全部片段
-      取回、逐片核对哈希、拼成一个整包再交给你；任何一片对不上就停下报错，
-      不会把半个包塞过来。
+    ```
+    35c9560e78566d0e7c8139e9f8b43f15a7932cf1a20139eea2930710f0c4bddb  060.zip
+    eff018db8027e2327a36a45ac0fb2167fb30d593afe987d8cf889b3ae16ecb70  070.rar
+    a2b47f4896ea760da64b8ee99a01152a37734e213bf27cee10896a968a1cb3ed  080.rar
+    303e30c4d0796aa4bc3a6f85729d5ed9d97efd7d7b434021673406c63651af96  081.rar
+    e2b670c0db6156e2414801fdd5167a9a2eff75c62d6f773aa37f45e164eb0446  090.rar
+    2479c531f4576e8c5751e15637c422f6ff2ce3654e8c4c4aa3fd5263c1b6eade  091.rar
+    84d18efd2fe7de947efe9f44374662961f2a4d5f7e09cb65e4165aafcddd742a  0100.rar
+    49de6d2c0175f6a6a01f0f6eaaab93c4f0af394d82151576ad9b36c33c849a55  0101.rar
+    e4ec1869d92fc802d8760e8898eba9953b55a2face1c39e74dffee850f1bfc31  vao0822.svg
+    2208167d1e2214f196888b3e04b0c4924eb15e37a8de12318a83e2533d2a6a4b  OgreSDK_vc10_v1-7-4.zip
+    ```
+
+    归档是**冻结**的，哈希不会变；哪天真换了文件，这里会跟着改——
+    它与上面那张表是同一批数字，两处对不上就是有人改漏了一处。
+
+??? note "这些东西存在哪儿"
+    立在 `assets.rwr-infra.uk` 那个域上（Cloudflare R2 的对象存储），
+    仓库里既没有副本、也不走本站的部署——所以整站的产物里没有几百 MB 的二进制，
+    克隆这份仓库要下的是正文，不是归档。
+

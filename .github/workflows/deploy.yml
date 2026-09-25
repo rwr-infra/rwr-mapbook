@@ -11,15 +11,13 @@ name: Deploy
 # 就是 site/ 的样子。EdgeOne 那边要把编译命令与安装命令都留空（见 README「部署」一节），
 # 它只负责搬运。
 #
-# ⚠️ 这个站比一般文档站重得多：docs/downloads/ 里是 318 MB 的历史版本归档（分片），
-#    它们会一起进 site/，所以 deploy 分支上就是 318 MB 的二进制。两件事要知道：
-#      · 每次运行 checkout 都要拉这一份（校验用的 docs.yml 同样如此）；
-#      · 但**重复推送几乎不传东西**：分片逐字节没变 → blob 的 SHA 不变 → 服务端
-#        已经有了，git 只传这次真的变了的文件。日常改文档推的是文档那一部分。
+# ⚠️ zensical.toml 里的 site_url 是 `https://rwrme.rwr-infra.uk/`，canonical、sitemap
+#    与站内**绝对**引用都按它拼。换域名时先改它再让这个工作流发一次，否则线上那些
+#    绝对地址指向别处。
 #
-# ⚠️ zensical.toml 里的 site_url 目前是 `https://bananaxiao2333.github.io/rwr-mapbook/`
-#    （带子路径）。canonical、sitemap 与站内**绝对**引用都按它拼——正式域名与它不一致时，
-#    先改 site_url 再让这个工作流发一次，否则线上那些绝对地址指向别处。
+# 归档（318 MB 的历史版本包）**不在 deploy 分支上**：它们在对象存储里
+# （assets.rwr-infra.uk），页面上是直链。所以这个分支只有几十 MB 的文档，
+# 每次推送也就只传文档。
 #
 # 不要这条路的话，把这个文件删掉即可：`site/` 就是一个普通的静态目录。
 on:
@@ -60,9 +58,6 @@ jobs:
       - name: Check built links
         run: uv run python tools/linkcheck.py
 
-      - name: Check version archives
-        run: uv run python tools/chunker.py --check
-
       - name: Check translation coverage
         run: uv run python tools/i18n_check.py --quiet
 
@@ -71,8 +66,7 @@ jobs:
       # 若改成往旧分支上追加，线上就会留下一堆上一版才有的文件。
       #
       # ⚠️ site/ 在 .gitignore 里，所以父仓库不会把这里新起的 .git 当成嵌套仓库。
-      #    `git add -A -f` 里的 -f 是给 docs/downloads/ 那些分片用的：它们虽然不在
-      #    .gitignore 里，但万一将来有人往里加规则，成品也不该跟着少文件。
+      #    -f 是怕将来有人往 .gitignore 里加规则时，成品跟着少文件。
       - name: Publish site/ to the deploy branch
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}

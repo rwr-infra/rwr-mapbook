@@ -53,13 +53,6 @@ jobs:
       - name: Check built links
         run: uv run python tools/linkcheck.py
 
-      # 历史版本归档体检：分片是否都在、哈希是否对得上、页面上的按钮与清单
-      # 是不是两边都对得上。⚠️ 它不需要源归档（源在群文件里，仓库里没有），
-      # 所以线上跑得了这一条，跑不了 `make downloads`。
-      # 顺序与 `make build` 一致：链接 → 归档 → 翻译度。
-      - name: Check version archives
-        run: uv run python tools/chunker.py --check
-
       # 翻译度体检：漏翻 / 过期 / 译文结构对不上，非零码退出。
       # 只想预警不阻断的话，加 continue-on-error: true。
       - name: Check translation coverage

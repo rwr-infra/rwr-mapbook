@@ -1,5 +1,5 @@
 [project]
-site_url = "https://bananaxiao2333.github.io/rwr-mapbook/"
+site_url = "https://rwrme.rwr-infra.uk/"
 site_name = "RWR 地编手册"
 site_description = "小兵步枪（Running With Rifles）地图编辑器手册：地编界面逐项说明、模型与墙体清单、交互按键与常用流程。"
 site_author = "RWR 地图编辑组"
@@ -50,16 +50,10 @@ extra_css = [
 # 三种语言混在一个列表里的。这个脚本把标签**按语言分段**（当前页面的语言排最前），
 # 并把面板上写死的英文换成页面语言的词。它得挂进主题搜索面板的 shadow root，
 # 原理与「升级时要跟着看」的提醒都写在那个文件的头部。
-#
-# downloads.js 也是本站自己的：历史版本归档超过托管方允许的单文件上限，
-# 在仓库里是一堆分片，这个脚本把分片取回来、校验、拼成一个整文件再存下去
-# （分片由 tools/chunker.py 切出来，清单在 docs/downloads/ 下）。
-# 页面上没有下载按钮时它什么都不做。
 extra_javascript = [
   "javascripts/glightbox.min.js",
   "javascripts/search-lang.js",
   "javascripts/redact.js",
-  "javascripts/downloads.js",
 ]
 
 # 链接与锚点校验：构建时就把断链/失效锚点报出来，而不是等读者点到。
@@ -181,33 +175,6 @@ search_close_zh_hant = "關閉搜尋"
 search_filter_by_tag = "按标签筛选"
 search_filter_by_tag_en = "Filter by tag"
 search_filter_by_tag_zh_hant = "依標籤篩選"
-
-# ── 历史版本归档：下载时那几行动态文字 ────────────────────────────────────
-# 与 search_* 同一套办法：由 overrides/main.html 按页面语言取好，交给
-# docs/javascripts/downloads.js 显示。脚本里没有自己的文案表，加语言照着加
-# 一组 `_<lang>` 就行。
-#
-# 大小不在这里：它从 docs/downloads/manifest.json 里算出来（见 tools/chunker.py），
-# 在配置里再写一份就等着过期。`{name}` 是文件名，不翻译。
-download_progress = "正在取第 {n}/{m} 段…"
-download_progress_en = "Fetching part {n} of {m}…"
-download_progress_zh_hant = "正在取第 {n}/{m} 段…"
-
-download_verify = "校验中…"
-download_verify_en = "Verifying…"
-download_verify_zh_hant = "校驗中…"
-
-download_done = "校验通过，已保存 {name}"
-download_done_en = "Verified — saved as {name}"
-download_done_zh_hant = "校驗通過，已儲存 {name}"
-
-download_unchecked = "已拼接保存为 {name}（当前环境不支持校验）"
-download_unchecked_en = "Merged and saved as {name} (verification unavailable here)"
-download_unchecked_zh_hant = "已拼接儲存為 {name}（目前環境不支援校驗）"
-
-download_failed = "下载失败，原因见浏览器控制台"
-download_failed_en = "Download failed — see the browser console"
-download_failed_zh_hant = "下載失敗，原因見瀏覽器主控台"
 
 footer_bottom = "RWR 地图编辑器手册"
 footer_bottom_en = "RWR MAP EDITOR'S HANDBOOK"

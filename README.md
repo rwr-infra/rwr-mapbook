@@ -23,7 +23,6 @@ uv sync --locked
 make gen      # content/ → docs/，并重建导航
 make serve    # 预览 http://127.0.0.1:8000/（根域）
 make watch    # 另开一个终端：改 content/ 就自动重新生成（配合 make serve = 存盘即见）
-make serve-subpath  # 同上，但按线上的子路径 /rwr-mapbook/ 预览
 
 make build    # 生成 → 构建 → 链接体检 → 翻译度体检
 make versions # 只看版本清单体检
@@ -43,25 +42,18 @@ make versions # 只看版本清单体检
 /egg/zh-hant/         彩蛋 · 繁体
 ```
 
-### 这个子路径是怎么回事
+### 站点根在哪儿
 
-线上是 GitHub Pages 的**项目站**（仓库名不是 `<用户名>.github.io`），地址本来就是
-`https://<用户名>.github.io/<仓库名>/`——**站点根落在那一层，不是域名根**。
-所以 `zensical.toml` 里的 `site_url` 必须带着 `/rwr-mapbook/`：站内绝对引用、
-sitemap、canonical 都按这个根拼；少了它，本地看着一切正常，一上线全是断链。
+线上是 `https://rwrme.rwr-infra.uk/`——**域名根**，网址里没有子路径那一层。
+`zensical.toml` 里的 `site_url` 必须与它一致：站内绝对引用、sitemap、canonical
+都按这个根拼，少了那一层或多了那一层，本地看着一切正常，一上线就是断链。
 这一项不能按「本地预览方便」来取舍。
 
-**但本地预览不该背这个包袱。** 默认的 `make serve` 会让预览停在根域：
-它另生成一份 `zensical.preview.toml`（只把 `site_url` 换成本地根域，其余一行不动），
-于是入口就是 `http://127.0.0.1:8000/`。那份文件是生成物、不入库，也改不到线上。
-
-```bash
-make serve           # http://127.0.0.1:8000/            ← 默认，根域，写文档时用这个
-make serve-subpath   # http://127.0.0.1:8000/rwr-mapbook/ ← 核对线上子路径下的表现
-```
-
-要真的把站点挪到域名根（`https://<用户名>.github.io/`），得把仓库改名成
-`<用户名>.github.io`，或配一个自定义域——那时 `site_url` 跟着去掉子路径即可。
+（本站以前挂在 GitHub Pages 的项目站上，地址是 `…github.io/rwr-mapbook/`，
+那时要另生成一份只换 `site_url` 的预览配置才好在本地按根域看。挪到自有域名之后
+那份配置没用了，已删掉：现在 `make serve` 直接用配置里的 `site_url`，入口就是
+`http://127.0.0.1:8000/`。哪天真挪回子路径下，把模版仓库里那份 sed 生成预览配置的
+办法拿回来即可。）
 
 页眉上有两个下拉，**各改一层前缀**：
 
@@ -205,60 +197,61 @@ refresh 目标当成一条必须落地的引用去验。桩写成 HTML 而不是
 
 ---
 
-## 历史版本归档怎么发
+## 历史版本归档放在站外
 
 ```
-content/download/index.<lang>.md     页面：版本、文件名、一个按钮（手写）
-docs/downloads/manifest.json         清单：路径、字节数、哈希（生成）
-docs/downloads/<名字>                 整文件（生成，没超上限时就是它本身）
-docs/downloads/<名字>.partNNN         分片（生成，超了上限才有）
+content/download/index.<lang>.md        页面：版本、文件名、大小、一条直链（手写）
+assets.rwr-infra.uk/rwrme-web-assets/   归档本体（对象存储，不在仓库里）
 ```
 
-```bash
-make downloads   # 存整包/切分片 + 写清单；源归档在 ~/Downloads，有哪几个见 DOWNLOADS
-make archives    # 体检：文件、哈希、页面按钮与清单两边对账（CI 也跑这条）
-```
+十份整包一共 318 MB，**不在这个仓库里**，也不进站点的构建产物。理由很直接：
+这个仓库里会变的是正文；带着归档走的话，每个想改一个字的人 `git clone`
+都要先拉几百 MB。所以它们放在 **Cloudflare R2** 上，由 `assets.rwr-infra.uk`
+这个域提供，页面上是直链。
 
-### 25 MB 是部署方的限制，不是 git 的
-
-本站部署在 **EdgeOne Pages**，它**单个文件最大 25 MB**——超了的文件传上去会被挡在
-门外，部署直接失败。而地编的整包是 26–84 MB，所以它们只能切：
+公开地址的形状是固定的：
 
 ```
-060.zip          32 097 476 B  → 2 片
-OgreSDK…zip      83 919 216 B  → 4 片
-vao0822.svg         440 680 B  → 没超，原样存一份
+https://assets.rwr-infra.uk/rwrme-web-assets/<文件名>
 ```
 
-（仓库本身能存到 100 MiB 一个文件，`git push` 不会拦——**拦住的是部署那一步**。
-所以「整包存一个文件、让下载器直接抓」这条路在本站走不通。）
+三条约定：
 
-**切与不切，对读者的差别是实实在在的**：
+* **对象名就是原文件名**（`060.zip`、`OgreSDK_vc10_v1-7-4.zip`），不带版本目录——
+  名字本身已经唯一，多套一层只会在换存储时多一处要改的地方；
+* **长缓存**：`Cache-Control: public, max-age=31536000, immutable`。归档是冻结的，
+  同名文件永远同一个内容，所以能这么写；
+* **哈希只写一处**：`content/download/index.<lang>.md` 那张表下面有一份 sha256 清单，
+  读者下完能自己核。存储那边不另存一份「清单文件」——两份记录会分叉，一份不会。
 
-* 没超上限的文件**原样存一份**，页面上那个按钮就是一条**直链**：浏览器能下，
-  下载器（IDM、aria2、迅雷）也能下，右键就交给它们了；
-* 超了上限的存成若干片段。分片本身是真实地址没错，但那是几段，交给下载器只会拿到
-  几段 `.partNNN`，还得自己合并；所以这种只能由页面拼——拼接走的是 `blob:` 地址，
-  那是**页面进程内存里的临时句柄**，别的程序拿不到，页面一关就没。
+### 为什么不用原先那套「分片 + 页面拼装」
 
-一句话：**分片是给「上传」省事，不是给「下载」省事，代价落在读者那边。**
-所以上限设在部署方能接受的**最小值之上**、文件能整份就整份——只有真超了才切。
-上限由 `tools/chunker.py` 的 `LIMIT` 定，要调：`make downloads LIMIT=<字节数>`。
+本站原先把整包切成分片放进仓库，由页面取回、逐片校验、拼成一个整包再保存——
+那是因为 EdgeOne Pages **单个文件最大 25 MB**，26–84 MB 的整包传不上去。
+那条路的问题不在实现，而在位置：**把托管方的单文件上限，变成了读者的下载方式。**
+拼装走的是 `blob:` 地址，那是页面进程内存里的临时句柄，别的程序拿不到——
+所以超过上限的包只能挂在浏览器里下，下载器按不动。
 
-### 其余几处取舍
+挪到对象存储之后这个上限不存在了（R2 的单文件上限远高于这几百 MB），
+于是分片、拼装脚本、清单文件、`make archives` / `make downloads` 一起删掉了：
+页面上就是十条直链，浏览器能下，IDM / aria2 / 迅雷也能下，还支持断点续传
+（`Range` 请求，实测返回 206）。
 
-* **页面上不写大小**。大小从清单里算出来摆在按钮旁边——手写一份就会在换了源文件
-  之后过期，而那种过期没有任何症状。清单是大小与分片的**唯一出处**。
-* **`make archives` 不需要源归档**（源在群文件里，仓库里没有），所以 CI 跑得了它，
-  跑不了 `make downloads`。它查的是仓库里这一份自己成不成立。
-* **页面与清单两边对账**：`content/download/` 里挂了 `data-dl="060"` 而清单里没有
-  这个归档，或者清单里有归档而没页面引用它，都以非零码退出——和版本清单一个道理，
-  两处记录会分叉，一处不会。
-* 整包与分片都是**最终形态**，不是中间产物，要进仓库。改了上限之后留下的旧文件由
-  `make downloads` 自己清掉（名单来自上一份清单，不靠文件名猜）。
-* 分片那条路上，页面**逐片核对哈希**、整文件再核一次，任一片对不上就停下报错；
-  直链那条路不经手，也就无从校验——换来的是下载器能用。两条路都在
-  `docs/javascripts/downloads.js` 里，文件头的说明写了取舍。
+代价是**多了一处站外依赖**：那份存储要一直在。换域名或换存储商时，
+改 `content/download/index.<lang>.md` 里那十条地址即可，其余地方不认这个域名。
+（切分与拼装那两个件留在模版仓库里，真需要时能取回来。）
+
+### 往上放新文件
+
+走 S3 兼容接口（R2 的 endpoint + 一对 access key，`boto3` / `rclone` / `aws-cli`
+都能用；密钥在 Cloudflare 面板上，**不要写进仓库**）。顺序是：
+
+1. 先算本地文件的 sha256，与页面上写的那一份对上再传——传错文件是这里唯一
+   会静默出错的地方；
+2. `Content-Type` 按类型给（`.zip` → `application/zip`、`.rar` → `application/vnd.rar`、
+   `.svg` → `image/svg+xml`），`Cache-Control` 按上面的长缓存给；
+3. 传完 HEAD 一下：大小对不对、公开地址能不能取到；
+4. 改了文件才动页面上的哈希；没改文件就别动——归档是冻结的。
 
 ---
 
@@ -288,15 +281,16 @@ vao0822.svg         440 680 B  → 没超，原样存一份
 | [`tools/linkcheck.py`](tools/linkcheck.py) | 站内引用落地、目录引用带尾斜杠、跳转桩目标存在、每页都带地址补正脚本 |
 | [`tools/i18n_check.py`](tools/i18n_check.py) | 漏翻 / 过期 / 结构对不上 / 派生失同步 / 产物缺件（SMOKE 断言） |
 | [`tools/versions.py`](tools/versions.py) | 版本清单与 `content/versions/` 对齐、版本条目里没有混进别处的配置 |
-| [`tools/chunker.py`](tools/chunker.py) | 历史版本归档的分片与哈希、页面上挂的按钮与清单两边对账 |
 | `zensical build --strict` | 断链、失效锚点 |
 
 ```bash
 make check     # 翻译度体检
 make links     # 链接体检（需先构建）
 make versions  # 版本清单体检
-make archives  # 历史版本归档体检
 ```
+
+站外那十条直链不在体检范围内：它们指到别的域上（`assets.rwr-infra.uk`），
+构建期够不着。所以改过下载页之后要**手工点一遍**——`linkcheck` 只验站内的东西。
 
 ---
 
@@ -305,11 +299,10 @@ make archives  # 历史版本归档体检
 ```
 content/              唯一手写层
   versions/<id>/      非当前版的冻结树
-  download/           历史版本归档那一页（归档本体在 docs/downloads/）
+  download/           历史版本那一页（归档本体在站外，见上）
 docs/                 构建层（.md 与跳转桩是生成物）+ 手写资产
   assets/editor/      界面与流程的 54 张图
   assets/tables/      清单里的 705 张图
-  downloads/          历史版本归档的分片与清单（**不是**生成层的副产物，要入库）
   stylesheets/ javascripts/   手写
 tools/                生成器、看门脚本与体检；langs.py 是语言清单的唯一出处
 overrides/            主题模板覆盖
@@ -335,11 +328,16 @@ site/                 构建产物，不入库
 
 ---
 
-## 这个仓库对模版改了什么
+## 与模版的关系
 
-本站基于 [`zensical-trilang-template`](https://github.com/bananaxiao2333/zensical-trilang-template)
-（`content/` 是唯一手写层、四种会非零码退出的体检）。在它之上加了**版本轴**，
-过程中在模版里翻出并修掉了四处**静默**缺陷——它们都不报错，只是悄悄发错东西：
+本站基于 [`zensical-trilang-template`](https://github.com/bananaxiao2333/zensical-trilang-template)。
+两边现在是**同步**的：版本轴、两条轴共用的判据 `overrides/partials/route.html`、
+版本切换器、按（版本，语言）生成的标签索引、离线打包、大文件归档那套工具，
+以及这份 README 之外的踩坑记录（模版仓库的 `LESSONS.md`），模版那边都有；
+本站是它的一个实例——内容是本站的，配置是本站的，归档放在站外。
+
+**当初这些东西是从五处静默缺陷上踩出来的**，它们都不报错，只是悄悄发错东西
+（模版现已一并修掉，细节见 `LESSONS.md`）：
 
 1. **派生语种的共享资产链接少一层 `../`。**
    `docsgen.render()` 按**源文件**的语言算下沉层数，而源是简体（0 层）、产物是繁体（1 层）。
@@ -369,10 +367,8 @@ site/                 构建产物，不入库
    但上级不是障碍）。于是语言树下一个 `.nav.yml` 都没写出来，awesome-nav 自己去扫目录：
    英文左栏的条目按字母序排、标题还全是中文占位符。判据改成「这个目录在别的树**下面**」。
 
-另外新增：`tools/versions.py`（版本清单与体检）、`overrides/partials/route.html`
-（两条轴的唯一判据）、`overrides/partials/version.html`（版本切换器）、
-`translation_in_progress`（语种补齐进度这条刻意的放宽）、空左栏的自动推导
-（见上）、以及标题锚点的显式钉住。
+其余几处都是「用不上就不碍事」的形状：归档那套工具（`chunker.py` 与页面拼装脚本）
+现在只留在模版里，本站不用——归档搬到站外了（见「历史版本归档放在站外」）。
 
 ---
 
@@ -396,7 +392,7 @@ site/                 构建产物，不入库
 
 ```
 main ──push──► .github/workflows/deploy.yml
-                 ├─ 与 make build 同一条产线：gen → build → linkcheck → archives → i18n
+                 ├─ 与 make build 同一条产线：gen → build → linkcheck → i18n
                  └─ 把 site/ 的成品 force-push 到 deploy 分支（永远只有一个提交）
                                     │
                                     ▼
@@ -417,20 +413,14 @@ Node，安装命令只认 npm / yarn / pnpm。在它的容器里现装 uv、再�
 **两个 workflow 的步骤都必须与 `make build` 逐条对齐**（顺序也一样）。这里出过
 一次静默的错位：workflow 少了构建后的一步，于是线上发的一直与本地全绿的产物不同，
 而「本地过得去就等于 CI 过得去」在当时并不成立。现在三处都是
-`gen → zensical build → linkcheck → chunker --check → i18n_check`，
+`gen → zensical build → linkcheck → i18n_check`，
 加步骤时请同时改 `Makefile`、`docs.yml` 与 `deploy.yml`。
 
-!!! warning "deploy 分支上是 318 MB 的成品"
-    `docs/downloads/` 那 318 MB 历史版本归档会一起进 `site/`，所以 `deploy` 分支
-    上有这些二进制。两条影响：
+!!! note "deploy 分支上只有文档"
+    归档不在站点里（它们在 `assets.rwr-infra.uk` 上），所以 `site/` 与 `deploy` 分支
+    都只有几十 MB 的文档，推起来很快。`deploy` 分支**永远只有一个提交**
+    （孤儿提交 + force-push）：上一版才有的文件不会留在线上，分支自己也不会越滚越大。
 
-    * 每次 CI 运行 checkout 都要拉这一份（校验用的 `docs.yml` 同样如此）；
-      `deploy` 分支**永远只有一个提交**（孤儿提交 + force-push），所以它自己不会
-      越滚越大；
-    * 但**重复推送几乎不传东西**：分片逐字节没变 → blob 的 SHA 不变 → 服务端已经有
-      了，git 只传这次真变了的文件。日常改文档，推的是文档那一部分。
-
-> `zensical.toml` 里的 `site_url` 目前是 `https://bananaxiao2333.github.io/rwr-mapbook/`，
-> 带一个子路径。canonical / sitemap / 站内**绝对**引用都按它拼——正式域名与它不一致
-> 时要先改 `site_url` 再发一次，否则线上那些绝对地址指向别处。
+> `zensical.toml` 里的 `site_url` 是 `https://rwrme.rwr-infra.uk/`。canonical / sitemap /
+> 站内**绝对**引用都按它拼——换域名时要先改它再发一次，否则线上那些绝对地址指向别处。
 > `linkcheck` 与 `i18n_check` 也按它解析绝对链接。

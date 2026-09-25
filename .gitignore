@@ -11,8 +11,6 @@ i18n-report.md
 # 现在判据是文件里那行生成横幅，两份记录会分叉、一份不会。
 .docsgen.json
 
-# make serve-root 现场产出的预览配置：只把 site_url 换成本地根域，一条命令即可再生。
-zensical.preview.toml
 
 # 离线文件版：`make offline` 一条命令即可再生（约 60 MB），内容是构建产物，
 # 改一次内容就整体过期——不入库。生成物留在本地，随取随发。

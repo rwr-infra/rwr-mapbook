@@ -37,10 +37,8 @@
        · languages 直接来自 config.extra.alternate（与页眉的语言切换器同源），
          name 就是「简体中文 / 繁體中文 / English」，prefix 是网址里那一段；
        · ui 是按页面语言取的 search_* 文案（后缀约定与页脚那几组一样）。
-     download 那张表同理，给 docs/javascripts/downloads.js 用（下载时那几行动态
-      文字），取的是 `_<lang>` 的 download_* 文案。两条都只靠这一份 JSON。
-      加语言因此只需要动 zensical.toml：加一条 alternate、补一组 `_<lang>` 文案，
-     脚本一行都不用改。 -#}
+     两条都只靠这一份 JSON，加语言因此只需要动 zensical.toml：加一条 alternate、
+     补一组 `_<lang>` 文案，脚本一行都不用改。 -#}
   <script id="__rwr" type="application/json">{{ {
     "languages": config.extra.alternate | d([], true),
     "ui": {
@@ -49,13 +47,6 @@
       "results": config.extra["search_results" ~ L] | d(config.extra.search_results, true),
       "close": config.extra["search_close" ~ L] | d(config.extra.search_close, true),
       "tag": config.extra["search_filter_by_tag" ~ L] | d(config.extra.search_filter_by_tag, true)
-    },
-    "download": {
-      "progress": config.extra["download_progress" ~ L] | d(config.extra.download_progress, true),
-      "verify": config.extra["download_verify" ~ L] | d(config.extra.download_verify, true),
-      "done": config.extra["download_done" ~ L] | d(config.extra.download_done, true),
-      "unchecked": config.extra["download_unchecked" ~ L] | d(config.extra.download_unchecked, true),
-      "failed": config.extra["download_failed" ~ L] | d(config.extra.download_failed, true)
     }
   } | tojson }}</script>
   {#- ── 社交分享与结构化数据 ─────────────────────────────────────────
