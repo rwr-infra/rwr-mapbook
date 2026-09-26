@@ -12,7 +12,7 @@ tags: [配置文件, 材质]
 
 !!! info "这一步可以跳过"
     不配这个，地编照样能用，只是模型与材质显示得比较粗略。
-    配置前需要先下载 [OgreSDK](../prepare/index.md#ogresdk)。
+    配置前需要先下载 [OgreSDK](../download/index.md#materials)。
 
 三处路径都要指定，缺一处，对应的资源就加载不出来。
 

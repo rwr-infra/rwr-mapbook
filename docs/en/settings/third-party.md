@@ -1,8 +1,8 @@
 ---
 title: "3rdParSettings"
 description: "Loads detailed models and some materials. Optional, but clearly better with it."
-source_sha256: 7ae937a961a46cd94694dd1ce122f5c952f9a80e60992822f3c04a983ede16f2
-translated: 2026-09-25
+source_sha256: c61c7422111e12408b4144a704831c8342406e911932b40e5afe7490b703bf83
+translated: 2026-09-26
 nav_label: "3rdParSettings"
 icon: "lucide/puzzle"
 tags: [Config files, Materials]
@@ -15,7 +15,7 @@ tags: [Config files, Materials]
 
 !!! info "You can skip this step"
     Without it the editor works just the same, it only shows models and materials more coarsely.
-    Setting it up means downloading [OgreSDK](../prepare/index.md#ogresdk) first.
+    Setting it up means downloading [OgreSDK](../download/index.md#materials) first.
 
 Three paths have to be set; miss one and the matching resources will not load.
 

@@ -224,6 +224,55 @@
   }
 }
 
+/* ══════════════════════════════════════════════════════════════
+   卡片标题旁的小标签
+
+   用法：`<span class="badge badge--required">必须</span>`
+   写在卡片标题（`__1 · 配置地编__`）之后，同一行内。
+
+   两档语义各一种莫兰迪色：浅橙 = 必须，蓝灰 = 可选。莫兰迪色是**灰调**的，
+   饱和度低、明度接近，因此底色与文字都按同一色相各取一档——
+   底色只负责「有这么一个框」，字色负责读得清。
+
+   ⚠️ 字色不是随手挑的：对着各自的底色都算过对比度，
+      浅色下 4.70:1 / 4.84:1，深色下 6.52:1 / 6.39:1，都在 4.5:1 之上
+      （本站强调色那一节也是同一条判据）。改色值时要重算，别只凭眼睛。
+   ══════════════════════════════════════════════════════════════ */
+.md-typeset .badge {
+  display: inline-block;
+  margin-left: 0.45em;
+  padding: 0.05em 0.5em 0.1em;
+  border-radius: 0.25em;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+  vertical-align: 0.12em;
+  white-space: nowrap;
+}
+
+/* 必须 · 浅橙 */
+.md-typeset .badge--required {
+  color: #7a5433;
+  background-color: #ecd9c5;
+}
+
+/* 可选 · 蓝灰 */
+.md-typeset .badge--optional {
+  color: #4a5a66;
+  background-color: #cdd6dd;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .badge--required {
+  color: #e6cbb0;
+  background-color: #4d3f34;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .badge--optional {
+  color: #c3ced7;
+  background-color: #3a4249;
+}
+
 /* ── 页面状态标签 ────────────────────────────────────────────────────────
    前置元数据里的 status: 会在侧栏对应条目旁显示一枚图标。
    主题内建了 new / deprecated 两个，本站在 [project.extra.status] 里加了

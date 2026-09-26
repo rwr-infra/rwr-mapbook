@@ -29,7 +29,6 @@ hide: [navigation]
 ## <span class="md-tag">安装与配置</span> { #tag:安装与配置 }
 
 - [历史版本](../download/index.md)
-- [准备工作](../prepare/index.md)
 
 ## <span class="md-tag">工具</span> { #tag:工具 }
 
@@ -74,10 +73,6 @@ hide: [navigation]
 - [总导航](../editor/interface.md)
 - [交互按键表](../editor/keys.md)
 - [主界面](../editor/settings.md)
-
-## <span class="md-tag">相机 mod</span> { #tag:相机-mod }
-
-- [准备工作](../prepare/index.md)
 
 ## <span class="md-tag">贴花</span> { #tag:贴花 }
 

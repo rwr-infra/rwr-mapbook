@@ -25,10 +25,6 @@ mix in English or Traditional Chinese entries.
 
 - [Building E](../tables/building.md)
 
-## <span class="md-tag">Camera mod</span> { #tag:camera-mod }
-
-- [Getting ready](../prepare/index.md)
-
 ## <span class="md-tag">Config files</span> { #tag:config-files }
 
 - [Configuration files](../settings/index.md)
@@ -72,7 +68,6 @@ mix in English or Traditional Chinese entries.
 ## <span class="md-tag">Setup</span> { #tag:setup }
 
 - [Previous versions](../download/index.md)
-- [Getting ready](../prepare/index.md)
 
 ## <span class="md-tag">Tools</span> { #tag:tools }
 
