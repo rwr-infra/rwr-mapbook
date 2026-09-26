@@ -53,10 +53,16 @@ extra_css = [
 # 三种语言混在一个列表里的。这个脚本把标签**按语言分段**（当前页面的语言排最前），
 # 并把面板上写死的英文换成页面语言的词。它得挂进主题搜索面板的 shadow root，
 # 原理与「升级时要跟着看」的提醒都写在那个文件的头部。
+#
+# download.js 也是本站自己的：归档在站外（assets.rwr-infra.uk），而 `<a download>`
+# 对跨域链接无效，于是 vao0822.svg 一点就被浏览器打开而不是下载。它接住这一类点击，
+# 改走 fetch → blob。为什么必须这样、以及本地预览为什么会退回旧行为，都写在
+# docs/javascripts/download.js 的头部。
 extra_javascript = [
   "javascripts/glightbox.min.js",
   "javascripts/search-lang.js",
   "javascripts/redact.js",
+  "javascripts/download.js",
 ]
 
 # 链接与锚点校验：构建时就把断链/失效锚点报出来，而不是等读者点到。

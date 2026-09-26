@@ -1,7 +1,7 @@
 ---
 title: "Previous versions"
 description: "Complete archives of every editor version, plus the two companion files, hosted outside the repository as direct links."
-source_sha256: abe2ac09881c22305f32061cd0edb193c45ac94767a9dc7ee96e00830d03e951
+source_sha256: 686974848f7feb0ef4bfc8cf9892ebff74586dcd43bc0015d063242c249b5dcd
 translated: 2026-09-25
 nav_label: "Previous versions"
 icon: lucide/archive
@@ -45,7 +45,7 @@ OgreSDK is only needed once `3rdParSettings` comes into play.
 
 | Item | File | Download |
 | --- | --- | --- |
-| Template (inventory version vao0822) | `vao0822.svg`　441 kB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/vao0822.svg){ .md-button .md-button--primary } |
+| Template (inventory version vao0822) | `vao0822.svg`　441 kB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/vao0822.svg){ .md-button .md-button--primary download="vao0822.svg" } |
 | OgreSDK | `OgreSDK_vc10_v1-7-4.zip`　83.9 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/OgreSDK_vc10_v1-7-4.zip){ .md-button .md-button--primary } |
 
 ??? note "Checksums (sha256)"

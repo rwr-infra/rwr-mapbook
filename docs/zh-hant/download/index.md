@@ -42,7 +42,7 @@ hide: [navigation]
 
 | 材料 | 文件 | 下載 |
 | --- | --- | --- |
-| 模板（清單版本 vao0822） | `vao0822.svg`　441 kB | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/vao0822.svg){ .md-button .md-button--primary } |
+| 模板（清單版本 vao0822） | `vao0822.svg`　441 kB | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/vao0822.svg){ .md-button .md-button--primary download="vao0822.svg" } |
 | OgreSDK | `OgreSDK_vc10_v1-7-4.zip`　83.9 MB | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/OgreSDK_vc10_v1-7-4.zip){ .md-button .md-button--primary } |
 
 ??? note "校驗用哈希（sha256）"

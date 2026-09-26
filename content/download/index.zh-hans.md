@@ -40,7 +40,7 @@ tags: [安装与配置]
 
 | 材料 | 文件 | 下载 |
 | --- | --- | --- |
-| 模板（清单版本 vao0822） | `vao0822.svg`　441 kB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/vao0822.svg){ .md-button .md-button--primary } |
+| 模板（清单版本 vao0822） | `vao0822.svg`　441 kB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/vao0822.svg){ .md-button .md-button--primary download="vao0822.svg" } |
 | OgreSDK | `OgreSDK_vc10_v1-7-4.zip`　83.9 MB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/OgreSDK_vc10_v1-7-4.zip){ .md-button .md-button--primary } |
 
 ??? note "校验用哈希（sha256）"
