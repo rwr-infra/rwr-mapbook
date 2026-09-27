@@ -27,7 +27,7 @@ hide: [navigation]
 | [地編界面](../editor/index.md) | 主界面各工具逐項說明、交互按鍵、按 ID 找物件 |
 | [模型清單](../tables/index.md) | 五張清單、六百多個物件，帶預覽圖與備註 |
 | [設置文件](../settings/index.md) | mapSettings、3rdParSettings、RefpM 三個配置文件的每一項 |
-| [歷史版本](../download/index.md) | 歷次地編版本的完整歸檔，點一次即自動取回、校驗並拼成一個整包 |
+| [文件下載](../download/index.md) | 最新版地編、歷次版本的完整歸檔，以及配套模板，點一次即自動取回 |
 
 ## 網址是怎麼排的
 

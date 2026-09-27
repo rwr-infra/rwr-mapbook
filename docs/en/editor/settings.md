@@ -1,8 +1,8 @@
 ---
 title: "The main panel"
 description: "A button-by-button account of Save / ViewMap / Select / PinMan / WallE / BuildingE and the rest."
-source_sha256: 958d40e912420abadd60e501f1997e6c59974e79d6a27ec73639eef9890042f6
-translated: 2026-09-25
+source_sha256: 62df73cc5276d738bbbbdb6e89992152fce6c4e28028ea4bca4e0f953b149a48
+translated: 2026-09-27
 nav_label: "Main panel"
 icon: lucide/sliders-horizontal
 tags: [Interface, Tools]
@@ -189,13 +189,29 @@ There are three options, but only the tank works.
 - Marge is ticked by default, to stop the AI getting stuck on the wall and failing to climb over it.
 - With ReHeight ticked you can type in the wall's height yourself.
 
-![Main panel 1](../../assets/editor/017.png)
+![](../../assets/editor/017.png)
 
-![Main panel 2](../../assets/editor/018.png)
+/// caption
+Main panel 1
+///
 
-![Main panel 3](../../assets/editor/019.png)
+![](../../assets/editor/018.png)
 
-![Main panel 4](../../assets/editor/020.png)
+/// caption
+Main panel 2
+///
+
+![](../../assets/editor/019.png)
+
+/// caption
+Main panel 3
+///
+
+![](../../assets/editor/020.png)
+
+/// caption
+Main panel 4
+///
 
 ## BuildingE { #buildinge }
 
@@ -211,15 +227,35 @@ There are three options, but only the tank works.
 !!! warning "Needs fixing"
     In free camera (perspective), the perspective has serious problems depending on the direction; see the example image on the right above.
 
-![Main panel 5](../../assets/editor/021.png)
+![](../../assets/editor/021.png)
 
-![Main panel 6](../../assets/editor/022.png)
+/// caption
+Main panel 5
+///
 
-![Main panel 7](../../assets/editor/023.png)
+![](../../assets/editor/022.png)
 
-![Main panel 8](../../assets/editor/024.png)
+/// caption
+Main panel 6
+///
 
-![Main panel 9](../../assets/editor/025.png)
+![](../../assets/editor/023.png)
+
+/// caption
+Main panel 7
+///
+
+![](../../assets/editor/024.png)
+
+/// caption
+Main panel 8
+///
+
+![](../../assets/editor/025.png)
+
+/// caption
+Main panel 9
+///
 
 ## PlatformE { #platforme }
 
@@ -233,13 +269,29 @@ There are three options, but only the tank works.
 - The kind of wall added on top of the platform can be changed with the WallE tool.
 - The value added in SetMaterial can be wood, grass, pavement, terrian. (This section is not finished yet.)
 
-![Main panel 10](../../assets/editor/026.png)
+![](../../assets/editor/026.png)
 
-![Main panel 11](../../assets/editor/027.png)
+/// caption
+Main panel 10
+///
 
-![Main panel 12](../../assets/editor/028.png)
+![](../../assets/editor/027.png)
 
-![Main panel 13](../../assets/editor/029.png)
+/// caption
+Main panel 11
+///
+
+![](../../assets/editor/028.png)
+
+/// caption
+Main panel 12
+///
+
+![](../../assets/editor/029.png)
+
+/// caption
+Main panel 13
+///
 
 ## FuncObjects { #funcobjects }
 
@@ -256,9 +308,17 @@ automatically to nearby buildings, platforms and anything else with fixed collis
 - SpawnScatter and SpawnEraser create spawn points and delete spawn points; a spawn point should not sit too close to the map edge.
 - BaseScatter creates a base by left-dragging. With it selected by Select, you can change the base's displayed name and specify which faction captured this base first; fill in 0, 1 or 2, <span class="redact" tabindex="0">which one is which I honestly do not know either haha XD</span>
 
-![Main panel 14](../../assets/editor/030.png)
+![](../../assets/editor/030.png)
 
-![Main panel 15](../../assets/editor/031.png)
+/// caption
+Main panel 14
+///
+
+![](../../assets/editor/031.png)
+
+/// caption
+Main panel 15
+///
 
 ## MeshE { #meshe }
 
@@ -271,13 +331,29 @@ automatically to nearby buildings, platforms and anything else with fixed collis
 - With ReCollision ticked you can change length, height and width in the window above (measured from the centre).
 - offset sets a custom offset (the first field grows along X to the right, the second grows along Z towards the top, the third grows along Y downwards).
 
-![Main panel 16](../../assets/editor/032.png)
+![](../../assets/editor/032.png)
 
-![Main panel 17](../../assets/editor/033.png)
+/// caption
+Main panel 16
+///
 
-![Main panel 18](../../assets/editor/034.png)
+![](../../assets/editor/033.png)
 
-![Main panel 19](../../assets/editor/035.png)
+/// caption
+Main panel 17
+///
+
+![](../../assets/editor/034.png)
+
+/// caption
+Main panel 18
+///
+
+![](../../assets/editor/035.png)
+
+/// caption
+Main panel 19
+///
 
 ## HeightMap { #heightmap }
 
@@ -287,9 +363,17 @@ automatically to nearby buildings, platforms and anything else with fixed collis
 - Noise adds noise to the terrain over the whole map, so that the map is not a big flat plain at a single height value but has some tiny bumps.
 - heightPath is the path terrain brush; it is used like the Wall tool, the top left explains the relevant values and you can try it yourself.
 
-![Main panel 20](../../assets/editor/036.png)
+![](../../assets/editor/036.png)
 
-![Main panel 21](../../assets/editor/037.png)
+/// caption
+Main panel 20
+///
+
+![](../../assets/editor/037.png)
+
+/// caption
+Main panel 21
+///
 
 ## TerrainBash { #terrainbash }
 
@@ -299,9 +383,17 @@ automatically to nearby buildings, platforms and anything else with fixed collis
 - In version 0101, when you use this tool there may be a spare adjustment bar in the bottom left; it has no effect at all.
 - Smooth flattens the ground texture over the whole map.
 
-![Main panel 22](../../assets/editor/038.png)
+![](../../assets/editor/038.png)
 
-![Main panel 23](../../assets/editor/039.png)
+/// caption
+Main panel 22
+///
+
+![](../../assets/editor/039.png)
+
+/// caption
+Main panel 23
+///
 
 ## offroadbuilder { #offroadbuilder }
 
@@ -315,7 +407,11 @@ It is used like the Wall tool.
 - deleteDecals deletes the decals inside the marquee you drag.
 - Once Select has picked it, you can use Length to change this decal's size, that is its scale.
 
-![Main panel 24](../../assets/editor/040.png)
+![](../../assets/editor/040.png)
+
+/// caption
+Main panel 24
+///
 
 ## Assaum { #assaum }
 
@@ -338,17 +434,33 @@ at the bottom of the valley. To the left of the arrow direction there is a slope
 all that gentle, and to the right a sheer cliff, so the transition cliff should take the
 height of the slope on the left as its baseline.
 
-![Main panel 25](../../assets/editor/041.png)
+![](../../assets/editor/041.png)
 
-![Main panel 26](../../assets/editor/042.png)
+/// caption
+Main panel 25
+///
+
+![](../../assets/editor/042.png)
+
+/// caption
+Main panel 26
+///
 
 Because when drawing a platform you have to make sure the end edge is to the right of the direction the start edge travels in, and the start edge is the edge that decides the height, we should first draw on the gentle slope to the left of the arrow, following the arrow direction of figure 1.
 
 (Eight points were drawn; if you want the change to be more even you can place a few more.) Then press space, place the other corresponding eight points to the right of the arrow, and press space a second time to finish drawing.
 
-![Main panel 27](../../assets/editor/043.png)
+![](../../assets/editor/043.png)
 
-![Main panel 28](../../assets/editor/044.png)
+/// caption
+Main panel 27
+///
+
+![](../../assets/editor/044.png)
+
+/// caption
+Main panel 28
+///
 
 Then fine-tune the platform to make it reasonable.
 
@@ -358,7 +470,11 @@ Then fine-tune the platform to make it reasonable.
 
 (The images are not compressed, so the details can be zoomed in on.)
 
-![Main panel 29](../../assets/editor/045.png)
+![](../../assets/editor/045.png)
+
+/// caption
+Main panel 29
+///
 
 Looking at it in game, the terrain still came out poorly; adding a few more anchors and
 polishing the terrain matters.
@@ -367,4 +483,8 @@ polishing the terrain matters.
     Sure enough it came out a total mess — which shows how important it is to add a few more
     anchors and polish the terrain. Let this be a warning to you all :(
 
-![Main panel 30](../../assets/editor/046.png)
+![](../../assets/editor/046.png)
+
+/// caption
+Main panel 30
+///

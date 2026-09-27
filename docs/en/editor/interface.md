@@ -1,8 +1,8 @@
 ---
 title: "Overview"
 description: "An overview of the editor's toolbar and its buttons."
-source_sha256: eb4caad62fe647c43be50daeabc2e4689cd530d9f9ba61df683dcc975d90e6b0
-translated: 2026-09-25
+source_sha256: b3e840d40fa10a609905abf8216b366253f76a8cbe580d19d2928efe59e62aba
+translated: 2026-09-27
 nav_label: "Overview"
 icon: lucide/compass
 tags: [Interface, Tools]
@@ -16,7 +16,7 @@ tags: [Interface, Tools]
 Fourteen buttons sit on the editor's toolbar, one job each. They are listed below
 in left-to-right order; each one leads to its own section.
 
-![Overview 1](../../assets/editor/016.png)
+![](../../assets/editor/016.png)
 
 /// caption
 The editor's main panel. That row on the toolbar is the tools below.

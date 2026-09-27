@@ -32,7 +32,11 @@ tags: [配置文件, 材質]
 
 1. 找到 Steam 上小兵步槍的根目錄。可以在 Steam 界面裡「管理 → 瀏覽本地文件」定位。
 
-    ![瀏覽本地文件](../../assets/editor/047.png)
+    ![](../../assets/editor/047.png)
+
+    /// caption
+    瀏覽本地文件
+    ///
 
 2. 順着 `RunningWithRifles\media\packages\vanilla` 找到 `models` 文件夾，選中它。
 3. 點擊 **load mesh**。
@@ -44,7 +48,7 @@ tags: [配置文件, 材質]
 
 設置完成後效果如下（以 Mesh 為例）：
 
-![加載 mesh 之後](../../assets/editor/048.png)
+![](../../assets/editor/048.png)
 
 /// caption
 模型不再是方塊，可以看到原本的形體。
@@ -63,7 +67,7 @@ tags: [配置文件, 材質]
 
 設置完成後效果如下（以 Decal 為例）：
 
-![加載 textures 之後](../../assets/editor/049.png)
+![](../../assets/editor/049.png)
 
 /// caption
 地面貼花有了真正的材質。

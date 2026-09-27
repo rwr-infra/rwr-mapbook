@@ -1,8 +1,8 @@
 ---
 title: "About"
 description: "Which editor version this handbook covers, how the URLs are laid out, and what has not been verified yet."
-source_sha256: 2a428490c361377b2a6f7c88d6e81a7d83e3e97596a4e2342241971dce1c5bd9
-translated: 2026-09-25
+source_sha256: f131fb285b65ce34ae0c50518ccca65a3b38e379f1018c073aaaaed63261a97b
+translated: 2026-09-27
 nav_label: "About"
 icon: lucide/info
 ---
@@ -28,7 +28,7 @@ It was written by people who make maps, not by the developers.
 | [The editor](../editor/index.md) | Every tool on the main panel, the key bindings, and finding an object by ID |
 | [Model inventories](../tables/index.md) | Five inventories, six hundred objects, with previews and notes |
 | [Configuration files](../settings/index.md) | Every entry in mapSettings, 3rdParSettings and RefpM |
-| [Previous versions](../download/index.md) | Complete archives of every editor version; one click fetches, checks and joins them |
+| [File downloads](../download/index.md) | The latest editor, complete archives of every earlier version, and the companion template |
 
 ## How the URLs are laid out
 

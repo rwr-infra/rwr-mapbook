@@ -1,54 +1,74 @@
 ---
-title: "Previous versions"
-description: "Complete archives of every editor version, plus the two companion files, hosted outside the repository as direct links."
-source_sha256: 686974848f7feb0ef4bfc8cf9892ebff74586dcd43bc0015d063242c249b5dcd
-translated: 2026-09-25
-nav_label: "Previous versions"
+title: "File downloads"
+description: "Complete archives of every editor version plus the companion template, hosted outside the repository as direct links."
+source_sha256: 975e131ab3707ed7f1d90b00c5fb04eb19ab3f27678781f8585d31099eb9e51f
+translated: 2026-09-27
+nav_label: "File downloads"
 icon: lucide/archive
-tags: [Setup]
 ---
 
-# Previous version archives { #download }
+<!--
+  译文同步提醒（2026-09-27）：简中页新加的开头一段、以及「模板下载」一节新写的两段正文，
+  都是这次跟着简中原文新译的，麻烦过一眼英文措辞。
+  之后再改正文，把上面 translated 的日期顺手改掉即可；source_sha256 不用动。
+-->
 
-<p class="kicker">DOWNLOAD · the full package of every editor version</p>
+This page is for downloading the editor and the templates. The editor's latest version is
+0101; of the templates, the normal-mode template vao0822 is ready, while the desert-mode and
+winter-mode templates are still being made.
+
+## Editor downloads { #download .section-title }
 
 Complete archives of every editor version, from 060 to 0101. Each one holds the whole
 set of files for that version, exactly as it was posted in the group files.
 
-The archives are **not in this site's repository**. These ten alone are 318 MB, and carrying
+The archives are **not in this site's repository**. These eight alone are 234 MB, and carrying
 them there would mean everyone who wants to edit the text downloads several hundred megabytes
 first — while what actually changes in that repository is the text. They live in object
 storage elsewhere (Cloudflare R2), and every entry below is **a direct link**: a browser can
 fetch it, and so can a download manager (IDM, aria2, Thunder) — right-click hands it over.
 
+**Latest version:**
+
 | Version | Archive | Download |
 | --- | --- | --- |
-| Editor 060 | `060.zip`　32.1 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/060.zip){ .md-button .md-button--primary } |
-| Editor 070 | `070.rar`　26.2 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/070.rar){ .md-button .md-button--primary } |
-| Editor 080 | `080.rar`　30.7 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/080.rar){ .md-button .md-button--primary } |
-| Editor 081 | `081.rar`　30.7 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/081.rar){ .md-button .md-button--primary } |
-| Editor 090 | `090.rar`　30.7 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/090.rar){ .md-button .md-button--primary } |
-| Editor 091 | `091.rar`　26.2 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/091.rar){ .md-button .md-button--primary } |
-| Editor 0100 | `0100.rar`　31.2 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/0100.rar){ .md-button .md-button--primary } |
 | Editor 0101 | `0101.rar`　26.2 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/0101.rar){ .md-button .md-button--primary } |
+
+**Previous versions:**
+
+??? note "Expand for every earlier version (060 to 0100)"
+    | Version | Archive | Download |
+    | --- | --- | --- |
+    | Editor 0100 | `0100.rar`　31.2 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/0100.rar){ .md-button .md-button--primary } |
+    | Editor 091 | `091.rar`　26.2 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/091.rar){ .md-button .md-button--primary } |
+    | Editor 090 | `090.rar`　30.7 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/090.rar){ .md-button .md-button--primary } |
+    | Editor 081 | `081.rar`　30.7 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/081.rar){ .md-button .md-button--primary } |
+    | Editor 080 | `080.rar`　30.7 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/080.rar){ .md-button .md-button--primary } |
+    | Editor 070 | `070.rar`　26.2 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/070.rar){ .md-button .md-button--primary } |
+    | Editor 060 | `060.zip`　32.1 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/060.zip){ .md-button .md-button--primary } |
 
 !!! warning "Check which version you are looking at"
     The archives are **frozen**: each one is that version's complete file set, and it will
-    not change afterwards. The handbook itself describes the current version; against an
+    not change afterwards. The handbook itself describes the latest version; against an
     older editor the interface and the inventories may not line up.
 
-## The two companion files { #materials }
+## Template downloads { #materials .section-title }
 
-The other two things modelling and configuration call for. [Getting ready](../prepare/index.md)
-covers how they are used: the template goes into the editor's `templates` folder, and the
-OgreSDK is only needed once `3rdParSettings` comes into play.
+The template you need in order to make maps. Download it and drop it into the editor's
+`templates` folder (**only one template in that folder takes effect, so rename the extension
+of the others first to keep the editor from reading the wrong one**). A template supplies a
+fairly complete library of Mesh, Wall and other assets, and its kind (normal, desert, winter)
+decides how the ground is rendered on the map.
+
+**Original template (based on map8)**
 
 | Item | File | Download |
 | --- | --- | --- |
-| Template (inventory version vao0822) | `vao0822.svg`　441 kB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/vao0822.svg){ .md-button .md-button--primary download="vao0822.svg" } |
-| OgreSDK | `OgreSDK_vc10_v1-7-4.zip`　83.9 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/OgreSDK_vc10_v1-7-4.zip){ .md-button .md-button--primary } |
+| Normal-mode template (inventory version vao0822) | `vao0822.svg`　441 kB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/vao0822.svg){ .md-button .md-button--primary download="vao0822.svg" } |
 
-??? note "Checksums (sha256)"
+## Related notes { .section-title }
+
+??? quote "Checksums (sha256)"
     To confirm you got the original file:
 
     ```
@@ -61,14 +81,13 @@ OgreSDK is only needed once `3rdParSettings` comes into play.
     84d18efd2fe7de947efe9f44374662961f2a4d5f7e09cb65e4165aafcddd742a  0100.rar
     49de6d2c0175f6a6a01f0f6eaaab93c4f0af394d82151576ad9b36c33c849a55  0101.rar
     e4ec1869d92fc802d8760e8898eba9953b55a2face1c39e74dffee850f1bfc31  vao0822.svg
-    2208167d1e2214f196888b3e04b0c4924eb15e37a8de12318a83e2533d2a6a4b  OgreSDK_vc10_v1-7-4.zip
     ```
 
     The archives are **frozen**, so these do not change; if a file is ever replaced, this
-    block changes with it. These are the same numbers as the table above — if the two ever
+    block changes with it. These are the same numbers as the tables above — if the two ever
     disagree, one of them was missed.
 
-??? note "Where these files live"
+??? quote "Where these files live"
     On the `assets.rwr-infra.uk` domain (Cloudflare R2 object storage). The repository keeps
     no copy and the site's deployment does not carry them — so the built site has no
     hundreds-of-megabytes of binaries in it, and cloning this repository downloads text,

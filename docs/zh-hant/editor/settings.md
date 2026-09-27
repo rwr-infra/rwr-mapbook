@@ -185,13 +185,29 @@ tags: [界面, 工具]
 - Marge 默認勾選，目的是防止 AI 卡牆翻不過去。
 - 勾選 ReHeight 後，可以自行輸入牆的高度。
 
-![主界面 1](../../assets/editor/017.png)
+![](../../assets/editor/017.png)
 
-![主界面 2](../../assets/editor/018.png)
+/// caption
+主界面 1
+///
 
-![主界面 3](../../assets/editor/019.png)
+![](../../assets/editor/018.png)
 
-![主界面 4](../../assets/editor/020.png)
+/// caption
+主界面 2
+///
+
+![](../../assets/editor/019.png)
+
+/// caption
+主界面 3
+///
+
+![](../../assets/editor/020.png)
+
+/// caption
+主界面 4
+///
 
 ## BuildingE 說明 { #buildinge }
 
@@ -207,15 +223,35 @@ tags: [界面, 工具]
 !!! warning "待修復"
     在飛行模式（透視）下，不同方向的透視有嚴重問題，見上方右側例圖。
 
-![主界面 5](../../assets/editor/021.png)
+![](../../assets/editor/021.png)
 
-![主界面 6](../../assets/editor/022.png)
+/// caption
+主界面 5
+///
 
-![主界面 7](../../assets/editor/023.png)
+![](../../assets/editor/022.png)
 
-![主界面 8](../../assets/editor/024.png)
+/// caption
+主界面 6
+///
 
-![主界面 9](../../assets/editor/025.png)
+![](../../assets/editor/023.png)
+
+/// caption
+主界面 7
+///
+
+![](../../assets/editor/024.png)
+
+/// caption
+主界面 8
+///
+
+![](../../assets/editor/025.png)
+
+/// caption
+主界面 9
+///
 
 ## PlatformE 說明 { #platforme }
 
@@ -229,13 +265,29 @@ tags: [界面, 工具]
 - 平臺上方附加牆的種類可以使用 WallE 工具進行更改。
 - SetMaterial 中添加的值可以是 wood、grass、pavement、terrian。（本節尚未寫完）
 
-![主界面 10](../../assets/editor/026.png)
+![](../../assets/editor/026.png)
 
-![主界面 11](../../assets/editor/027.png)
+/// caption
+主界面 10
+///
 
-![主界面 12](../../assets/editor/028.png)
+![](../../assets/editor/027.png)
 
-![主界面 13](../../assets/editor/029.png)
+/// caption
+主界面 11
+///
+
+![](../../assets/editor/028.png)
+
+/// caption
+主界面 12
+///
+
+![](../../assets/editor/029.png)
+
+/// caption
+主界面 13
+///
 
 ## FuncObjects 說明 { #funcobjects }
 
@@ -251,9 +303,17 @@ LadderScatter 與 LadderEraser 的作用為放置梯子與刪除梯子。放置�
 - SpawnScatter 與 SpawnEraser 的作用為創建復活點與刪除復活點，復活點不宜太靠近地圖邊界。
 - BaseScatter 的作用為左鍵拖動創建據點，在用 Select 選中後，可以分別更改據點的名字顯示與指定該據點最開始被哪個陣營佔領，填寫 0、1、2，<span class="redact" tabindex="0">分別為我也不知道對應哪個哈哈 XD</span>
 
-![主界面 14](../../assets/editor/030.png)
+![](../../assets/editor/030.png)
 
-![主界面 15](../../assets/editor/031.png)
+/// caption
+主界面 14
+///
+
+![](../../assets/editor/031.png)
+
+/// caption
+主界面 15
+///
 
 ## MeshE 說明 { #meshe }
 
@@ -266,13 +326,29 @@ LadderScatter 與 LadderEraser 的作用為放置梯子與刪除梯子。放置�
 - 勾選 ReCollision 後可在上方窗口內更改長、高、寬（以中心為基準）。
 - offset 的作用是設置自定義偏移度（第一項為 X 軸向右增長、第二項為 Z 軸向頂部增長、第三項為 Y 軸向下增長）。
 
-![主界面 16](../../assets/editor/032.png)
+![](../../assets/editor/032.png)
 
-![主界面 17](../../assets/editor/033.png)
+/// caption
+主界面 16
+///
 
-![主界面 18](../../assets/editor/034.png)
+![](../../assets/editor/033.png)
 
-![主界面 19](../../assets/editor/035.png)
+/// caption
+主界面 17
+///
+
+![](../../assets/editor/034.png)
+
+/// caption
+主界面 18
+///
+
+![](../../assets/editor/035.png)
+
+/// caption
+主界面 19
+///
 
 ## HeightMap 說明 { #heightmap }
 
@@ -282,9 +358,17 @@ LadderScatter 與 LadderEraser 的作用為放置梯子與刪除梯子。放置�
 - Noise 的作用為對全圖增加地形上的噪音，讓整個地圖不是同一個高度數值的大平地，有些微小起伏。
 - heightPath 的作用為路徑地形刷，使用方式類似 Wall 工具，相關數據調整左上角均有說明，可自行嘗試。
 
-![主界面 20](../../assets/editor/036.png)
+![](../../assets/editor/036.png)
 
-![主界面 21](../../assets/editor/037.png)
+/// caption
+主界面 20
+///
+
+![](../../assets/editor/037.png)
+
+/// caption
+主界面 21
+///
 
 ## TerrainBash 說明 { #terrainbash }
 
@@ -294,9 +378,17 @@ LadderScatter 與 LadderEraser 的作用為放置梯子與刪除梯子。放置�
 - 0101 版本中使用這個工具的時候左下角可能會有個多餘的調節欄，實際沒有任何作用。
 - Smooth 的作用為平緩全圖的地面質地。
 
-![主界面 22](../../assets/editor/038.png)
+![](../../assets/editor/038.png)
 
-![主界面 23](../../assets/editor/039.png)
+/// caption
+主界面 22
+///
+
+![](../../assets/editor/039.png)
+
+/// caption
+主界面 23
+///
 
 ## offroadbuilder 說明 { #offroadbuilder }
 
@@ -310,7 +402,11 @@ LadderScatter 與 LadderEraser 的作用為放置梯子與刪除梯子。放置�
 - deleteDecals 的作用為刪除框選範圍內的貼花。
 - Select 選中後，可以使用 Length 更改這個貼花的大小，也就是縮放比例。
 
-![主界面 24](../../assets/editor/040.png)
+![](../../assets/editor/040.png)
+
+/// caption
+主界面 24
+///
 
 ## Assaum 說明 { #assaum }
 
@@ -331,17 +427,33 @@ Add 與 Name 暫時不可用，無效果。
 目標是從左側高處經緩坡到達谷底的水中。箭頭方向的左側是一個不那麼平緩的坡，
 右側為陡崖，因此應以左側坡的高度為基準，製作一個過渡的山崖。
 
-![主界面 25](../../assets/editor/041.png)
+![](../../assets/editor/041.png)
 
-![主界面 26](../../assets/editor/042.png)
+/// caption
+主界面 25
+///
+
+![](../../assets/editor/042.png)
+
+/// caption
+主界面 26
+///
 
 因為繪製平臺時需保證終點邊在起點邊行進方向右邊，同時起點邊為判定高度的邊，所以我們應該先在箭頭的左側緩坡處，沿着圖一的箭頭方向繪製。
 
 （畫了八個點，如果想讓變化更均勻可以多點幾個）之後按空格，在箭頭右側放置另外對應的八個點，再按一次空格完成繪製。
 
-![主界面 27](../../assets/editor/043.png)
+![](../../assets/editor/043.png)
 
-![主界面 28](../../assets/editor/044.png)
+/// caption
+主界面 27
+///
+
+![](../../assets/editor/044.png)
+
+/// caption
+主界面 28
+///
 
 之後對平臺進行細緻調整，使其合理。
 
@@ -351,11 +463,19 @@ Add 與 Name 暫時不可用，無效果。
 
 （圖片未壓縮，細節可放大查看。）
 
-![主界面 29](../../assets/editor/045.png)
+![](../../assets/editor/045.png)
+
+/// caption
+主界面 29
+///
 
 進遊戲查看，結果地形仍然不理想；多加幾個錨點、完善地形是必要的。
 
 ??? note "編者原話"
     果不其然做的一坨，可見多加幾個錨點和完善地形的重要性，希望各位引以為戒:(
 
-![主界面 30](../../assets/editor/046.png)
+![](../../assets/editor/046.png)
+
+/// caption
+主界面 30
+///

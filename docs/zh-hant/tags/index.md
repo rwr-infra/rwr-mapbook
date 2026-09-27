@@ -26,10 +26,6 @@ hide: [navigation]
 
 - [Wall E](../tables/wall.md)
 
-## <span class="md-tag">安裝與配置</span> { #tag:安裝與配置 }
-
-- [歷史版本](../download/index.md)
-
 ## <span class="md-tag">工具</span> { #tag:工具 }
 
 - [ID 搜索功能說明](../editor/id-search.md)

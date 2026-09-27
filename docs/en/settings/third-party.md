@@ -1,8 +1,8 @@
 ---
 title: "3rdParSettings"
 description: "Loads detailed models and some materials. Optional, but clearly better with it."
-source_sha256: c61c7422111e12408b4144a704831c8342406e911932b40e5afe7490b703bf83
-translated: 2026-09-26
+source_sha256: 8ad07df0ad28219faccb35233fd7721cfdbc7ed685053485e1121ac4b9de7016
+translated: 2026-09-27
 nav_label: "3rdParSettings"
 icon: "lucide/puzzle"
 tags: [Config files, Materials]
@@ -35,7 +35,11 @@ Three paths have to be set; miss one and the matching resources will not load.
 1. Find the root folder of Running With Rifles in your Steam library. You can get there in the
    Steam client via Manage → Browse local files.
 
-    ![Browse local files](../../assets/editor/047.png)
+    ![](../../assets/editor/047.png)
+
+    /// caption
+    Browse local files
+    ///
 
 2. Follow `RunningWithRifles\media\packages\vanilla` down to the `models` folder and pick it.
 3. Click **load mesh**.
@@ -47,7 +51,7 @@ Three paths have to be set; miss one and the matching resources will not load.
 
 Once it is set, the result looks like this (a Mesh, as an example):
 
-![After loading the mesh](../../assets/editor/048.png)
+![](../../assets/editor/048.png)
 
 /// caption
 Models are no longer boxes; you can see their real shape.
@@ -66,7 +70,7 @@ Models are no longer boxes; you can see their real shape.
 
 Once it is set, the result looks like this (a Decal, as an example):
 
-![After loading textures](../../assets/editor/049.png)
+![](../../assets/editor/049.png)
 
 /// caption
 Ground decals now have their real materials.

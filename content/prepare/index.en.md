@@ -1,11 +1,23 @@
 ---
 title: "Getting ready"
 description: "How to configure the editor once it is downloaded, link it to your RWR map folder, and switch on the free camera."
-source_sha256: 27503f0903820d7b338d79129db7f247a90a6f5e6d82e2ca5cc2c2155c19dd5f
-translated: 2026-09-26
+source_sha256: 7f8a019addf29e641888e4a810e273e22eabd6437367ba15e0997912253ef9d5
+translated: 2026-09-27
 nav_label: "Getting ready"
 icon: lucide/download
 ---
+
+<!--
+  译文同步提醒（2026-09-27）：本页已按 content/prepare/index.zh-hans.md 的最新改动重译过一遍，
+  改动是这几处，麻烦过一眼英文措辞：
+    · 两条 debugmode 提示（!!! warning 与 ??? quote）从「配置地编」第 1 步挪到了
+      「开启自由视角」第 1 步；
+    · 「开启自由视角」第 1 步那句启动选项重写，页尾补了 5 个启动项缩写（*[debugmode] 等），
+      原来的 *[template] / *[RWR] 两个按简中一并去掉了；
+    · 004 / 005 / 006 / 007 四张图的图下小字按简中改写；
+    · 快捷键表里「碰撞箱」不再带链接；「F5 是同一个键，两回事」那个提示框按简中删掉了。
+  之后再改正文，把上面 translated 的日期顺手改掉即可；source_sha256 不用动（它跟的是简中文件）。
+-->
 
 # Getting ready { #prepare }
 
@@ -43,25 +55,28 @@ icon: lucide/download
 1. [Download the latest editor build](../download/index.md#download) — straight from this
     site, or from the group files — then unzip the file to whatever path you like.
 
-    ![Unzip it to any path](../assets/editor/001.png)
+    ![](../assets/editor/001.png)
 
-    !!! warning
-        Once debugmode is added you cannot join multiplayer servers; if you want to use it,
-        remove the debugmode code and run the game again.
-
-    ??? quote "Adding the debugmode line alone is enough"
-        Adding the debugmode line alone already lets you use F4 to switch on the free camera.
-        The rest of the launch options configure the game's built-in camera mod, which can
-        widen the render range or turn on the normal view.
+    /// caption
+    Unzip it to any path
+    ///
 
 2. Inside `1007_Data`, create a `templates` folder and a `map` folder.
 
-    ![Create the two folders, templates and map](../assets/editor/002.png)
+    ![](../assets/editor/002.png)
+
+    /// caption
+    Create the two folders, templates and map
+    ///
 
 3. [Pick and download a template](../download/index.md#materials) — straight from this site,
     or from the group files as before — and put it in the editor's `templates` folder.
 
-    ![Put the template into templates](../assets/editor/003.png)
+    ![](../assets/editor/003.png)
+
+    /// caption
+    Put the template into templates
+    ///
 
     !!! note "So far only vanilla maps have a template"
         The desert and winter templates are not finished yet.
@@ -70,25 +85,33 @@ icon: lucide/download
     `map` folder. If you are not sure, use `map7` (it is the basis of the template file, and
     keeping the two in step sidesteps a few mysterious problems).
 
-    ![Put the map files into map](../assets/editor/004.png)
+    ![](../assets/editor/004.png)
 
-    ![How it looks once it is in place](../assets/editor/005.png)
+    /// caption
+    Copy the map file you picked to work on
+    ///
+
+    ![](../assets/editor/005.png)
+
+    /// caption
+    Put it into the map folder
+    ///
 
     !!! warning "Maps come in three kinds, and the template has to match"
-        RWR's vanilla maps come in three kinds: vanilla among vanilla, the desert of vanilla,
-        the winter of vanilla. Whichever kind you use you have to install the matching
-        template — and so far **only the "vanilla among vanilla" kind has been made**, so you
-        can only use the files under `\vanilla\maps`.
+        RWR's vanilla maps come in three kinds: normal mode, desert mode, winter mode.
+        Whichever kind you use you have to install the matching template — and so far
+        **only the "normal mode" kind has been made**, so you can only use the files under
+        `\vanilla\maps`.
 
         Maps from `map19`, `\vanilla.desert\maps` and `\vanilla.winter\maps` may have
-        compatibility problems — opening them to look is harmless, but do not use them as a
-        base.
+        compatibility problems (opening them to look is harmless, but do not use them as a
+        base).
 
         Of course, you can also copy the `.svg` file from your map folder straight into the
         `templates` folder to serve as a template; this native template has not been polished
         by hand, but it still matches the map you picked reasonably well.
 
-## Link the folders { #sync }
+## 2. Link the folders { #sync }
 
 The editor and the game do not open the same folder: after you save a map, you have to copy
 the relevant files by hand into RWR's map path before RWR can read it. This method saves you
@@ -96,9 +119,17 @@ that step.
 
 1. Press ++win+r++, type `cmd`, and open the command prompt.
 
-    ![The Win+R run box](../assets/editor/006.png)
+    ![](../assets/editor/006.png)
 
-    ![Type cmd](../assets/editor/007.png)
+    /// caption
+    The Win+R run box, type cmd
+    ///
+
+    ![](../assets/editor/007.png)
+
+    /// caption
+    The cmd window that opens
+    ///
 
 2. Type this command:
 
@@ -113,34 +144,69 @@ that step.
         command; otherwise it reports that the folder already exists and the link cannot be
         made.
 
-    ![Type the mklink command](../assets/editor/008.png)
+    ![](../assets/editor/008.png)
+
+    /// caption
+    Type the mklink command
+    ///
 
 3. When it is done it should look like this:
 
-    ![Created successfully](../assets/editor/009.png)
+    ![](../assets/editor/009.png)
+
+    /// caption
+    Created successfully
+    ///
 
 ## 3. Switch on RWR's free camera { #camera-mod }
 
-1. In your Steam library, right-click RWR → Properties, and under **Launch Options**
-    enter:
+1. In your Steam library, right-click RWR → Properties, and under **Launch Options** fill in
+    debugmode, no_simulation, auto_update_tree_foliage and big_water (skip_nat_server_usage
+    has nothing to do with this page, but it is in the line below so you can copy it in one
+    go):
 
     ```text
     skip_nat_server_usage debugmode no_simulation auto_update_tree_foliage big_water
     ```
 
-    ![Fill in the launch options](../assets/editor/010.png)
+    ![](../assets/editor/010.png)
+
+    /// caption
+    Fill in the launch options
+    ///
+
+    !!! warning
+        Once debugmode is added you cannot join multiplayer servers; if you want to use it,
+        remove the debugmode code and run the game again.
+
+    ??? quote "Adding the debugmode line alone is enough"
+        Adding the debugmode line alone already lets you use F4 to switch on the free camera.
+        The rest of the launch options configure the game's built-in camera mod, which can
+        widen the render range or turn on the normal view.
 
 2. Open the game, click "Start a new Quick Match mode", then click "Load mods".
 
-    ![Start a quick match](../assets/editor/011.png)
+    ![](../assets/editor/011.png)
+
+    /// caption
+    Start a quick match
+    ///
 
 3. Select Camera mod.
 
-    ![Select Camera mod](../assets/editor/012.png)
+    ![](../assets/editor/012.png)
+
+    /// caption
+    Select Camera mod
+    ///
 
 4. Enter a map, press ++f4++ and move the mouse, and see whether anything responds.
 
-    ![Enter a map and press F4](../assets/editor/013.png)
+    ![](../assets/editor/013.png)
+
+    /// caption
+    Enter a map and press F4
+    ///
 
     ### Camera mod key bindings
 
@@ -148,13 +214,12 @@ that step.
     | --- | --- |
     | ++f3++ | toggles the filter used for shooting promo footage |
     | ++f4++ | toggles the free camera |
-    | ++f5++ | toggles normal mode, for looking at the [collision box](#camera-mod "an object's collision volume; in the editor it is what tells you whether you can stand on it or shoot it") |
-    | ++f6++ | switches between dawn / dusk |
+    | ++f5++ | toggles normal mode, for looking at the collision box |
+    | ++f6++ | switches between early morning / evening |
     | ++f7++ | toggles the GUI display |
 
-    !!! tip "F5 is the same key, two different things"
-        In the editor ++f5++ is **refresh the interface**, in the camera mod it is
-        **turn on normal mode**. It depends on which window you are in right now.
-
-*[template]: the name an object is referred to by in `template = …`; that is how you look it up
-*[RWR]: Running With Rifles
+*[debugmode]: turns on Debug mode, which lets you use the free camera and the camera mod
+*[no_simulation]: drops the render distance — everything is computed and drawn across the whole map, which costs a lot of performance
+*[auto_update_tree_foliage]: makes foliage always face the camera, so you do not see flat cardboard leaves from odd angles
+*[big_water]: renders the whole body of water, not just the surface near the camera
+*[skip_nat_server_usage]: this one is about connecting straight to domestic servers instead of routing abroad; ignore it
