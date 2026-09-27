@@ -58,11 +58,18 @@ extra_css = [
 # 对跨域链接无效，于是 vao0822.svg 一点就被浏览器打开而不是下载。它接住这一类点击，
 # 改走 fetch → blob。为什么必须这样、以及本地预览为什么会退回旧行为，都写在
 # docs/javascripts/download.js 的头部。
+#
+# lightbox-zoom.js 同样是本站自己的：库自带的图片交互跟本站要的不是一回事——
+# 桌面端没有滚轮缩放（整个库里 `wheel` 一次都没出现）、单击是「原尺寸 ⇄ 适配窗口」
+# 来回切（而本站的单击要用来关掉预览）、放大之后没有平移手段，库里那套双指缩放
+# 更是**没有挂触摸监听**的摆设。它接管滚轮缩放、放大后按住拖动、单击关闭，
+# 分工与边界写在 docs/javascripts/lightbox-zoom.js 的头部。
 extra_javascript = [
   "javascripts/glightbox.min.js",
   "javascripts/search-lang.js",
   "javascripts/redact.js",
   "javascripts/download.js",
+  "javascripts/lightbox-zoom.js",
 ]
 
 # 链接与锚点校验：构建时就把断链/失效锚点报出来，而不是等读者点到。

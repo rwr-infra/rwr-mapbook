@@ -32,7 +32,11 @@ tags: [配置文件, 材质]
 
 1. 找到 Steam 上小兵步枪的根目录。可以在 Steam 界面里「管理 → 浏览本地文件」定位。
 
-    ![浏览本地文件](../assets/editor/047.png)
+    ![](../assets/editor/047.png)
+
+    /// caption
+    浏览本地文件
+    ///
 
 2. 顺着 `RunningWithRifles\media\packages\vanilla` 找到 `models` 文件夹，选中它。
 3. 点击 **load mesh**。
@@ -44,7 +48,7 @@ tags: [配置文件, 材质]
 
 设置完成后效果如下（以 Mesh 为例）：
 
-![加载 mesh 之后](../assets/editor/048.png)
+![](../assets/editor/048.png)
 
 /// caption
 模型不再是方块，可以看到原本的形体。
@@ -63,7 +67,7 @@ tags: [配置文件, 材质]
 
 设置完成后效果如下（以 Decal 为例）：
 
-![加载 textures 之后](../assets/editor/049.png)
+![](../assets/editor/049.png)
 
 /// caption
 地面贴花有了真正的材质。

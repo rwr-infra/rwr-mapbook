@@ -70,10 +70,104 @@
   vertical-align: top;
 }
 
-/* 图片说明 */
+/* ══════════════════════════════════════════════════════════════
+   下载页的三个章节标题（`{ .section-title }`）
+
+   文件下载页只要三块：地编下载 / 模板下载 / 相关说明。它们的**级别**降到了
+   `<h2>`，字号却要有页面标题那么大——级别降了、字号不降，就是这个类干的事。
+
+   为什么降级：主题的目录模板里写死了一句「第一个标题若是 h1 就跳过，只列它的
+   子项」（partials/toc.html 的 `if first.level == 1`），**页面大标题因此永远不会
+   出现在右侧目录里**。降成 h2 之后，这三条才都进得了「旁边目录」，而且排在同一层。
+
+   字号取主题 h1 的 1.875em（本站正文基准下 28.1px；h2 原本是 1.5em / 22.5px），
+   行高也照 h1 取 1.3，免得多行时露出破绽。上下外边距**不动**：h2 的
+   `1.6em 0 .64em` 正是章节之间要的间隔，h1 的 `0 0 1.25em` 是给页面开头的。
+   ══════════════════════════════════════════════════════════════ */
+.md-typeset .section-title {
+  font-size: 1.875em;
+  line-height: 1.3;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   正文插图：统一高度上限 + 图下小字说明
+
+   插图一律写成「一张图 + `/// caption`」的形式（pymdownx.blocks.caption），
+   渲染成 <figure><p><img></p><figcaption>…</figcaption></figure>。
+
+   高度基准取 `assets/editor/013.png` 的 **304px**：比它高的等比缩到 304 高，
+   比它矮的**按原样显示**——放大只会发虚，所以不放大。缩放全在浏览器里做，
+   图片文件一个字节没改，所以点开看到的仍是原图。
+
+   ⚠️ 作用域是「段落里或 figure 里的图」，也就是**正文里写出来的图**：
+      · 模型/墙体清单里那 700 多张目录图在表格单元格里、不在 <p> 里（实测 2115 张
+        没有一张被 <p> 包着），所以够不到；末尾另有一条 table 规则兜底，
+        将来谁真在单元格里用了段落，也不会被这条顺手缩掉；
+      · 灯箱里的原图是 GLightbox 按 href 另建的 <img>、挂在 body 下，也不受影响，
+        所以「点开看图」仍是 1:1 原尺寸（滚轮 / 双指缩放在 javascripts/lightbox-zoom.js）。
+
+   ⚠️ 这里**不能只写 figure img**：图有没有 <figure> 取决于它上面有没有 `/// caption`
+      块。少写一块就漏一张（第一版就是这么栽的：prepare 里 011 那张的 caption 被删掉后
+      立刻不受控）。写成「段落里的图」才跟 caption 解耦。
+
+   ⚠️ figure 的 margin 里那个 **auto 不能省**：主题给 figure 的是
+      `width: fit-content; margin: 1em auto`——盒子宽度就是图的宽度，靠 margin 的
+      auto 才居中。这里原先写成 `margin: 1.2em 0`，auto 一没，盒子就贴到左边去了，
+      于是**有说明的图全歪在左、没说明的图（011 那种）反而居中**。
+      改了上下间距就得把 auto 一起带上。
+   ══════════════════════════════════════════════════════════════ */
+.md-typeset figure {
+  margin: 1.2em auto;
+}
+
+/* 包着 <a> 的那层 <p> 不要自带段间距，否则图和说明离得远 */
+.md-typeset figure > p {
+  margin: 0;
+}
+
+.md-typeset p img,
+.md-typeset figure img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 304px;
+  margin: 0 auto;
+}
+
+/* 兜底：表格里的目录图任何时候都不套上面那条 */
+.md-typeset table img {
+  max-height: none;
+  margin: 0;
+}
+
 .md-typeset figcaption {
+  margin-top: 0.5em;
   color: var(--md-default-fg-color--light);
   font-size: 0.66rem;
+  text-align: center;
+}
+
+.md-typeset figcaption > p {
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   灯箱：指针形状
+
+   交互写在 javascripts/lightbox-zoom.js —— 滚轮缩放、放大后按住拖动、
+   单击图片关闭预览。这里只补指针：库给 `img.zoomable` 挂的是 zoom-in 手型，
+   暗示「点一下放大」，而那条交互已经关掉了（单击现在是**关闭预览**），
+   手型留着就成了骗人的。
+   放大后改成 grab 是**库自己的样式**（`.zoomed .gslide-image img.zoomable`），
+   脚本挂上 `zoomed` 类它就生效，这里只管「按住那一刻」的手型。
+   ══════════════════════════════════════════════════════════════ */
+.glightbox-container .gslide-image img.zoomable {
+  cursor: default;
+}
+
+.glightbox-container .zoomed .gslide-image img.zoomable:active {
+  cursor: grabbing;
 }
 
 /* 纯图片卡片：去掉内边距让原件铺满 */
@@ -96,8 +190,6 @@
     display: block;
     margin: 0 auto 1.4em;
   }
-}
-
 }
 
 /* ══════════════════════════════════════════════════════════════
