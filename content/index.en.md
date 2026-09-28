@@ -1,11 +1,11 @@
 ---
 title: "RWR Map Editor's Handbook"
 description: "The handbook for the Running With Rifles map editor: what every panel does, the model and wall inventories, key bindings and common workflows."
-source_sha256: 6b1f2a89c06bdd4a046af9d8bccaff004569bc97a861b55d6a25780c0417d89c
-translated: 2026-09-25
+source_sha256: 906d08581347f2e8858862a12e9a509c95e406162452e7a6033690f4f496e106
+translated: 2026-09-27
 nav_label: "Home"
 icon: lucide/house
-nav: ["prepare", "editor", "tables", "settings", "download", "about"]
+nav: ["prepare", "editor", "tables", "download", "about"]
 ---
 
 # RWR Map Editor's Handbook
@@ -45,7 +45,7 @@ What to do before you start making a map — mostly to make the editor less pain
 
     Every tool on the main panel, the key bindings, and finding an object by ID.
 
-    [:octicons-arrow-right-24: The editor](editor/index.md)
+    [:octicons-arrow-right-24: Feature guide](editor/index.md)
 
 -   :material-cube-outline:{ .lg .middle } __Which models you can place__
 
@@ -61,7 +61,7 @@ What to do before you start making a map — mostly to make the editor less pain
 
     mapSettings for the map itself; 3rdParSettings and RefpM for outside resources.
 
-    [:octicons-arrow-right-24: Configuration files](settings/index.md)
+    [:octicons-arrow-right-24: Configuration files](editor/index.md#map-settings)
 
 </div>
 

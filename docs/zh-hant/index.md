@@ -2,7 +2,7 @@
 nav_label: "首頁"
 icon: "lucide/house"
 description: "小兵步槍地圖編輯器手冊：地編界面逐項說明、模型與牆體清單、交互按鍵與常用流程。"
-nav: ["prepare", "editor", "tables", "settings", "download", "about"]
+nav: ["prepare", "editor", "tables", "download", "about"]
 # ⚠️ 由 tools/docsgen.py 從 content/index.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
 hide: [navigation]
 ---
@@ -42,7 +42,7 @@ hide: [navigation]
 
     主界面各工具、交互按鍵、按 ID 找物件。
 
-    [:octicons-arrow-right-24: 地編界面](editor/index.md)
+    [:octicons-arrow-right-24: 功能介紹](editor/index.md)
 
 -   :material-cube-outline:{ .lg .middle } __有哪些模型能擺__
 
@@ -58,7 +58,7 @@ hide: [navigation]
 
     mapSettings 管地圖本身，3rdParSettings 與 RefpM 管外部資源。
 
-    [:octicons-arrow-right-24: 設置文件](settings/index.md)
+    [:octicons-arrow-right-24: 設置文件](editor/index.md#map-settings)
 
 </div>
 

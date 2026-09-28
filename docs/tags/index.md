@@ -18,40 +18,20 @@ hide: [navigation]
 
 每个语言的标签页**只列出该语言的页面**：简体页面上不会混进英文或繁体的篇目。
 
-## <span class="md-tag">参考图</span> { #tag:参考图 }
-
-- [RefpM 说明](../settings/reference-images.md)
-
 ## <span class="md-tag">墙体</span> { #tag:墙体 }
 
 - [Wall E](../tables/wall.md)
 
 ## <span class="md-tag">工具</span> { #tag:工具 }
 
-- [ID 搜索功能说明](../editor/id-search.md)
-- [地编界面](../editor/index.md)
-- [总导航](../editor/interface.md)
-- [主界面](../editor/settings.md)
+- [功能介绍](../editor/index.md)
 
 ## <span class="md-tag">建筑</span> { #tag:建筑 }
 
 - [Building E](../tables/building.md)
 
-## <span class="md-tag">按键</span> { #tag:按键 }
-
-- [交互按键表](../editor/keys.md)
-
-## <span class="md-tag">排错</span> { #tag:排错 }
-
-- [ID 搜索功能说明](../editor/id-search.md)
-
-## <span class="md-tag">未验证</span> { #tag:未验证 }
-
-- [mapSettings 说明](../settings/map-settings.md)
-
 ## <span class="md-tag">材质</span> { #tag:材质 }
 
-- [3rdParSettings 说明](../settings/third-party.md)
 - [MESH E](../tables/mesh.md)
 
 ## <span class="md-tag">模型</span> { #tag:模型 }
@@ -65,10 +45,7 @@ hide: [navigation]
 
 ## <span class="md-tag">界面</span> { #tag:界面 }
 
-- [地编界面](../editor/index.md)
-- [总导航](../editor/interface.md)
-- [交互按键表](../editor/keys.md)
-- [主界面](../editor/settings.md)
+- [功能介绍](../editor/index.md)
 
 ## <span class="md-tag">贴花</span> { #tag:贴花 }
 
@@ -80,7 +57,4 @@ hide: [navigation]
 
 ## <span class="md-tag">配置文件</span> { #tag:配置文件 }
 
-- [设置文件](../settings/index.md)
-- [mapSettings 说明](../settings/map-settings.md)
-- [RefpM 说明](../settings/reference-images.md)
-- [3rdParSettings 说明](../settings/third-party.md)
+- [功能介绍](../editor/index.md)

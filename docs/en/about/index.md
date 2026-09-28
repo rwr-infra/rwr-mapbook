@@ -1,7 +1,7 @@
 ---
 title: "About"
 description: "Which editor version this handbook covers, how the URLs are laid out, and what has not been verified yet."
-source_sha256: f131fb285b65ce34ae0c50518ccca65a3b38e379f1018c073aaaaed63261a97b
+source_sha256: 45c67585d25d144b876e7cbd1c9272c1fe6f916f814d83c492fed4fb701fdff5
 translated: 2026-09-27
 nav_label: "About"
 icon: lucide/info
@@ -27,9 +27,8 @@ It was written by people who make maps, not by the developers.
 | Section | What is in it |
 | --- | --- |
 | [Getting ready](../prepare/index.md) | How to configure the editor once you have it, how to sync it with your RWR folder, and how to switch on the built-in camera mod |
-| [The editor](../editor/index.md) | Every tool on the main panel, the key bindings, and finding an object by ID |
+| [Feature guide](../editor/index.md) | Every tool on the main panel, the key bindings, finding an object by ID, and the mapSettings / 3rdParSettings / RefpM configuration files |
 | [Model inventories](../tables/index.md) | Five inventories, six hundred objects, with previews and notes |
-| [Configuration files](../settings/index.md) | Every entry in mapSettings, 3rdParSettings and RefpM |
 | [File downloads](../download/index.md) | The latest editor, complete archives of every earlier version, and the companion template |
 
 ## How the URLs are laid out

@@ -18,40 +18,20 @@ hide: [navigation]
 
 每個語言的標簽頁**只列出該語言的頁面**：簡體頁面上不會混進英文或繁體的篇目。
 
-## <span class="md-tag">參考圖</span> { #tag:參考圖 }
-
-- [RefpM 說明](../settings/reference-images.md)
-
 ## <span class="md-tag">牆體</span> { #tag:牆體 }
 
 - [Wall E](../tables/wall.md)
 
 ## <span class="md-tag">工具</span> { #tag:工具 }
 
-- [ID 搜索功能說明](../editor/id-search.md)
-- [地編界面](../editor/index.md)
-- [總導航](../editor/interface.md)
-- [主界面](../editor/settings.md)
+- [功能介紹](../editor/index.md)
 
 ## <span class="md-tag">建築</span> { #tag:建築 }
 
 - [Building E](../tables/building.md)
 
-## <span class="md-tag">按鍵</span> { #tag:按鍵 }
-
-- [交互按鍵表](../editor/keys.md)
-
-## <span class="md-tag">排錯</span> { #tag:排錯 }
-
-- [ID 搜索功能說明](../editor/id-search.md)
-
-## <span class="md-tag">未驗證</span> { #tag:未驗證 }
-
-- [mapSettings 說明](../settings/map-settings.md)
-
 ## <span class="md-tag">材質</span> { #tag:材質 }
 
-- [3rdParSettings 說明](../settings/third-party.md)
 - [MESH E](../tables/mesh.md)
 
 ## <span class="md-tag">模型</span> { #tag:模型 }
@@ -65,10 +45,7 @@ hide: [navigation]
 
 ## <span class="md-tag">界面</span> { #tag:界面 }
 
-- [地編界面](../editor/index.md)
-- [總導航](../editor/interface.md)
-- [交互按鍵表](../editor/keys.md)
-- [主界面](../editor/settings.md)
+- [功能介紹](../editor/index.md)
 
 ## <span class="md-tag">貼花</span> { #tag:貼花 }
 
@@ -80,7 +57,4 @@ hide: [navigation]
 
 ## <span class="md-tag">配置文件</span> { #tag:配置文件 }
 
-- [設置文件](../settings/index.md)
-- [mapSettings 說明](../settings/map-settings.md)
-- [RefpM 說明](../settings/reference-images.md)
-- [3rdParSettings 說明](../settings/third-party.md)
+- [功能介紹](../editor/index.md)
