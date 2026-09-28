@@ -4,9 +4,8 @@
 nav:
 - 首页: index.md
 - 准备工作: prepare
-- 地编界面: editor
+- 功能介绍: editor
 - 模型清单: tables
-- 设置文件: settings
 - 文件下载: download
 - 关于: about
 - __lang:en: en

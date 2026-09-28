@@ -4,8 +4,7 @@
 nav:
 - Home: index.md
 - Getting ready: prepare
-- The editor: editor
+- Feature guide: editor
 - Model inventories: tables
-- Configuration files: settings
 - File downloads: download
 - About: about

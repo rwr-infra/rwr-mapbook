@@ -4,8 +4,7 @@
 nav:
 - 首頁: index.md
 - 準備工作: prepare
-- 地編界面: editor
+- 功能介紹: editor
 - 模型清單: tables
-- 設置文件: settings
 - 文件下載: download
 - 關於: about

@@ -27,10 +27,7 @@ mix in English or Traditional Chinese entries.
 
 ## <span class="md-tag">Config files</span> { #tag:config-files }
 
-- [Configuration files](../settings/index.md)
-- [mapSettings](../settings/map-settings.md)
-- [RefpM](../settings/reference-images.md)
-- [3rdParSettings](../settings/third-party.md)
+- [Feature guide](../editor/index.md)
 
 ## <span class="md-tag">Decals</span> { #tag:decals }
 
@@ -38,18 +35,10 @@ mix in English or Traditional Chinese entries.
 
 ## <span class="md-tag">Interface</span> { #tag:interface }
 
-- [The editor](../editor/index.md)
-- [Overview](../editor/interface.md)
-- [Key bindings](../editor/keys.md)
-- [The main panel](../editor/settings.md)
-
-## <span class="md-tag">Key bindings</span> { #tag:key-bindings }
-
-- [Key bindings](../editor/keys.md)
+- [Feature guide](../editor/index.md)
 
 ## <span class="md-tag">Materials</span> { #tag:materials }
 
-- [3rdParSettings](../settings/third-party.md)
 - [MESH E](../tables/mesh.md)
 
 ## <span class="md-tag">Models</span> { #tag:models }
@@ -61,24 +50,9 @@ mix in English or Traditional Chinese entries.
 - [Vehicle Scatter](../tables/vehicle.md)
 - [Wall E](../tables/wall.md)
 
-## <span class="md-tag">Reference image</span> { #tag:reference-image }
-
-- [RefpM](../settings/reference-images.md)
-
 ## <span class="md-tag">Tools</span> { #tag:tools }
 
-- [ID search](../editor/id-search.md)
-- [The editor](../editor/index.md)
-- [Overview](../editor/interface.md)
-- [The main panel](../editor/settings.md)
-
-## <span class="md-tag">Troubleshooting</span> { #tag:troubleshooting }
-
-- [ID search](../editor/id-search.md)
-
-## <span class="md-tag">Unverified</span> { #tag:unverified }
-
-- [mapSettings](../settings/map-settings.md)
+- [Feature guide](../editor/index.md)
 
 ## <span class="md-tag">Vehicles</span> { #tag:vehicles }
 

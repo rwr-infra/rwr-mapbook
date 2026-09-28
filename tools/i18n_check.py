@@ -378,8 +378,8 @@ for _lang in [DEFAULT_LANG, *other_languages()]:
     _prefix = "" if _lang == DEFAULT_LANG else f"{_lang}/"
     SMOKE += [
         (f"{_prefix}editor/index.html", "md-path__link", f"{_lang} 的面包屑"),
-        (f"{_prefix}editor/keys/index.html", "md-footer__link--next", f"{_lang} 页脚的「下一页」"),
-        (f"{_prefix}editor/keys/index.html", 'rel="prev"', f"{_lang} 的 <link rel=prev>"),
+        (f"{_prefix}tables/wall/index.html", "md-footer__link--next", f"{_lang} 页脚的「下一页」"),
+        (f"{_prefix}tables/wall/index.html", 'rel="prev"', f"{_lang} 的 <link rel=prev>"),
     ]
 #: 非当前版的树也要真的生成出来：切换器指向它，它不在就等于切换器全是死链。
 for _version in all_versions():
