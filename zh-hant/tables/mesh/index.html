@@ -1,0 +1,3354 @@
+
+<!doctype html>
+<html lang="zh-Hant" class="no-js">
+  <head>
+    
+
+  
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+    <meta name="description" content="石頭、植物、小物件、大物件、特殊物件與有嚴重問題的物件。">
+  
+  
+    <meta name="author" content="RWR 地圖編輯組">
+  
+  
+    <link rel="canonical" href="https://rwrme.rwr-infra.uk/zh-hant/tables/mesh/">
+  
+  
+    <link rel="prev" href="../">
+  
+  
+    <link rel="next" href="../wall/">
+  
+  
+    
+    
+    
+    
+    <link rel="alternate" href="../../../tables/mesh/" hreflang="zh-Hans">
+  
+    
+    
+    
+    
+    <link rel="alternate" href="./" hreflang="zh-Hant">
+  
+    
+    
+    
+    
+    <link rel="alternate" href="../../../en/tables/mesh/" hreflang="en">
+  
+  
+  <link rel="icon" href="../../../assets/favicon.png">
+  <meta name="generator" content="zensical-0.0.62">
+
+    
+  
+    <title>MESH E · RWR 地编手册</title>
+  
+
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../../assets/stylesheets/modern/main.ce62732f.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/modern/palette.812a03bb.min.css">
+      
+      
+
+
+    
+    
+
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/glightbox.min.css">
+    
+      <link rel="stylesheet" href="../../../stylesheets/fonts.css">
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    <script id="__trailing-slash">
+  (() => {
+    const path = location.pathname;
+    if (path.endsWith("/")) return;
+    const last = path.split("/").pop();
+    if (last && !last.includes(".")) {
+      history.replaceState(null, "", path + "/" + location.search + location.hash);
+    }
+  })();
+</script>
+  
+  
+  
+  
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="RWR 地编手册">
+  <meta property="og:title" content="MESH E">
+  <meta property="og:description" content="石頭、植物、小物件、大物件、特殊物件與有嚴重問題的物件。">
+  <meta property="og:url" content="https://rwrme.rwr-infra.uk/zh-hant/tables/mesh/">
+  <meta property="og:locale" content="zh_Hant">
+  <meta property="og:locale:alternate" content="zh_Hans">
+  
+  
+  <meta property="og:locale:alternate" content="en">
+  
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MESH E">
+  <meta name="twitter:description" content="石頭、植物、小物件、大物件、特殊物件與有嚴重問題的物件。">
+  <meta name="twitter:image" content="https://rwrme.rwr-infra.uk/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://rwrme.rwr-infra.uk/",
+        "url": "https://rwrme.rwr-infra.uk/",
+        "name": "RWR 地编手册",
+        "alternateName": "RWR 地编手册",
+        "description": "石頭、植物、小物件、大物件、特殊物件與有嚴重問題的物件。",
+        "inLanguage": "zh-Hant"
+      },
+      {
+        "@type": "Organization",
+        "name": "RWR 地圖編輯組",
+        "alternateName": "RWR 地编手册",
+        "url": "https://rwrme.rwr-infra.uk/"
+      }
+    ]
+  }
+  </script>
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-label="導航"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#mesh" class="md-skip">
+          跳轉至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+
+
+
+
+
+
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="頁首">
+    <a href="../../" title="RWR 地编手册" class="md-header__button md-logo" aria-label="RWR 地编手册" data-md-component="logo">
+      
+
+
+
+
+
+  <img src="../../../assets/rwricon.png" alt="RWR 地编手册">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="導航">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RWR 地编手册
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              MESH E
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        
+
+
+
+<form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    
+    
+    
+      
+        
+      
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切換深淺色"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切換深淺色" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun-moon" viewBox="0 0 24 24"><path d="M12 2v2M14.837 16.385a6 6 0 1 1-7.223-7.222c.624-.147.97.66.715 1.248a4 4 0 0 0 5.26 5.259c.589-.255 1.396.09 1.248.715M16 12a4 4 0 0 0-4-4M19 5l-1.256 1.256M20 12h2"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    
+    
+    
+      
+        
+      
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切換到深色"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切換到深色" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    
+    
+    
+      
+        
+      
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切換到淺色"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="切換到淺色" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      
+
+
+
+
+<div class="md-header__option">
+  <div class="md-select">
+    <button class="md-header__button md-icon" aria-label="切换地编版本">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5.5 9A1.5 1.5 0 0 0 7 7.5 1.5 1.5 0 0 0 5.5 6 1.5 1.5 0 0 0 4 7.5 1.5 1.5 0 0 0 5.5 9m11.91 2.58c.36.36.59.86.59 1.42 0 .55-.22 1.05-.59 1.41l-5 5a1.996 1.996 0 0 1-2.83 0l-6.99-6.99C2.22 12.05 2 11.55 2 11V6c0-1.11.89-2 2-2h5c.55 0 1.05.22 1.41.58zm-3.87-5.87 1-1 6.87 6.87c.37.36.59.87.59 1.42s-.22 1.05-.58 1.41l-5.38 5.38-1-1L20.75 13z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          
+          
+          
+          
+          <li class="md-select__item">
+            <a href="./"
+               class="md-select__link" aria-current="true">
+              地编版本 0101<small class="md-select__note">2026-09-06</small>
+            </a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="md-select__item">
+            <a href="../../../egg/zh-hant/tables/mesh/"
+               class="md-select__link">
+              彩蛋<small class="md-select__note">2026-05-14</small>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+
+
+
+<div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="選擇語言">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-languages" viewBox="0 0 24 24"><path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          
+          
+          
+          <li class="md-select__item">
+            <a href="../../../tables/mesh/" hreflang="zh-Hans"
+               class="md-select__link">
+              简体中文
+            </a>
+          </li>
+        
+          
+          
+          
+          <li class="md-select__item">
+            <a href="./" hreflang="zh-Hant"
+               class="md-select__link" aria-current="true">
+              繁體中文
+            </a>
+          </li>
+        
+          
+          
+          
+          <li class="md-select__item">
+            <a href="../../../en/tables/mesh/" hreflang="en"
+               class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    <div class="md-header__source">
+      
+        <a href="https://github.com/Autumnsnail/rwrme" title="前往倉庫" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5v52c0 15 12.5 23.5 27.5 17.5C441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5v-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rwrme
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+
+
+
+
+
+<nav class="md-tabs" aria-label="標籤頁" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+      
+        
+        
+        
+      
+        
+        
+        
+      
+        
+        
+        
+      
+        
+        
+        
+      
+        
+        
+        
+      
+        
+        
+        
+      
+        
+        
+        
+      
+        
+        
+        
+          
+            
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../" class="md-tabs__link">
+        
+  
+  首頁
+
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../prepare/" class="md-tabs__link">
+          
+  
+  準備工作
+
+        </a>
+      </li>
+    
+  
+
+          
+            
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../editor/" class="md-tabs__link">
+          
+  
+  功能介紹
+
+        </a>
+      </li>
+    
+  
+
+          
+            
+  
+  
+  
+    
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  模型清單
+
+        </a>
+      </li>
+    
+  
+
+          
+            
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../download/" class="md-tabs__link">
+          
+  
+  文件下載
+
+        </a>
+      </li>
+    
+  
+
+          
+            
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../about/" class="md-tabs__link">
+          
+  
+  關於
+
+        </a>
+      </li>
+    
+  
+
+          
+        
+      
+        
+        
+        
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="導航" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../" title="RWR 地编手册" class="md-nav__button md-logo" aria-label="RWR 地编手册" data-md-component="logo">
+      
+
+
+
+
+
+  <img src="../../../assets/rwricon.png" alt="RWR 地编手册">
+
+    </a>
+    RWR 地编手册
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Autumnsnail/rwrme" title="前往倉庫" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5v52c0 15 12.5 23.5 27.5 17.5C441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5v-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rwrme
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+      
+    
+      
+      
+      
+      
+    
+      
+      
+      
+      
+    
+      
+      
+      
+      
+    
+      
+      
+      
+      
+    
+      
+      
+      
+      
+    
+      
+      
+      
+      
+    
+      
+      
+      
+      
+          
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-house" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  首頁
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+        
+          
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_zh-hant_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../prepare/" class="md-nav__link ">
+              
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-download" viewBox="0 0 24 24"><path d="M12 15V3M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  準備工作
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_zh-hant_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_zh-hant_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  準備工作
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+        
+          
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_zh-hant_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../editor/" class="md-nav__link ">
+              
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-layout-grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  功能介紹
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_zh-hant_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_zh-hant_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  功能介紹
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+        
+          
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_zh-hant_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-table" viewBox="0 0 24 24"><path d="M12 3v18"/><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M3 15h18"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  模型清單
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_zh-hant_4" id="__nav_zh-hant_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_zh-hant_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_zh-hant_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  模型清單
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  MESH E
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  MESH E
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="目錄">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目錄
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#nature" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        自然類（石頭/植物）
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#small" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        小物件
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#large" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        大物件
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#special" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        特殊物件
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#broken" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        有嚴重問題的物件
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wall/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Wall E
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../building/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Building E
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vehicle/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Vehicle Scatter
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../decal/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Decal
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+        
+          
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_zh-hant_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../download/" class="md-nav__link ">
+              
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-archive" viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8M10 12h4"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  文件下載
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_zh-hant_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_zh-hant_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  文件下載
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+        
+          
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_zh-hant_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../about/" class="md-nav__link ">
+              
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  關於
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_zh-hant_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_zh-hant_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  關於
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+        
+      
+    
+      
+      
+      
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                      
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="目錄">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目錄
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#nature" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        自然類（石頭/植物）
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#small" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        小物件
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#large" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        大物件
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#special" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        特殊物件
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#broken" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        有嚴重問題的物件
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+
+
+
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="導航" >
+    <ol class="md-path__list">
+      
+        <li class="md-path__item"><a href="../../" class="md-path__link">
+            <span class="md-ellipsis">首頁</span>
+          </a>
+        </li>
+        
+          
+        
+          
+            
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    模型清單
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+          
+        
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+  
+
+
+<h1 id="mesh">MESH E<a class="headerlink" href="#mesh" title="Permanent link">&para;</a></h1>
+<div class="admonition quote">
+<p class="admonition-title">注意事項</p>
+<p>註：模板版本 vao0822。預覽圖左側為斜向下視角，右側正對法線，也就是地編視角；判斷形狀請以水平線為參考，垂直線是點透視，可能讓物件看起來傾斜。千萬別把材質錯誤全部歸類成模板引用了受限的文件，冷杉樹和海報牌這類錯誤肯定不屬於這種而是另一種引用參數錯誤 :/</p>
+</div>
+<h2 id="nature">自然類（石頭/植物）<a class="headerlink" href="#nature" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>預覽</th>
+<th>名稱</th>
+<th>備註</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/001.png"><img alt="" src="../../../assets/tables/mesh-e/001.png" /></a></td>
+<td>石頭<br>使用工具放置</td>
+<td>用MeshE中StoneScatter工具放置<br>有好幾種</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/010.png"><img alt="" src="../../../assets/tables/mesh-e/010.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/011.png"><img alt="" src="../../../assets/tables/mesh-e/011.png" /></a></td>
+<td>小石頭<br>template = rock_s1</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/020.png"><img alt="" src="../../../assets/tables/mesh-e/020.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/021.png"><img alt="" src="../../../assets/tables/mesh-e/021.png" /></a></td>
+<td>小石頭<br>template = rock_s2</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/030.png"><img alt="" src="../../../assets/tables/mesh-e/030.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/031.png"><img alt="" src="../../../assets/tables/mesh-e/031.png" /></a></td>
+<td>小石頭<br>template = rock_s3</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/039.png"><img alt="" src="../../../assets/tables/mesh-e/039.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/040.png"><img alt="" src="../../../assets/tables/mesh-e/040.png" /></a></td>
+<td>小石頭<br>template = rock_s4</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/046.png"><img alt="" src="../../../assets/tables/mesh-e/046.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/047.png"><img alt="" src="../../../assets/tables/mesh-e/047.png" /></a></td>
+<td>土黃色大石頭<br>template = rock_h1</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/054.png"><img alt="" src="../../../assets/tables/mesh-e/054.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/053.png"><img alt="" src="../../../assets/tables/mesh-e/053.png" /></a></td>
+<td>小一點的土黃色大石頭<br>template = rock_h3</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/060.png"><img alt="" src="../../../assets/tables/mesh-e/060.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/061.png"><img alt="" src="../../../assets/tables/mesh-e/061.png" /></a></td>
+<td>過亮的中號石頭<br>template = rock_b1</td>
+<td>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/068.png"><img alt="" src="../../../assets/tables/mesh-e/068.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/067.png"><img alt="" src="../../../assets/tables/mesh-e/067.png" /></a></td>
+<td>過亮的中號石頭<br>template = rock_b2</td>
+<td>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/074.png"><img alt="" src="../../../assets/tables/mesh-e/074.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/075.png"><img alt="" src="../../../assets/tables/mesh-e/075.png" /></a></td>
+<td>過亮的中號石頭<br>template = rock_b3</td>
+<td>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/082.png"><img alt="" src="../../../assets/tables/mesh-e/082.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/081.png"><img alt="" src="../../../assets/tables/mesh-e/081.png" /></a></td>
+<td>過亮的小號石頭<br>template = rock_b4</td>
+<td>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/088.png"><img alt="" src="../../../assets/tables/mesh-e/088.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/089.png"><img alt="" src="../../../assets/tables/mesh-e/089.png" /></a></td>
+<td>過亮的小號石頭<br>template = rock_m1</td>
+<td>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/096.png"><img alt="" src="../../../assets/tables/mesh-e/096.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/095.png"><img alt="" src="../../../assets/tables/mesh-e/095.png" /></a></td>
+<td>過亮的小號石頭<br>template = rock_m2</td>
+<td>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/103.png"><img alt="" src="../../../assets/tables/mesh-e/103.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/102.png"><img alt="" src="../../../assets/tables/mesh-e/102.png" /></a></td>
+<td>過亮的小號石頭<br>template = rock_m3</td>
+<td>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/110.png"><img alt="" src="../../../assets/tables/mesh-e/110.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/109.png"><img alt="" src="../../../assets/tables/mesh-e/109.png" /></a></td>
+<td>過亮的小號石頭<br>template = rock_m4</td>
+<td>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/117.png"><img alt="" src="../../../assets/tables/mesh-e/117.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/116.png"><img alt="" src="../../../assets/tables/mesh-e/116.png" /></a></td>
+<td>迷你石頭<br>template = stone_1</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/124.png"><img alt="" src="../../../assets/tables/mesh-e/124.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/123.png"><img alt="" src="../../../assets/tables/mesh-e/123.png" /></a></td>
+<td>迷你石頭<br>template = stone_2</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/131.png"><img alt="" src="../../../assets/tables/mesh-e/131.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/130.png"><img alt="" src="../../../assets/tables/mesh-e/130.png" /></a></td>
+<td>迷你石頭<br>template = stone_3</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/138.png"><img alt="" src="../../../assets/tables/mesh-e/138.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/137.png"><img alt="" src="../../../assets/tables/mesh-e/137.png" /></a></td>
+<td>迷你石頭<br>template = stone_4</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/146.png"><img alt="" src="../../../assets/tables/mesh-e/146.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/145.png"><img alt="" src="../../../assets/tables/mesh-e/145.png" /></a></td>
+<td>迷你石頭<br>template = stone_5</td>
+<td><span class="redact" tabindex="0">hey?</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/152.png"><img alt="" src="../../../assets/tables/mesh-e/152.png" /></a></td>
+<td>樹<br>使用工具放置</td>
+<td>用MeshE中TreeScatter工具放置<br>有好幾種</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/159.png"><img alt="" src="../../../assets/tables/mesh-e/159.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/160.png"><img alt="" src="../../../assets/tables/mesh-e/160.png" /></a></td>
+<td>柏樹<br>template = cypress</td>
+<td><span class="redact" tabindex="0">這是樹啊？？</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/166.png"><img alt="" src="../../../assets/tables/mesh-e/166.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/168.png"><img alt="" src="../../../assets/tables/mesh-e/168.png" /></a></td>
+<td>冷杉樹<br>template = fir</td>
+<td>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/167.png"><img alt="" src="../../../assets/tables/mesh-e/167.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/174.png"><img alt="" src="../../../assets/tables/mesh-e/174.png" /></a></td>
+<td>一號冷杉樹<br>template = fir1</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/180.png"><img alt="" src="../../../assets/tables/mesh-e/180.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/181.png"><img alt="" src="../../../assets/tables/mesh-e/181.png" /></a></td>
+<td>二號冷杉樹<br>template = fir2</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/187.png"><img alt="" src="../../../assets/tables/mesh-e/187.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/188.png"><img alt="" src="../../../assets/tables/mesh-e/188.png" /></a></td>
+<td>三號冷杉樹<br>template = fir3</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/195.png"><img alt="" src="../../../assets/tables/mesh-e/195.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/194.png"><img alt="" src="../../../assets/tables/mesh-e/194.png" /></a></td>
+<td>一號棕櫚樹<br>template = palmtree1</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/200.png"><img alt="" src="../../../assets/tables/mesh-e/200.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/199.png"><img alt="" src="../../../assets/tables/mesh-e/199.png" /></a></td>
+<td>二號棕櫚樹<br>template = palmtree2</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/205.png"><img alt="" src="../../../assets/tables/mesh-e/205.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/204.png"><img alt="" src="../../../assets/tables/mesh-e/204.png" /></a></td>
+<td>一號棕櫚樹<br>template = palmtree_1</td>
+<td>似乎與上一項沒有區別</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/210.png"><img alt="" src="../../../assets/tables/mesh-e/210.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/209.png"><img alt="" src="../../../assets/tables/mesh-e/209.png" /></a></td>
+<td>二號棕櫚樹<br>template = palmtree_2</td>
+<td>似乎與上一項沒有區別</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/215.png"><img alt="" src="../../../assets/tables/mesh-e/215.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/214.png"><img alt="" src="../../../assets/tables/mesh-e/214.png" /></a></td>
+<td><br>濱草<br>template = marram</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/219.png"><img alt="" src="../../../assets/tables/mesh-e/219.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/220.png"><img alt="" src="../../../assets/tables/mesh-e/220.png" /></a></td>
+<td>零號灌木叢（中）<br>template = bush0</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/224.png"><img alt="" src="../../../assets/tables/mesh-e/224.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/225.png"><img alt="" src="../../../assets/tables/mesh-e/225.png" /></a></td>
+<td>一號灌木叢（小）<br>template = bush1</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/229.png"><img alt="" src="../../../assets/tables/mesh-e/229.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/230.png"><img alt="" src="../../../assets/tables/mesh-e/230.png" /></a></td>
+<td>二號灌木叢（小）<br>template = bush2</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/234.png"><img alt="" src="../../../assets/tables/mesh-e/234.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/235.png"><img alt="" src="../../../assets/tables/mesh-e/235.png" /></a></td>
+<td>三號灌木叢（中）<br>template = bush3</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/239.png"><img alt="" src="../../../assets/tables/mesh-e/239.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/240.png"><img alt="" src="../../../assets/tables/mesh-e/240.png" /></a></td>
+<td>三號變種灌木叢（大）<br>template = bush3_1</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/244.png"><img alt="" src="../../../assets/tables/mesh-e/244.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/245.png"><img alt="" src="../../../assets/tables/mesh-e/245.png" /></a></td>
+<td>三號變種灌木叢一號樹籬版（大）<br>template = bush3_1_hedgerow</td>
+<td>有碰撞體積</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/249.png"><img alt="" src="../../../assets/tables/mesh-e/249.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/250.png"><img alt="" src="../../../assets/tables/mesh-e/250.png" /></a></td>
+<td>三號變種灌木叢二號樹籬版（大）<br>template = bush3_hedgerow</td>
+<td>有碰撞體積</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/254.png"><img alt="" src="../../../assets/tables/mesh-e/254.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/255.png"><img alt="" src="../../../assets/tables/mesh-e/255.png" /></a></td>
+<td>四號灌木叢（中）<br>template = bush4</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/259.png"><img alt="" src="../../../assets/tables/mesh-e/259.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/260.png"><img alt="" src="../../../assets/tables/mesh-e/260.png" /></a></td>
+<td>五號灌木叢（中）<br>template = bush5</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/264.png"><img alt="" src="../../../assets/tables/mesh-e/264.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/265.png"><img alt="" src="../../../assets/tables/mesh-e/265.png" /></a></td>
+<td>五號灌木叢（中）<br>template = bush______________5</td>
+<td>似乎與上一項沒有區別</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/269.png"><img alt="" src="../../../assets/tables/mesh-e/269.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/270.png"><img alt="" src="../../../assets/tables/mesh-e/270.png" /></a></td>
+<td>常春藤<br>template = ivy</td>
+<td>正對法線時寬度為 0，看不到，需要從側面觀察</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/274.png"><img alt="" src="../../../assets/tables/mesh-e/274.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/275.png"><img alt="" src="../../../assets/tables/mesh-e/275.png" /></a></td>
+<td>蘆本葦<br>template = reed</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/279.png"><img alt="" src="../../../assets/tables/mesh-e/279.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/280.png"><img alt="" src="../../../assets/tables/mesh-e/280.png" /></a></td>
+<td>一號熱帶植物<br>template = tropical_plant_01</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/284.png"><img alt="" src="../../../assets/tables/mesh-e/284.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/285.png"><img alt="" src="../../../assets/tables/mesh-e/285.png" /></a></td>
+<td>二號熱帶植物<br>template = tropical_plant_02</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/289.png"><img alt="" src="../../../assets/tables/mesh-e/289.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/290.png"><img alt="" src="../../../assets/tables/mesh-e/290.png" /></a></td>
+<td>三號熱帶植物<br>template = tropical_plant_03</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/295.png"><img alt="" src="../../../assets/tables/mesh-e/295.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/296.png"><img alt="" src="../../../assets/tables/mesh-e/296.png" /></a></td>
+<td>四號熱帶植物<br>template = tropical_plant_04</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/300.png"><img alt="" src="../../../assets/tables/mesh-e/300.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/301.png"><img alt="" src="../../../assets/tables/mesh-e/301.png" /></a></td>
+<td>五號熱帶植物<br>template = tropical_plant_05</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/305.png"><img alt="" src="../../../assets/tables/mesh-e/305.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/306.png"><img alt="" src="../../../assets/tables/mesh-e/306.png" /></a></td>
+<td>六號熱帶植物<br>template = tropical_plant_06</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/310.png"><img alt="" src="../../../assets/tables/mesh-e/310.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/311.png"><img alt="" src="../../../assets/tables/mesh-e/311.png" /></a></td>
+<td>七號熱帶植物<br>template = tropical_plant_07</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/315.png"><img alt="" src="../../../assets/tables/mesh-e/315.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/316.png"><img alt="" src="../../../assets/tables/mesh-e/316.png" /></a></td>
+<td>八號熱帶植物<br>template = tropical_plant_08</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/320.png"><img alt="" src="../../../assets/tables/mesh-e/320.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/321.png"><img alt="" src="../../../assets/tables/mesh-e/321.png" /></a></td>
+<td>九號熱帶植物<br>template = tropical_plant_09</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/325.png"><img alt="" src="../../../assets/tables/mesh-e/325.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/326.png"><img alt="" src="../../../assets/tables/mesh-e/326.png" /></a></td>
+<td>十號熱帶植物<br>template = tropical_plant_10</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/330.png"><img alt="" src="../../../assets/tables/mesh-e/330.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/331.png"><img alt="" src="../../../assets/tables/mesh-e/331.png" /></a></td>
+<td>十一號熱帶植物<br>template = tropical_plant_11</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/336.png"><img alt="" src="../../../assets/tables/mesh-e/336.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/337.png"><img alt="" src="../../../assets/tables/mesh-e/337.png" /></a></td>
+<td>十二號熱帶植物<br>template = tropical_plant_12</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/341.png"><img alt="" src="../../../assets/tables/mesh-e/341.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/342.png"><img alt="" src="../../../assets/tables/mesh-e/342.png" /></a></td>
+<td>十三號熱帶植物<br>template = tropical_plant_13</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/346.png"><img alt="" src="../../../assets/tables/mesh-e/346.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/347.png"><img alt="" src="../../../assets/tables/mesh-e/347.png" /></a></td>
+<td>小麥<br>template = wheat</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="small">小物件<a class="headerlink" href="#small" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>預覽</th>
+<th>名稱</th>
+<th>備註</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/003.png"><img alt="" src="../../../assets/tables/mesh-e/003.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/004.png"><img alt="" src="../../../assets/tables/mesh-e/004.png" /></a></td>
+<td>儲藏室<br>template = weapon_rack</td>
+<td>外側迷彩布無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/012.png"><img alt="" src="../../../assets/tables/mesh-e/012.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/013.png"><img alt="" src="../../../assets/tables/mesh-e/013.png" /></a></td>
+<td>軍械庫<br>template = armory</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/022.png"><img alt="" src="../../../assets/tables/mesh-e/022.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/023.png"><img alt="" src="../../../assets/tables/mesh-e/023.png" /></a></td>
+<td>通風管道<br>template = pipe</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/033.png"><img alt="" src="../../../assets/tables/mesh-e/033.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/032.png"><img alt="" src="../../../assets/tables/mesh-e/032.png" /></a></td>
+<td>T形態通風管道<br>template = pipeT</td>
+<td>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/041.png"><img alt="" src="../../../assets/tables/mesh-e/041.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/042.png"><img alt="" src="../../../assets/tables/mesh-e/042.png" /></a></td>
+<td>換氣扇<br>template = ventilator</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/048.png"><img alt="" src="../../../assets/tables/mesh-e/048.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/049.png"><img alt="" src="../../../assets/tables/mesh-e/049.png" /></a></td>
+<td>水泥圍欄<br>template = enclosure</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/055.png"><img alt="" src="../../../assets/tables/mesh-e/055.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/056.png"><img alt="" src="../../../assets/tables/mesh-e/056.png" /></a></td>
+<td>塗有無政府主義標誌的水泥圍欄<br>template = enclosure_a</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/062.png"><img alt="" src="../../../assets/tables/mesh-e/062.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/063.png"><img alt="" src="../../../assets/tables/mesh-e/063.png" /></a></td>
+<td>小路燈<br>template = streetlantern</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/070.png"><img alt="" src="../../../assets/tables/mesh-e/070.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/069.png"><img alt="" src="../../../assets/tables/mesh-e/069.png" /></a></td>
+<td>大路燈<br>template = streetlight</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/076.png"><img alt="" src="../../../assets/tables/mesh-e/076.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/077.png"><img alt="" src="../../../assets/tables/mesh-e/077.png" /></a></td>
+<td>小座椅<br>template = chairset_chair</td>
+<td>不能坐，<span class="redact" tabindex="0">感覺不如__</span><br>還擋路</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/083.png"><img alt="" src="../../../assets/tables/mesh-e/083.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/084.png"><img alt="" src="../../../assets/tables/mesh-e/084.png" /></a></td>
+<td>小茶幾<br>template = chairset_table</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/091.png"><img alt="" src="../../../assets/tables/mesh-e/091.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/090.png"><img alt="" src="../../../assets/tables/mesh-e/090.png" /></a></td>
+<td>長凳<br>template = bench</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/097.png"><img alt="" src="../../../assets/tables/mesh-e/097.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/098.png"><img alt="" src="../../../assets/tables/mesh-e/098.png" /></a></td>
+<td>紅色油桶<br>template = barell_red</td>
+<td>有互動，會爆炸<br>同模型換色版本，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/104.png"><img alt="" src="../../../assets/tables/mesh-e/104.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/105.png"><img alt="" src="../../../assets/tables/mesh-e/105.png" /></a></td>
+<td>綠色油桶<br>template = barell_green</td>
+<td>有互動，會爆炸<br>同模型換色版本，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/111.png"><img alt="" src="../../../assets/tables/mesh-e/111.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/112.png"><img alt="" src="../../../assets/tables/mesh-e/112.png" /></a></td>
+<td>藍色油桶<br>template = barell_blue</td>
+<td>有互動，會爆炸<br>同模型換色版本，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/118.png"><img alt="" src="../../../assets/tables/mesh-e/118.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/119.png"><img alt="" src="../../../assets/tables/mesh-e/119.png" /></a></td>
+<td>藍色遮陽傘<br>template = parasol_blue</td>
+<td>會被載具碾壓或爆炸破壞，但幾秒後會刷新</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/125.png"><img alt="" src="../../../assets/tables/mesh-e/125.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/126.png"><img alt="" src="../../../assets/tables/mesh-e/126.png" /></a></td>
+<td>黃色遮陽傘<br>template = parasol_yellow</td>
+<td>會被載具碾壓或爆炸破壞，但幾秒後會刷新<br>同模型換色版本，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/132.png"><img alt="" src="../../../assets/tables/mesh-e/132.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/133.png"><img alt="" src="../../../assets/tables/mesh-e/133.png" /></a></td>
+<td>綠色遮陽傘<br>template = parasol_green</td>
+<td>會被載具碾壓或爆炸破壞，但幾秒後會刷新<br>同模型換色版本，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/139.png"><img alt="" src="../../../assets/tables/mesh-e/139.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/140.png"><img alt="" src="../../../assets/tables/mesh-e/140.png" /></a></td>
+<td>紅色遮陽傘<br>template = parasol_red</td>
+<td>會被載具碾壓或爆炸破壞，但幾秒後會刷新<br>同模型換色版本，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/147.png"><img alt="" src="../../../assets/tables/mesh-e/147.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/148.png"><img alt="" src="../../../assets/tables/mesh-e/148.png" /></a></td>
+<td>混凝土路障<br>template = concrete_barrier</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/154.png"><img alt="" src="../../../assets/tables/mesh-e/154.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/155.png"><img alt="" src="../../../assets/tables/mesh-e/155.png" /></a></td>
+<td>混凝土管道堆<br>template = concrete_pipes</td>
+<td>能跳上去，但碰撞箱與實際形狀不符，如圖所示</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/161.png"><img alt="" src="../../../assets/tables/mesh-e/161.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/162.png"><img alt="" src="../../../assets/tables/mesh-e/162.png" /></a></td>
+<td>地球雕像<br>template = world_statue</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/170.png"><img alt="" src="../../../assets/tables/mesh-e/170.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/169.png"><img alt="" src="../../../assets/tables/mesh-e/169.png" /></a></td>
+<td>帳篷<br>template = tent</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/176.png"><img alt="" src="../../../assets/tables/mesh-e/176.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/175.png"><img alt="" src="../../../assets/tables/mesh-e/175.png" /></a></td>
+<td>風力發電機<br>template = windmill</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/182.png"><img alt="" src="../../../assets/tables/mesh-e/182.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/183.png"><img alt="" src="../../../assets/tables/mesh-e/183.png" /></a></td>
+<td>風車<br>template = windmill_stone</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/189.png"><img alt="" src="../../../assets/tables/mesh-e/189.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/190.png"><img alt="" src="../../../assets/tables/mesh-e/190.png" /></a></td>
+<td>保齡球雕像<br>template = bowling</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/196.png"><img alt="" src="../../../assets/tables/mesh-e/196.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/197.png"><img alt="" src="../../../assets/tables/mesh-e/197.png" /></a></td>
+<td>鳥雕像<br>template = birds_statue</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/201.png"><img alt="" src="../../../assets/tables/mesh-e/201.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/202.png"><img alt="" src="../../../assets/tables/mesh-e/202.png" /></a></td>
+<td>佛像<br>template = buddha</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/206.png"><img alt="" src="../../../assets/tables/mesh-e/206.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/207.png"><img alt="" src="../../../assets/tables/mesh-e/207.png" /></a></td>
+<td>方尖碑<br>template = obelisk</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/212.png"><img alt="" src="../../../assets/tables/mesh-e/212.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/211.png"><img alt="" src="../../../assets/tables/mesh-e/211.png" /></a></td>
+<td>維納斯雕像<br>template = venus</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/217.png"><img alt="" src="../../../assets/tables/mesh-e/217.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/216.png"><img alt="" src="../../../assets/tables/mesh-e/216.png" /></a></td>
+<td>燈塔<br>template = lighthouse</td>
+<td>以底部圓柱為基準，碰撞箱是它的外接正方體</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/222.png"><img alt="" src="../../../assets/tables/mesh-e/222.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/221.png"><img alt="" src="../../../assets/tables/mesh-e/221.png" /></a></td>
+<td>工廠煙囪<br>template = factorychimney</td>
+<td><span class="redact" tabindex="0">呃</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/226.png"><img alt="" src="../../../assets/tables/mesh-e/226.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/227.png"><img alt="" src="../../../assets/tables/mesh-e/227.png" /></a></td>
+<td>扁扁的墳<br>template = grave1</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/231.png"><img alt="" src="../../../assets/tables/mesh-e/231.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/232.png"><img alt="" src="../../../assets/tables/mesh-e/232.png" /></a></td>
+<td>尖尖的墳<br>template = grave2</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/236.png"><img alt="" src="../../../assets/tables/mesh-e/236.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/237.png"><img alt="" src="../../../assets/tables/mesh-e/237.png" /></a></td>
+<td>帶十字架的墳<br>template = grave3</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/241.png"><img alt="" src="../../../assets/tables/mesh-e/241.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/242.png"><img alt="" src="../../../assets/tables/mesh-e/242.png" /></a></td>
+<td>高高的小墳<br>template = grave4</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/246.png"><img alt="" src="../../../assets/tables/mesh-e/246.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/247.png"><img alt="" src="../../../assets/tables/mesh-e/247.png" /></a></td>
+<td>十字架墓碑<br>template = grave_cross</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/251.png"><img alt="" src="../../../assets/tables/mesh-e/251.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/252.png"><img alt="" src="../../../assets/tables/mesh-e/252.png" /></a></td>
+<td>圓頭墓碑<br>template = grave_plate1</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/256.png"><img alt="" src="../../../assets/tables/mesh-e/256.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/257.png"><img alt="" src="../../../assets/tables/mesh-e/257.png" /></a></td>
+<td>方頭墓碑<br>template = grave_plate2</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/261.png"><img alt="" src="../../../assets/tables/mesh-e/261.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/262.png"><img alt="" src="../../../assets/tables/mesh-e/262.png" /></a></td>
+<td>柱狀高墓碑<br>template = grave_column1</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/266.png"><img alt="" src="../../../assets/tables/mesh-e/266.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/267.png"><img alt="" src="../../../assets/tables/mesh-e/267.png" /></a></td>
+<td>柱狀矮墓碑<br>template = grave_column2</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/272.png"><img alt="" src="../../../assets/tables/mesh-e/272.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/271.png"><img alt="" src="../../../assets/tables/mesh-e/271.png" /></a></td>
+<td>豎向鐵絲網<br>template = barbwire</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/277.png"><img alt="" src="../../../assets/tables/mesh-e/277.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/276.png"><img alt="" src="../../../assets/tables/mesh-e/276.png" /></a></td>
+<td>橫向鐵絲網<br>template = barbwire2</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/281.png"><img alt="" src="../../../assets/tables/mesh-e/281.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/282.png"><img alt="" src="../../../assets/tables/mesh-e/282.png" /></a></td>
+<td>鐵絲網圍欄<br>template = barbwire_fence</td>
+<td>注意：模型懸空</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/286.png"><img alt="" src="../../../assets/tables/mesh-e/286.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/287.png"><img alt="" src="../../../assets/tables/mesh-e/287.png" /></a></td>
+<td>路卡<br>template = barrier</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/292.png"><img alt="" src="../../../assets/tables/mesh-e/292.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/293.png"><img alt="" src="../../../assets/tables/mesh-e/293.png" /></a></td>
+<td>抬起來的路卡<br>template = barrier_open</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/298.png"><img alt="" src="../../../assets/tables/mesh-e/298.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/297.png"><img alt="" src="../../../assets/tables/mesh-e/297.png" /></a></td>
+<td>綠色旗子<br>template = flag_green</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/303.png"><img alt="" src="../../../assets/tables/mesh-e/303.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/302.png"><img alt="" src="../../../assets/tables/mesh-e/302.png" /></a></td>
+<td>旗杆<br>template = flag_pole</td>
+<td>臺階處無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/307.png"><img alt="" src="../../../assets/tables/mesh-e/307.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/308.png"><img alt="" src="../../../assets/tables/mesh-e/308.png" /></a></td>
+<td>井<br>template = well</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/312.png"><img alt="" src="../../../assets/tables/mesh-e/312.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/313.png"><img alt="" src="../../../assets/tables/mesh-e/313.png" /></a></td>
+<td>加農炮<br>template = cannon</td>
+<td>有碰撞箱，可以跳上去</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/317.png"><img alt="" src="../../../assets/tables/mesh-e/317.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/318.png"><img alt="" src="../../../assets/tables/mesh-e/318.png" /></a></td>
+<td>海報牌<br>template = placard</td>
+<td>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/322.png"><img alt="" src="../../../assets/tables/mesh-e/322.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/323.png"><img alt="" src="../../../assets/tables/mesh-e/323.png" /></a></td>
+<td>藍色集裝箱<br>template = container_blue</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/327.png"><img alt="" src="../../../assets/tables/mesh-e/327.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/328.png"><img alt="" src="../../../assets/tables/mesh-e/328.png" /></a></td>
+<td>紅色集裝箱<br>template = container_red</td>
+<td>與上一項相同，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/332.png"><img alt="" src="../../../assets/tables/mesh-e/332.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/333.png"><img alt="" src="../../../assets/tables/mesh-e/333.png" /></a></td>
+<td>綠色集裝箱<br>template = container_green</td>
+<td>與上一項相同，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/338.png"><img alt="" src="../../../assets/tables/mesh-e/338.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/339.png"><img alt="" src="../../../assets/tables/mesh-e/339.png" /></a></td>
+<td>D形態綠色集裝箱<br>template = container_greenD</td>
+<td>疑似材質錯誤<br>與上一項相同，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/343.png"><img alt="" src="../../../assets/tables/mesh-e/343.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/344.png"><img alt="" src="../../../assets/tables/mesh-e/344.png" /></a></td>
+<td>T形態綠色集裝箱<br>template = container_greenT</td>
+<td>疑似材質錯誤<br>與上一項相同，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/348.png"><img alt="" src="../../../assets/tables/mesh-e/348.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/349.png"><img alt="" src="../../../assets/tables/mesh-e/349.png" /></a></td>
+<td>黃色太陽椅<br>template = sunchair_yellow</td>
+<td>會被載具碾壓或爆炸破壞，但幾秒後會刷新</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/351.png"><img alt="" src="../../../assets/tables/mesh-e/351.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/352.png"><img alt="" src="../../../assets/tables/mesh-e/352.png" /></a></td>
+<td>紅色太陽椅<br>template = sunchair_red</td>
+<td>會被載具碾壓或爆炸破壞，但幾秒後會刷新<br>同模型換色版本，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/354.png"><img alt="" src="../../../assets/tables/mesh-e/354.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/355.png"><img alt="" src="../../../assets/tables/mesh-e/355.png" /></a></td>
+<td>拒馬<br>template = hedgehog</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/358.png"><img alt="" src="../../../assets/tables/mesh-e/358.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/357.png"><img alt="" src="../../../assets/tables/mesh-e/357.png" /></a></td>
+<td>噴泉<br>template = fountain</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/361.png"><img alt="" src="../../../assets/tables/mesh-e/361.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/360.png"><img alt="" src="../../../assets/tables/mesh-e/360.png" /></a></td>
+<td>木製瞭望臺<br>template = woodtower</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/364.png"><img alt="" src="../../../assets/tables/mesh-e/364.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/363.png"><img alt="" src="../../../assets/tables/mesh-e/363.png" /></a></td>
+<td>木製瞭望臺二號<br>template = woodtower2</td>
+<td>似乎與上一項沒有區別</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/367.png"><img alt="" src="../../../assets/tables/mesh-e/367.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/366.png"><img alt="" src="../../../assets/tables/mesh-e/366.png" /></a></td>
+<td>火車車廂<br>template = train boxcar</td>
+<td>注意：train 與 boxcar 之間是空格，不是下劃線</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/369.png"><img alt="" src="../../../assets/tables/mesh-e/369.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/370.png"><img alt="" src="../../../assets/tables/mesh-e/370.png" /></a></td>
+<td>大鍋蓋雷達盤<br>template = radar_dish</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/372.png"><img alt="" src="../../../assets/tables/mesh-e/372.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/373.png"><img alt="" src="../../../assets/tables/mesh-e/373.png" /></a></td>
+<td>懸空15米輸油管<br>template = oil_pipe_straight_15m</td>
+<td>最下面的支撐杆有碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/375.png"><img alt="" src="../../../assets/tables/mesh-e/375.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/376.png"><img alt="" src="../../../assets/tables/mesh-e/376.png" /></a></td>
+<td>懸空轉折輸油管<br>template = oil_pipe_bent_hori</td>
+<td>注意：模型懸空</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/379.png"><img alt="" src="../../../assets/tables/mesh-e/379.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/378.png"><img alt="" src="../../../assets/tables/mesh-e/378.png" /></a></td>
+<td>接地輸油管<br>template = oil_pipe_bent_verti</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/381.png"><img alt="" src="../../../assets/tables/mesh-e/381.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/382.png"><img alt="" src="../../../assets/tables/mesh-e/382.png" /></a></td>
+<td>紅色遮陽棚<br>template = awning_red</td>
+<td>注意：模型懸空</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/384.png"><img alt="" src="../../../assets/tables/mesh-e/384.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/385.png"><img alt="" src="../../../assets/tables/mesh-e/385.png" /></a></td>
+<td>綠色遮陽棚<br>template = awning_green</td>
+<td>注意：模型懸空</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/388.png"><img alt="" src="../../../assets/tables/mesh-e/388.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/387.png"><img alt="" src="../../../assets/tables/mesh-e/387.png" /></a></td>
+<td>迷彩棚<br>template = camonet</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/390.png"><img alt="" src="../../../assets/tables/mesh-e/390.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/391.png"><img alt="" src="../../../assets/tables/mesh-e/391.png" /></a></td>
+<td>廣告柱<br>template = ad_pillar</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/393.png"><img alt="" src="../../../assets/tables/mesh-e/393.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/394.png"><img alt="" src="../../../assets/tables/mesh-e/394.png" /></a></td>
+<td>款式一白色轎車<br>template = car1_white</td>
+<td>不是載具，炸不壞也推不動</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/396.png"><img alt="" src="../../../assets/tables/mesh-e/396.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/397.png"><img alt="" src="../../../assets/tables/mesh-e/397.png" /></a></td>
+<td>款式一黃色轎車<br>template = car1_yellow</td>
+<td>不是載具，炸不壞也推不動<br><span class="redact" tabindex="0">我說這是藍色</span><br>同模型換色版本，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/399.png"><img alt="" src="../../../assets/tables/mesh-e/399.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/400.png"><img alt="" src="../../../assets/tables/mesh-e/400.png" /></a></td>
+<td>款式二綠色轎車殘骸<br>template = car2_broken</td>
+<td>不是載具，炸不壞也推不動</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/403.png"><img alt="" src="../../../assets/tables/mesh-e/403.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/402.png"><img alt="" src="../../../assets/tables/mesh-e/402.png" /></a></td>
+<td>款式二綠色轎車<br>template = car2_green</td>
+<td>不是載具，炸不壞也推不動</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/405.png"><img alt="" src="../../../assets/tables/mesh-e/405.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/406.png"><img alt="" src="../../../assets/tables/mesh-e/406.png" /></a></td>
+<td>款式二灰色轎車<br>template = car2_grey</td>
+<td>不是載具，炸不壞也推不動<br>同模型換色版本，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/409.png"><img alt="" src="../../../assets/tables/mesh-e/409.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/408.png"><img alt="" src="../../../assets/tables/mesh-e/408.png" /></a></td>
+<td>款式二紅色轎車<br>template = car2_red</td>
+<td>不是載具，炸不壞也推不動<br>同模型換色版本，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/412.png"><img alt="" src="../../../assets/tables/mesh-e/412.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/411.png"><img alt="" src="../../../assets/tables/mesh-e/411.png" /></a></td>
+<td>款式二銀色轎車<br>template = car2_silver</td>
+<td>不是載具，炸不壞也推不動<br>同模型換色版本，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/415.png"><img alt="" src="../../../assets/tables/mesh-e/415.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/414.png"><img alt="" src="../../../assets/tables/mesh-e/414.png" /></a></td>
+<td>款式二白色轎車<br>template = car2_white</td>
+<td>不是載具，炸不壞也推不動<br>同模型換色版本，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/418.png"><img alt="" src="../../../assets/tables/mesh-e/418.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/417.png"><img alt="" src="../../../assets/tables/mesh-e/417.png" /></a></td>
+<td>款式二黃色轎車<br>template = car2_yellow</td>
+<td>不是載具，炸不壞也推不動<br>同模型換色版本，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/420.png"><img alt="" src="../../../assets/tables/mesh-e/420.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/421.png"><img alt="" src="../../../assets/tables/mesh-e/421.png" /></a></td>
+<td>款式三天藍色轎車<br>template = car3_sky</td>
+<td>不是載具，炸不壞也推不動<br><span class="redact" tabindex="0">我說這是土黃色</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/423.png"><img alt="" src="../../../assets/tables/mesh-e/423.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/424.png"><img alt="" src="../../../assets/tables/mesh-e/424.png" /></a></td>
+<td>款式三黃色轎車<br>template = car3_yellow</td>
+<td>不是載具，炸不壞也推不動<br>與上一項相同，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/426.png"><img alt="" src="../../../assets/tables/mesh-e/426.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/427.png"><img alt="" src="../../../assets/tables/mesh-e/427.png" /></a></td>
+<td>工地施工雜物之鋼管子堆<br>template = construction_part_1</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/429.png"><img alt="" src="../../../assets/tables/mesh-e/429.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/430.png"><img alt="" src="../../../assets/tables/mesh-e/430.png" /></a></td>
+<td>指揮塔臺<br>template = control_tower</td>
+<td>以底部小圓柱為基準，碰撞箱是它的外接正方體</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/432.png"><img alt="" src="../../../assets/tables/mesh-e/432.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/433.png"><img alt="" src="../../../assets/tables/mesh-e/433.png" /></a></td>
+<td>工地施工雜物之磚塊堆<br>template = contruction_bricks</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/435.png"><img alt="" src="../../../assets/tables/mesh-e/435.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/436.png"><img alt="" src="../../../assets/tables/mesh-e/436.png" /></a></td>
+<td>塔吊<br>template = crane</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/438.png"><img alt="" src="../../../assets/tables/mesh-e/438.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/439.png"><img alt="" src="../../../assets/tables/mesh-e/439.png" /></a></td>
+<td>塔吊底座<br>template = crane_base</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/441.png"><img alt="" src="../../../assets/tables/mesh-e/441.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/442.png"><img alt="" src="../../../assets/tables/mesh-e/442.png" /></a></td>
+<td>一號掩體廢墟<br>template = destroyed_bunker_1</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/445.png"><img alt="" src="../../../assets/tables/mesh-e/445.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/444.png"><img alt="" src="../../../assets/tables/mesh-e/444.png" /></a></td>
+<td>碼頭起重機<br>template = dock_crane</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/446.png"><img alt="" src="../../../assets/tables/mesh-e/446.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/447.png"><img alt="" src="../../../assets/tables/mesh-e/447.png" /></a></td>
+<td>堡壘入口<br>template = fort_entrance</td>
+<td>注意：模型懸空<br>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/448.png"><img alt="" src="../../../assets/tables/mesh-e/448.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/449.png"><img alt="" src="../../../assets/tables/mesh-e/449.png" /></a></td>
+<td>壞油罐<br>template = gas_tankT</td>
+<td>外觀像被火燒焦過<br>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/450.png"><img alt="" src="../../../assets/tables/mesh-e/450.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/451.png"><img alt="" src="../../../assets/tables/mesh-e/451.png" /></a></td>
+<td>乾草堆<br>template = hay_stack</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/452.png"><img alt="" src="../../../assets/tables/mesh-e/452.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/453.png"><img alt="" src="../../../assets/tables/mesh-e/453.png" /></a></td>
+<td>加油站<br>template = gas_station</td>
+<td>右側加油機無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/455.png"><img alt="" src="../../../assets/tables/mesh-e/455.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/454.png"><img alt="" src="../../../assets/tables/mesh-e/454.png" /></a></td>
+<td>油罐<br>template = gas_tank</td>
+<td>不是載具，炸不壞也推不動</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/456.png"><img alt="" src="../../../assets/tables/mesh-e/456.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/457.png"><img alt="" src="../../../assets/tables/mesh-e/457.png" /></a></td>
+<td>火車頭<br>template = locomotive</td>
+<td>殘破版本</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/458.png"><img alt="" src="../../../assets/tables/mesh-e/458.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/459.png"><img alt="" src="../../../assets/tables/mesh-e/459.png" /></a></td>
+<td>舊划艇<br>template = old_rowboat</td>
+<td>碰撞箱是矩形且翻不過去</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/460.png"><img alt="" src="../../../assets/tables/mesh-e/460.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/461.png"><img alt="" src="../../../assets/tables/mesh-e/461.png" /></a></td>
+<td>舊卡車<br>template = old_truck</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/462.png"><img alt="" src="../../../assets/tables/mesh-e/462.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/463.png"><img alt="" src="../../../assets/tables/mesh-e/463.png" /></a></td>
+<td>佛塔雕像<br>template = pagoda_statue</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/464.png"><img alt="" src="../../../assets/tables/mesh-e/464.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/465.png"><img alt="" src="../../../assets/tables/mesh-e/465.png" /></a></td>
+<td>佛塔高雕像<br>template = pagoda_statue_tall</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/466.png"><img alt="" src="../../../assets/tables/mesh-e/466.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/467.png"><img alt="" src="../../../assets/tables/mesh-e/467.png" /></a></td>
+<td>皮卡車<br>template = pickup</td>
+<td>不是載具，炸不壞也推不動<br>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/469.png"><img alt="" src="../../../assets/tables/mesh-e/469.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/468.png"><img alt="" src="../../../assets/tables/mesh-e/468.png" /></a></td>
+<td>皮卡車殘骸<br>template = pickup_broken</td>
+<td>不是載具，炸不壞也推不動</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/470.png"><img alt="" src="../../../assets/tables/mesh-e/470.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/471.png"><img alt="" src="../../../assets/tables/mesh-e/471.png" /></a></td>
+<td>綠色皮卡車<br>template = pickup_green</td>
+<td>不是載具，炸不壞也推不動</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/473.png"><img alt="" src="../../../assets/tables/mesh-e/473.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/472.png"><img alt="" src="../../../assets/tables/mesh-e/472.png" /></a></td>
+<td>卡其色皮卡車<br>template = pickup_khaki</td>
+<td>不是載具，炸不壞也推不動<br>同模型換色版本，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/475.png"><img alt="" src="../../../assets/tables/mesh-e/475.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/474.png"><img alt="" src="../../../assets/tables/mesh-e/474.png" /></a></td>
+<td>紅色皮卡車<br>template = pickup_red</td>
+<td>不是載具，炸不壞也推不動<br>同模型換色版本，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/477.png"><img alt="" src="../../../assets/tables/mesh-e/477.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/476.png"><img alt="" src="../../../assets/tables/mesh-e/476.png" /></a></td>
+<td>黃色皮卡車<br>template = pickup_yellow</td>
+<td>不是載具，炸不壞也推不動<br>同模型換色版本，<span class="redact" tabindex="0">預覽圖 2 懶得換了</span></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/478.png"><img alt="" src="../../../assets/tables/mesh-e/478.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/479.png"><img alt="" src="../../../assets/tables/mesh-e/479.png" /></a></td>
+<td>無砟軌道板<br>template = railroad_bump</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/480.png"><img alt="" src="../../../assets/tables/mesh-e/480.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/481.png"><img alt="" src="../../../assets/tables/mesh-e/481.png" /></a></td>
+<td>彎曲鐵道<br>template = railroad_curved_element</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/482.png"><img alt="" src="../../../assets/tables/mesh-e/482.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/483.png"><img alt="" src="../../../assets/tables/mesh-e/483.png" /></a></td>
+<td>50m長直鐵軌<br>template = railroad_straight_element_50m</td>
+<td>有碰撞箱，但沒有碰撞體積</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/485.png"><img alt="" src="../../../assets/tables/mesh-e/485.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/484.png"><img alt="" src="../../../assets/tables/mesh-e/484.png" /></a></td>
+<td>橡皮艇殘骸<br>template = rubber_boat_broken</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/486.png"><img alt="" src="../../../assets/tables/mesh-e/486.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/487.png"><img alt="" src="../../../assets/tables/mesh-e/487.png" /></a></td>
+<td>廢墟碎片<br>template = ruin_debris1</td>
+<td>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/488.png"><img alt="" src="../../../assets/tables/mesh-e/488.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/489.png"><img alt="" src="../../../assets/tables/mesh-e/489.png" /></a></td>
+<td>廢墟碎片<br>template = ruin_debris2</td>
+<td>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/490.png"><img alt="" src="../../../assets/tables/mesh-e/490.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/491.png"><img alt="" src="../../../assets/tables/mesh-e/491.png" /></a></td>
+<td>廢墟碎片<br>template = ruin_debris3</td>
+<td>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/492.png"><img alt="" src="../../../assets/tables/mesh-e/492.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/493.png"><img alt="" src="../../../assets/tables/mesh-e/493.png" /></a></td>
+<td>廢墟碎片<br>template = ruin_debris4</td>
+<td>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/495.png"><img alt="" src="../../../assets/tables/mesh-e/495.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/494.png"><img alt="" src="../../../assets/tables/mesh-e/494.png" /></a></td>
+<td>RWR雕像<br>template = rwr</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/496.png"><img alt="" src="../../../assets/tables/mesh-e/496.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/497.png"><img alt="" src="../../../assets/tables/mesh-e/497.png" /></a></td>
+<td>稻草人<br>template = scarecrow</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/498.png"><img alt="" src="../../../assets/tables/mesh-e/498.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/499.png"><img alt="" src="../../../assets/tables/mesh-e/499.png" /></a></td>
+<td>筒倉<br>template = silo</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/500.png"><img alt="" src="../../../assets/tables/mesh-e/500.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/501.png"><img alt="" src="../../../assets/tables/mesh-e/501.png" /></a></td>
+<td>小油罐<br>template = small_oil_tank</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/502.png"><img alt="" src="../../../assets/tables/mesh-e/502.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/503.png"><img alt="" src="../../../assets/tables/mesh-e/503.png" /></a></td>
+<td>臺階<br>template = stairs1</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/505.png"><img alt="" src="../../../assets/tables/mesh-e/505.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/504.png"><img alt="" src="../../../assets/tables/mesh-e/504.png" /></a></td>
+<td>二號雕像<br>template = statue2</td>
+<td>底座無碰撞箱，中心的雕像有</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/506.png"><img alt="" src="../../../assets/tables/mesh-e/506.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/507.png"><img alt="" src="../../../assets/tables/mesh-e/507.png" /></a></td>
+<td>另一個二號雕像<br>template = statue_2</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/508.png"><img alt="" src="../../../assets/tables/mesh-e/508.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/509.png"><img alt="" src="../../../assets/tables/mesh-e/509.png" /></a></td>
+<td>稻草堆<br>template = stook</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/511.png"><img alt="" src="../../../assets/tables/mesh-e/511.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/510.png"><img alt="" src="../../../assets/tables/mesh-e/510.png" /></a></td>
+<td>街上的一堆小垃圾<br>template = street_ground_trash</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/512.png"><img alt="" src="../../../assets/tables/mesh-e/512.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/513.png"><img alt="" src="../../../assets/tables/mesh-e/513.png" /></a></td>
+<td>高塔<br>template = tower_big</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/515.png"><img alt="" src="../../../assets/tables/mesh-e/515.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/514.png"><img alt="" src="../../../assets/tables/mesh-e/514.png" /></a></td>
+<td>木頭堆<br>template = trunks</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/516.png"><img alt="" src="../../../assets/tables/mesh-e/516.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/517.png"><img alt="" src="../../../assets/tables/mesh-e/517.png" /></a></td>
+<td>立着倚靠的車輪<br>template = tyre1_lean</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/519.png"><img alt="" src="../../../assets/tables/mesh-e/519.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/518.png"><img alt="" src="../../../assets/tables/mesh-e/518.png" /></a></td>
+<td>輪胎柱<br>template = pickup_broken</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/520.png"><img alt="" src="../../../assets/tables/mesh-e/520.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/521.png"><img alt="" src="../../../assets/tables/mesh-e/521.png" /></a></td>
+<td>黃色麵包車<br>template = van_yellow</td>
+<td>不是載具，炸不壞也推不動</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/523.png"><img alt="" src="../../../assets/tables/mesh-e/523.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/522.png"><img alt="" src="../../../assets/tables/mesh-e/522.png" /></a></td>
+<td>麵包車殘骸<br>template = vanT_broken</td>
+<td>不是載具，炸不壞也推不動</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/525.png"><img alt="" src="../../../assets/tables/mesh-e/525.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/524.png"><img alt="" src="../../../assets/tables/mesh-e/524.png" /></a></td>
+<td>木頭路牌<br>template = wooden_road_sign</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/527.png"><img alt="" src="../../../assets/tables/mesh-e/527.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/526.png"><img alt="" src="../../../assets/tables/mesh-e/526.png" /></a></td>
+<td>二戰掩體<br>template = ww2_bunker</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/529.png"><img alt="" src="../../../assets/tables/mesh-e/529.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/528.png"><img alt="" src="../../../assets/tables/mesh-e/528.png" /></a></td>
+<td>二戰監獄掩體<br>template = ww2_bunker_prison</td>
+<td>似乎與上一項沒有區別</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/531.png"><img alt="" src="../../../assets/tables/mesh-e/531.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/530.png"><img alt="" src="../../../assets/tables/mesh-e/530.png" /></a></td>
+<td>二戰飛機殘骸<br>template = ww2_plane_broken</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/532.png"><img alt="" src="../../../assets/tables/mesh-e/532.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/533.png"><img alt="" src="../../../assets/tables/mesh-e/533.png" /></a></td>
+<td>車1<br>template = car1</td>
+<td>不是載具，炸不壞也推不動<br>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/534.png"><img alt="" src="../../../assets/tables/mesh-e/534.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/535.png"><img alt="" src="../../../assets/tables/mesh-e/535.png" /></a></td>
+<td>車2<br>template = car2</td>
+<td>不是載具，炸不壞也推不動<br>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/536.png"><img alt="" src="../../../assets/tables/mesh-e/536.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/537.png"><img alt="" src="../../../assets/tables/mesh-e/537.png" /></a></td>
+<td>車3<br>template = car3</td>
+<td>不是載具，炸不壞也推不動<br>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/538.png"><img alt="" src="../../../assets/tables/mesh-e/538.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/539.png"><img alt="" src="../../../assets/tables/mesh-e/539.png" /></a></td>
+<td>車4<br>template = car4</td>
+<td>不是載具，炸不壞也推不動<br>疑似材質錯誤</td>
+</tr>
+</tbody>
+</table>
+<h2 id="large">大物件<a class="headerlink" href="#large" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>預覽</th>
+<th>名稱</th>
+<th>備註</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/005.png"><img alt="" src="../../../assets/tables/mesh-e/005.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/006.png"><img alt="" src="../../../assets/tables/mesh-e/006.png" /></a></td>
+<td>超大油罐<br>template = big_oil_tank</td>
+<td>底部臺地無碰撞箱，只有中間圓柱有</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/014.png"><img alt="" src="../../../assets/tables/mesh-e/014.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/015.png"><img alt="" src="../../../assets/tables/mesh-e/015.png" /></a></td>
+<td>中號房子<br>template = medi_house</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/025.png"><img alt="" src="../../../assets/tables/mesh-e/025.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/024.png"><img alt="" src="../../../assets/tables/mesh-e/024.png" /></a></td>
+<td>機庫<br>template = hangar</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/035.png"><img alt="" src="../../../assets/tables/mesh-e/035.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/034.png"><img alt="" src="../../../assets/tables/mesh-e/034.png" /></a></td>
+<td>機庫一號<br>template = hangar1</td>
+<td>門在背面</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/044.png"><img alt="" src="../../../assets/tables/mesh-e/044.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/043.png"><img alt="" src="../../../assets/tables/mesh-e/043.png" /></a></td>
+<td>機庫二號<br>template = hangar2</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/050.png"><img alt="" src="../../../assets/tables/mesh-e/050.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/051.png"><img alt="" src="../../../assets/tables/mesh-e/051.png" /></a></td>
+<td>倉庫<br>template = warehouse</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/058.png"><img alt="" src="../../../assets/tables/mesh-e/058.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/057.png"><img alt="" src="../../../assets/tables/mesh-e/057.png" /></a></td>
+<td>倉庫二號<br>template = warehouse2</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/064.png"><img alt="" src="../../../assets/tables/mesh-e/064.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/065.png"><img alt="" src="../../../assets/tables/mesh-e/065.png" /></a></td>
+<td>穀倉<br>template = barn</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/072.png"><img alt="" src="../../../assets/tables/mesh-e/072.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/071.png"><img alt="" src="../../../assets/tables/mesh-e/071.png" /></a></td>
+<td>清真寺<br>template = mosque</td>
+<td>碰撞箱只有主體，貼着的小建築物沒碰撞</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/078.png"><img alt="" src="../../../assets/tables/mesh-e/078.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/079.png"><img alt="" src="../../../assets/tables/mesh-e/079.png" /></a></td>
+<td>非常大的清真寺<br>template = mosque2</td>
+<td>體量非常大<br>碰撞箱只有主體，外圍建築沒有</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/085.png"><img alt="" src="../../../assets/tables/mesh-e/085.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/086.png"><img alt="" src="../../../assets/tables/mesh-e/086.png" /></a></td>
+<td>教堂<br>template = church</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/092.png"><img alt="" src="../../../assets/tables/mesh-e/092.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/093.png"><img alt="" src="../../../assets/tables/mesh-e/093.png" /></a></td>
+<td>小教堂<br>template = chapel</td>
+<td>側面凸出的牆體無碰撞箱，主體有</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/099.png"><img alt="" src="../../../assets/tables/mesh-e/099.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/100.png"><img alt="" src="../../../assets/tables/mesh-e/100.png" /></a></td>
+<td>航母<br>template = aircraft_carrier</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/107.png"><img alt="" src="../../../assets/tables/mesh-e/107.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/106.png"><img alt="" src="../../../assets/tables/mesh-e/106.png" /></a></td>
+<td>大號帳篷<br>template = big_tent</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/113.png"><img alt="" src="../../../assets/tables/mesh-e/113.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/114.png"><img alt="" src="../../../assets/tables/mesh-e/114.png" /></a></td>
+<td>貨輪<br>template = cargo_ship</td>
+<td>無碰撞箱<br>與地面齊平，需要自行搭建平臺</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/120.png"><img alt="" src="../../../assets/tables/mesh-e/120.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/121.png"><img alt="" src="../../../assets/tables/mesh-e/121.png" /></a></td>
+<td>二號城堡<br>template = castle2</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/127.png"><img alt="" src="../../../assets/tables/mesh-e/127.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/128.png"><img alt="" src="../../../assets/tables/mesh-e/128.png" /></a></td>
+<td>小屋<br>template = cottage</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/134.png"><img alt="" src="../../../assets/tables/mesh-e/134.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/135.png"><img alt="" src="../../../assets/tables/mesh-e/135.png" /></a></td>
+<td>旅店<br>template = hotel</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/142.png"><img alt="" src="../../../assets/tables/mesh-e/142.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/143.png"><img alt="" src="../../../assets/tables/mesh-e/143.png" /></a></td>
+<td>軍營<br>template = military_house</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/149.png"><img alt="" src="../../../assets/tables/mesh-e/149.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/150.png"><img alt="" src="../../../assets/tables/mesh-e/150.png" /></a></td>
+<td>廢墟<br>template = ruins_1</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/156.png"><img alt="" src="../../../assets/tables/mesh-e/156.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/157.png"><img alt="" src="../../../assets/tables/mesh-e/157.png" /></a></td>
+<td>廢墟<br>template = ruins_2</td>
+<td>無碰撞箱<br>疑似材質錯誤</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/163.png"><img alt="" src="../../../assets/tables/mesh-e/163.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/164.png"><img alt="" src="../../../assets/tables/mesh-e/164.png" /></a></td>
+<td>廢墟<br>template = ruins_3</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/171.png"><img alt="" src="../../../assets/tables/mesh-e/171.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/172.png"><img alt="" src="../../../assets/tables/mesh-e/172.png" /></a></td>
+<td>廢墟<br>template = ruins_4</td>
+<td>無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/178.png"><img alt="" src="../../../assets/tables/mesh-e/178.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/177.png"><img alt="" src="../../../assets/tables/mesh-e/177.png" /></a></td>
+<td>靶場<br>template = shooting_range</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/184.png"><img alt="" src="../../../assets/tables/mesh-e/184.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/185.png"><img alt="" src="../../../assets/tables/mesh-e/185.png" /></a></td>
+<td>聖殿<br>template = temple</td>
+<td>門口一小部分無碰撞箱</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/192.png"><img alt="" src="../../../assets/tables/mesh-e/192.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/191.png"><img alt="" src="../../../assets/tables/mesh-e/191.png" /></a></td>
+<td>隧道<br>template = tunnel</td>
+<td>無碰撞箱</td>
+</tr>
+</tbody>
+</table>
+<h2 id="special">特殊物件<a class="headerlink" href="#special" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>預覽</th>
+<th>名稱</th>
+<th>備註</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/007.png"><img alt="" src="../../../assets/tables/mesh-e/007.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/008.png"><img alt="" src="../../../assets/tables/mesh-e/008.png" /></a></td>
+<td>單線電線杆子<br>template = post1_1</td>
+<td>這個物件比較特殊，主要用途是連成一串擺放<br>看法線意義不大，<br>杆子方向取兩根電線夾角的角平分線方向<br>如下圖所示：</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/016.png"><img alt="" src="../../../assets/tables/mesh-e/016.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/017.png"><img alt="" src="../../../assets/tables/mesh-e/017.png" /></a></td>
+<td>雙線電線杆子<br>template = post1_</td>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/018.png"><img alt="" src="../../../assets/tables/mesh-e/018.png" /></a></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/026.png"><img alt="" src="../../../assets/tables/mesh-e/026.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/027.png"><img alt="" src="../../../assets/tables/mesh-e/027.png" /></a></td>
+<td>三線電線杆子<br>template = post1_3</td>
+<td></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/037.png"><img alt="" src="../../../assets/tables/mesh-e/037.png" /></a><br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/036.png"><img alt="" src="../../../assets/tables/mesh-e/036.png" /></a></td>
+<td>大臂電線杆子<br>template = post1_4</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="broken">有嚴重問題的物件<a class="headerlink" href="#broken" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>預覽</th>
+<th>名稱</th>
+<th>備註</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/009.png"><img alt="" src="../../../assets/tables/mesh-e/009.png" /></a></td>
+<td>木桶<br>template = barrel_wood</td>
+<td>加載時崩潰</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/019.png"><img alt="" src="../../../assets/tables/mesh-e/019.png" /></a></td>
+<td>可破壞的桶<br>template = barrel_breakable</td>
+<td>加載時崩潰</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/028.png"><img alt="" src="../../../assets/tables/mesh-e/028.png" /></a></td>
+<td>醫療箱子<br>template = crate_medical</td>
+<td>加載時崩潰</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/038.png"><img alt="" src="../../../assets/tables/mesh-e/038.png" /></a></td>
+<td>可破壞的箱子<br>template = crate_breakable</td>
+<td>加載時崩潰</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/045.png"><img alt="" src="../../../assets/tables/mesh-e/045.png" /></a></td>
+<td>掩體<br>template = bunker</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/052.png"><img alt="" src="../../../assets/tables/mesh-e/052.png" /></a></td>
+<td>老式大號房子<br>template = old_big_house</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/059.png"><img alt="" src="../../../assets/tables/mesh-e/059.png" /></a></td>
+<td>老式小號房子<br>template = old_small_house</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/066.png"><img alt="" src="../../../assets/tables/mesh-e/066.png" /></a></td>
+<td>犁溝<br>template = furrow</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/073.png"><img alt="" src="../../../assets/tables/mesh-e/073.png" /></a></td>
+<td>短高犁溝<br>template = furrow_height</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/080.png"><img alt="" src="../../../assets/tables/mesh-e/080.png" /></a></td>
+<td>一號長高犁溝<br>template = furrow_height1</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/087.png"><img alt="" src="../../../assets/tables/mesh-e/087.png" /></a></td>
+<td>二號長高犁溝<br>template = furrow_height2</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/094.png"><img alt="" src="../../../assets/tables/mesh-e/094.png" /></a></td>
+<td><br>template = chargo_tent</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/101.png"><img alt="" src="../../../assets/tables/mesh-e/101.png" /></a></td>
+<td>彈藥箱<br>template = ammo_crate</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/108.png"><img alt="" src="../../../assets/tables/mesh-e/108.png" /></a></td>
+<td>軍械箱<br>template = armory_crate</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/115.png"><img alt="" src="../../../assets/tables/mesh-e/115.png" /></a></td>
+<td>被摧毀的火炮牽引車<br>template = artillery_limber_destroyed</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/122.png"><img alt="" src="../../../assets/tables/mesh-e/122.png" /></a></td>
+<td>攻擊艦<br>template = attack_ship</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/129.png"><img alt="" src="../../../assets/tables/mesh-e/129.png" /></a></td>
+<td>B29轟炸機形態一<br>template = b29_1</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/136.png"><img alt="" src="../../../assets/tables/mesh-e/136.png" /></a></td>
+<td>B29轟炸機形態二<br>template = b29_2</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/144.png"><img alt="" src="../../../assets/tables/mesh-e/144.png" /></a></td>
+<td>B29轟炸機形態三<br>template = b29_3</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/151.png"><img alt="" src="../../../assets/tables/mesh-e/151.png" /></a></td>
+<td>墜機的C47<br>template = c47_crashed</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/158.png"><img alt="" src="../../../assets/tables/mesh-e/158.png" /></a></td>
+<td>樹冠<br>template = canopy_01</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/165.png"><img alt="" src="../../../assets/tables/mesh-e/165.png" /></a></td>
+<td>款式一黑色轎車<br>template = car1_black</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/173.png"><img alt="" src="../../../assets/tables/mesh-e/173.png" /></a></td>
+<td>款式一藍色轎車<br>template = car1_blue</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/179.png"><img alt="" src="../../../assets/tables/mesh-e/179.png" /></a></td>
+<td>款式一棕色轎車<br>template = car1_brown</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/186.png"><img alt="" src="../../../assets/tables/mesh-e/186.png" /></a></td>
+<td>款式一綠色轎車<br>template = car1_green</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/193.png"><img alt="" src="../../../assets/tables/mesh-e/193.png" /></a></td>
+<td>款式一粉色轎車<br>template = car1_pink</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/198.png"><img alt="" src="../../../assets/tables/mesh-e/198.png" /></a></td>
+<td>款式一紅色轎車<br>template = car1_red</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/203.png"><img alt="" src="../../../assets/tables/mesh-e/203.png" /></a></td>
+<td>款式二黑色轎車<br>template = car2_black</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/208.png"><img alt="" src="../../../assets/tables/mesh-e/208.png" /></a></td>
+<td>款式二藍色轎車<br>template = car2_blue</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/213.png"><img alt="" src="../../../assets/tables/mesh-e/213.png" /></a></td>
+<td>款式二棕色轎車<br>template = car2_brown</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/218.png"><img alt="" src="../../../assets/tables/mesh-e/218.png" /></a></td>
+<td>款式三黑色轎車<br>template = car3_black</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/223.png"><img alt="" src="../../../assets/tables/mesh-e/223.png" /></a></td>
+<td>款式三藍色轎車<br>template = car3_blue</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/228.png"><img alt="" src="../../../assets/tables/mesh-e/228.png" /></a></td>
+<td>款式三綠色轎車<br>template = car3_green</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/233.png"><img alt="" src="../../../assets/tables/mesh-e/233.png" /></a></td>
+<td>貨物棚<br>template = cargo_tent</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/238.png"><img alt="" src="../../../assets/tables/mesh-e/238.png" /></a></td>
+<td>航母<br>template = carrier</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/243.png"><img alt="" src="../../../assets/tables/mesh-e/243.png" /></a></td>
+<td>集裝箱<br>template = container</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/248.png"><img alt="" src="../../../assets/tables/mesh-e/248.png" /></a></td>
+<td>冷卻塔<br>template = cooling_tower</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/253.png"><img alt="" src="../../../assets/tables/mesh-e/253.png" /></a></td>
+<td>二號小屋<br>template = cottage_2</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/258.png"><img alt="" src="../../../assets/tables/mesh-e/258.png" /></a></td>
+<td>跑車殘骸<br>template = coupeT_broken</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/263.png"><img alt="" src="../../../assets/tables/mesh-e/263.png" /></a></td>
+<td>戰鬥機<br>template = fighter</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/268.png"><img alt="" src="../../../assets/tables/mesh-e/268.png" /></a></td>
+<td>美軍戰鬥機<br>template = fighter_green</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/273.png"><img alt="" src="../../../assets/tables/mesh-e/273.png" /></a></td>
+<td>法國教堂<br>template = french_church</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/278.png"><img alt="" src="../../../assets/tables/mesh-e/278.png" /></a></td>
+<td>鏡像的法國教堂<br>template = french_church_mirrored</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/283.png"><img alt="" src="../../../assets/tables/mesh-e/283.png" /></a></td>
+<td>總部大樓<br>template = headquarters_building</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/288.png"><img alt="" src="../../../assets/tables/mesh-e/288.png" /></a></td>
+<td>希金斯登陸艇<br>template = higgins_prop</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/294.png"><img alt="" src="../../../assets/tables/mesh-e/294.png" /></a></td>
+<td>獅鷲雕像<br>template = griffon_statue</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/299.png"><img alt="" src="../../../assets/tables/mesh-e/299.png" /></a></td>
+<td>Jack的馬第一形態<br>template = horse_casualty1</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/304.png"><img alt="" src="../../../assets/tables/mesh-e/304.png" /></a></td>
+<td>Jack的馬第二形態<br>template = horse_casualty2</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/309.png"><img alt="" src="../../../assets/tables/mesh-e/309.png" /></a></td>
+<td>Jack的馬第三形態<br>template = horse_casualty3</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/314.png"><img alt="" src="../../../assets/tables/mesh-e/314.png" /></a></td>
+<td>油桶堆<br>template = oil_drum_stack</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/319.png"><img alt="" src="../../../assets/tables/mesh-e/319.png" /></a></td>
+<td>帶防水布的油桶堆<br>template = oil_drum_stack_tarp</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/324.png"><img alt="" src="../../../assets/tables/mesh-e/324.png" /></a></td>
+<td>藍色皮卡車<br>template = pickup_blue</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/329.png"><img alt="" src="../../../assets/tables/mesh-e/329.png" /></a></td>
+<td>T形態皮卡車殘骸<br>template = pickupT_broken</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/334.png"><img alt="" src="../../../assets/tables/mesh-e/334.png" /></a></td>
+<td>板條<br>template = plank</td>
+<td>材質未加載<br>上一個模板可以正常加載<br><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/335.png"><img alt="" src="../../../assets/tables/mesh-e/335.png" /></a></td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/340.png"><img alt="" src="../../../assets/tables/mesh-e/340.png" /></a></td>
+<td>半圓拱形活動房屋<br>template = quonset_hut</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/345.png"><img alt="" src="../../../assets/tables/mesh-e/345.png" /></a></td>
+<td>轎車殘骸<br>template = sedanT_broken</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/350.png"><img alt="" src="../../../assets/tables/mesh-e/350.png" /></a></td>
+<td>海運集裝箱<br>template = shipping_container</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/353.png"><img alt="" src="../../../assets/tables/mesh-e/353.png" /></a></td>
+<td>放置的炸彈<br>template = static_bomb</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/356.png"><img alt="" src="../../../assets/tables/mesh-e/356.png" /></a></td>
+<td>放置的魚雷<br>template = static_torpedo</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/359.png"><img alt="" src="../../../assets/tables/mesh-e/359.png" /></a></td>
+<td>雕像<br>template = statue</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/362.png"><img alt="" src="../../../assets/tables/mesh-e/362.png" /></a></td>
+<td>另一個二號雕像底座<br>template = statue_2_socle</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/365.png"><img alt="" src="../../../assets/tables/mesh-e/365.png" /></a></td>
+<td>一號樹樁<br>template = stump1</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/368.png"><img alt="" src="../../../assets/tables/mesh-e/368.png" /></a></td>
+<td>二號樹樁<br>template = stump2</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/371.png"><img alt="" src="../../../assets/tables/mesh-e/371.png" /></a></td>
+<td>三號樹樁<br>template = stump3</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/374.png"><img alt="" src="../../../assets/tables/mesh-e/374.png" /></a></td>
+<td>四號樹樁<br>template = stump4</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/377.png"><img alt="" src="../../../assets/tables/mesh-e/377.png" /></a></td>
+<td>藍色太陽椅<br>template = sunchair_blue</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/380.png"><img alt="" src="../../../assets/tables/mesh-e/380.png" /></a></td>
+<td>綠色太陽椅<br>template = sunchair_green</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/383.png"><img alt="" src="../../../assets/tables/mesh-e/383.png" /></a></td>
+<td>T的殘骸<br>template = T_broken</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/386.png"><img alt="" src="../../../assets/tables/mesh-e/386.png" /></a></td>
+<td>1934年的帳篷<br>template = tent_m1934</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/389.png"><img alt="" src="../../../assets/tables/mesh-e/389.png" /></a></td>
+<td>1934年的帳篷款式二<br>template = tent_m1934_2</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/392.png"><img alt="" src="../../../assets/tables/mesh-e/392.png" /></a></td>
+<td>1934年的醫療帳篷<br>template = tent_m1934_medical</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/395.png"><img alt="" src="../../../assets/tables/mesh-e/395.png" /></a></td>
+<td>桁架橋<br>template = truss_bridge</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/398.png"><img alt="" src="../../../assets/tables/mesh-e/398.png" /></a></td>
+<td>藍色麵包車<br>template = van_blue</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/401.png"><img alt="" src="../../../assets/tables/mesh-e/401.png" /></a></td>
+<td>棕色麵包車<br>template = van_brown</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/404.png"><img alt="" src="../../../assets/tables/mesh-e/404.png" /></a></td>
+<td>綠色麵包車<br>template = van_green</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/407.png"><img alt="" src="../../../assets/tables/mesh-e/407.png" /></a></td>
+<td>卡其色麵包車<br>template = van_khaki</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/410.png"><img alt="" src="../../../assets/tables/mesh-e/410.png" /></a></td>
+<td>紅色麵包車<br>template = van_red</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/413.png"><img alt="" src="../../../assets/tables/mesh-e/413.png" /></a></td>
+<td>天藍色麵包車<br>template = van_sky</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/416.png"><img alt="" src="../../../assets/tables/mesh-e/416.png" /></a></td>
+<td>瓦科滑翔機<br>template = waco_glider_1</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/419.png"><img alt="" src="../../../assets/tables/mesh-e/419.png" /></a></td>
+<td>瓦科滑翔機<br>template = waco_glider_2</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/422.png"><img alt="" src="../../../assets/tables/mesh-e/422.png" /></a></td>
+<td>儲藏船<br>template = weapon_rack_ship</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/425.png"><img alt="" src="../../../assets/tables/mesh-e/425.png" /></a></td>
+<td><br>template = horse_casualty27</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/428.png"><img alt="" src="../../../assets/tables/mesh-e/428.png" /></a></td>
+<td><br>template = horse_casualty28</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/431.png"><img alt="" src="../../../assets/tables/mesh-e/431.png" /></a></td>
+<td><br>template = horse_casualty29</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/434.png"><img alt="" src="../../../assets/tables/mesh-e/434.png" /></a></td>
+<td><br>template = horse_casualty30</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/437.png"><img alt="" src="../../../assets/tables/mesh-e/437.png" /></a></td>
+<td><br>template = horse_casualty31</td>
+<td>材質未加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/440.png"><img alt="" src="../../../assets/tables/mesh-e/440.png" /></a></td>
+<td>聖誕仙人掌（小）<br>template = xmas_cactus</td>
+<td>素材丟失<br>上一個模板可以正常加載</td>
+</tr>
+<tr>
+<td><a class="glightbox" data-type="image" href="../../../assets/tables/mesh-e/443.png"><img alt="" src="../../../assets/tables/mesh-e/443.png" /></a></td>
+<td>圓一點的土黃色大石頭<br>template = rock_h2</td>
+<td>素材丟失<br>上一個模板可以正常加載</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+      
+        <span class="md-tag">材質</span>
+      
+    
+      
+      
+      
+      
+        <span class="md-tag">模型</span>
+      
+    
+  </nav>
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  回到頂部
+</button>
+        
+      </main>
+      
+        
+
+
+
+
+
+
+
+
+
+<footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="頁脚" >
+        
+          
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="上一頁: 模型清單">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一頁
+              </span>
+              <div class="md-ellipsis">
+                模型清單
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../wall/" class="md-footer__link md-footer__link--next" aria-label="下一頁: Wall E">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一頁
+              </span>
+              <div class="md-ellipsis">
+                Wall E
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  <div class="brand-footer">
+    <div class="brand-footer__brand">
+      <a class="brand-footer__title" href="../../">
+        
+        <img class="brand-footer__logo" src="../../../assets/rwricon.png" alt="RWR 地编手册">
+        
+        RWR 地编手册<span>↗</span>
+      </a>
+      
+      <p>有人試過，才寫下來。</p>
+    </div>
+    <div class="brand-footer__meta">
+      
+      由 Zensical 構建<br>字型與腳本全部自託管<br>
+      <a href="../../tags/">依標籤瀏覽 ↗</a>
+    </div>
+    <div class="brand-footer__bottom">
+      <span>RWR 地圖編輯器手冊</span><a href="https://github.com/rwr-infra/rwr-mapbook">文檔倉庫 rwr-infra/rwr-mapbook ↗</a>
+      <a href="#__consent">隱私設定</a>
+      <a href="#top">回到頂部 ↑</a>
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+<h4>資料隱私</h4>
+<p>本站不收集任何存取資料：無統計、無廣告，亦不設定 cookie 或發起任何第三方請求。字型、樣式與腳本均由本站自行託管，存取任何頁面只連接本站一個網域。瀏覽器本機僅儲存一項深淺色顯示偏好，清除瀏覽器資料後即被移除。</p>
+
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">我已知悉</button>
+    
+    
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"../../..","features":["announce.dismiss","content.code.annotate","content.code.copy","content.code.select","content.footnote.tooltips","content.tabs.link","content.tooltips","navigation.expand","navigation.footer","navigation.indexes","navigation.path","navigation.sections","navigation.tabs","navigation.top","navigation.tracking","toc.follow"],"redirect":null,"search":"../../../assets/javascripts/workers/search.7d14d953.min.js","tags":null,"translations":{"clipboard.copied":"已拷貝","clipboard.copy":"拷貝","search.result.more.one":"此頁尚有 1 個符合的項目","search.result.more.other":"此頁尚有 # 個符合的項目","search.result.none":"沒有找到符合條件的結果","search.result.one":"找到 1 个符合條件的結果","search.result.other":"找到 # 個符合條件的結果","search.result.placeholder":"鍵入以開始檢索","search.result.term.missing":"缺失","select.version":"選擇版本"},"version":[{"current":true,"date":"2026-09-06","id":"0101","label":"地编版本 0101"},{"date":"2026-05-14","id":"egg","label":"彩蛋"}]}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.8dcc8e9c.min.js"></script>
+      
+        <script src="../../../javascripts/glightbox.min.js"></script>
+      
+        <script src="../../../javascripts/table-tools.js"></script>
+      
+        <script src="../../../javascripts/redact.js"></script>
+      
+        <script src="../../../javascripts/download.js"></script>
+      
+        <script src="../../../javascripts/lightbox-zoom.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,5 @@
+# ⚠️ 本文件由 tools/navgen.py 自动生成，请勿手改。
+# 顺序与显示名来自同目录 index.md 的 YAML 前置元数据（nav / nav_label / title）。
+# 重新生成： uv run python tools/navgen.py
+nav:
+- 标签: index.md

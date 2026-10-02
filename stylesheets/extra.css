@@ -1,0 +1,943 @@
+/**
+ * 文档站样式 · 少量补充
+ *
+ * 站点主体使用 **Material 默认主题**（浅色优先、无衬线）。
+ * 本文件只做少量补充，不覆盖配色与字体体系。
+ * 字体与脚本全部自托管，见 stylesheets/fonts.css。
+ */
+
+/* ══════════════════════════════════════════════════════════════
+   强调色的无障碍修正（唯一一处改配色）
+
+   Material 默认强调色 indigo #526cfe 的对比度不够正文使用：
+     对白底            4.26:1
+     对导航当前项底色  3.76:1   （浅色）
+     对导航当前项底色  4.22:1   （深色）
+   正文型文字与正文链接要求 4.5:1，所以按色调各降/升一档明度，
+   色相与饱和度保持不变，观感仍是同一个蓝。
+   两个值同时满足两种用法：作文字色（压在页面底色上）、
+   以及作底色（承载反相文字，例如强调块上的白字）。
+
+   ⚠️ 为什么写在这里而不是 zensical.toml 的 palette.accent：
+   Zensical 的 palette.accent 只接受 Material 的**颜色名**，
+   十六进制会被原样写进 data-md-color-accent 属性，匹配不到
+   [data-md-color-accent=…] 规则，结果是强调色整个失效。
+   而 Material 的 15 个候选强调色没有一个能达到 4.5:1
+   （最好的 deep-purple 也只有 4.81:1，且对导航底色只有 4.25:1）。
+
+   本文件在调色板样式表之后加载，同权重后到者生效。
+   ══════════════════════════════════════════════════════════════ */
+
+[data-md-color-scheme="default"] {
+  /* 白底 5.92:1 · 导航当前项底色 5.23:1 · 白字压其上 5.92:1 */
+  --md-accent-fg-color: #4358d0;
+  --md-accent-fg-color--transparent: #4358d01a;
+}
+
+[data-md-color-scheme="slate"] {
+  /* 页面底色 6.82:1 · 导航当前项底色 6.26:1 · 深字压其上 6.82:1 */
+  --md-accent-fg-color: #8291f5;
+  --md-accent-fg-color--transparent: #8291f51a;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   章节导语小标：写在正文里的一行大写小字，放在标题之前
+   用法：<p class="kicker">SECTION KICKER</p>
+   ══════════════════════════════════════════════════════════════ */
+
+.md-typeset .kicker {
+  margin: -0.5em 0 1.8em;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   内容元素微调
+   ══════════════════════════════════════════════════════════════ */
+
+/* 资料性表格：紧凑化，数值列不换行 */
+.md-typeset table:not([class]) {
+  font-size: 0.7rem;
+}
+
+.md-typeset table:not([class]) th {
+  white-space: nowrap;
+}
+
+.md-typeset table:not([class]) td {
+  vertical-align: top;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   下载页的三个章节标题（`{ .section-title }`）
+
+   文件下载页只要三块：地编下载 / 模板下载 / 相关说明。它们的**级别**降到了
+   `<h2>`，字号却要有页面标题那么大——级别降了、字号不降，就是这个类干的事。
+
+   为什么降级：主题的目录模板里写死了一句「第一个标题若是 h1 就跳过，只列它的
+   子项」（partials/toc.html 的 `if first.level == 1`），**页面大标题因此永远不会
+   出现在右侧目录里**。降成 h2 之后，这三条才都进得了「旁边目录」，而且排在同一层。
+
+   字号取主题 h1 的 1.875em（本站正文基准下 28.1px；h2 原本是 1.5em / 22.5px），
+   行高也照 h1 取 1.3，免得多行时露出破绽。上下外边距**不动**：h2 的
+   `1.6em 0 .64em` 正是章节之间要的间隔，h1 的 `0 0 1.25em` 是给页面开头的。
+   ══════════════════════════════════════════════════════════════ */
+.md-typeset .section-title {
+  font-size: 1.875em;
+  line-height: 1.3;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   卡片清单排成一列（`{ .cards--stack }`）
+
+   主题给 `.grid` 的是 `repeat(auto-fit, minmax(min(100%,16rem),1fr))`——
+   窄屏一列、宽屏两三列。功能页那张工具栏清单有十六项、每项一句话，铺成多列时
+   同一行里横向并排的几条互不相干，读起来要来回跳；排成一列就是一份自上而下的索引。
+
+   选择器比主题那条多两个类，权重够压住，不必动 !important。
+
+   ⚠️ 现在**没有页面在用这个类**：功能介绍改成「一个工具一个折叠块」之后，
+      那张卡片清单被删掉了（见 content/editor/index.zh-hans.md）。规则先留着，
+      要用回来时给容器加上这个类即可；一直没有用到就在下一次清样式时删掉。
+   ══════════════════════════════════════════════════════════════ */
+.md-typeset .grid.cards.cards--stack {
+  grid-template-columns: 1fr;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   正文插图：统一高度上限 + 图下小字说明
+
+   插图一律写成「一张图 + `/// caption`」的形式（pymdownx.blocks.caption），
+   渲染成 <figure><p><img></p><figcaption>…</figcaption></figure>。
+
+   高度基准取 `assets/editor/013.png` 的 **304px**：比它高的等比缩到 304 高，
+   比它矮的**按原样显示**——放大只会发虚，所以不放大。缩放全在浏览器里做，
+   图片文件一个字节没改，所以点开看到的仍是原图。
+
+   ⚠️ 作用域是「段落里或 figure 里的图」，也就是**正文里写出来的图**：
+      · 模型/墙体清单里那 700 多张目录图在表格单元格里、不在 <p> 里（实测 2115 张
+        没有一张被 <p> 包着），所以够不到；末尾另有一条 table 规则兜底，
+        将来谁真在单元格里用了段落，也不会被这条顺手缩掉；
+      · 灯箱里的原图是 GLightbox 按 href 另建的 <img>、挂在 body 下，也不受影响，
+        所以「点开看图」仍是 1:1 原尺寸（滚轮 / 双指缩放在 javascripts/lightbox-zoom.js）。
+
+   ⚠️ 这里**不能只写 figure img**：图有没有 <figure> 取决于它上面有没有 `/// caption`
+      块。少写一块就漏一张（第一版就是这么栽的：prepare 里 011 那张的 caption 被删掉后
+      立刻不受控）。写成「段落里的图」才跟 caption 解耦。
+
+   ⚠️ figure 的 margin 里那个 **auto 不能省**：主题给 figure 的是
+      `width: fit-content; margin: 1em auto`——盒子宽度就是图的宽度，靠 margin 的
+      auto 才居中。这里原先写成 `margin: 1.2em 0`，auto 一没，盒子就贴到左边去了，
+      于是**有说明的图全歪在左、没说明的图（011 那种）反而居中**。
+      改了上下间距就得把 auto 一起带上。
+   ══════════════════════════════════════════════════════════════ */
+.md-typeset figure {
+  margin: 1.2em auto;
+}
+
+/* 包着 <a> 的那层 <p> 不要自带段间距，否则图和说明离得远 */
+.md-typeset figure > p {
+  margin: 0;
+}
+
+.md-typeset p img,
+.md-typeset figure img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 304px;
+  margin: 0 auto;
+}
+
+/* 兜底：表格里的目录图任何时候都不套上面那条 */
+.md-typeset table img {
+  max-height: none;
+  margin: 0;
+}
+
+.md-typeset figcaption {
+  margin-top: 0.5em;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.66rem;
+  text-align: center;
+}
+
+.md-typeset figcaption > p {
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   灯箱：指针形状
+
+   交互写在 javascripts/lightbox-zoom.js —— 滚轮缩放、放大后按住拖动、
+   单击图片关闭预览。这里只补指针：库给 `img.zoomable` 挂的是 zoom-in 手型，
+   暗示「点一下放大」，而那条交互已经关掉了（单击现在是**关闭预览**），
+   手型留着就成了骗人的。
+   放大后改成 grab 是**库自己的样式**（`.zoomed .gslide-image img.zoomable`），
+   脚本挂上 `zoomed` 类它就生效，这里只管「按住那一刻」的手型。
+   ══════════════════════════════════════════════════════════════ */
+.glightbox-container .gslide-image img.zoomable {
+  cursor: default;
+}
+
+.glightbox-container .zoomed .gslide-image img.zoomable:active {
+  cursor: grabbing;
+}
+
+/* 纯图片卡片：去掉内边距让原件铺满 */
+.md-typeset .grid.cards > ul > li > p:only-child > img,
+.md-typeset .grid.cards > ol > li > p:only-child > img {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+/* 首页右上角的徽标图 */
+.md-typeset .page-mark {
+  float: right;
+  margin: 0 0 1em 1.4em;
+}
+
+@media screen and (max-width: 44.9375em) {
+  .md-typeset .page-mark {
+    float: none;
+    display: block;
+    margin: 0 auto 1.4em;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   页脚：三段式的品牌区
+   ══════════════════════════════════════════════════════════════ */
+
+/* 主题页脚默认用主色底，这里回到内容底色，与站点其余部分一致 */
+.md-footer {
+  color: var(--md-default-fg-color);
+  background-color: var(--md-default-bg-color);
+}
+
+/* 上一页 / 下一页：保留主题结构，配色收回到中性 */
+.md-footer__inner {
+  padding: 0.6rem 0;
+  border-top: 0.05rem solid var(--md-default-fg-color--lightest);
+}
+
+.md-footer__link {
+  color: var(--md-default-fg-color--light);
+}
+
+.md-footer__link:is(:focus, :hover) .md-footer__title {
+  color: var(--md-accent-fg-color);
+}
+
+.md-footer__direction {
+  color: var(--md-default-fg-color--light);
+}
+
+.brand-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2.2rem;
+  padding: 3rem 5% 1.2rem;
+  border-top: 0.05rem solid var(--md-default-fg-color--lightest);
+}
+
+/* 品牌段：与原站 footer-title 同款 */
+.brand-footer__title {
+  display: block;
+  font-size: 1.75rem;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  color: var(--md-default-fg-color);
+}
+
+.brand-footer__title span {
+  margin-left: 0.7rem;
+  color: var(--md-accent-fg-color);
+}
+
+.brand-footer__logo {
+  width: 3.6rem;
+  height: 2.3rem;
+  margin-bottom: 0.85rem;
+  object-fit: contain;
+}
+
+.brand-footer__brand p {
+  margin-top: 0.6rem;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.68rem;
+  line-height: 1.8;
+}
+
+/* 结语段：原站 footer-meta 的等宽字样 */
+.brand-footer__meta {
+  color: var(--md-default-fg-color--light);
+  font-family: var(--md-code-font-family);
+  font-size: 0.62rem;
+  line-height: 1.9;
+  letter-spacing: 0.06em;
+}
+
+.brand-footer__meta a {
+  display: block;
+  margin-top: 0.8rem;
+  color: var(--md-default-fg-color);
+  font-family: var(--md-text-font-family);
+}
+
+.brand-footer__meta a:is(:focus, :hover) {
+  color: var(--md-accent-fg-color);
+}
+
+/* 底栏：版权与回到顶部 */
+.brand-footer__bottom {
+  display: flex;
+  flex-basis: 100%;
+  justify-content: space-between;
+  /* 底栏从三格变成四格（多了一条站点地址）之后，窄屏上会挤成一团：
+     允许换行，并在换行后给出行距与列距。 */
+  flex-wrap: wrap;
+  gap: 0.35rem 1.2rem;
+  padding-top: 0.9rem;
+  border-top: 0.05rem solid var(--md-default-fg-color--lightest);
+  color: var(--md-default-fg-color--light);
+  font-size: 0.56rem;
+  letter-spacing: 0.06em;
+}
+
+.brand-footer__bottom a:is(:focus, :hover) {
+  color: var(--md-accent-fg-color);
+}
+
+@media screen and (max-width: 44.9375em) {
+  .brand-footer {
+    padding: 2rem 7% 1rem;
+    gap: 1.6rem;
+  }
+
+  .brand-footer__title {
+    font-size: 1.5rem;
+  }
+
+  .brand-footer__bottom {
+    font-size: 0.5rem;
+  }
+
+  .brand-footer__bottom span {
+    max-width: 70%;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   卡片标题旁的小标签
+
+   用法：`<span class="badge badge--required">必须</span>`
+   写在卡片标题（`__1 · 配置地编__`）之后，同一行内。
+
+   两档语义各一种莫兰迪色：浅橙 = 必须，蓝灰 = 可选。莫兰迪色是**灰调**的，
+   饱和度低、明度接近，因此底色与文字都按同一色相各取一档——
+   底色只负责「有这么一个框」，字色负责读得清。
+
+   ⚠️ 字色不是随手挑的：对着各自的底色都算过对比度，
+      浅色下 4.70:1 / 4.84:1，深色下 6.52:1 / 6.39:1，都在 4.5:1 之上
+      （本站强调色那一节也是同一条判据）。改色值时要重算，别只凭眼睛。
+   ══════════════════════════════════════════════════════════════ */
+.md-typeset .badge {
+  display: inline-block;
+  margin-left: 0.45em;
+  padding: 0.05em 0.5em 0.1em;
+  border-radius: 0.25em;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+  vertical-align: 0.12em;
+  white-space: nowrap;
+}
+
+/* 必须 · 浅橙 */
+.md-typeset .badge--required {
+  color: #7a5433;
+  background-color: #ecd9c5;
+}
+
+/* 可选 · 蓝灰 */
+.md-typeset .badge--optional {
+  color: #4a5a66;
+  background-color: #cdd6dd;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .badge--required {
+  color: #e6cbb0;
+  background-color: #4d3f34;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .badge--optional {
+  color: #c3ced7;
+  background-color: #3a4249;
+}
+
+/* ── 页面状态标签 ────────────────────────────────────────────────────────
+   前置元数据里的 status: 会在侧栏对应条目旁显示一枚图标。
+   主题内建了 new / deprecated 两个，本站在 [project.extra.status] 里加了
+   draft（原件就停在草案）与 partial（原件本身残缺）。
+   ⚠️ 主题只为内建的两个给了图标；自定义标识符必须在下面补上
+   --md-status--<标识符>，否则 .md-status:after 拿不到 mask-image，
+   标签会渲染成一个空元素——看不见任何东西。
+   字形取自主题自带的 lucide 图标集，做成内联 data URI，
+   因此不产生任何额外请求。
+   ──────────────────────────────────────────────────────────────────────── */
+:root {
+  --md-status--draft: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'><path d='M12.659 22H18a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v9.34'/><path d='M14 2v5a1 1 0 0 0 1 1h5M10.378 12.622a1 1 0 0 1 3 3.003L8.36 20.637a2 2 0 0 1-.854.506l-2.867.837a.5.5 0 0 1-.62-.62l.836-2.869a2 2 0 0 1 .506-.853z'/></svg>");
+  --md-status--partial: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='black' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24'><path d='M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2zM12 17h.01'/><path d='M9.1 9a3 3 0 0 1 5.82 1c0 2-3 3-3 3'/></svg>");
+}
+
+.md-status--draft:after {
+  -webkit-mask-image: var(--md-status--draft);
+  mask-image: var(--md-status--draft);
+}
+
+.md-status--partial:after {
+  -webkit-mask-image: var(--md-status--partial);
+  mask-image: var(--md-status--partial);
+}
+
+/* ── 版本切换器里的小字 ────────────────────────────────────────────────────
+   见 overrides/partials/version.html。版本项下面挂一行日期，让读者分得清
+   「地编 0101」和「历史版」；主题的 .md-select__link 是单行布局，
+   这里把它撑成两行。 */
+.md-select__note {
+  display: block;
+  font-size: 0.72em;
+  line-height: 1.3;
+  opacity: 0.65;
+  margin-top: 0.15em;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   页眉徽标的高度
+
+   素材是 600×300 的宽标（透明底），主题默认把 img 压到 1.2rem 高——
+   宽度跟着只剩 2.4rem，字全糊在一起。抬到 1.4rem 后不会顶到页眉
+   （`.md-header__inner` 高 2.4rem，logo 的 .4rem 内边距各留一份），
+   宽度仍按原比例走，不裁不拉伸。
+   页脚品牌区那份由 `.brand-footer__logo` 单独管，尺寸比这里大一档。
+   ══════════════════════════════════════════════════════════════ */
+.md-header__button.md-logo img {
+  height: 1.4rem;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   遮挡块（`<span class="redact">…</span>`）
+
+   笔记里有些话是作者的私房话、吐槽与不确定的猜测：留着有用（读者能判断
+   这话有多确定），但摆在正文里会让整页读起来不像一份说明书。
+   这类片段一律遮起来，**点一下才展开**——想看的看得到，不想看的不碍事。
+
+   做成黑块而不是 `???` 折叠框，是因为它常常落在**表格单元格**里
+   （折叠框塞不进表格）。整段的私房话仍然用折叠框，两处各用各的。
+   ══════════════════════════════════════════════════════════════ */
+.md-typeset .redact {
+  padding: 0 0.15em;
+  border-radius: 0.1rem;
+  color: transparent;
+  background-color: var(--md-default-fg-color);
+  cursor: pointer;
+  transition: color 0.15s, background-color 0.15s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.md-typeset .redact:focus-visible {
+  outline: 0.1rem solid var(--md-accent-fg-color);
+  outline-offset: 0.1rem;
+}
+
+.md-typeset .redact.is-open {
+  color: inherit;
+  background-color: var(--md-default-fg-color--lightest);
+  cursor: auto;
+  -webkit-user-select: auto;
+  user-select: auto;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   历史版本归档的下载按钮与状态行
+
+   按钮用主题自己的 `.md-button`——页面上别处（同意表单）就是这么写的，
+   样式与配色跟着主题走，不另立一套。只有一处要补：`.md-button` 是给 `<a>`
+   写的，落在 `<button>` 上时字号字重都对，**字族不会**——浏览器给按钮的是
+   系统字族，不继承页面字体，中英混排会突然换脸。补这一条就够。
+   `font-size` 不重复声明：主题那条 `.875em` 已经在起作用，压掉反而与
+   `<a>` 按钮不一样了。
+   ══════════════════════════════════════════════════════════════ */
+.md-typeset button.md-button {
+  font-family: inherit;
+}
+
+.md-typeset button.md-button[disabled] {
+  cursor: progress;
+  opacity: 0.5;
+}
+
+/* 状态行跟在按钮后面：取第几段、校验中、已保存。句子长短差得多，
+   所以给它一个不换行的前缀留白，`:empty` 时不占位。 */
+.md-typeset .dl-status {
+  margin-left: 0.6em;
+  font-size: 0.75em;
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset .dl-status:empty {
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   模型清单页（五张清单）的版式：统一图框 · 粘性表头 · 复制芯片 · 页内搜索
+
+   这一整段都只作用于 content/tables/ 下那五页，而 `.tables-page` 这个类
+   是 docs/javascripts/table-tools.js 加上去的——内容层里没有它，也没有任何
+   标记；清单行照旧写成 `| 图 | 名称<br>template = 值 | 备注 |` 就行。
+   看那个文件的头部注释：为什么放脚本里、认哪几页、认哪一行。
+
+   ── 要调图片大小，只改下面这一组 ────────────────────────────────
+   每张预览图都套在一个固定宽高的「图框」（`.ts-shot`）里，图按
+   `object-fit: contain` 等比缩进框内——**不裁、不拉伸**，所以同一页里所有
+   预览图占的格子一模一样，表格的行高也就齐了。框比图大出来的部分留白，
+   底下垫一层极浅的底色，看着是「框」而不是「图歪了」。
+
+   --ts-shot-w / --ts-shot-h   图框的宽与高（单张图）
+   --ts-shot-gap               同一行两张图之间的间距
+
+   五个页面各有一组值，原因只有一个：素材本身的长宽比差得太远（MESH E 多在
+   1.2:1 上下、Wall E 是 2.2:1 的横条、Vehicle Scatter 几乎是正方形）。
+   取同一个框，横条会被压成小方块、方形图周围留一大圈白。所以**框按页面配、
+   页内统一**——这正是「所有参考图缩放到相同大小」要的效果。
+
+   ⚠️ MESH E 的「石头 / 使用工具放置」「树 / 使用工具放置」两行是例外：
+      它们是「一个工具生成的一堆东西」，本来就不是单个物件，加了
+      `.ts-prev--natural` 按原尺寸显示（脚本按「名称列有没有引用值」判的）。
+   ══════════════════════════════════════════════════════════════ */
+
+.md-typeset.tables-page {
+  --ts-shot-w: 168px;
+  --ts-shot-h: 126px;
+  --ts-shot-gap: 6px;
+  /* 预览列一行放几张图。MESH E 是「斜视 + 正视」两张并排；其余四页一行只有一张，
+     这里要跟着改，不然一格会白白留出第二张的位置（实测 Wall E 因此多出 300px）。 */
+  --ts-prev-cols: 2;
+  /* 「使用工具放置」那两行长条的宽度上限。
+     默认 100% = 跟主题原本一样「缩到单元格那么宽」（这两条就会被缩到跟别的图
+     一样宽，但形状照旧是长条）。填 none 就是原尺寸——那会让表格被撑到 1721px、
+     整页横向滚动，见下面那一段。 */
+  --ts-natural-max: 100%;
+}
+
+.md-typeset.tables-page--mesh {
+  --ts-shot-w: 158px;
+  --ts-shot-h: 124px;
+}
+
+.md-typeset.tables-page--wall {
+  --ts-prev-cols: 1;
+  --ts-shot-w: 300px;
+  --ts-shot-h: 168px;
+}
+
+.md-typeset.tables-page--building {
+  --ts-prev-cols: 1;
+  --ts-shot-w: 250px;
+  --ts-shot-h: 176px;
+}
+
+.md-typeset.tables-page--vehicle {
+  --ts-prev-cols: 1;
+  --ts-shot-w: 176px;
+  --ts-shot-h: 146px;
+}
+
+.md-typeset.tables-page--decal {
+  --ts-prev-cols: 1;
+  --ts-shot-w: 200px;
+  --ts-shot-h: 170px;
+}
+
+/* ── 预览列：两张图并排（脚本把 `<br>` 摘了、给每张套上 `.ts-shot`） ── */
+
+.md-typeset.tables-page .ts-prev {
+  display: flex;
+  /* 固定成「正好两张图」那么宽，多的那张（MESH E 里只有三行是三张）折到第二行。
+     ⚠️ 这两个属性一起才有意义：不写死宽度，flex 的 min-content 就是「一张图」，
+     两张会竖着叠；写了宽度不加 wrap，三张图那一行会把整张表撑到 987px（实测），
+     整页横向滚动。 */
+  flex-wrap: wrap;
+  width: calc(var(--ts-shot-w) * var(--ts-prev-cols) + var(--ts-shot-gap) * var(--ts-prev-cols) - var(--ts-shot-gap));
+  gap: var(--ts-shot-gap);
+  align-items: center;
+  justify-content: center;
+}
+
+.md-typeset.tables-page .ts-shot {
+  display: block;
+  width: var(--ts-shot-w);
+  height: var(--ts-shot-h);
+  /* ⚠️ `min-width: 0` 不能省。图框是 `.ts-prev` 这个 flex 容器的子项，flex 子项
+     默认 `min-width: auto`——也就是「不许比内容更窄」，而里面那张 `<img>` 的
+     min-content 是它的**原始宽度**（清单里有 1654px 宽的图）。少了这一条，
+     一行两张图会把表格的 min-content 撑到 987px（实测），整张表就得横向滚。 */
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 0.15rem;
+  background-color: var(--md-default-fg-color--lightest);
+}
+
+.md-typeset.tables-page .ts-shot > a,
+.md-typeset.tables-page .ts-shot > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ⚠️ max-width / max-height 都要显式写回 none：上面那条
+   `.md-typeset table img { max-height: none; margin: 0 }` 是本站自己的兜底，
+   主题还有一条更宽的 `max-width: 100%`。图框已经给了尺寸，这里只让图**填满框**。 */
+.md-typeset.tables-page .ts-shot img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  object-fit: contain;
+}
+
+/* 例外：按自己的形状显示的那两行（MESH E 的「石头 / 树 · 使用工具放置」）。
+   它们的图是 1277×132 这种**长条**——一次罗列十几个变体。套进 158×124 的方框
+   只会剩一条线，所以这里不给框、也不并排，就让它们保持自己的长宽比。
+   宽度还是收在单元格里（`--ts-natural-max`，默认 100%），这样表格不会被撑宽。 */
+.md-typeset.tables-page .ts-prev--natural {
+  display: block;
+  width: auto;
+  justify-content: flex-start;
+}
+
+.md-typeset.tables-page .ts-prev--natural .ts-shot {
+  width: auto;
+  height: auto;
+  background: none;
+}
+
+.md-typeset.tables-page .ts-prev--natural .ts-shot img {
+  width: auto;
+  height: auto;
+  max-width: var(--ts-natural-max);
+  max-height: none;
+}
+
+/* Vehicle Scatter 的预览列整列是空的：给一个安静的占位，别像漏了图 */
+.md-typeset.tables-page .ts-none {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.7rem;
+}
+
+/* ── 表格本体：预览列不参与拉伸 · 斑马纹 · 悬停 · 粘性表头 ─────────── */
+
+/* 预览列的宽度由图片决定，不要被表宽摊平 */
+.md-typeset.tables-page th:first-child,
+.md-typeset.tables-page td:first-child {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.md-typeset.tables-page tbody tr:nth-child(even) > td {
+  background-color: var(--md-default-fg-color--lightest);
+}
+
+.md-typeset.tables-page tbody tr > td {
+  transition: background-color 0.15s;
+}
+
+.md-typeset.tables-page tbody tr:hover > td {
+  background-color: var(--md-accent-fg-color--transparent);
+}
+
+/* 搜索结果跳过去的那一行：闪一下，好找 */
+.md-typeset.tables-page tbody tr.is-hit > td {
+  background-color: var(--md-typeset-mark-color);
+}
+
+/* ⚠️ 主题把每张表都裹在 `.md-typeset__scrollwrap` 里，而且**表格元素自己**也带着
+   `overflow: auto`（实测两者都是）。overflow 不是 visible 的祖先会**成为 sticky
+   的容器**——表头于是只在那个不滚动的容器里「粘」，看起来完全没生效。这里在宽屏上
+   把两者的 overflow 还原成 visible（我们的表都已经收进内容宽了），窄屏照旧留着
+   横向滚动，两者各取所需。 */
+@media screen and (min-width: 45em) {
+  .md-typeset.tables-page .md-typeset__scrollwrap,
+  .md-typeset.tables-page table {
+    overflow: visible;
+  }
+}
+
+/* 表头跟着滚：三百多行的表，滚到一半不知道哪列是哪列。
+   贴在**搜索框下面**（两个 --ts-* 都是 JS 量出来的），别跟搜索框叠在一起。 */
+.md-typeset.tables-page thead th {
+  position: sticky;
+  top: calc(var(--ts-sticky-top, 0px) + var(--ts-bar-h, 0px));
+  z-index: 2;
+  background-color: var(--md-default-bg-color);
+  box-shadow: inset 0 -0.05rem 0 var(--md-default-fg-color--lightest);
+}
+
+/* ── 名称列里的引用值：点了就复制 ─────────────────────────────────── */
+
+/* ── 名称列里的引用值：框里只有值，点了就复制 ───────────────────────
+   芯片是 `[rock_s1]` 这么一块，前面那句 `template = ` 是**正文文本**（脚本只把
+   值那一段换成了 <code>）。所以这里管的是「那个小方块长什么样」，
+   不管前缀——前缀跟着单元格的字体走。 */
+
+.md-typeset.tables-page .ts-tpl {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0.05em 0.35em;
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.25rem;
+  background-color: var(--md-code-bg-color);
+  color: var(--md-code-fg-color);
+  font-size: 0.92em;
+  cursor: copy;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+/* 值本身那一段。`white-space: normal` 是给脚本插的 `<wbr>` 让路的——值里没有
+   空格，所以除了下划线那几处不会在别的地方断开。`min-width: 0` 不能省：
+   它是 flex 子项，默认「不许比内容更窄」，长值照样会把列顶宽。 */
+.md-typeset.tables-page .ts-tpl__text {
+  min-width: 0;
+  white-space: normal;
+}
+
+.md-typeset.tables-page .ts-tpl:hover,
+.md-typeset.tables-page .ts-tpl:focus-visible {
+  border-color: var(--md-accent-fg-color);
+}
+
+.md-typeset.tables-page .ts-tpl__icon {
+  flex: none;
+  width: 0.85em;
+  height: 0.85em;
+  fill: currentColor;
+  opacity: 0.45;
+  transition: opacity 0.15s;
+}
+
+.md-typeset.tables-page .ts-tpl__icon--done,
+.md-typeset.tables-page .ts-tpl.is-copied .ts-tpl__icon--copy {
+  display: none;
+}
+
+.md-typeset.tables-page .ts-tpl.is-copied .ts-tpl__icon--done {
+  display: block;
+}
+
+/* 回执写在芯片里而不是浮层：表格被主题裹在 `overflow-x: auto` 的滚动容器里，
+   浮出去的那半截会被裁掉。代价是芯片会临时宽一点，`.ts-tpl` 已经 nowrap。 */
+.md-typeset.tables-page .ts-tpl.is-copied,
+.md-typeset.tables-page .ts-tpl.is-failed {
+  border-color: var(--md-accent-fg-color);
+  color: var(--md-accent-fg-color);
+}
+
+.md-typeset.tables-page .ts-tpl.is-copied .ts-tpl__icon,
+.md-typeset.tables-page .ts-tpl.is-failed .ts-tpl__icon {
+  opacity: 1;
+}
+
+.md-typeset.tables-page .ts-tpl.is-copied::after,
+.md-typeset.tables-page .ts-tpl.is-failed::after {
+  content: attr(data-ts-done);
+  font-size: 0.9em;
+}
+
+/* ── 分组标题后面的条目数 ─────────────────────────────────────────── */
+
+.md-typeset.tables-page .ts-count {
+  margin-left: 0.5em;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  vertical-align: 0.2em;
+  white-space: nowrap;
+}
+
+/* ── 页内搜索 ─────────────────────────────────────────────────────── */
+
+.md-typeset.tables-page .ts-search {
+  position: sticky;
+  /* ⚠️ 页眉高度由 JS 写在 <html> 上（--ts-sticky-top）。兜底的 0px 必须写在这里、
+     不能写成 `.tables-page { --ts-sticky-top: 0px }` 再在下面 var() 取——那样这条
+     声明会**盖掉从 <html> 继承下来的值**（同一个元素上的声明赢过继承），
+     页眉 52px 高时搜索框会顶到 0 去、被页眉压住（踩过）。 */
+  top: var(--ts-sticky-top, 0px);
+  z-index: 3;
+  margin: 0 0 1.4em;
+  padding: 0.6em 0 0.2em;
+  background-color: var(--md-default-bg-color);
+}
+
+.md-typeset.tables-page .ts-search__box {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.35em 0.6em;
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.3rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.md-typeset.tables-page .ts-search__box:focus-within {
+  border-color: var(--md-accent-fg-color);
+  box-shadow: 0 0 0 0.12rem var(--md-accent-fg-color--transparent);
+}
+
+.md-typeset.tables-page .ts-search__icon {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  fill: var(--md-default-fg-color--light);
+}
+
+.md-typeset.tables-page .ts-search__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.md-typeset.tables-page .ts-search__input::placeholder {
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset.tables-page .ts-search__kbd {
+  flex: none;
+  padding: 0.05em 0.4em;
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.2rem;
+  color: var(--md-default-fg-color--light);
+  font-family: var(--md-code-font);
+  font-size: 0.6rem;
+}
+
+.md-typeset.tables-page .ts-search__meta {
+  margin: 0.45em 0 0;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.62rem;
+}
+
+/* 结果下拉：绝对定位，不推正文 */
+.md-typeset.tables-page .ts-search__list {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  z-index: 4;
+  max-height: 22rem;
+  margin: 0.25em 0 0;
+  padding: 0.25em;
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.3rem;
+  background-color: var(--md-default-bg-color);
+  box-shadow: 0 0.2rem 0.7rem rgba(0, 0, 0, 0.14);
+  list-style: none;
+  overflow-y: auto;
+}
+
+.md-typeset.tables-page .ts-hit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15em 0.6em;
+  padding: 0.35em 0.5em;
+  border-radius: 0.2rem;
+  cursor: pointer;
+}
+
+.md-typeset.tables-page .ts-hit.is-active {
+  background-color: var(--md-accent-fg-color--transparent);
+}
+
+.md-typeset.tables-page .ts-hit__sec {
+  flex: none;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.58rem;
+}
+
+.md-typeset.tables-page .ts-hit__name {
+  font-size: 0.72rem;
+}
+
+.md-typeset.tables-page .ts-hit__tpl {
+  padding: 0;
+  background: none;
+  font-size: 0.66rem;
+}
+
+.md-typeset.tables-page .ts-hit mark {
+  padding: 0 0.1em;
+  border-radius: 0.15rem;
+  background-color: var(--md-typeset-mark-color);
+  color: inherit;
+}
+
+.md-typeset.tables-page .ts-hit--empty,
+.md-typeset.tables-page .ts-hit--more {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.66rem;
+  cursor: default;
+}
+
+/* 窄屏：图框整体收一档。⚠️ 这段必须排在各页那组值**之后**——
+   选择器权重一样，靠的就是「后写的赢」。 */
+@media screen and (max-width: 44.9375em) {
+  .md-typeset.tables-page,
+  .md-typeset.tables-page--mesh {
+    --ts-shot-w: 116px;
+    --ts-shot-h: 92px;
+  }
+
+  .md-typeset.tables-page--wall {
+    --ts-shot-w: 180px;
+    --ts-shot-h: 104px;
+  }
+
+  .md-typeset.tables-page--building {
+    --ts-shot-w: 150px;
+    --ts-shot-h: 108px;
+  }
+
+  .md-typeset.tables-page--vehicle {
+    --ts-shot-w: 128px;
+    --ts-shot-h: 108px;
+  }
+
+  .md-typeset.tables-page--decal {
+    --ts-shot-w: 140px;
+    --ts-shot-h: 120px;
+  }
+
+  .md-typeset.tables-page .ts-search__kbd {
+    display: none;
+  }
+}
+
