@@ -16,12 +16,15 @@ hide: [navigation]
 地編主界面。
 ///
 
+* * *
 ## 主界面工具
 
+* * *
 ### Save 說明 { #save }
 
 !!! note "用來保存地圖，保存完成後會有提示音。"
 
+* * *
 ### ViewMap 說明 { #viewmap }
 
 ??? note "生成地圖的初版預覽圖（展開以查看詳細介紹）"
@@ -30,6 +33,7 @@ hide: [navigation]
     <span class="redact" tabindex="0">對的，從之前到現在每個地圖的最終縮略圖都是手搓出來的。</span>
 
 
+* * *
 ### Select 說明 { #select }
 
 ??? note "用來選擇地圖上的對象（展開以查看詳細介紹）"
@@ -54,12 +58,14 @@ hide: [navigation]
 
         不建議在飛行模式（透視）下進行移動與旋轉，交互體驗不佳。
 
+* * *
 ### PinMan 說明 { #pinman }
 
 ??? note "用來在點擊的位置上放置一個虛擬的參照物。（展開以查看詳細介紹）"
     使用快捷鍵 ++shift+2++ 以快速切換到 PinMan 中的 TankPin 工具。
     !!! warning "有三個選項，但只有坦克可用。"
 
+* * *
 ### WallE 說明 { #walle }
 ??? note "用來在列表中選擇各種牆的種類，並使用 PathBush 繪製節點然後按空格自動以擺放順序連成線。既可以先選擇牆的種類後繪製，也可以先繪製然後再選擇牆的種類，選擇後點擊已經畫好的牆即可完成替換。（展開以查看詳細介紹）"
     使用快捷鍵 ++shift+7++ 以快速切換到 WallE 中的 PathBush 工具。
@@ -88,6 +94,7 @@ hide: [navigation]
 
 
 
+* * *
 ### BuildingE 說明 { #buildinge }
 
 ??? note "用來在列表中選擇各種建築物的種類，並使用 DrawBush 按住左鍵拖動來繪製建築物。既可以先選擇建築物的種類後繪製，也可以先繪製然後再選擇建築物的種類，選擇後點擊已經畫好的建築物即可完成替換。（展開以查看詳細介紹）"
@@ -122,6 +129,7 @@ hide: [navigation]
         目前 X 軸無法修改。
         如果你想在一個 Building 上面放 Wall、Building、Platform 之類的東西，那麼應該在構思完之後從下往上繪製，繪製的時候需要保證起點在上一個元素之內，這樣所有的對象就都會按照 layer1、layer2… 去逐個疊加，並自動銜接上一個的高度，攀爬等判定也會正常生效。
 
+* * *
 ### PlatformE 說明 { #platforme }
 
 ??? note "用來在列表中選擇各種平臺的種類，並使用 ^^pathBush^^ 繪製，與 Wall 類似，不再贅述。（展開以查看詳細介紹）"
@@ -186,6 +194,7 @@ hide: [navigation]
         ![](../../assets/editor/046.png)
 
 
+* * *
 ### FuncObjects 說明 { #funcobjects }
 ??? note "用來擺放一些有特殊交互的物件。（展開以查看詳細介紹）"
     ^^LadderScatter^^ 與 ^^LadderEraser^^ 的作用為放置梯子與刪除梯子。放置的梯子會向前自動判定並吸附在旁邊建築物、平臺等等有固定碰撞的東西上。
@@ -212,6 +221,7 @@ hide: [navigation]
         如果你設置了地圖裡只有兩個陣營作戰，那麼當 Faction 的值填寫為2時，這個據點將會變成沒有被任何陣營佔領的空白據點。
         map13_2 那種為特殊效果，不做介紹。
 
+* * *
 ### MeshE 說明 { #meshe }
 
 ??? note "用來在列表中選擇各種模型的種類。（展開以查看詳細介紹）"
@@ -237,6 +247,7 @@ hide: [navigation]
     ![](../../assets/editor/035.png)
 
 
+* * *
 ### HeightMap 說明 { #heightmap }
 
 ??? note "用來鋪設地面的弧度變化。（展開以查看詳細介紹）"
@@ -254,6 +265,7 @@ hide: [navigation]
 
     ![](../../assets/editor/037.png)
 
+* * *
 ### TerrainBash 說明 { #terrainbash }
 ??? note "用來鋪設地面的質地變化。（展開以查看詳細介紹）"
     ^^Pathpainter^^ 的作用為路徑地面質地刷，使用方式類似 Wall 工具，相關數據調整左上角均有說明，可自行嘗試。
@@ -269,10 +281,12 @@ hide: [navigation]
     Smooth 的作用為平緩全圖的地面質地。
 
 
+* * *
 ### offroadbuilder 說明 { #offroadbuilder }
 
 !!! note "用來告訴 AI 這條路是開車路線，AI會在開載具時優先往這條路進行尋路，鋪設方法類似 Wall 工具。"
 
+* * *
 ### Decal 說明 { #decal }
 
 ??? note "用來在列表中選擇各種貼花的種類，可以理解為在地面質地上再印一層材質，選擇後左鍵即可放置。（展開以查看詳細介紹）"
@@ -283,6 +297,7 @@ hide: [navigation]
     ![](../../assets/editor/040.png)
 
 
+* * *
 ### Assaum 說明 { #assaum }
 ??? note "用來在列表中選擇各種組件，例如已經製作好碰撞箱和判定區的軍械庫等，選擇後左鍵即可放置。（展開以查看詳細介紹）"
     搜索欄與 Wall 類似，不再贅述。
@@ -295,6 +310,7 @@ hide: [navigation]
 
 
 
+* * *
 ### ID 搜索說明 { #id-search }
 ??? note "相關步驟"
     1.在這看id。
@@ -344,6 +360,7 @@ hide: [navigation]
     地編每次保存後都會重新排一遍 ID，編號可能和上一次不一樣。
     所以**記下來的是當時的 ID**；隔一次保存再搜，未必還是它。
 
+* * *
 ### mapSettings 說明 { #map-settings }
 
 !!! note "暫無已校驗內容。"
@@ -366,6 +383,7 @@ hide: [navigation]
     | `visible_in_menu` | `0`<br>`1` |  | 是否在列表可見 |
 
 !!! warning "map settings不寫會導致無法運行地圖，實在不知道寫啥隨便粘貼一個地圖的改吧改吧就得了。"
+* * *
 ### 3rdParSettings 說明 { #third-party }
 用來加載細緻模型以及部分材質，可不用。
 #### 一、OgreXMLConverter.exe Path 選擇 { #ogreref }
@@ -413,6 +431,7 @@ hide: [navigation]
 
 ![](../../assets/editor/049.png)
 
+* * *
 ### RefpM 說明 { #reference-images }
 
 使用 ^^Import^^ 導入參考圖， ^^Clear^^ 移除。
@@ -420,6 +439,7 @@ hide: [navigation]
 ^^OffsetX^^ 與 ^^OffsetX<span class="redact" tabindex="0">其實是Y</span>^^ 的作用為橫向與縱向偏移參考圖，值填距離，第一項為X軸向右增長、第二項為Y軸向上增長。
 ^^Alpha^^ 作用為更改參考圖透明度，向左淡化向右軀體化。
 
+* * *
 ### 交互按鍵表 { #keys }
 
 !!! question "這張表真收錄全了嗎"

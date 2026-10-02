@@ -496,3 +496,448 @@
 .md-typeset .dl-status:empty {
   margin: 0;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   模型清单页（五张清单）的版式：统一图框 · 粘性表头 · 复制芯片 · 页内搜索
+
+   这一整段都只作用于 content/tables/ 下那五页，而 `.tables-page` 这个类
+   是 docs/javascripts/table-tools.js 加上去的——内容层里没有它，也没有任何
+   标记；清单行照旧写成 `| 图 | 名称<br>template = 值 | 备注 |` 就行。
+   看那个文件的头部注释：为什么放脚本里、认哪几页、认哪一行。
+
+   ── 要调图片大小，只改下面这一组 ────────────────────────────────
+   每张预览图都套在一个固定宽高的「图框」（`.ts-shot`）里，图按
+   `object-fit: contain` 等比缩进框内——**不裁、不拉伸**，所以同一页里所有
+   预览图占的格子一模一样，表格的行高也就齐了。框比图大出来的部分留白，
+   底下垫一层极浅的底色，看着是「框」而不是「图歪了」。
+
+   --ts-shot-w / --ts-shot-h   图框的宽与高（单张图）
+   --ts-shot-gap               同一行两张图之间的间距
+
+   五个页面各有一组值，原因只有一个：素材本身的长宽比差得太远（MESH E 多在
+   1.2:1 上下、Wall E 是 2.2:1 的横条、Vehicle Scatter 几乎是正方形）。
+   取同一个框，横条会被压成小方块、方形图周围留一大圈白。所以**框按页面配、
+   页内统一**——这正是「所有参考图缩放到相同大小」要的效果。
+
+   ⚠️ MESH E 的「石头 / 使用工具放置」「树 / 使用工具放置」两行是例外：
+      它们是「一个工具生成的一堆东西」，本来就不是单个物件，加了
+      `.ts-prev--natural` 按原尺寸显示（脚本按「名称列有没有引用值」判的）。
+   ══════════════════════════════════════════════════════════════ */
+
+.md-typeset.tables-page {
+  --ts-shot-w: 168px;
+  --ts-shot-h: 126px;
+  --ts-shot-gap: 6px;
+  /* 预览列一行放几张图。MESH E 是「斜视 + 正视」两张并排；其余四页一行只有一张，
+     这里要跟着改，不然一格会白白留出第二张的位置（实测 Wall E 因此多出 300px）。 */
+  --ts-prev-cols: 2;
+  /* 「使用工具放置」那两行长条的宽度上限。
+     默认 100% = 跟主题原本一样「缩到单元格那么宽」（这两条就会被缩到跟别的图
+     一样宽，但形状照旧是长条）。填 none 就是原尺寸——那会让表格被撑到 1721px、
+     整页横向滚动，见下面那一段。 */
+  --ts-natural-max: 100%;
+}
+
+.md-typeset.tables-page--mesh {
+  --ts-shot-w: 158px;
+  --ts-shot-h: 124px;
+}
+
+.md-typeset.tables-page--wall {
+  --ts-prev-cols: 1;
+  --ts-shot-w: 300px;
+  --ts-shot-h: 168px;
+}
+
+.md-typeset.tables-page--building {
+  --ts-prev-cols: 1;
+  --ts-shot-w: 250px;
+  --ts-shot-h: 176px;
+}
+
+.md-typeset.tables-page--vehicle {
+  --ts-prev-cols: 1;
+  --ts-shot-w: 176px;
+  --ts-shot-h: 146px;
+}
+
+.md-typeset.tables-page--decal {
+  --ts-prev-cols: 1;
+  --ts-shot-w: 200px;
+  --ts-shot-h: 170px;
+}
+
+/* ── 预览列：两张图并排（脚本把 `<br>` 摘了、给每张套上 `.ts-shot`） ── */
+
+.md-typeset.tables-page .ts-prev {
+  display: flex;
+  /* 固定成「正好两张图」那么宽，多的那张（MESH E 里只有三行是三张）折到第二行。
+     ⚠️ 这两个属性一起才有意义：不写死宽度，flex 的 min-content 就是「一张图」，
+     两张会竖着叠；写了宽度不加 wrap，三张图那一行会把整张表撑到 987px（实测），
+     整页横向滚动。 */
+  flex-wrap: wrap;
+  width: calc(var(--ts-shot-w) * var(--ts-prev-cols) + var(--ts-shot-gap) * var(--ts-prev-cols) - var(--ts-shot-gap));
+  gap: var(--ts-shot-gap);
+  align-items: center;
+  justify-content: center;
+}
+
+.md-typeset.tables-page .ts-shot {
+  display: block;
+  width: var(--ts-shot-w);
+  height: var(--ts-shot-h);
+  /* ⚠️ `min-width: 0` 不能省。图框是 `.ts-prev` 这个 flex 容器的子项，flex 子项
+     默认 `min-width: auto`——也就是「不许比内容更窄」，而里面那张 `<img>` 的
+     min-content 是它的**原始宽度**（清单里有 1654px 宽的图）。少了这一条，
+     一行两张图会把表格的 min-content 撑到 987px（实测），整张表就得横向滚。 */
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 0.15rem;
+  background-color: var(--md-default-fg-color--lightest);
+}
+
+.md-typeset.tables-page .ts-shot > a,
+.md-typeset.tables-page .ts-shot > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ⚠️ max-width / max-height 都要显式写回 none：上面那条
+   `.md-typeset table img { max-height: none; margin: 0 }` 是本站自己的兜底，
+   主题还有一条更宽的 `max-width: 100%`。图框已经给了尺寸，这里只让图**填满框**。 */
+.md-typeset.tables-page .ts-shot img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  object-fit: contain;
+}
+
+/* 例外：按自己的形状显示的那两行（MESH E 的「石头 / 树 · 使用工具放置」）。
+   它们的图是 1277×132 这种**长条**——一次罗列十几个变体。套进 158×124 的方框
+   只会剩一条线，所以这里不给框、也不并排，就让它们保持自己的长宽比。
+   宽度还是收在单元格里（`--ts-natural-max`，默认 100%），这样表格不会被撑宽。 */
+.md-typeset.tables-page .ts-prev--natural {
+  display: block;
+  width: auto;
+  justify-content: flex-start;
+}
+
+.md-typeset.tables-page .ts-prev--natural .ts-shot {
+  width: auto;
+  height: auto;
+  background: none;
+}
+
+.md-typeset.tables-page .ts-prev--natural .ts-shot img {
+  width: auto;
+  height: auto;
+  max-width: var(--ts-natural-max);
+  max-height: none;
+}
+
+/* Vehicle Scatter 的预览列整列是空的：给一个安静的占位，别像漏了图 */
+.md-typeset.tables-page .ts-none {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.7rem;
+}
+
+/* ── 表格本体：预览列不参与拉伸 · 斑马纹 · 悬停 · 粘性表头 ─────────── */
+
+/* 预览列的宽度由图片决定，不要被表宽摊平 */
+.md-typeset.tables-page th:first-child,
+.md-typeset.tables-page td:first-child {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.md-typeset.tables-page tbody tr:nth-child(even) > td {
+  background-color: var(--md-default-fg-color--lightest);
+}
+
+.md-typeset.tables-page tbody tr > td {
+  transition: background-color 0.15s;
+}
+
+.md-typeset.tables-page tbody tr:hover > td {
+  background-color: var(--md-accent-fg-color--transparent);
+}
+
+/* 搜索结果跳过去的那一行：闪一下，好找 */
+.md-typeset.tables-page tbody tr.is-hit > td {
+  background-color: var(--md-typeset-mark-color);
+}
+
+/* ⚠️ 主题把每张表都裹在 `.md-typeset__scrollwrap` 里，而且**表格元素自己**也带着
+   `overflow: auto`（实测两者都是）。overflow 不是 visible 的祖先会**成为 sticky
+   的容器**——表头于是只在那个不滚动的容器里「粘」，看起来完全没生效。这里在宽屏上
+   把两者的 overflow 还原成 visible（我们的表都已经收进内容宽了），窄屏照旧留着
+   横向滚动，两者各取所需。 */
+@media screen and (min-width: 45em) {
+  .md-typeset.tables-page .md-typeset__scrollwrap,
+  .md-typeset.tables-page table {
+    overflow: visible;
+  }
+}
+
+/* 表头跟着滚：三百多行的表，滚到一半不知道哪列是哪列。
+   贴在**搜索框下面**（两个 --ts-* 都是 JS 量出来的），别跟搜索框叠在一起。 */
+.md-typeset.tables-page thead th {
+  position: sticky;
+  top: calc(var(--ts-sticky-top, 0px) + var(--ts-bar-h, 0px));
+  z-index: 2;
+  background-color: var(--md-default-bg-color);
+  box-shadow: inset 0 -0.05rem 0 var(--md-default-fg-color--lightest);
+}
+
+/* ── 名称列里的引用值：点了就复制 ─────────────────────────────────── */
+
+/* ── 名称列里的引用值：框里只有值，点了就复制 ───────────────────────
+   芯片是 `[rock_s1]` 这么一块，前面那句 `template = ` 是**正文文本**（脚本只把
+   值那一段换成了 <code>）。所以这里管的是「那个小方块长什么样」，
+   不管前缀——前缀跟着单元格的字体走。 */
+
+.md-typeset.tables-page .ts-tpl {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0.05em 0.35em;
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.25rem;
+  background-color: var(--md-code-bg-color);
+  color: var(--md-code-fg-color);
+  font-size: 0.92em;
+  cursor: copy;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+/* 值本身那一段。`white-space: normal` 是给脚本插的 `<wbr>` 让路的——值里没有
+   空格，所以除了下划线那几处不会在别的地方断开。`min-width: 0` 不能省：
+   它是 flex 子项，默认「不许比内容更窄」，长值照样会把列顶宽。 */
+.md-typeset.tables-page .ts-tpl__text {
+  min-width: 0;
+  white-space: normal;
+}
+
+.md-typeset.tables-page .ts-tpl:hover,
+.md-typeset.tables-page .ts-tpl:focus-visible {
+  border-color: var(--md-accent-fg-color);
+}
+
+.md-typeset.tables-page .ts-tpl__icon {
+  flex: none;
+  width: 0.85em;
+  height: 0.85em;
+  fill: currentColor;
+  opacity: 0.45;
+  transition: opacity 0.15s;
+}
+
+.md-typeset.tables-page .ts-tpl__icon--done,
+.md-typeset.tables-page .ts-tpl.is-copied .ts-tpl__icon--copy {
+  display: none;
+}
+
+.md-typeset.tables-page .ts-tpl.is-copied .ts-tpl__icon--done {
+  display: block;
+}
+
+/* 回执写在芯片里而不是浮层：表格被主题裹在 `overflow-x: auto` 的滚动容器里，
+   浮出去的那半截会被裁掉。代价是芯片会临时宽一点，`.ts-tpl` 已经 nowrap。 */
+.md-typeset.tables-page .ts-tpl.is-copied,
+.md-typeset.tables-page .ts-tpl.is-failed {
+  border-color: var(--md-accent-fg-color);
+  color: var(--md-accent-fg-color);
+}
+
+.md-typeset.tables-page .ts-tpl.is-copied .ts-tpl__icon,
+.md-typeset.tables-page .ts-tpl.is-failed .ts-tpl__icon {
+  opacity: 1;
+}
+
+.md-typeset.tables-page .ts-tpl.is-copied::after,
+.md-typeset.tables-page .ts-tpl.is-failed::after {
+  content: attr(data-ts-done);
+  font-size: 0.9em;
+}
+
+/* ── 分组标题后面的条目数 ─────────────────────────────────────────── */
+
+.md-typeset.tables-page .ts-count {
+  margin-left: 0.5em;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  vertical-align: 0.2em;
+  white-space: nowrap;
+}
+
+/* ── 页内搜索 ─────────────────────────────────────────────────────── */
+
+.md-typeset.tables-page .ts-search {
+  position: sticky;
+  /* ⚠️ 页眉高度由 JS 写在 <html> 上（--ts-sticky-top）。兜底的 0px 必须写在这里、
+     不能写成 `.tables-page { --ts-sticky-top: 0px }` 再在下面 var() 取——那样这条
+     声明会**盖掉从 <html> 继承下来的值**（同一个元素上的声明赢过继承），
+     页眉 52px 高时搜索框会顶到 0 去、被页眉压住（踩过）。 */
+  top: var(--ts-sticky-top, 0px);
+  z-index: 3;
+  margin: 0 0 1.4em;
+  padding: 0.6em 0 0.2em;
+  background-color: var(--md-default-bg-color);
+}
+
+.md-typeset.tables-page .ts-search__box {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.35em 0.6em;
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.3rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.md-typeset.tables-page .ts-search__box:focus-within {
+  border-color: var(--md-accent-fg-color);
+  box-shadow: 0 0 0 0.12rem var(--md-accent-fg-color--transparent);
+}
+
+.md-typeset.tables-page .ts-search__icon {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  fill: var(--md-default-fg-color--light);
+}
+
+.md-typeset.tables-page .ts-search__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.md-typeset.tables-page .ts-search__input::placeholder {
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset.tables-page .ts-search__kbd {
+  flex: none;
+  padding: 0.05em 0.4em;
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.2rem;
+  color: var(--md-default-fg-color--light);
+  font-family: var(--md-code-font);
+  font-size: 0.6rem;
+}
+
+.md-typeset.tables-page .ts-search__meta {
+  margin: 0.45em 0 0;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.62rem;
+}
+
+/* 结果下拉：绝对定位，不推正文 */
+.md-typeset.tables-page .ts-search__list {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  z-index: 4;
+  max-height: 22rem;
+  margin: 0.25em 0 0;
+  padding: 0.25em;
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.3rem;
+  background-color: var(--md-default-bg-color);
+  box-shadow: 0 0.2rem 0.7rem rgba(0, 0, 0, 0.14);
+  list-style: none;
+  overflow-y: auto;
+}
+
+.md-typeset.tables-page .ts-hit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15em 0.6em;
+  padding: 0.35em 0.5em;
+  border-radius: 0.2rem;
+  cursor: pointer;
+}
+
+.md-typeset.tables-page .ts-hit.is-active {
+  background-color: var(--md-accent-fg-color--transparent);
+}
+
+.md-typeset.tables-page .ts-hit__sec {
+  flex: none;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.58rem;
+}
+
+.md-typeset.tables-page .ts-hit__name {
+  font-size: 0.72rem;
+}
+
+.md-typeset.tables-page .ts-hit__tpl {
+  padding: 0;
+  background: none;
+  font-size: 0.66rem;
+}
+
+.md-typeset.tables-page .ts-hit mark {
+  padding: 0 0.1em;
+  border-radius: 0.15rem;
+  background-color: var(--md-typeset-mark-color);
+  color: inherit;
+}
+
+.md-typeset.tables-page .ts-hit--empty,
+.md-typeset.tables-page .ts-hit--more {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.66rem;
+  cursor: default;
+}
+
+/* 窄屏：图框整体收一档。⚠️ 这段必须排在各页那组值**之后**——
+   选择器权重一样，靠的就是「后写的赢」。 */
+@media screen and (max-width: 44.9375em) {
+  .md-typeset.tables-page,
+  .md-typeset.tables-page--mesh {
+    --ts-shot-w: 116px;
+    --ts-shot-h: 92px;
+  }
+
+  .md-typeset.tables-page--wall {
+    --ts-shot-w: 180px;
+    --ts-shot-h: 104px;
+  }
+
+  .md-typeset.tables-page--building {
+    --ts-shot-w: 150px;
+    --ts-shot-h: 108px;
+  }
+
+  .md-typeset.tables-page--vehicle {
+    --ts-shot-w: 128px;
+    --ts-shot-h: 108px;
+  }
+
+  .md-typeset.tables-page--decal {
+    --ts-shot-w: 140px;
+    --ts-shot-h: 120px;
+  }
+
+  .md-typeset.tables-page .ts-search__kbd {
+    display: none;
+  }
+}
+

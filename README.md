@@ -265,9 +265,11 @@ https://assets.rwr-infra.uk/rwrme-web-assets/<文件名>
 
 1. `[[project.extra.alternate]]` 加一条：`name`（显示名，如「日本語」）、
    `link`（网址前缀，如 `ja/`）、`lang`（BCP-47，如 `ja`）。页眉的语言切换器、
-   404 页的语言列表、`og:locale:alternate`、搜索面板的语言分段**全都读这一条**；
-2. 给已有的那几组多语言文案补 `_<lang>` 后缀的键（页脚三段、同意按钮、
-   搜索面板的 `search_*` 等）；
+   404 页的语言列表、`og:locale:alternate` **全都读这一条**；
+2. 给已有的那几组多语言文案补 `_<lang>` 后缀的键（页脚三段、同意按钮等）；
+   ⚠️ 模型清单页的页内搜索（`docs/javascripts/table-tools.js`）是唯一一处
+   **写在脚本里**的文案表，加语言时要去那个文件的 `TEXT` 里补一组
+   （它按 `<html lang>` 取，取不到就退回简中）；
 3. `lang_pack_<lang>`：主题的界面文案包名（`partials/languages/<包>.html`）。
    这是**唯一没有推导规则**的一处——主题把简体那一包叫 `zh` 而不是 `zh-Hans`，
    MiniJinja 的 `import` 又不支持 `ignore missing`，所以只能显式给出包名；
