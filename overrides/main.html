@@ -29,26 +29,9 @@
   {#- 目录地址补正要排在 <head> 里最前面：它必须在正文被解析之前改掉地址栏。
       理由与取舍见 partials/trailing-slash.html 的说明。 -#}
   {% include "partials/trailing-slash.html" %}
-  {#- ── 交给脚本的那份「本站有哪几种语言」 ──────────────────────────────
-     搜索面板是主题用 JS 渲染进 shadow root 的，模板插不进去，只能由
-     docs/javascripts/search-lang.js 事后把标签按语言分段。那份脚本原先自己
-     写死了三语言——加一种语言就得去改 JS，还要担心中文名写成「简体」而不是
-     「简体中文」。现在改成在这里把配置交出去：
-       · languages 直接来自 config.extra.alternate（与页眉的语言切换器同源），
-         name 就是「简体中文 / 繁體中文 / English」，prefix 是网址里那一段；
-       · ui 是按页面语言取的 search_* 文案（后缀约定与页脚那几组一样）。
-     两条都只靠这一份 JSON，加语言因此只需要动 zensical.toml：加一条 alternate、
-     补一组 `_<lang>` 文案，脚本一行都不用改。 -#}
-  <script id="__rwr" type="application/json">{{ {
-    "languages": config.extra.alternate | d([], true),
-    "ui": {
-      "search": config.extra["search_text" ~ L] | d(config.extra.search_text, true),
-      "filters": config.extra["search_filters" ~ L] | d(config.extra.search_filters, true),
-      "results": config.extra["search_results" ~ L] | d(config.extra.search_results, true),
-      "close": config.extra["search_close" ~ L] | d(config.extra.search_close, true),
-      "tag": config.extra["search_filter_by_tag" ~ L] | d(config.extra.search_filter_by_tag, true)
-    }
-  } | tojson }}</script>
+  {#- 这里原本是一份 id="__rwr" 的 JSON：语言清单 + search_* 文案，交给
+      docs/javascripts/search-lang.js 去替换主题搜索面板里写死的英文。
+      站内搜索整个删掉之后，那个脚本与这份数据一并没有用了。 -#}
   {#- ── 社交分享与结构化数据 ─────────────────────────────────────────
      og:locale 按 OG 规范本该写成 language_TERRITORY（zh_CN / zh_TW 之类），
      但那是**地区**标记，与本站「语言代码只到文字一级」的政策冲突——地区标签
@@ -193,8 +176,8 @@
     线上构建里这个列表本来就是空的，产物一字不变。
 
     垫片是给 Safari / 部分浏览器在 file:// 下起 Web Worker 用的。跳过它，
-    离线版在那些浏览器里**搜索**用不了——而搜索本来也用不了：索引 search.json
-    是 fetch 来的，file:// 下会被跨域策略拦掉。要自托管那份垫片随时可以补。 -#}
+    离线版在那些浏览器里若干主题功能会受影响——本站对 Web Worker 的依赖本来就浅
+    （站内搜索已经删掉，剩下的都是纯 DOM 脚本），要自托管那份垫片随时可以补。 -#}
 {% block libs %}
   {%- for script in config.extra.polyfills | d([], true) %}
     {%- if (script.path | d("", true) | string)[:4] != "http" %}{{ script | script_tag }}{% endif %}

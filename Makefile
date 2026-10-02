@@ -110,7 +110,7 @@ offline-check:
 # ⚠️ 判据用 awk 对着**那一节**看，不写 `grep -q '^enabled = true$'`：
 #      · make 会把 `$'` 当成「名为 ' 的变量」吃掉，正则尾巴那个 $ 连带着收尾的引号
 #        一起消失，于是 shell 收到一个不闭合的引号——报错还指不到这里；
-#      · 更要紧的是**假绿灯**：search 与 tags 那两节本来就写着 `enabled = true`，
+#      · 更要紧的是**假绿灯**：tags 那一节本来就写着 `enabled = true`，
 #        拿它当判据的话，offline 那一节压根没改成也会一路放行（踩过一次，
 #        结果是整包生成了目录式地址，file:// 下点导航变成浏览器的目录列表）。
 $(OFFLINE_CONFIG): zensical.toml

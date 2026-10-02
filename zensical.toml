@@ -49,10 +49,17 @@ extra_css = [
 # 所以灯箱初始化时这个全局已经就位，无需改动主题。
 # ⚠️ 升级 glightbox 插件版本时要同步换掉这两个文件。
 #
-# search-lang.js 是本站自己的：搜索索引全站只有一份，筛选栏里的标签因此是
-# 三种语言混在一个列表里的。这个脚本把标签**按语言分段**（当前页面的语言排最前），
-# 并把面板上写死的英文换成页面语言的词。它得挂进主题搜索面板的 shadow root，
-# 原理与「升级时要跟着看」的提醒都写在那个文件的头部。
+# table-tools.js 是本站自己的：五张模型清单页（MESH E / Wall E / Building E /
+# Vehicle Scatter / Decal）的页内搜索、`template = …` 一键复制、预览图两图并排
+# 与统一图框，全在这一个文件里。**它是从 DOM 上取的**：内容层一个字都没改，
+# 以后往清单里加行、改名字，样式与搜索自动跟上。
+#
+# 为什么把页眉那个 Ctrl+K 站内搜索整个删了：索引是全站一份（search.json），
+# 站的绝大多数页面没什么可搜的，真正需要「找东西」的只有这五张清单；
+# 而清单页要搜的是「名称 / template 值」这种表内字段，全站搜索既搜不准也搜不了。
+# 现在 Ctrl+K 在五张清单页上聚焦页内搜索框，别的页面没有搜索。
+# 相关的删除：search 插件、页眉搜索按钮、search-lang.js、search_* 文案，
+# 以及 overrides/main.html 里那份交给脚本的 JSON。
 #
 # download.js 也是本站自己的：归档在站外（assets.rwr-infra.uk），而 `<a download>`
 # 对跨域链接无效，于是 vao0822.svg 一点就被浏览器打开而不是下载。它接住这一类点击，
@@ -66,7 +73,7 @@ extra_css = [
 # 分工与边界写在 docs/javascripts/lightbox-zoom.js 的头部。
 extra_javascript = [
   "javascripts/glightbox.min.js",
-  "javascripts/search-lang.js",
+  "javascripts/table-tools.js",
   "javascripts/redact.js",
   "javascripts/download.js",
   "javascripts/lightbox-zoom.js",
@@ -179,31 +186,6 @@ consent_accept_zh_hant = "我已知悉"
 lang_pack = "zh"
 lang_pack_en = "en"
 lang_pack_zh_hant = "zh-Hant"
-
-# ── 搜索面板的文案 ────────────────────────────────────────────────────────
-# 主题的搜索面板（`search.json` 那一套）文案是**写死英文**的，没有多语言入口。
-# 这几个词由 overrides/main.html 按页面语言取出来交给
-# docs/javascripts/search-lang.js 换上去，加语言时照着加一行 `_<lang>` 即可
-# ——那边不再有自己的文案表。
-search_text = "搜索"
-search_text_en = "Search"
-search_text_zh_hant = "搜尋"
-
-search_filters = "筛选"
-search_filters_en = "Filters"
-search_filters_zh_hant = "篩選"
-
-search_results = "条结果"
-search_results_en = "results"
-search_results_zh_hant = "條結果"
-
-search_close = "关闭搜索"
-search_close_en = "Close search"
-search_close_zh_hant = "關閉搜尋"
-
-search_filter_by_tag = "按标签筛选"
-search_filter_by_tag_en = "Filter by tag"
-search_filter_by_tag_zh_hant = "依標籤篩選"
 
 footer_bottom = "RWR 地图编辑器手册"
 footer_bottom_en = "RWR MAP EDITOR'S HANDBOOK"
@@ -329,13 +311,19 @@ glightbox = {}
 # 输出压缩
 minify = {}
 
-# 搜索。Zensical 只认 enabled / separator 两个选项（没有 lang）。
-# 默认分隔符是 [\s\-_,:!=\[\]()\\"`/]+|\.(?!\d) —— 它不切中文标点，
-# 于是「社团故事。飞行计划」会变成一个整词，中文检索基本失效。
-# 这里在默认集合上补进中文/全角标点，中英混排都能切。
+# 搜索：**整个关掉**。原先挂的是 [project.plugins.search]，索引全站一份，
+# 面板文案还要靠 overrides/main.html + docs/javascripts/search-lang.js 绕一圈
+# 才能变中文。现在真正需要检索的只有五张模型清单，改由
+# docs/javascripts/table-tools.js 在页面内做（按名称与引用值模糊匹配）；
+# 页眉的搜索入口、search_* 文案、`search.highlight` 也一并删了。
+#
+# ⚠️ 这一条**不能整段删掉**：Zensical 的搜索是内置默认开着的，配置表没了它照样
+#    生成 search.json 与那份 worker（实测：删掉这一段重建，两个文件照旧产出）。
+#    要关就得显式写 enabled = false。
+# 想恢复：把这里改成 true，并把页眉那个按钮、search-lang.js、main.html 里那份
+# JSON 一起加回来即可。
 [project.plugins.search]
-enabled = true
-separator = '[\s\-_,:!=\[\]()\\"`/。，、；：！？…·「」『』（）【】《》〈〉—～]+|\.(?!\d)'
+enabled = false
 
 # 标签：给页面打 tags，并在 docs/tags.md 里用 <!-- material/tags --> 汇成一页。
 [project.plugins.tags]
@@ -394,7 +382,6 @@ features = [
   "navigation.tabs",
   "navigation.top",
   "navigation.tracking",
-  "search.highlight",
   "toc.follow",
 ]
 

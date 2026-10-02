@@ -32,6 +32,7 @@
 
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 import time
@@ -56,9 +57,15 @@ WATCH_GLOBS = (
 )
 
 #: 生成链。顺序固定：先出页面，再出导航（导航要读生成后的树）。
+#:
+#: ⚠️ 用 `sys.executable` 而不是裸写 `"python"`：裸写取的是 PATH 上的那一个，
+#:    而 PATH 上未必是装了 pyyaml / zhconv 的那一个（这台机器上就踩过——
+#:    解析到 WindowsApps 的 python 桩，子进程当场失败，而 watch 只会重复打印
+#:    「生成失败」，看起来像「改了不生效」）。用 sys.executable 时，
+#:    `uv run python tools/watch.py` 与 `make watch` 的行为一个字都没变。
 STEPS = (
-    ["python", "tools/docsgen.py"],
-    ["python", "tools/navgen.py"],
+    [sys.executable, "tools/docsgen.py"],
+    [sys.executable, "tools/navgen.py"],
 )
 
 #: 轮询间隔。生成一次不到一秒，一秒一次足够了。
@@ -86,8 +93,15 @@ def stamp() -> float:
 
 
 def regenerate() -> None:
+    # ⚠️ 子进程的输出**显式按 UTF-8 收**：不写这两行的话，Windows 上
+    #    `capture_output=True, text=True` 会拿系统区域编码（简中机器上是 GBK）
+    #    去解生成器打的 UTF-8 中文，读线程直接抛 UnicodeDecodeError——
+    #    结果是**生成器报的错一个字也看不到**（正是这个函数留 stdout/stderr 的用意）。
+    #    环境变量一并给子进程，保证它确实按 UTF-8 写。
+    env = dict(os.environ, PYTHONIOENCODING="utf-8")
     for step in STEPS:
-        done = subprocess.run(step, cwd=ROOT, capture_output=True, text=True)
+        done = subprocess.run(step, cwd=ROOT, capture_output=True, text=True,
+                              encoding="utf-8", errors="replace", env=env)
         if done.returncode != 0:
             # 生成器报错多半是刚写坏了一页；把原因原样打出来，别吞掉。
             sys.stdout.write(done.stdout)

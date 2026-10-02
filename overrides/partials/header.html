@@ -67,16 +67,9 @@
     {% if config.extra.alternate %}
       {% include "partials/alternate.html" %}
     {% endif %}
-    {% if "search" in config.plugins %}
-      {% set search = config.plugins["search"] | attr("config") %}
-      {% if search.enabled %}
-        <label class="md-header__button md-icon" for="__search" aria-label="{{ lang.t('search') }}">
-          {% set icon = config.theme.icon.search or "material/magnify" %}
-          {% include ".icons/" ~ icon ~ ".svg" %}
-        </label>
-        {% include "partials/search.html" %}
-      {% endif %}
-    {% endif %}
+    {#- 这里原本是主题的搜索按钮（`partials/search.html` + `__search` 那个 label）。
+        站内搜索整个删掉了，按钮随之消失；要恢复就把那段与 search 插件一起加回来。
+        现在五张模型清单页的搜索框在正文里，由 docs/javascripts/table-tools.js 生成。 -#}
     <div class="md-header__source">
       {% if config.repo_url %}
         {% include "partials/source.html" %}

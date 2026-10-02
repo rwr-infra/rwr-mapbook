@@ -1,8 +1,8 @@
 ---
 title: "Feature guide"
 description: "The editor's features: every toolbar tool in turn, the key bindings, ID search, and the mapSettings / 3rdParSettings / RefpM configuration files."
-source_sha256: 853d46589283d9905e4b4158218c95d5f97bdd3d6be1422ed8c6c201476fa972
-translated: 2026-09-27
+source_sha256: c184757788bead9a32f106a1dc0b124b7941eb3321734bd1688d68f26a47ed5e
+translated: 2026-10-02
 nav_label: "Feature guide"
 icon: lucide/layout-grid
 tags: [Interface, Tools, Config files]
@@ -16,12 +16,15 @@ tags: [Interface, Tools, Config files]
 The editor's main panel.
 ///
 
+* * *
 ## The toolbar tools
 
+* * *
 ### Save { #save }
 
 !!! note "Saves the map; when it is done you get a sound."
 
+* * *
 ### ViewMap { #viewmap }
 
 ??? note "Generates the map's first preview image (expand for details)"
@@ -30,6 +33,7 @@ The editor's main panel.
     <span class="redact" tabindex="0">Yep — every map's final thumbnail, from back then until now, has been made by hand.</span>
 
 
+* * *
 ### Select { #select }
 
 ??? note "Used to select objects on the map (expand for details)"
@@ -54,12 +58,14 @@ The editor's main panel.
 
         Moving and rotating in free camera (perspective) is not recommended; the interaction is poor.
 
+* * *
 ### PinMan { #pinman }
 
 ??? note "Used to place a virtual reference object at the point you click. (expand for details)"
     Use the ++shift+2++ shortcut to jump quickly to the TankPin tool inside PinMan.
     !!! warning "There are three options, but only the tank works."
 
+* * *
 ### WallE { #walle }
 ??? note "Used to pick the kind of wall from the list, and to draw nodes with PathBush and then press space to join them into a line in placement order. You can pick the wall kind first and then draw, or draw first and then pick the wall kind — once you have picked, click the wall you already drew and the replacement is done. (expand for details)"
     Use the ++shift+7++ shortcut to jump quickly to the PathBush tool inside WallE.
@@ -88,6 +94,7 @@ The editor's main panel.
 
 
 
+* * *
 ### BuildingE { #buildinge }
 
 ??? note "Used to pick the kind of building from the list, and to draw buildings with DrawBush by holding the left button and dragging. You can pick the building kind first and then draw, or draw first and then pick the building kind — once you have picked, click the building you already drew and the replacement is done. (expand for details)"
@@ -122,6 +129,7 @@ The editor's main panel.
         Right now the X axis cannot be changed.
         If you want to put a Wall, Building, Platform or the like on top of a Building, then once you have thought it through you should draw from the bottom up; when drawing you have to make sure the start point is inside the previous element. That way all the objects stack one by one as layer1, layer2…, pick up the height of the previous one automatically, and climbing and other checks work properly too.
 
+* * *
 ### PlatformE { #platforme }
 
 ??? note "Used to pick the kind of platform from the list and draw with ^^pathBush^^; like Wall, so no more detail here. (expand for details)"
@@ -186,6 +194,7 @@ The editor's main panel.
         ![](../assets/editor/046.png)
 
 
+* * *
 ### FuncObjects { #funcobjects }
 ??? note "Used to place objects that have some special interaction. (expand for details)"
     ^^LadderScatter^^ and ^^LadderEraser^^ place ladders and delete ladders. A placed ladder checks forwards automatically and snaps to nearby buildings, platforms and anything else with fixed collision.
@@ -212,6 +221,7 @@ The editor's main panel.
         If you have set the map so that only two factions fight, then when Faction is 2 this base becomes a blank base that no faction holds.
         map13_2 is a special case, not covered here.
 
+* * *
 ### MeshE { #meshe }
 
 ??? note "Used to pick the kind of model from the list. (expand for details)"
@@ -237,6 +247,7 @@ The editor's main panel.
     ![](../assets/editor/035.png)
 
 
+* * *
 ### HeightMap { #heightmap }
 
 ??? note "Used to lay down the terrain's curvature. (expand for details)"
@@ -254,6 +265,7 @@ The editor's main panel.
 
     ![](../assets/editor/037.png)
 
+* * *
 ### TerrainBash { #terrainbash }
 ??? note "Used to lay down changes in the ground texture. (expand for details)"
     ^^Pathpainter^^ is the path ground-texture brush; it is used like the Wall tool, the top left explains the relevant values and you can try it yourself.
@@ -269,10 +281,12 @@ The editor's main panel.
     Smooth flattens the ground texture over the whole map.
 
 
+* * *
 ### offroadbuilder { #offroadbuilder }
 
 !!! note "Used to tell the AI that this route is a driving route; when driving, the AI prefers to pathfind along it. It is laid like the Wall tool."
 
+* * *
 ### Decal { #decal }
 
 ??? note "Used to pick the kind of decal from the list; you can think of it as printing another layer of material on top of the ground texture. Once picked, left click to place it. (expand for details)"
@@ -283,6 +297,7 @@ The editor's main panel.
     ![](../assets/editor/040.png)
 
 
+* * *
 ### Assaum { #assaum }
 ??? note "Used to pick assemblies from the list, an armory with its collision box and trigger area already built for example. Once picked, left click to place it. (expand for details)"
     The search bar is like Wall's, so no more detail here.
@@ -295,6 +310,7 @@ The editor's main panel.
 
 
 
+* * *
 ### ID search { #id-search }
 ??? note "The steps"
     1. Read the id here.
@@ -344,6 +360,7 @@ The editor's main panel.
     The editor re-numbers every ID each time it saves, so the number may differ from the last one.
     So **what you wrote down is the ID at that moment**; after one more save, searching again may not find it.
 
+* * *
 ### mapSettings { #map-settings }
 
 !!! note "Nothing verified yet."
@@ -367,6 +384,7 @@ The editor's main panel.
 
 !!! warning "If map settings are not written the map will not run; if you really do not know what to write, paste another map's and tweak it."
 
+* * *
 ### 3rdParSettings { #third-party }
 Used to load detailed models and part of the materials; you can skip it.
 #### 1. Choosing the OgreXMLConverter.exe Path { #ogreref }
@@ -414,6 +432,7 @@ Once it is set the result looks like this (a Decal, as an example):
 
 ![](../assets/editor/049.png)
 
+* * *
 ### RefpM { #reference-images }
 
 Use ^^Import^^ to bring in a reference image, ^^Clear^^ to remove it.
@@ -421,6 +440,7 @@ Use ^^Import^^ to bring in a reference image, ^^Clear^^ to remove it.
 ^^OffsetX^^ and ^^OffsetX<span class="redact" tabindex="0">really Y</span>^^ shift the reference image horizontally and vertically; the value is a distance, the first field grows along X to the right, the second along Y upwards.
 ^^Alpha^^ changes the reference image's transparency, fading it towards the left and making it solid towards the right.
 
+* * *
 ### Key bindings { #keys }
 
 !!! question "Is this table really complete?"
