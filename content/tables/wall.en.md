@@ -1,15 +1,24 @@
 ---
 title: "Wall E & Platform E"
 description: "Normal walls and special walls, including notes on what destroys them."
-source_sha256: af019e8fdc8940a49010581708a7694233a08d1e8c4e6adb647b71ec78df8168
-translated: 2026-10-03
+source_sha256: 24fb7cc60970b5b90d76fe8a39a606d35c4247c4789a8c42b88c037b77a724de
+translated: 2026-10-06
 nav_label: "Wall E & Platform E"
 icon: lucide/box
 ---
 
 # Wall E & Platform E { #wall }
 
-<p class="kicker">EDITOR · walls, and whether they can be knocked down</p>
+<p class="kicker">TABLES · <!--count--> items</p>
+
+<div class="ts-search">
+  <div class="ts-search__box">
+    <span class="ts-search__icon" aria-hidden="true"></span>
+    <input class="ts-search__input" type="search" autocomplete="off" spellcheck="false" placeholder="Search name or reference…" aria-label="Search this list">
+    <kbd class="ts-search__kbd">Ctrl K</kbd>
+  </div>
+  <p class="ts-search__meta"><!--count--> items · Searches names and reference values</p>
+</div>
 
 <div class="grid" markdown>
 
@@ -33,7 +42,7 @@ icon: lucide/box
 !!! note "Noted while writing this table"
     Note: template version vao0822; the views are side-on. Destroying a wall with explosives seems to need hitting it near the middle; hits at the edges may fail to blow it up (not verified case by case). If a wall is invisible, or its shape/material looks odd, it is most likely meant to be used together with a platform.
 
-## Normal walls { #normal }
+## Normal walls <span class="ts-count"><!--count--> items</span> { #normal }
 
 | Preview | Name | Notes |
 | --- | --- | --- |
@@ -87,7 +96,7 @@ icon: lucide/box
 | ![](../assets/tables/wall-e/076.png) | Trench wall 3<br>template = TrenchWall3 |  |
 | ![](../assets/tables/wall-e/077.png) | Wood post fence 1<br>template = WoodPostFence1 |  |
 
-## Special walls { #special }
+## Special walls <span class="ts-count"><!--count--> items</span> { #special }
 
 | Preview | Name | Notes |
 | --- | --- | --- |

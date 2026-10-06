@@ -7,7 +7,16 @@ icon: "lucide/box"
 
 # Building E { #building }
 
-<p class="kicker">EDITOR · 能放的房子</p>
+<p class="kicker">TABLES · <!--count--> 项</p>
+
+<div class="ts-search">
+  <div class="ts-search__box">
+    <span class="ts-search__icon" aria-hidden="true"></span>
+    <input class="ts-search__input" type="search" autocomplete="off" spellcheck="false" placeholder="搜索名称或引用值…" aria-label="搜索清单">
+    <kbd class="ts-search__kbd">Ctrl K</kbd>
+  </div>
+  <p class="ts-search__meta">共 <!--count--> 项 · 可搜名称与引用值</p>
+</div>
 
 !!! tip "怎么读这张表"
     「预览」列按两张图并排给：左侧斜向下视角，右侧正对法线。判断形状请以**水平线**为准，垂直线是点透视。

@@ -68,7 +68,7 @@ import tomllib
 import yaml
 
 from docsgen import (depth_of, hide_sides, insert_hide, lang_prefix,
-                     rewrite_shared, tree_names)
+                     transform, tree_names)
 from linkcheck import site_base
 from hant import to_hant
 from langs import CONTENT, DEFAULT_LANG, DERIVATIONS, LANG_RE, ROOT, other_languages
@@ -295,10 +295,11 @@ def inspect_derived(source: Path, lang: str, version: Version) -> dict:
         record["next"] = f"产物的 {lang} 版缺失；跑 make gen（docsgen 会从简体转换生成）"
         return record
 
-    # 期望值要按 docsgen 的同一条流水线算：先补共享资产的相对层级，再转换
+    # 期望值要按 docsgen 的同一条流水线算：先填条目数、再补共享资产的相对层级，最后转换。
+    # 走 docsgen.transform() 而不是在这儿重抄一遍，理由见那个函数的说明。
     base = source.parent.relative_to(root).as_posix()
     base = "" if base == "." else base
-    expected = strip_banner(to_hant(rewrite_shared(
+    expected = strip_banner(to_hant(transform(
         source.read_text(encoding="utf-8"), base, depth_of(version, lang))))
     # 构建层还会往空侧栏的页上补一行 hide: ——复核时要走同一条流水线，
     # 否则「派生失同步」会误报，而误报的修法是「跑 make gen」，

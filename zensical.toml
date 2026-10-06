@@ -208,6 +208,15 @@ version_aria = "切换地编版本"
 version_aria_en = "Switch editor version"
 version_aria_zh_hant = "切換地編版本"
 
+# 五张模型清单页里「这一行没有预览图」的占位字（Vehicle Scatter 大半行是空的）。
+# 它由 CSS 的伪元素画出来，而伪元素取不到别的元素的属性，所以值要在 <head> 里
+# 写进 <html> 的自定义属性 --ts-none（见 overrides/main.html）。
+# ⚠️ 为什么不用脚本补：脚本跑到时第一帧早画完了，那一百多个空格会先空一下再填上
+#    （理由与实测数字见 docs/stylesheets/extra.css 里「模型清单页」那段的说明）。
+tables_none = "略"
+tables_none_en = "n/a"
+tables_none_zh_hant = "略"
+
 # ── 版本清单 ──────────────────────────────────────────────────────────────
 # 本站的第二条切换轴。读者装的是哪一版地编，就该看到哪一版的说明。
 #

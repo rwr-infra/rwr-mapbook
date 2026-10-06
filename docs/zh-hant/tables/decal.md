@@ -9,7 +9,16 @@ hide: [toc]
 
 # Decal { #decal }
 
-<p class="kicker">EDITOR · 地面貼花</p>
+<p class="kicker">TABLES · 20 項</p>
+
+<div class="ts-search">
+  <div class="ts-search__box">
+    <span class="ts-search__icon" aria-hidden="true"></span>
+    <input class="ts-search__input" type="search" autocomplete="off" spellcheck="false" placeholder="搜索名稱或引用值…" aria-label="搜索清單">
+    <kbd class="ts-search__kbd">Ctrl K</kbd>
+  </div>
+  <p class="ts-search__meta">共 20 項 · 可搜名稱與引用值</p>
+</div>
 
 !!! tip "怎麼讀這張表"
     「預覽」列按兩張圖並排給：左側斜向下視角，右側正對法線。判斷形狀請以**水平線**為準，垂直線是點透視。

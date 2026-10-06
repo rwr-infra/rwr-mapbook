@@ -29,6 +29,21 @@
   {#- 目录地址补正要排在 <head> 里最前面：它必须在正文被解析之前改掉地址栏。
       理由与取舍见 partials/trailing-slash.html 的说明。 -#}
   {% include "partials/trailing-slash.html" %}
+  {#- 五张模型清单页的**页面身份**（html[data-ts-page]）与空预览格的占位字
+      （html 上的 --ts-none，给 CSS 伪元素用），都交给 CSS。
+      为什么不等正文末尾那个脚本：浏览器在解析器被主题 bundle 挡住时就已经
+      画了第一帧，脚本跑到时第一帧早画完了——清单页的图框、两图并排这些版式
+      必须首帧就对，所以判定要在 <head> 里、正文解析之前完成。
+      属性挂 <html> 上而不是 class：主题会把 class 从 no-js 换成 js，data-* 不碰。
+      ⚠️ 不是清单页时**不加这个属性**，不能加一个空值：`[data-ts-page]` 问的是
+      「有没有这个属性」，空串照样命中——首页与下载页会一起套上清单页的版式
+      （踩过：那两页表格被强制成 display: table、首列变 flex）。
+      判据与 docs/javascripts/table-tools.js 同源：那个脚本直接读这个属性，
+      不再自己跑一遍正则——「哪一页」只认一次，两处各认一遍迟早认叉。
+      ⚠️ 占位字要**带着引号**写进自定义属性：`content: var(--ts-none)` 取的是
+      CSS 字符串，值里没引号的话 `content: 略` 是非法声明，占位就整个不显示
+      （踩过：tojson 出来的引号成了 JS 字符串的引号，自定义属性只剩裸的「略」）。 -#}
+  <script>(function(){var m=/\/tables\/([a-z0-9_-]+)\/?$/.exec(location.pathname);if(m)document.documentElement.setAttribute("data-ts-page",m[1]);document.documentElement.style.setProperty("--ts-none",{{ ('"' ~ (config.extra["tables_none" ~ L] | d("略", true)) ~ '"') | tojson }});})();</script>
   {#- 这里原本是一份 id="__rwr" 的 JSON：语言清单 + search_* 文案，交给
       docs/javascripts/search-lang.js 去替换主题搜索面板里写死的英文。
       站内搜索整个删掉之后，那个脚本与这份数据一并没有用了。 -#}

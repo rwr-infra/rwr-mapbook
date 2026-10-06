@@ -1,15 +1,24 @@
 ---
 title: "Decal"
 description: "Ground decals."
-source_sha256: 66ed37733980091f019c6c58a6922bd5ac6f6ba93b6060f5af692fde8e7c0f49
-translated: 2026-10-03
+source_sha256: f93a510824bc4a8e367c4b34f07d8a570f9b805bb9a4cc5fb3f251ea3b4043b0
+translated: 2026-10-06
 nav_label: "Decal"
 icon: lucide/box
 ---
 
 # Decal { #decal }
 
-<p class="kicker">EDITOR · ground decals</p>
+<p class="kicker">TABLES · <!--count--> items</p>
+
+<div class="ts-search">
+  <div class="ts-search__box">
+    <span class="ts-search__icon" aria-hidden="true"></span>
+    <input class="ts-search__input" type="search" autocomplete="off" spellcheck="false" placeholder="Search name or reference…" aria-label="Search this list">
+    <kbd class="ts-search__kbd">Ctrl K</kbd>
+  </div>
+  <p class="ts-search__meta"><!--count--> items · Searches names and reference values</p>
+</div>
 
 !!! tip "How to read this table"
     The **Preview** column gives two images side by side: the left one looks down at an

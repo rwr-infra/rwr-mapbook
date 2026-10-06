@@ -9,7 +9,16 @@ icon: "lucide/box"
 
 # Vehicle Scatter { #vehicle }
 
-<p class="kicker">EDITOR · 載具散布</p>
+<p class="kicker">TABLES · 200 項</p>
+
+<div class="ts-search">
+  <div class="ts-search__box">
+    <span class="ts-search__icon" aria-hidden="true"></span>
+    <input class="ts-search__input" type="search" autocomplete="off" spellcheck="false" placeholder="搜索名稱或引用值…" aria-label="搜索清單">
+    <kbd class="ts-search__kbd">Ctrl K</kbd>
+  </div>
+  <p class="ts-search__meta">共 200 項 · 可搜名稱與引用值</p>
+</div>
 
 !!! quote "注意事項"
     註：模板版本 vao0822。預覽圖左側為斜向下視角，右側正對法線，也就是地編視角；判斷形狀請以水平線為參考，垂直線是點透視，可能讓物件看起來傾斜。
@@ -21,7 +30,7 @@ icon: "lucide/box"
     某些未生成載具是因為未裝載/地圖運行環境不同，或者只是中介載體只存在一瞬間，例如信號車只在Invasion有效，快速比賽模式無法正常生成，這些細節表中未進一步測試及標註。
 
 
-## 特殊載具表 { #special }
+## 特殊載具表 <span class="ts-count">6 項</span> { #special }
 
 **下表中的載具通常使用key進行生成，材質以及模型會隨陣營改變。**
 
@@ -34,7 +43,7 @@ icon: "lucide/box"
 |  | 老兵包坦克<br>tank_alt |  |
 |  | 不給玩家生成的坦克<br>tank_denied_player | 一種特殊的生成機制，玩家佔領這個據點後，裡面的tank不會生成。 |
 
-## 普通載具表 { #normal }
+## 普通載具表 <span class="ts-count">114 項</span> { #normal }
 
 **下表中的載具使用tag進行生成。**
 
@@ -156,7 +165,7 @@ icon: "lucide/box"
 | ![](../../assets/tables/vehicle-scatter/056.png) | 雪人<br>snowman.vehicle | 聖誕活動裡的休眠狀態小雪人；沒有腳本將它生成，因此只能被推着移動<br>無法激活 |
 
 
-## 未生成載具表 { #unspawned }
+## 未生成載具表 <span class="ts-count">80 項</span> { #unspawned }
 
 **在快速比賽地圖模式下未正常生成。**
 

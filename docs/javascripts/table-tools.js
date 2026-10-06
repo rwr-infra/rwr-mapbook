@@ -1,38 +1,45 @@
 /**
- * 模型清单页工具：页内搜索 · 一键复制引用值 · 预览图统一图框
+ * 模型清单页工具：引用值一键复制 · 页内搜索
  *
  * 管哪五页
  * --------
- * MESH E / Wall E / Building E / Vehicle Scatter / Decal，也就是 /tables/ 下面
- * 那五张清单（三语同址，语言前缀与版本前缀都不影响判据）。
- * 别的页面这个文件一行都不做——`pageOf()` 认不出就直接返回。
+ * MESH E / Wall E & Platform E / Building E / Vehicle Scatter / Decal，也就是
+ * /tables/ 下面那五张清单（三语同址，语言前缀与版本前缀都不影响判据）。
+ * 别的页面这个文件一行都不做。
  *
- * 为什么全从 DOM 上做，而不是改内容
- * --------------------------------
- * 内容层（content/tables/*.md）里的表格长这样，几百行都是一个格局：
+ * ⚠️ 版式与文案**不在这个文件里**
+ * ------------------------------
+ * 这个文件只管「必须有脚本才成立」的事。图框尺寸、两图并排、页顶那行文案、
+ * 分组条目数一律不在这里做，因为它们必须在**第一帧**就是对的，而这个文件排在
+ * 正文末尾——浏览器在解析器被主题 bundle 挡住的时候就已经画了第一帧（实测清单页
+ * FCP 在 196ms、这个文件 268ms 才跑）。凡是靠脚本改出来的东西，前半秒都是错的，
+ * 读者看到的就是「先闪一下没版式、老文案的页面，再变成正常的」。
+ * 所以那几件事各归各处：
  *
- *     | ![](a.png)<br>![](b.png) | 小石头<br>template = rock_s1 | 备注 |
+ *   · 图框与两图并排 → docs/stylesheets/extra.css，直接加在内容层原本的
+ *                      `<a><img></a>` 标记上（页面判据是 `<html data-ts-page>`，
+ *                      由 overrides/main.html 在 <head> 里写上去，早于第一帧）；
+ *   · 页顶文案与条目数 → content/tables/*.md 里写死，数字由 tools/docsgen.py
+ *                      在构建期把 `<!--count-->` 填成真数；
+ *   · 搜索框本身 → 同上，写在 content 里（`<div class="ts-search">`），
+ *                  这个文件只负责接上它的行为。
  *
- * 名字、值、两张预览图**都在这一行里**，够脚本重建版式了；而内容一旦改成
- * 「带 div / span 的写法」，就会牵连三语结构对齐（tools/i18n_check.py 逐行比对
- * 表格行数、图片数、HTML 块）与每一篇的指纹。放在这里做，内容层一个字不动：
- * 以后往清单里加行、改名字、加一种语言，版式与搜索**自动跟上**。
- *
- * 于是这个文件干四件事：
- *   1. 预览列：拆掉图与图之间的 `<br>`，每张图套一个固定尺寸的图框（两图并排），
- *      框的大小全在 extra.css 的 `--ts-shot-*` 里调；
- *   2. 名称列：最后一行是引用值时，**值本身**换成可点的复制芯片，值前面的
- *      `template = ` 留在框外当正文（`template = [rock_s1]`，点复制得到 rock_s1；
+ * 于是这个文件干三件事
+ * --------------------
+ *   1. 名称列：最后一行是引用值时，把**值本身**换成可点的复制芯片，值前面的
+ *      `template = ` 留在框外当正文（`template = [rock_s1]`，点一下复制 rock_s1；
  *      Vehicle Scatter 那种没有 `template =` 的，整行就是值）；
- *   3. 页面顶部生成搜索框：按**名称与引用值**模糊匹配，下拉列结果、按像的程度排，
- *      回车/点击跳到那一行。Ctrl+K 聚焦它（页眉那个全站搜索已经删了）；
- *   4. 每个分组标题后面补一个条目数。
+ *   2. 页内搜索：把内容层写好的那个搜索框接上行为——按**名称与引用值**模糊匹配、
+ *      下拉列结果按像的程度排、回车/点击跳到那一行。Ctrl+K 聚焦它
+ *      （页眉那个全站搜索已经删了）；
+ *   3. 量出页眉与搜索框的高度写进 `<html>`（`--ts-sticky-top` / `--ts-bar-h`），
+ *      粘性搜索框与粘性表头靠这两个值定位——纯 CSS 量不出来，只能脚本量。
  *
  * 认不出的行一律不动
  * ----------------
  * 「引用值」的判据是**名称列最后一行**：`template = xxx` 或者 `xxx.yyy` 这种
- * 单token。认不出（例如 MESH E 里「石头 / 使用工具放置」那两行）就不加芯片、
- * 也不套固定图框——那两行要按原尺寸看。搜索也照旧按名称收录它们。
+ * 单token。认不出（例如 MESH E 里「石头 / 使用工具放置」那两行）就不加芯片。
+ * 搜索也照旧按名称收录它们。
  *
  * 与主题的关系
  * ------------
@@ -48,61 +55,45 @@
   /* ── 认页面 ─────────────────────────────────────────────────────── */
 
   var PAGES = ["mesh", "wall", "building", "vehicle", "decal"];
-  var PAGE_RE = /(?:^|\/)tables\/([a-z0-9_-]+)\/?(?:index\.html)?$/;
 
-  function pageOf(pathname) {
-    var m = PAGE_RE.exec(pathname || location.pathname);
-    if (!m) return null;
-    return PAGES.indexOf(m[1]) === -1 ? null : m[1];
+  function pageOf() {
+    // 页面身份由 overrides/main.html 在 <head> 里写进 `<html data-ts-page>`：
+    // 那个判定必须早于第一帧（CSS 的图框与两图并排就靠它命中），而本文件跑到时
+    // 第一帧早画完了。**认页的判据只有那一处**，这里不再自己跑一遍正则——
+    // 两处各认一遍，迟早认叉。
+    var name = document.documentElement.getAttribute("data-ts-page") || "";
+    return PAGES.indexOf(name) === -1 ? null : name;
   }
 
-  /* ── 文案：按 `<html lang>` 取（三语各自一份，加语言照抄一组） ───── */
+  /* ── 文案：这里只剩脚本自己造出来的那几句 ─────────────────────────
+     页顶文案、搜索框的占位与「共 N 项」、分组条目数都写在内容层
+     （content/tables/*.md），不在这里——它们要在第一帧就出现。
+     下面这些是点了芯片之后的回执、搜索无结果这类**脚本生成**的句子。 */
 
   var TEXT = {
     "zh-hans": {
-      search: "搜索清单",
-      placeholder: "搜索名称或引用值…",
-      meta: "可搜名称与引用值",
-      total: "共 {n} 项",
-      count: "{n} 项",
-      kicker: "TABLES · {n} 项",
       omitted: "略",
       none: "没有匹配的物件",
       more: "另有 {n} 条未列出，多打几个字缩小范围",
       copy: "点击复制",
       copied: "已复制",
-      copyfail: "复制失败，请手动选中",
-      nav: "↑↓ 选择 · 回车跳转 · Esc 关闭"
+      copyfail: "复制失败，请手动选中"
     },
     "zh-hant": {
-      search: "搜尋清單",
-      placeholder: "搜尋名稱或引用值…",
-      meta: "可搜名稱與引用值",
-      total: "共 {n} 項",
-      count: "{n} 項",
-      kicker: "TABLES · {n} 項",
       omitted: "略",
       none: "沒有符合的物件",
       more: "另有 {n} 條未列出，多打幾個字縮小範圍",
       copy: "點擊複製",
       copied: "已複製",
-      copyfail: "複製失敗，請手動選取",
-      nav: "↑↓ 選擇 · 回车跳轉 · Esc 關閉"
+      copyfail: "複製失敗，請手動選取"
     },
     en: {
-      search: "Search this list",
-      placeholder: "Search name or reference…",
-      meta: "Searches names and reference values",
-      total: "{n} items",
-      count: "{n} items",
-      kicker: "TABLES · {n} items",
       omitted: "n/a",
       none: "No matching object",
       more: "{n} more not listed — type more to narrow it down",
       copy: "Click to copy",
       copied: "Copied",
-      copyfail: "Copy failed — select it manually",
-      nav: "↑↓ select · Enter jump · Esc close"
+      copyfail: "Copy failed — select it manually"
     }
   };
 
@@ -136,8 +127,8 @@
     return svg;
   }
 
-  // material 的 magnify / content-copy / check
-  var ICON_SEARCH = "M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z";
+  // material 的 content-copy / check。放大镜不在这里：
+  // 它在输入框里面，必须首帧就在，所以那个字形画在 extra.css 的 mask 里。
   var ICON_COPY = "M19 21H8V7h11m0-2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2m-3-4H4a2 2 0 0 0-2 2v14h2V3h12V1Z";
   var ICON_CHECK = "M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7Z";
 
@@ -189,38 +180,6 @@
     }
     out.name = (head.textContent || "").replace(/\s+/g, " ").trim();
     return out;
-  }
-
-  /* ── 预览列：两图并排 + 固定图框 ─────────────────────────────────── */
-
-  function decoratePreview(cell, hasValue) {
-    var media = [];
-    Array.prototype.forEach.call(cell.childNodes, function (node) {
-      if (node.nodeType === 1 && (node.tagName === "A" || node.tagName === "IMG")) media.push(node);
-    });
-
-    if (!media.length) {
-      // Vehicle Scatter 几百行都是空预览列：给一个静默的占位（居中显示），
-      // 免得那一列看起来像「漏了图」。
-      if (!cell.textContent.trim()) cell.appendChild(el("span", "ts-none", T().omitted));
-      return;
-    }
-
-    // 图与图之间的换行靠 flex 的 gap，不靠 `<br>`——留着会把两张图上下叠起来
-    Array.prototype.slice.call(cell.querySelectorAll("br")).forEach(function (br) {
-      br.parentNode.removeChild(br);
-    });
-
-    var wrap = el("span", "ts-prev");
-    // 认不出引用值的行（MESH E 的「使用工具放置」两行）不套固定框，按原尺寸看
-    if (!hasValue) wrap.className += " ts-prev--natural";
-
-    media.forEach(function (node) {
-      var shot = el("span", "ts-shot");
-      shot.appendChild(node); // appendChild 会把它从 cell 里摘走
-      wrap.appendChild(shot);
-    });
-    cell.appendChild(wrap);
   }
 
   /* ── 复制 ───────────────────────────────────────────────────────── */
@@ -393,6 +352,10 @@
     var clone = heading.cloneNode(true);
     var link = clone.querySelector(".headerlink");
     if (link) clone.removeChild(link);
+    // 标题里的条目数（构建期填的 <span class="ts-count">）不算标题的一部分：
+    // 搜索结果左边那栏写的是「正常墙」，不是「正常墙 49 项」。
+    var count = clone.querySelector(".ts-count");
+    if (count) clone.removeChild(count);
     return (clone.textContent || "").replace(/\s+/g, " ").trim();
   }
 
@@ -408,32 +371,24 @@
 
   var MAX_RESULTS = 40;
 
-  function buildSearch(article, rows, text) {
-    var wrap = el("div", "ts-search");
-    var box = el("div", "ts-search__box");
-    box.appendChild(icon(ICON_SEARCH, "ts-search__icon"));
+  /**
+   * 接上内容层写好的那个搜索框。
+   *
+   * ⚠️ 框本身（输入框、放大镜、Ctrl K、那行「共 N 项」）在 content/tables/*.md
+   *    里，不在这里造：它要在**第一帧**就出现，而本文件跑到时第一帧早画完了。
+   *    这里只负责它出现之后才有意义的东西——结果下拉（`<ul>`，平时是 hidden，
+   *    只有打字时才露出来，所以它晚一点建没关系）。
+   */
+  function buildSearch(article, rows) {
+    var text = T();
+    var wrap = article.querySelector(".ts-search");
+    var input = wrap && wrap.querySelector(".ts-search__input");
+    if (!wrap || !input) return null;
 
-    var input = el("input", "ts-search__input");
-    input.type = "search";
-    input.autocomplete = "off";
-    input.spellcheck = false;
-    input.placeholder = text.placeholder;
-    input.setAttribute("aria-label", text.search);
-    box.appendChild(input);
-    box.appendChild(el("kbd", "ts-search__kbd", "Ctrl K"));
-
-    var meta = el("p", "ts-search__meta", text.total.replace("{n}", rows.length) + " · " + text.meta);
     var list = el("ul", "ts-search__list");
     list.setAttribute("role", "listbox");
     list.hidden = true;
-
-    wrap.appendChild(box);
-    wrap.appendChild(meta);
     wrap.appendChild(list);
-
-    var host = article.querySelector(".kicker") || article.querySelector("h1");
-    if (host && host.parentNode === article) article.insertBefore(wrap, host.nextSibling);
-    else article.insertBefore(wrap, article.firstChild);
 
     var pool = rows.map(function (row) {
       return { row: row, name: norm(row.name), value: norm(row.value) };
@@ -547,63 +502,33 @@
   /* ── 一个页面装一次 ─────────────────────────────────────────────── */
 
   function setup() {
-    var page = pageOf(location.pathname);
+    var page = pageOf();
     if (!page) return;
     var article = document.querySelector("article.md-content__inner");
     if (!article || article.__tsDone) return;
     article.__tsDone = true;
 
     var text = T();
-    article.classList.add("tables-page", "tables-page--" + page);
 
     var rows = [];
-    var groups = [];
 
     Array.prototype.forEach.call(article.querySelectorAll("table"), function (table) {
       var section = headingBefore(article, table);
       var sectionName = headText(section);
       var body = table.tBodies[0];
       if (!body) return;
-      var group = { heading: section, rows: [] };
 
       Array.prototype.forEach.call(body.rows, function (tr) {
         if (tr.cells.length < 2) return;
         var info = readName(tr.cells[1]);
-        decoratePreview(tr.cells[0], !!info.value);
-
         var line = info.kind === "template" ? "template = " + info.value : info.value;
         if (info.value) chip(tr.cells[1], info, text);
 
-        var row = { tr: tr, name: info.name, value: info.value, line: line, section: sectionName };
-        rows.push(row);
-        group.rows.push(row);
+        rows.push({ tr: tr, name: info.name, value: info.value, line: line, section: sectionName });
       });
-
-      if (group.rows.length) groups.push(group);
     });
 
-    // 分组标题后面补条目数（只给带表格的分组）
-    groups.forEach(function (group) {
-      if (!group.heading || group.heading.querySelector(".ts-count")) return;
-      group.heading.appendChild(el("span", "ts-count", text.count.replace("{n}", group.rows.length)));
-    });
-
-    // 页顶那行 kicker 换成**这一页的条目数**（原先 /tables/ 落地页上那张汇总表
-    // 撤掉之后，统计数就放在这儿）。页面自己没写 kicker 的（MESH E），在标题下面补一行。
-    if (rows.length) {
-      var kicker = article.querySelector(".kicker");
-      var kickerText = text.kicker.replace("{n}", rows.length);
-      if (kicker) {
-        kicker.textContent = kickerText;
-      } else {
-        var heading = article.querySelector("h1");
-        var node = el("p", "kicker", kickerText);
-        if (heading && heading.parentNode === article) article.insertBefore(node, heading.nextSibling);
-        else article.insertBefore(node, article.firstChild);
-      }
-    }
-
-    var finder = rows.length ? buildSearch(article, rows, text) : null;
+    var finder = rows.length ? buildSearch(article, rows) : null;
 
     stickyOffset();
     window.addEventListener("resize", stickyOffset);
@@ -631,11 +556,11 @@
     });
   }
 
-  // ⚠️ **当场就跑**，不要等 DOMContentLoaded（踩过：五张清单点进去会「闪一下
-  //    另一张页面」——kicker 还是老的、预览图还没进框，之后才变正常）。
-  //    这个文件是同步 <script>、排在正文之后（见生成出来的 HTML），所以走到这里
-  //    article 已经在 DOM 里，而浏览器**还没画第一帧**；等到 DOMContentLoaded 再跑，
-  //    中间那一帧画的正是「没处理过的原样」，用户看到的就是那一闪。
+  // 当场就跑，不要等 DOMContentLoaded。这个文件是同步 <script>、排在正文之后
+  // （见生成出来的 HTML），走到这里正文已经在 DOM 里了，早一点接上行为总是好的。
+  // ⚠️ 但**不要以为这样就没有「闪一下」了**：第一帧在解析器被主题 bundle 挡住时
+  //    就画完了，比这里还早。凡是首帧就要对的东西（图框、两图并排、页顶文案、
+  //    条目数、搜索框），都已经移出这个文件了——见文件开头那段。
   setup();
 
   // 主题的 document$ 还没挂上来（bundle 在 extra_javascript 之后初始化）。
