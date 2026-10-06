@@ -2,29 +2,11 @@
 nav_label: "模型清单"
 title: "模型清单"
 icon: "lucide/table"
-description: "Mesh E、Wall E、Building E、Vehicle Scatter、Decal 五张清单。"
+description: "Mesh E、Wall E&Platform E、Building E、Vehicle Scatter、Decal 五张清单。"
 nav: ["mesh", "wall", "building", "vehicle", "decal"]
-tags: [模型]
 ---
 
-# 模型清单
+<meta http-equiv="refresh" content="0; url=mesh/">
 
-<p class="kicker">TABLES · 六百多个物件，能不能用</p>
-
-五张表，**模板版本 vao0822**。每一行是一个物件：预览图、它是什么，
-以及地编里实测的备注。
-
-| 页 | 内容 | 条目 |
-| --- | --- | --- |
-| [MESH E](mesh.md) | 石头、植物、小物件、大物件、特殊物件，以及有严重问题的物件 | 311 |
-| [Wall E](wall.md) | 正常墙与特殊墙 | 76 |
-| [Building E](building.md) | 可放置的房子 | 12 |
-| [Vehicle Scatter](vehicle.md) | 载具散布 | 194 |
-| [Decal](decal.md) | 地面贴花 | 20 |
-
-!!! warning "预览图怎么看"
-    左侧是斜向下视角，右侧正对法线，也就是地编里的视角。判断形状以**水平线**为准——
-    垂直线是点透视，可能让物件看起来是斜的。
-
-!!! tip "每一行的「名称」列"
-    斜杠前是它是什么，斜杠后是 `template = …` 的引用名；地编里按这个名字找它。
+这一页不再单独存在——五张清单就排在左边目录的「模型清单」底下。
+正在前往 [MESH E](mesh.md)；没有自动跳过去的话，点这个链接。

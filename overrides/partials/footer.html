@@ -85,8 +85,10 @@
     </div>
     <div class="brand-footer__meta">
       {% set note = config.extra["footer_note" ~ L] | d(config.extra.footer_note | d("", true), true) %}
-      {% if note %}{{ note }}<br>{% endif %}
-      <a href="{{ ((route.base(here) | trim) ~ 'tags/') | url }}">{{ config.extra["footer_browse_tags" ~ L] | d(config.extra.footer_browse_tags, true) }}</a>
+      {% if note %}{{ note }}{% endif %}
+      {#- 这里原先还有一条「按标签浏览 ↗」指向标签索引。标签整个删掉了
+          （content/tags/、tags: 前置元数据、docsgen 的 tag_index、页脚的这条链接），
+          链接与 zensical.toml 里的 footer_browse_tags* 三段文案一并移除。 -#}
     </div>
     <div class="brand-footer__bottom">
       <span>{{ config.extra["footer_bottom" ~ L] | d(config.extra.footer_bottom | d(site_name, true), true) }}</span>

@@ -3,29 +3,46 @@ nav_label: "Vehicle Scatter"
 title: "Vehicle Scatter"
 description: "載具散布清單。"
 icon: "lucide/box"
-tags: [模型, 載具]
 # ⚠️ 由 tools/docsgen.py 從 content/tables/vehicle.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
-hide: [toc]
 ---
+
 
 # Vehicle Scatter { #vehicle }
 
 <p class="kicker">EDITOR · 載具散布</p>
 
-!!! tip "怎麼讀這張表"
-    「預覽」列按兩張圖並排給：左側斜向下視角，右側正對法線。判斷形狀請以**水平線**為準，垂直線是點透視。
+!!! quote "注意事項"
+    註：模板版本 vao0822。預覽圖左側為斜向下視角，右側正對法線，也就是地編視角；判斷形狀請以水平線為參考，垂直線是點透視，可能讓物件看起來傾斜。
 
-    一張表。名稱列的 `xxx.vehicle` 就是 `common.resources` 裡的 key。
+    特殊載具表來自steamapps\common\RunningWithRifles\media\packages\vanilla\factions文件夾中的green_default.resources
 
-*[模板]: 物件在 `template = …` 裡引用的名字，地編裡按這個名字找它
+    普通載具表以及未生成載具表來自steamapps\common\RunningWithRifles\media\packages\vanilla\factions文件夾中的common.resources
+    
+    某些未生成載具是因為未裝載/地圖運行環境不同，或者只是中介載體只存在一瞬間，例如信號車只在Invasion有效，快速比賽模式無法正常生成，這些細節表中未進一步測試及標註。
 
+
+## 特殊載具表 { #special }
+
+**下表中的載具通常使用key進行生成，材質以及模型會隨陣營改變。**
+
+| 預覽 | 名稱 | 備註 |
+| --- | --- | --- |
+|  | 吉普車<br>jeep |  |
+|  | 步戰車<br>apc |  |
+|  | 坦克<br>tank |  |
+|  | 運貨卡車<br>transport_truck |  |
+|  | 老兵包坦克<br>tank_alt |  |
+|  | 不給玩家生成的坦克<br>tank_denied_player | 一種特殊的生成機制，玩家佔領這個據點後，裡面的tank不會生成。 |
+
+## 普通載具表 { #normal }
+
+**下表中的載具使用tag進行生成。**
 
 | 預覽 | 名稱 | 備註 |
 | --- | --- | --- |
 |  | 機槍悍馬<br>humvee.vehicle |  |
 |  | 榴彈悍馬<br>humvee_gl.vehicle |  |
 |  | 重生車<br>armored_truck.vehicle |  |
-|  | 信號車<br>radar_truck.vehicle | 只在 Invasion 有效；快速比賽模式無法正常生成<br><span class="redact" tabindex="0">下面標「未生成」的也可能同屬這一特性</span> |
 |  | 軍械車<br>mobile_armory.vehicle |  |
 |  | 氣墊船<br>rubber_boat.vehicle |  |
 |  | 巡邏艇<br>patrol_ship.vehicle |  |
@@ -98,19 +115,75 @@ hide: [toc]
 | ![](../../assets/tables/vehicle-scatter/046.png) | 六號賽車<br>racing_car6.vehicle |  |
 | ![](../../assets/tables/vehicle-scatter/047.png) | 七號賽車<br>racing_car7.vehicle |  |
 | ![](../../assets/tables/vehicle-scatter/048.png) | 八號賽車<br>racing_car8.vehicle |  |
-|  | 粉嫩熊貓車<br>jeep_ee.vehicle | 未生成 |
 | ![](../../assets/tables/vehicle-scatter/049.png) | 垃圾箱<br>dumpster.vehicle |  |
 |  | 拖拉機<br>tractor.vehicle |  |
+|  | 火神坦克<br>vulcan_tank.vehicle |  |
+|  | 沙漠巡邏車<br>buggy.vehicle |  |
+|  | 武裝皮卡<br>technical.vehicle |  |
+|  | 陶氏鼬鼠<br>wiesel_tow.vehicle |  |
+|  | 陶氏鼬鼠空投信標<br>wiesel_spawn.vehicle | 會間隔性地持續生成 |
+|  | 香蕉車<br>banana_car.vehicle |  |
+|  | 香蕉車空投信標<br>banana_car_spawn.vehicle | 會間隔性地持續生成 |
+| ![](../../assets/tables/vehicle-scatter/050.png) | 香蕉皮生成器<br>banana_peel_spawner.vehicle | 會不斷吐出爆炸香蕉車的香蕉皮<br>會間隔性地持續生成，間隔很短 |
+|  | G17/A1兩棲戰車<br>aav7.vehicle |  |
+|  | G17/A1兩棲戰車空投信標<br>aav7_spawn.vehicle | 會間隔性地持續生成 |
+| ![](../../assets/tables/vehicle-scatter/052.png)<br>![](../../assets/tables/vehicle-scatter/051.png) | 掩體空投信標<br>cover_crate_para.vehicle | 會間隔性地持續生成 |
+|  | 武裝卡車<br>guntruck.vehicle |  |
+|  | 武裝卡車空投中介<br>guntruck_para.vehicle | 武裝卡車空投中介；只在開局生成一次，效果是投放一輛武裝卡車 |
+|  | 武裝卡車空投信標<br>guntruck_spawn.vehicle | 會間隔性地持續生成 |
+|  | 「黃蜂」導彈發射器<br>hornet.vehicle |  |
+|  | 「黃蜂」導彈發射器<br>hornet_2.vehicle | 與上一條相比，可視為一次性部署物：被摧毀後十小時才會再次生成 |
+|  | ACAV步兵戰車<br>m113_tank_acav.vehicle |  |
+|  | ACAV步兵戰車空投信標<br>vulcan_acav_spawn.vehicle | 會間隔性地持續生成 |
+|  | 機炮鼬鼠<br>wiesel_mk20.vehicle |  |
+|  | NOXE Ghost導彈發射車<br>noxe.vehicle |  |
+|  | SEV-90反戰車坦克<br>sev90.vehicle |  |
+|  | Legion步兵坦克<br>legion.vehicle |  |
+|  | 烈焰裝甲運輸車<br>flamer_tank.vehicle |  |
+|  | M528火力支援車<br>m528.vehicle |  |
+|  | VFS裝甲偵察車<br>vfs_at.vehicle |  |
+| ![](../../assets/tables/vehicle-scatter/053.png) | 導彈發射器<br>missile_launcher.vehicle |  |
+| ![](../../assets/tables/vehicle-scatter/054.png) | 軍工鏟刨的小掩體<br>sandbag_cover.vehicle |  |
+| ![](../../assets/tables/vehicle-scatter/055.png) | 狗狗箱子<br>dogcrate_para.vehicle | 在地面生成，隨後破裂並生成一隻狗<br>會間隔性地持續生成 |
+|  | 一級圓程式賽車<br>f1.vehicle |  |
+|  | 一級圓程式賽車空投信標<br>f1_spawn.vehicle | 會間隔性地持續生成 |
+|  | LAI-109多管火箭炮車<br>lai-109.vehicle |  |
+|  | LAI-109多管火箭炮車空投信標<br>lai-109_spawn.vehicle | 會間隔性地持續生成 |
+|  | LAILV-002裝甲運兵車<br>lailv-002.vehicle |  |
+|  | LAILV-002裝甲運兵車空投信標<br>lailv-002_spawn.vehicle | 會間隔性地持續生成 |
+|  | MMLS-528自行布雷系統<br>mmls-528.vehicle |  |
+|  | MMLS-528自行布雷系統空投信標<br>mmls-528_spawn.vehicle | 會間隔性地持續生成 |
+| ![](../../assets/tables/vehicle-scatter/056.png) | 雪人<br>snowman.vehicle | 聖誕活動裡的休眠狀態小雪人；沒有腳本將它生成，因此只能被推着移動<br>無法激活 |
+
+
+## 未生成載具表 { #unspawned }
+
+**在快速比賽地圖模式下未正常生成。**
+
+| 預覽 | 名稱 | 備註 |
+| --- | --- | --- |
+|  | 信號車<br>radar_truck.vehicle | 未生成 |
+|  | 粉嫩熊貓車<br>jeep_ee.vehicle | 未生成 |
+|  | 運貨卡車<br>cargo_truck.vehicle | 未生成 |
+|  | 運囚車<br>prison_bus.vehicle | 未生成 |
+|  | 監獄大門<br>prison_door.vehicle | 未生成 |
+|  | 監獄天窗<br>prison_hatch.vehicle | 未生成 |
+|  | 雷達坦克<br>radar_tank.vehicle | 未生成 |
+|  | 雷達坦克<br>radar_tank2.vehicle | 未生成 |
+|  | emp中介<br>emp.vehicle | 未生成 |
+|  | 冰淇淋車<br>icecream.vehicle | 未生成 |
+|  | 救護車<br>medivan.vehicle | 未生成 |
+|  | 修理臂<br>repair_crane.vehicle | 未生成 |
+|  | 維修車<br>zjx19.vehicle | 未生成<br>這是老版本中已被刪除的維修車<br>新版本 zjx19_auto.vehicle 未記錄在 common.resources 中，同樣無法生成 |
+|  | 維修車空投信標<br>zjx19_spawn.vehicle | 未生成，原因同上 |
+|  | 聖誕快樂車<br>jeep_xmas.vehicle | 未生成 |
+|  | 聖誕快樂車空投信標<br>jeep_xmas_spawn.vehicle | 未生成 |
 |  | [不到是啥]<br>flare_checkpoint.vehicle | 未生成 |
 |  | [不到是啥]<br>heli_extraction_broken.vehicle | 未生成 |
 |  | [不到是啥]<br>heli_broken1.vehicle | 未生成 |
 |  | [不到是啥]<br>heli_broken2.vehicle | 未生成 |
 |  | [不到是啥]<br>cargo_helicopter_broken.vehicle | 未生成 |
 |  | [不到是啥]<br>cargo_helicopter.vehicle | 未生成 |
-|  | 運貨卡車<br>cargo_truck.vehicle | 未生成 |
-|  | 運囚車<br>prison_bus.vehicle | 未生成 |
-|  | 監獄大門<br>prison_door.vehicle | 未生成 |
-|  | 監獄天窗<br>prison_hatch.vehicle | 未生成 |
 |  | [不到是啥]<br>tank_trap.vehicle | 未生成 |
 |  | [不到是啥]<br>special_cargo_vehicle1.vehicle | 未生成 |
 |  | [不到是啥]<br>special_cargo_vehicle2.vehicle | 未生成 |
@@ -168,51 +241,4 @@ hide: [toc]
 |  | [不到是啥]<br>special_crate_wood8.vehicle | 未生成 |
 |  | [不到是啥]<br>special_crate_wood9.vehicle | 未生成 |
 |  | [不到是啥]<br>special_crate_wood10.vehicle | 未生成 |
-|  | 雷達坦克<br>radar_tank.vehicle | 未生成 |
-|  | 雷達坦克<br>radar_tank2.vehicle | 未生成 |
-|  | 火神坦克<br>vulcan_tank.vehicle |  |
-|  | 沙漠巡邏車<br>buggy.vehicle |  |
-|  | 武裝皮卡<br>technical.vehicle |  |
-|  | 陶氏鼬鼠<br>wiesel_tow.vehicle |  |
-|  | 陶氏鼬鼠空投信標<br>wiesel_spawn.vehicle | 會間隔性地持續生成 |
-|  | 香蕉車<br>banana_car.vehicle |  |
-|  | 香蕉車空投信標<br>banana_car_spawn.vehicle | 會間隔性地持續生成 |
-| ![](../../assets/tables/vehicle-scatter/050.png) | 香蕉皮生成器<br>banana_peel_spawner.vehicle | 會不斷吐出爆炸香蕉車的香蕉皮<br>會間隔性地持續生成，間隔很短 |
-|  | G17/A1兩棲戰車<br>aav7.vehicle |  |
-|  | G17/A1兩棲戰車空投信標<br>aav7_spawn.vehicle | 會間隔性地持續生成 |
-| ![](../../assets/tables/vehicle-scatter/051.png)<br>![](../../assets/tables/vehicle-scatter/052.png) | 掩體空投信標<br>cover_crate_para.vehicle | 會間隔性地持續生成 |
-|  | emp中介<br>emp.vehicle | 未生成 |
-|  | 武裝卡車<br>guntruck.vehicle |  |
-|  | 武裝卡車空投中介<br>guntruck_para.vehicle | 武裝卡車空投中介；只在開局生成一次，效果是投放一輛武裝卡車 |
-|  | 武裝卡車空投信標<br>guntruck_spawn.vehicle | 會間隔性地持續生成 |
-|  | 「黃蜂」導彈發射器<br>hornet.vehicle |  |
-|  | 「黃蜂」導彈發射器<br>hornet_2.vehicle | 與上一條相比，可視為一次性部署物：被摧毀後十小時才會再次生成 |
-|  | ACAV步兵戰車<br>m113_tank_acav.vehicle |  |
-|  | 冰淇淋車<br>icecream.vehicle | 未生成 |
-|  | 救護車<br>medivan.vehicle | 未生成 |
 |  | [不到是啥]<br>repair.vehicle | 未生成 |
-|  | 修理臂<br>repair_crane.vehicle | 未生成 |
-|  | ACAV步兵戰車空投信標<br>vulcan_acav_spawn.vehicle | 會間隔性地持續生成 |
-|  | 維修車<br>zjx19.vehicle | 未生成<br>這是老版本中已被刪除的維修車<br>新版本 zjx19_auto.vehicle 未記錄在 common.resources 中，同樣無法生成 |
-|  | 維修車空投信標<br>zjx19_spawn.vehicle | 未生成，原因同上 |
-|  | 機炮鼬鼠<br>wiesel_mk20.vehicle |  |
-|  | NOXE Ghost導彈發射車<br>noxe.vehicle |  |
-|  | SEV-90反戰車坦克<br>sev90.vehicle |  |
-|  | Legion步兵坦克<br>legion.vehicle |  |
-|  | 烈焰裝甲運輸車<br>flamer_tank.vehicle |  |
-|  | M528火力支援車<br>m528.vehicle |  |
-|  | VFS裝甲偵察車<br>vfs_at.vehicle |  |
-|  | 聖誕快樂車<br>jeep_xmas.vehicle | 未生成 |
-|  | 聖誕快樂車空投信標<br>jeep_xmas_spawn.vehicle | 未生成 |
-| ![](../../assets/tables/vehicle-scatter/053.png) | 導彈發射器<br>missile_launcher.vehicle |  |
-| ![](../../assets/tables/vehicle-scatter/054.png) | 軍工鏟刨的小掩體<br>sandbag_cover.vehicle |  |
-| ![](../../assets/tables/vehicle-scatter/055.png) | 狗狗箱子<br>dogcrate_para.vehicle | 在地面生成，隨後破裂並生成一隻狗<br>會間隔性地持續生成 |
-|  | 一級圓程式賽車<br>f1.vehicle |  |
-|  | 一級圓程式賽車空投信標<br>f1_spawn.vehicle | 會間隔性地持續生成 |
-|  | LAI-109多管火箭炮車<br>lai-109.vehicle |  |
-|  | LAI-109多管火箭炮車空投信標<br>lai-109_spawn.vehicle | 會間隔性地持續生成 |
-|  | LAILV-002裝甲運兵車<br>lailv-002.vehicle |  |
-|  | LAILV-002裝甲運兵車空投信標<br>lailv-002_spawn.vehicle | 會間隔性地持續生成 |
-|  | MMLS-528自行布雷系統<br>mmls-528.vehicle |  |
-|  | MMLS-528自行布雷系統空投信標<br>mmls-528_spawn.vehicle | 會間隔性地持續生成 |
-| ![](../../assets/tables/vehicle-scatter/056.png) | 雪人<br>snowman.vehicle | 聖誕活動裡的休眠狀態小雪人；沒有腳本將它生成，因此只能被推着移動<br>無法激活 |

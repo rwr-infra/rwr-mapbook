@@ -65,6 +65,8 @@
       meta: "可搜名称与引用值",
       total: "共 {n} 项",
       count: "{n} 项",
+      kicker: "TABLES · {n} 项",
+      omitted: "略",
       none: "没有匹配的物件",
       more: "另有 {n} 条未列出，多打几个字缩小范围",
       copy: "点击复制",
@@ -78,6 +80,8 @@
       meta: "可搜名稱與引用值",
       total: "共 {n} 項",
       count: "{n} 項",
+      kicker: "TABLES · {n} 項",
+      omitted: "略",
       none: "沒有符合的物件",
       more: "另有 {n} 條未列出，多打幾個字縮小範圍",
       copy: "點擊複製",
@@ -91,6 +95,8 @@
       meta: "Searches names and reference values",
       total: "{n} items",
       count: "{n} items",
+      kicker: "TABLES · {n} items",
+      omitted: "n/a",
       none: "No matching object",
       more: "{n} more not listed — type more to narrow it down",
       copy: "Click to copy",
@@ -154,10 +160,15 @@
 
   /**
    * 名称列 → { name, value }
-   *   `小石头<br>template = rock_s1`  → name 小石头 / value rock_s1
-   *   `机枪悍马<br>humvee.vehicle`    → name 机枪悍马 / value humvee.vehicle
-   *   只认「最后一行」，因为三张清单的写法都是「名称一行、引用值一行」。
-   *   认不出就不给值——MESH E 里「石头 / 使用工具放置」那两行正是这种情况。
+   *   `小石头<br>template = rock_s1`     → name 小石头 / value rock_s1
+   *   `机枪悍马<br>humvee.vehicle`       → name 机枪悍马 / value humvee.vehicle
+   *   `坦克<br>tank_denied_player`       → name 坦克 / value tank_denied_player
+   *   只认「最后一行」，因为这几张清单的写法都是「名称一行、引用值一行」。
+   *
+   *   ⚠️ 裸值的判据只要求「一个拉丁 token」——**不再要求里面有点**：特殊载具表
+   *      用的是阵营 key（`jeep`、`apc`、`tank_denied_player`），本来就没有点。
+   *      认不出就不给值：MESH E 里「石头 / 使用工具放置」那两行的最后一行是
+   *      「placed with a tool」，带空格，仍不会被误认。
    */
   function readName(cell) {
     var nodes = lastLineNodes(cell);
@@ -167,7 +178,7 @@
     if (m) {
       out.kind = "template";
       out.value = m[1].trim();
-    } else if (/^[A-Za-z0-9_.\-]+$/.test(line) && line.indexOf(".") > 0) {
+    } else if (/^[A-Za-z0-9_.\-]+$/.test(line)) {
       out.kind = "ref";
       out.value = line;
     }
@@ -189,9 +200,9 @@
     });
 
     if (!media.length) {
-      // Vehicle Scatter 三百多行都是空预览列：给一个静默的占位，
+      // Vehicle Scatter 几百行都是空预览列：给一个静默的占位（居中显示），
       // 免得那一列看起来像「漏了图」。
-      if (!cell.textContent.trim()) cell.appendChild(el("span", "ts-none", "—"));
+      if (!cell.textContent.trim()) cell.appendChild(el("span", "ts-none", T().omitted));
       return;
     }
 
@@ -577,10 +588,31 @@
       group.heading.appendChild(el("span", "ts-count", text.count.replace("{n}", group.rows.length)));
     });
 
+    // 页顶那行 kicker 换成**这一页的条目数**（原先 /tables/ 落地页上那张汇总表
+    // 撤掉之后，统计数就放在这儿）。页面自己没写 kicker 的（MESH E），在标题下面补一行。
+    if (rows.length) {
+      var kicker = article.querySelector(".kicker");
+      var kickerText = text.kicker.replace("{n}", rows.length);
+      if (kicker) {
+        kicker.textContent = kickerText;
+      } else {
+        var heading = article.querySelector("h1");
+        var node = el("p", "kicker", kickerText);
+        if (heading && heading.parentNode === article) article.insertBefore(node, heading.nextSibling);
+        else article.insertBefore(node, article.firstChild);
+      }
+    }
+
     var finder = rows.length ? buildSearch(article, rows, text) : null;
 
     stickyOffset();
     window.addEventListener("resize", stickyOffset);
+    // 页眉的高度是量出来的，而且**主题自己后面还会改它**（滚动/换行/语言都可能动）。
+    // 这里另外盯着它：页眉一变就重算，粘性搜索框与表头才不会错位。
+    if (window.ResizeObserver) {
+      var header = document.querySelector(".md-header");
+      if (header) new ResizeObserver(stickyOffset).observe(header);
+    }
 
     // Ctrl+K / 「/」聚焦页内搜索。页眉那个全站搜索已经删了，Ctrl+K 在这里接手；
     // 没装搜索框的页面什么都不做，也不吞按键。
@@ -599,15 +631,16 @@
     });
   }
 
-  function boot() {
-    setup();
-  }
+  // ⚠️ **当场就跑**，不要等 DOMContentLoaded（踩过：五张清单点进去会「闪一下
+  //    另一张页面」——kicker 还是老的、预览图还没进框，之后才变正常）。
+  //    这个文件是同步 <script>、排在正文之后（见生成出来的 HTML），所以走到这里
+  //    article 已经在 DOM 里，而浏览器**还没画第一帧**；等到 DOMContentLoaded 再跑，
+  //    中间那一帧画的正是「没处理过的原样」，用户看到的就是那一闪。
+  setup();
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
-  else boot();
-
-  // 主题的 document$ 可能还没挂上来（bundle 在 extra_javascript 之后初始化）。
-  // 挂上之后再订阅一次：setup() 幂等，当前没开 instant navigation 也不会重跑。
+  // 主题的 document$ 还没挂上来（bundle 在 extra_javascript 之后初始化）。
+  // 挂上之后再订阅一次兜底（instant navigation 将来打开时也靠它）；
+  // setup() 幂等——元素上那个 __tsDone 标记就是为这个留的。
   (function wait() {
     if (window.document$) {
       window.document$.subscribe(function () { setup(); });

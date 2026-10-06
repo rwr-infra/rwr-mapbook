@@ -139,10 +139,7 @@ footer_note_zh_hant = "由 Zensical 構建<br>字型與腳本全部自託管"
 # 页脚底栏的三段固定 UI 文案。以前是模板里的三支判断（is_en / is_hant / 否则），
 # 加一种语言要回去补三处，漏了也不报错（页面照常出，只是静静退回默认语言的
 # 文案）——所以挪到这里，模板只按后缀取。
-# 「按标签浏览」是页脚那个回标签索引的链接文字。
-footer_browse_tags = "按标签浏览 ↗"
-footer_browse_tags_en = "Browse by tag ↗"
-footer_browse_tags_zh_hant = "依標籤瀏覽 ↗"
+# （原先还有第四段「按标签浏览」指向标签索引；标签整个删掉之后，它跟着没了。）
 
 # 「隐私设置」指向 #__consent，也就是那份数据隐私说明（见 consent 一节）。
 footer_privacy = "隐私设置"
@@ -325,10 +322,12 @@ minify = {}
 [project.plugins.search]
 enabled = false
 
-# 标签：给页面打 tags，并在 docs/tags.md 里用 <!-- material/tags --> 汇成一页。
+# 标签：**整个删掉**。给页面打的 tags、页脚的「按标签浏览」入口、按语言分家的
+# 标签索引页、页眉标题下的标签胶囊，以及 docsgen 里生成那一页的整套代码
+# （TAG_MARKER / tag_index / apply_tags）与 i18n_check 里对应的复核，一并移除。
+# ⚠️ 与 search 一样，这一条要显式写 enabled = false：配置节删掉未必等于关掉。
 [project.plugins.tags]
-enabled = true
-listings = true
+enabled = false
 
 # 离线打包（`make offline`）。**线上构建里它是关的**，这一条只是把开关写在配置里，
 # 好让 Makefile 用 sed 把它翻成 true，另起一份 zensical.offline.toml。
