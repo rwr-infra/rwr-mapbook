@@ -1,8 +1,8 @@
 ---
 title: "Building E"
 description: "Placeable houses."
-source_sha256: e263fa257422d27d5254819953b481951b84a55a306238046cf09746285ef3a3
-translated: 2026-10-03
+source_sha256: 6076d490ebe57bb53e2d0d69618d8b9499e6d4eb3bd1041c25c1ae86bfa83892
+translated: 2026-10-06
 nav_label: "Building E"
 icon: lucide/box
 # ⚠️ 由 tools/docsgen.py 从 content/tables/building.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
@@ -11,7 +11,16 @@ hide: [toc]
 
 # Building E { #building }
 
-<p class="kicker">EDITOR · houses you can place</p>
+<p class="kicker">TABLES · 12 items</p>
+
+<div class="ts-search">
+  <div class="ts-search__box">
+    <span class="ts-search__icon" aria-hidden="true"></span>
+    <input class="ts-search__input" type="search" autocomplete="off" spellcheck="false" placeholder="Search name or reference…" aria-label="Search this list">
+    <kbd class="ts-search__kbd">Ctrl K</kbd>
+  </div>
+  <p class="ts-search__meta">12 items · Searches names and reference values</p>
+</div>
 
 !!! tip "How to read this table"
     The **Preview** column gives two images side by side: the left one looks down at an

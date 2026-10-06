@@ -500,16 +500,23 @@
 /* ══════════════════════════════════════════════════════════════
    模型清单页（五张清单）的版式：统一图框 · 粘性表头 · 复制芯片 · 页内搜索
 
-   这一整段都只作用于 content/tables/ 下那五页，而 `.tables-page` 这个类
-   是 docs/javascripts/table-tools.js 加上去的——内容层里没有它，也没有任何
-   标记；清单行照旧写成 `| 图 | 名称<br>template = 值 | 备注 |` 就行。
-   看那个文件的头部注释：为什么放脚本里、认哪几页、认哪一行。
+   这一整段都只作用于 content/tables/ 下那五页——判据是 `<html>` 上的
+   `data-ts-page`，由 overrides/main.html 在 `<head>` 里写上去。
+
+   ⚠️ 为什么页面身份要写在 `<head>` 里、而不是像原先那样由正文末尾的脚本
+      给 `<article>` 加个类：**脚本跑到的时候第一帧早画完了**。浏览器在解析器
+      被主题 bundle 挡住时就会画，实测清单页第一帧在 196ms、脚本 268ms 才跑，
+      中间那 70ms 读者看到的是**没有版式的原始 HTML**——没缩放的图片、老文案。
+      所以首帧就要显示对的东西（图框尺寸、两图并排、页顶文案、条目数），
+      一律在 HTML/CSS 里定，脚本只做「必须有脚本才有」的事（复制、搜索）。
 
    ── 要调图片大小，只改下面这一组 ────────────────────────────────
-   每张预览图都套在一个固定宽高的「图框」（`.ts-shot`）里，图按
-   `object-fit: contain` 等比缩进框内——**不裁、不拉伸**，所以同一页里所有
-   预览图占的格子一模一样，表格的行高也就齐了。框比图大出来的部分留白，
-   底下垫一层极浅的底色，看着是「框」而不是「图歪了」。
+   每张预览图都收在一个固定宽高的「图框」里，图按 `object-fit: contain`
+   等比缩进框内——**不裁、不拉伸**，所以同一页里所有预览图占的格子一模一样，
+   表格的行高也就齐了。框比图大出来的部分留白，底下垫一层极浅的底色，
+   看着是「框」而不是「图歪了」。
+   图框由下面「预览列」那一段直接加在内容层原本的标记上（`<a>` / `<img>`），
+   没有中间包装层——包装是脚本造的，首帧不存在，正是上面那个问题的来源。
 
    --ts-shot-w / --ts-shot-h   图框的宽与高（单张图）
    --ts-shot-gap               同一行两张图之间的间距
@@ -520,17 +527,24 @@
    页内统一**——这正是「所有参考图缩放到相同大小」要的效果。
 
    ⚠️ MESH E 的「石头 / 使用工具放置」「树 / 使用工具放置」两行是例外：
-      它们是「一个工具生成的一堆东西」，本来就不是单个物件，加了
-      `.ts-prev--natural` 按原尺寸显示（脚本按「名称列有没有引用值」判的）。
+      它们是「一个工具生成的一堆东西」，本来就不是单个物件，按原尺寸显示。
+      这个例外的标记写在 **content/ 里**（那两张图后面跟一句 `{ .ts-natural }`），
+      判据是「格子里有没有那张图」——不能用「这一格有几张图」代替，
+      Wall E / Building E / Decal 每行都只有一张图。
    ══════════════════════════════════════════════════════════════ */
 
-.md-typeset.tables-page {
+html[data-ts-page] .md-typeset {
   --ts-shot-w: 168px;
   --ts-shot-h: 126px;
   --ts-shot-gap: 6px;
   /* 预览列一行放几张图。MESH E 是「斜视 + 正视」两张并排；其余四页一行只有一张，
      这里要跟着改，不然一格会白白留出第二张的位置（实测 Wall E 因此多出 300px）。 */
   --ts-prev-cols: 2;
+  /* 单元格左右内边距的合计。预览列写的是**含内边距的总宽**（全局
+     `box-sizing: border-box`，主题给单元格 `.9375em 1.25em`），所以算列宽时
+     必须把它加上——少算这一份，flex 会把图框挤窄（踩过：配的 300，实测只有
+     265，正好差掉 2×17.5）。窄屏那一档在文件末尾的媒体查询里另给。 */
+  --ts-pad: 2.2rem;
   /* 「使用工具放置」那两行长条的宽度上限。
      默认 100% = 跟主题原本一样「缩到单元格那么宽」（这两条就会被缩到跟别的图
      一样宽，但形状照旧是长条）。填 none 就是原尺寸——那会让表格被撑到 1721px、
@@ -538,24 +552,24 @@
   --ts-natural-max: 100%;
 }
 
-.md-typeset.tables-page--mesh {
+html[data-ts-page="mesh"] .md-typeset {
   --ts-shot-w: 158px;
   --ts-shot-h: 124px;
 }
 
-.md-typeset.tables-page--wall {
+html[data-ts-page="wall"] .md-typeset {
   --ts-prev-cols: 1;
   --ts-shot-w: 300px;
   --ts-shot-h: 168px;
 }
 
-.md-typeset.tables-page--building {
+html[data-ts-page="building"] .md-typeset {
   --ts-prev-cols: 1;
   --ts-shot-w: 250px;
   --ts-shot-h: 176px;
 }
 
-.md-typeset.tables-page--vehicle {
+html[data-ts-page="vehicle"] .md-typeset {
   /* 这一页有一行（掩体空投信标）是两张图并排的，所以留两格的宽度；
      其余行的单张图会在这一格里居中。 */
   --ts-prev-cols: 2;
@@ -565,76 +579,84 @@
      于是没有预览图的「特殊载具表」预览列会缩到只剩占位符那么宽，三列跟
      「普通载具表」对不上。这里把这一页改成 `table-layout: fixed` 并写死前两列，
      三张表就列对列了（第三列吃掉剩下的）。
+     ⚠️ 固定布局下列宽只由**第一行**（也就是表头那行）决定，所以下面那条
+        预览列宽必须同时管 `th:first-child`，只写 `td` 不管用。
      ⚠️ 固定布局下列**不会**再按内容自动变宽：写窄了内容会顶出去，
-        所以这两个值要跟 `--ts-shot-*` 一起看（下面是预览列该留多少的算法）。 */
-  --ts-pad: 2.2rem;    /* 单元格左右内边距合计（主题是 1.25em×2） */
+        所以这个值要跟 `--ts-shot-*` 一起看（预览列的算法在下面那条通用规则里）。 */
   --ts-name-w: 11rem;  /* 名称列 */
 }
 
-.md-typeset.tables-page--vehicle table {
+html[data-ts-page="vehicle"] .md-typeset table {
   table-layout: fixed;
 }
 
-/* ⚠️ 选择器里那个 `table` 不能省：通用规则 `.md-typeset.tables-page th:first-child`
-   也是 (0,3,1)，而且**写在文件后面**，同样权重下后来的赢——它会用 `width: 1%`
-   把这里写死的列宽压掉，三张表就又对不齐了（踩过）。加一个类型选择器提到 (0,3,2)。 */
-.md-typeset.tables-page--vehicle table th:first-child,
-.md-typeset.tables-page--vehicle table td:first-child {
-  width: calc(var(--ts-shot-w) * var(--ts-prev-cols) + var(--ts-shot-gap) * var(--ts-prev-cols)
-             - var(--ts-shot-gap) + var(--ts-pad));
-}
-
-.md-typeset.tables-page--vehicle table th:nth-child(2),
-.md-typeset.tables-page--vehicle table td:nth-child(2) {
+html[data-ts-page="vehicle"] .md-typeset table th:nth-child(2),
+html[data-ts-page="vehicle"] .md-typeset table td:nth-child(2) {
   width: var(--ts-name-w);
 }
 
-.md-typeset.tables-page--decal {
+html[data-ts-page="decal"] .md-typeset {
   --ts-prev-cols: 1;
   --ts-shot-w: 200px;
   --ts-shot-h: 170px;
 }
 
-/* ── 预览列：两张图并排（脚本把 `<br>` 摘了、给每张套上 `.ts-shot`） ── */
+/* ── 预览列：两张图并排 · 统一图框 ─────────────────────────────────
+   这一段全部作用在**内容层原本的标记**上：格子里就是若干个 `<a><img></a>`，
+   图与图之间隔着 `<br>`。**没有中间那层 `.ts-shot` / `.ts-prev` 包装**——
+   包装是脚本造出来的，脚本跑到时第一帧早画完了，于是读者会先看到没缩放的
+   原始大图（实测 266×147），之后才「跳」成图框（300×168）。
 
-.md-typeset.tables-page .ts-prev {
+   ⚠️ 因此这里也是版式的唯一出处：要改图框大小，改上面那组 `--ts-shot-*`
+      就够，不用碰脚本。 */
+
+/* 把格子本身变成两图并排的容器。`<br>` 非去掉不可：flex 容器里它也是一个
+   flex 子项，会在两张图之间多顶出一个 gap。
+   ⚠️ 宽度必须写死成「正好几列」+ 单元格内边距：不写死，flex 容器的 min-content
+   就是**一张图**（换行容器取最大子项），两张会竖着叠、表格也跟着矮一半。
+   表头那一格也要给：载具页是 `table-layout: fixed`，固定布局下列宽只由第一行决定。 */
+html[data-ts-page] .md-typeset th:first-child,
+html[data-ts-page] .md-typeset td:first-child {
+  width: calc(var(--ts-shot-w) * var(--ts-prev-cols) + var(--ts-shot-gap) * var(--ts-prev-cols) - var(--ts-shot-gap) + var(--ts-pad));
+}
+
+html[data-ts-page] .md-typeset th:first-child {
+  white-space: nowrap;
+}
+
+html[data-ts-page] .md-typeset td:first-child {
   display: flex;
-  /* 固定成「正好两张图」那么宽，多的那张（MESH E 里只有三行是三张）折到第二行。
-     ⚠️ 这两个属性一起才有意义：不写死宽度，flex 的 min-content 就是「一张图」，
-     两张会竖着叠；写了宽度不加 wrap，三张图那一行会把整张表撑到 987px（实测），
-     整页横向滚动。 */
   flex-wrap: wrap;
-  width: calc(var(--ts-shot-w) * var(--ts-prev-cols) + var(--ts-shot-gap) * var(--ts-prev-cols) - var(--ts-shot-gap));
   gap: var(--ts-shot-gap);
   align-items: center;
   justify-content: center;
 }
 
-.md-typeset.tables-page .ts-shot {
+html[data-ts-page] .md-typeset td:first-child > br {
+  display: none;
+}
+
+/* 图框。宽度落在 `<a>`（灯箱包的那层）与裸 `<img>` 上都要能生效：
+   脚本还没跑时图是裸的，跑过之后被灯箱裹进 <a>。 */
+html[data-ts-page] .md-typeset td:first-child > a,
+html[data-ts-page] .md-typeset td:first-child > img {
   display: block;
   width: var(--ts-shot-w);
   height: var(--ts-shot-h);
-  /* ⚠️ `min-width: 0` 不能省。图框是 `.ts-prev` 这个 flex 容器的子项，flex 子项
-     默认 `min-width: auto`——也就是「不许比内容更窄」，而里面那张 `<img>` 的
-     min-content 是它的**原始宽度**（清单里有 1654px 宽的图）。少了这一条，
-     一行两张图会把表格的 min-content 撑到 987px（实测），整张表就得横向滚。 */
+  /* ⚠️ `min-width: 0` 不能省。这是 flex 子项，默认 `min-width: auto`——
+     也就是「不许比内容更窄」，而里面那张 `<img>` 的 min-content 是它的
+     **原始宽度**（清单里有 1654px 宽的图）。少了这一条，一行两张图会把表格的
+     min-content 撑到 987px（实测），整张表就得横向滚。 */
   min-width: 0;
   overflow: hidden;
   border-radius: 0.15rem;
   background-color: var(--md-default-fg-color--lightest);
 }
 
-.md-typeset.tables-page .ts-shot > a,
-.md-typeset.tables-page .ts-shot > img {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
 /* ⚠️ max-width / max-height 都要显式写回 none：上面那条
    `.md-typeset table img { max-height: none; margin: 0 }` 是本站自己的兜底，
    主题还有一条更宽的 `max-width: 100%`。图框已经给了尺寸，这里只让图**填满框**。 */
-.md-typeset.tables-page .ts-shot img {
+html[data-ts-page] .md-typeset td:first-child img {
   width: 100%;
   height: 100%;
   max-width: none;
@@ -646,57 +668,67 @@
 /* 例外：按自己的形状显示的那两行（MESH E 的「石头 / 树 · 使用工具放置」）。
    它们的图是 1277×132 这种**长条**——一次罗列十几个变体。套进 158×124 的方框
    只会剩一条线，所以这里不给框、也不并排，就让它们保持自己的长宽比。
-   宽度还是收在单元格里（`--ts-natural-max`，默认 100%），这样表格不会被撑宽。 */
-.md-typeset.tables-page .ts-prev--natural {
-  display: block;
+   宽度还是收在单元格里（`--ts-natural-max`，默认 100%），这样表格不会被撑宽。
+
+   标记写在 **content/ 里**：那两张图后面跟一句 `{ .ts-natural }`。
+   ⚠️ 不能用「这一格有几张图」代替这个标记——Wall E / Building E / Decal 每行
+      都只有一张图，那样它们会一起变成原尺寸。 */
+html[data-ts-page] .md-typeset td:first-child:has(img.ts-natural) {
   width: auto;
   justify-content: flex-start;
 }
 
-.md-typeset.tables-page .ts-prev--natural .ts-shot {
-  width: auto;
+html[data-ts-page] .md-typeset td:first-child:has(img.ts-natural) > a,
+html[data-ts-page] .md-typeset td:first-child:has(img.ts-natural) > img {
+  width: 100%;
   height: auto;
+  overflow: visible;
+  border-radius: 0;
   background: none;
 }
 
-.md-typeset.tables-page .ts-prev--natural .ts-shot img {
+html[data-ts-page] .md-typeset td:first-child:has(img.ts-natural) img {
   width: auto;
   height: auto;
   max-width: var(--ts-natural-max);
   max-height: none;
 }
 
-/* Vehicle Scatter 的预览列整列是空的：给一个安静的占位（居中），别像漏了图 */
-.md-typeset.tables-page .ts-none {
+/* Vehicle Scatter 的预览列整列是空的：给一个安静的占位（居中），别像漏了图。
+   ⚠️ 占位文字同样不能留给脚本补：那一页有一百多行是空的，脚本跑到时第一帧
+      早画完了，读者会先看到一列空白再看见字。
+      文字按语言从 `config.extra` 的 tables_none* 取，由 overrides/main.html
+      写进 `<html>` 的行内自定义属性 `--ts-none`（`content` 里取不到别的元素的
+      属性，attr() 只看伪元素自己那个元素）。 */
+html[data-ts-page] .md-typeset td:first-child:not(:has(img))::after {
+  content: var(--ts-none, "");
   display: block;
-  text-align: center;
+  width: 100%;
   color: var(--md-default-fg-color--light);
   font-size: 0.7rem;
+  text-align: center;
 }
 
 /* ── 表格本体：预览列不参与拉伸 · 斑马纹 · 悬停 · 粘性表头 ─────────── */
 
-/* 预览列的宽度由图片决定，不要被表宽摊平 */
-.md-typeset.tables-page th:first-child,
-.md-typeset.tables-page td:first-child {
-  width: 1%;
-  white-space: nowrap;
-}
+/* 预览列的宽度由上面那条按图框算出来（`th`/`td:first-child`），这里不再给它
+   `width: 1%`：⚠️ 那样写在这里是**同样的权重、更靠后**，会把算好的宽度压成
+   「一格图」那么宽，两张图就上下叠起来了（改版式时踩过一次）。 */
 
-.md-typeset.tables-page tbody tr:nth-child(even) > td {
+html[data-ts-page] .md-typeset tbody tr:nth-child(even) > td {
   background-color: var(--md-default-fg-color--lightest);
 }
 
-.md-typeset.tables-page tbody tr > td {
+html[data-ts-page] .md-typeset tbody tr > td {
   transition: background-color 0.15s;
 }
 
-.md-typeset.tables-page tbody tr:hover > td {
+html[data-ts-page] .md-typeset tbody tr:hover > td {
   background-color: var(--md-accent-fg-color--transparent);
 }
 
 /* 搜索结果跳过去的那一行：闪一下，好找 */
-.md-typeset.tables-page tbody tr.is-hit > td {
+html[data-ts-page] .md-typeset tbody tr.is-hit > td {
   background-color: var(--md-typeset-mark-color);
 }
 
@@ -709,8 +741,8 @@
    代价是表格不能再横向滚动了 —— 于是窄屏必须真的塞得下（见末尾那段媒体查询，
    手机上把预览框收一档、一行只放一张图）。
 */
-.md-typeset.tables-page .md-typeset__scrollwrap,
-.md-typeset.tables-page table {
+html[data-ts-page] .md-typeset .md-typeset__scrollwrap,
+html[data-ts-page] .md-typeset table {
   overflow: visible;
 }
 
@@ -719,13 +751,13 @@
    `table-layout: fixed` 与 `position: sticky` 在它身上都不生效——
    固定列宽因此被无视，三张表各算各的列宽（踩过：桌面上看着对上了，
    手机上一量才发现是内容凑巧）。我们的表都已经收进内容宽了，还原成表格盒。 */
-.md-typeset.tables-page table {
+html[data-ts-page] .md-typeset table {
   display: table;
 }
 
 /* 表头跟着滚：三百多行的表，滚到一半不知道哪列是哪列。
    贴在**搜索框下面**（两个 --ts-* 都是 JS 量出来的），别跟搜索框叠在一起。 */
-.md-typeset.tables-page thead th {
+html[data-ts-page] .md-typeset thead th {
   position: sticky;
   top: calc(var(--ts-sticky-top, 0px) + var(--ts-bar-h, 0px));
   z-index: 2;
@@ -740,7 +772,7 @@
    值那一段换成了 <code>）。所以这里管的是「那个小方块长什么样」，
    不管前缀——前缀跟着单元格的字体走。 */
 
-.md-typeset.tables-page .ts-tpl {
+html[data-ts-page] .md-typeset .ts-tpl {
   display: inline-flex;
   align-items: center;
   gap: 0.3em;
@@ -757,17 +789,17 @@
 /* 值本身那一段。`white-space: normal` 是给脚本插的 `<wbr>` 让路的——值里没有
    空格，所以除了下划线那几处不会在别的地方断开。`min-width: 0` 不能省：
    它是 flex 子项，默认「不许比内容更窄」，长值照样会把列顶宽。 */
-.md-typeset.tables-page .ts-tpl__text {
+html[data-ts-page] .md-typeset .ts-tpl__text {
   min-width: 0;
   white-space: normal;
 }
 
-.md-typeset.tables-page .ts-tpl:hover,
-.md-typeset.tables-page .ts-tpl:focus-visible {
+html[data-ts-page] .md-typeset .ts-tpl:hover,
+html[data-ts-page] .md-typeset .ts-tpl:focus-visible {
   border-color: var(--md-accent-fg-color);
 }
 
-.md-typeset.tables-page .ts-tpl__icon {
+html[data-ts-page] .md-typeset .ts-tpl__icon {
   flex: none;
   width: 0.85em;
   height: 0.85em;
@@ -776,37 +808,40 @@
   transition: opacity 0.15s;
 }
 
-.md-typeset.tables-page .ts-tpl__icon--done,
-.md-typeset.tables-page .ts-tpl.is-copied .ts-tpl__icon--copy {
+html[data-ts-page] .md-typeset .ts-tpl__icon--done,
+html[data-ts-page] .md-typeset .ts-tpl.is-copied .ts-tpl__icon--copy {
   display: none;
 }
 
-.md-typeset.tables-page .ts-tpl.is-copied .ts-tpl__icon--done {
+html[data-ts-page] .md-typeset .ts-tpl.is-copied .ts-tpl__icon--done {
   display: block;
 }
 
 /* 回执写在芯片里而不是浮层：表格被主题裹在 `overflow-x: auto` 的滚动容器里，
    浮出去的那半截会被裁掉。代价是芯片会临时宽一点，`.ts-tpl` 已经 nowrap。 */
-.md-typeset.tables-page .ts-tpl.is-copied,
-.md-typeset.tables-page .ts-tpl.is-failed {
+html[data-ts-page] .md-typeset .ts-tpl.is-copied,
+html[data-ts-page] .md-typeset .ts-tpl.is-failed {
   border-color: var(--md-accent-fg-color);
   color: var(--md-accent-fg-color);
 }
 
-.md-typeset.tables-page .ts-tpl.is-copied .ts-tpl__icon,
-.md-typeset.tables-page .ts-tpl.is-failed .ts-tpl__icon {
+html[data-ts-page] .md-typeset .ts-tpl.is-copied .ts-tpl__icon,
+html[data-ts-page] .md-typeset .ts-tpl.is-failed .ts-tpl__icon {
   opacity: 1;
 }
 
-.md-typeset.tables-page .ts-tpl.is-copied::after,
-.md-typeset.tables-page .ts-tpl.is-failed::after {
+html[data-ts-page] .md-typeset .ts-tpl.is-copied::after,
+html[data-ts-page] .md-typeset .ts-tpl.is-failed::after {
   content: attr(data-ts-done);
   font-size: 0.9em;
 }
 
-/* ── 分组标题后面的条目数 ─────────────────────────────────────────── */
+/* ── 分组标题后面的条目数 ───────────────────────────────────────────
+   这个 `<span class="ts-count">` 写在 content/ 的标题行里，数字由
+   tools/docsgen.py 在构建期填（占位符 `<!--count-->`）——同样是「首帧就要对」，
+   不能留给脚本补。 */
 
-.md-typeset.tables-page .ts-count {
+html[data-ts-page] .md-typeset .ts-count {
   margin-left: 0.5em;
   color: var(--md-default-fg-color--light);
   font-size: 0.62rem;
@@ -816,13 +851,22 @@
   white-space: nowrap;
 }
 
+/* ⚠️ 条目数是标题的一部分，右侧目录（以及页眉页脚里的上下页链接）会连着它
+   一起渲染。那里要的是干净的标题——「正常墙 49」在窄窄的目录里看着像标题
+   写错了。所以只在正文标题里露出来，别处一律藏掉。 */
+.md-nav .ts-count,
+.md-header .ts-count,
+.md-footer .ts-count {
+  display: none;
+}
+
 /* ── 页内搜索 ─────────────────────────────────────────────────────── */
 
-.md-typeset.tables-page .ts-search {
+html[data-ts-page] .md-typeset .ts-search {
   position: sticky;
   /* ⚠️ 页眉高度由 JS 写在 <html> 上（--ts-sticky-top）。兜底的 0px 必须写在这里、
-     不能写成 `.tables-page { --ts-sticky-top: 0px }` 再在下面 var() 取——那样这条
-     声明会**盖掉从 <html> 继承下来的值**（同一个元素上的声明赢过继承），
+     不能写成 `html[data-ts-page] { --ts-sticky-top: 0px }` 再在下面 var() 取——那样
+     这条声明会**盖掉从 <html> 继承下来的值**（同一个元素上的声明赢过继承），
      页眉 52px 高时搜索框会顶到 0 去、被页眉压住（踩过）。 */
   top: var(--ts-sticky-top, 0px);
   z-index: 3;
@@ -831,7 +875,7 @@
   background-color: var(--md-default-bg-color);
 }
 
-.md-typeset.tables-page .ts-search__box {
+html[data-ts-page] .md-typeset .ts-search__box {
   display: flex;
   align-items: center;
   gap: 0.5em;
@@ -841,19 +885,24 @@
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.md-typeset.tables-page .ts-search__box:focus-within {
+html[data-ts-page] .md-typeset .ts-search__box:focus-within {
   border-color: var(--md-accent-fg-color);
   box-shadow: 0 0 0 0.12rem var(--md-accent-fg-color--transparent);
 }
 
-.md-typeset.tables-page .ts-search__icon {
+/* 放大镜。**画在 CSS 里**，不再由脚本插一个 `<svg>`：它在输入框里面，
+   脚本插进去会让占位文字先整行左对齐、再被图标挤开，看着就是跳一下。
+   与上面那两枚状态图标同一种做法：内联 data URI，不产生额外请求。 */
+html[data-ts-page] .md-typeset .ts-search__icon {
   flex: none;
   width: 1rem;
   height: 1rem;
-  fill: var(--md-default-fg-color--light);
+  background-color: var(--md-default-fg-color--light);
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='black' viewBox='0 0 24 24'><path d='M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z'/></svg>") center / contain no-repeat;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='black' viewBox='0 0 24 24'><path d='M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z'/></svg>") center / contain no-repeat;
 }
 
-.md-typeset.tables-page .ts-search__input {
+html[data-ts-page] .md-typeset .ts-search__input {
   flex: 1 1 auto;
   min-width: 0;
   padding: 0;
@@ -866,11 +915,11 @@
   line-height: 1.6;
 }
 
-.md-typeset.tables-page .ts-search__input::placeholder {
+html[data-ts-page] .md-typeset .ts-search__input::placeholder {
   color: var(--md-default-fg-color--light);
 }
 
-.md-typeset.tables-page .ts-search__kbd {
+html[data-ts-page] .md-typeset .ts-search__kbd {
   flex: none;
   padding: 0.05em 0.4em;
   border: 0.05rem solid var(--md-default-fg-color--lightest);
@@ -880,14 +929,14 @@
   font-size: 0.6rem;
 }
 
-.md-typeset.tables-page .ts-search__meta {
+html[data-ts-page] .md-typeset .ts-search__meta {
   margin: 0.45em 0 0;
   color: var(--md-default-fg-color--light);
   font-size: 0.62rem;
 }
 
 /* 结果下拉：绝对定位，不推正文 */
-.md-typeset.tables-page .ts-search__list {
+html[data-ts-page] .md-typeset .ts-search__list {
   position: absolute;
   top: 100%;
   right: 0;
@@ -904,7 +953,7 @@
   overflow-y: auto;
 }
 
-.md-typeset.tables-page .ts-hit {
+html[data-ts-page] .md-typeset .ts-hit {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
@@ -914,35 +963,35 @@
   cursor: pointer;
 }
 
-.md-typeset.tables-page .ts-hit.is-active {
+html[data-ts-page] .md-typeset .ts-hit.is-active {
   background-color: var(--md-accent-fg-color--transparent);
 }
 
-.md-typeset.tables-page .ts-hit__sec {
+html[data-ts-page] .md-typeset .ts-hit__sec {
   flex: none;
   color: var(--md-default-fg-color--light);
   font-size: 0.58rem;
 }
 
-.md-typeset.tables-page .ts-hit__name {
+html[data-ts-page] .md-typeset .ts-hit__name {
   font-size: 0.72rem;
 }
 
-.md-typeset.tables-page .ts-hit__tpl {
+html[data-ts-page] .md-typeset .ts-hit__tpl {
   padding: 0;
   background: none;
   font-size: 0.66rem;
 }
 
-.md-typeset.tables-page .ts-hit mark {
+html[data-ts-page] .md-typeset .ts-hit mark {
   padding: 0 0.1em;
   border-radius: 0.15rem;
   background-color: var(--md-typeset-mark-color);
   color: inherit;
 }
 
-.md-typeset.tables-page .ts-hit--empty,
-.md-typeset.tables-page .ts-hit--more {
+html[data-ts-page] .md-typeset .ts-hit--empty,
+html[data-ts-page] .md-typeset .ts-hit--more {
   color: var(--md-default-fg-color--light);
   font-size: 0.66rem;
   cursor: default;
@@ -953,56 +1002,57 @@
    一行两张 158 宽 = 322，加上名称列与备注列的最小宽就顶出屏幕了，两张会一起被挤扁。
    ⚠️ 这段必须排在各页那组值**之后**——选择器权重一样，靠的就是「后写的赢」。 */
 @media screen and (max-width: 44.9375em) {
-  .md-typeset.tables-page,
-  .md-typeset.tables-page--mesh,
-  .md-typeset.tables-page--wall,
-  .md-typeset.tables-page--building,
-  .md-typeset.tables-page--vehicle,
-  .md-typeset.tables-page--decal {
+  html[data-ts-page] .md-typeset,
+  html[data-ts-page="mesh"] .md-typeset,
+  html[data-ts-page="wall"] .md-typeset,
+  html[data-ts-page="building"] .md-typeset,
+  html[data-ts-page="vehicle"] .md-typeset,
+  html[data-ts-page="decal"] .md-typeset {
     --ts-prev-cols: 1;
+    /* 下面把单元格内边距收到 0.35rem×2，列宽算式里那一份也要跟着收 */
+    --ts-pad: 0.7rem;
   }
 
   /* 主题给表格单元格的左右内边距是 `.9375em 1.25em`（实测一格 35px），三列就是
      一百多像素的纯留白；手机上把它收到 0.35rem，省下来的正好还给图框。
      ⚠️ 选择器要写成 `table:not([class])` 那一档：主题那条是
      `.md-typeset table:not([class]) td`（0,2,2），我原先写的
-     `.md-typeset.tables-page td` 只有 (0,2,1)，**压不住**（踩过，量了半天没变化）。 */
-  .md-typeset.tables-page table:not([class]) th,
-  .md-typeset.tables-page table:not([class]) td {
+     `html[data-ts-page] .md-typeset td` 只有 (0,2,1)，**压不住**（踩过，量了半天没变化）。 */
+  html[data-ts-page] .md-typeset table:not([class]) th,
+  html[data-ts-page] .md-typeset table:not([class]) td {
     padding-right: 0.35rem;
     padding-left: 0.35rem;
   }
 
-  .md-typeset.tables-page,
-  .md-typeset.tables-page--mesh {
+  html[data-ts-page] .md-typeset,
+  html[data-ts-page="mesh"] .md-typeset {
     --ts-shot-w: 130px;
     --ts-shot-h: 102px;
   }
 
-  .md-typeset.tables-page--wall {
+  html[data-ts-page="wall"] .md-typeset {
     --ts-shot-w: 132px;
     --ts-shot-h: 74px;
   }
 
-  .md-typeset.tables-page--building {
+  html[data-ts-page="building"] .md-typeset {
     --ts-shot-w: 138px;
     --ts-shot-h: 96px;
   }
 
-  .md-typeset.tables-page--vehicle {
+  html[data-ts-page="vehicle"] .md-typeset {
     --ts-shot-w: 112px;
     --ts-shot-h: 92px;
-    /* 固定布局在窄屏也要跟着收：内边距那一档变成 0.35rem×2，名称列也不能是 11rem */
-    --ts-pad: 0.7rem;
+    /* 固定布局在窄屏也要跟着收：名称列不能还是 11rem（内边距那一档在上面统一给过） */
     --ts-name-w: 7rem;
   }
 
-  .md-typeset.tables-page--decal {
+  html[data-ts-page="decal"] .md-typeset {
     --ts-shot-w: 132px;
     --ts-shot-h: 112px;
   }
 
-  .md-typeset.tables-page .ts-search__kbd {
+  html[data-ts-page] .md-typeset .ts-search__kbd {
     display: none;
   }
 }

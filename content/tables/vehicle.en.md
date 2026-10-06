@@ -1,7 +1,7 @@
 ---
 title: "Vehicle Scatter"
 description: "The vehicle scatter list."
-source_sha256: 878c22a78cbb04006dd5636fbb032e434fe0dadf270ac8eace64e6fb929df1b8
+source_sha256: 99c1d13f7c236d2aa7bb97128bddd3d54c7553834342436ead49d1b0524aaa2c
 translated: 2026-10-06
 nav_label: "Vehicle Scatter"
 icon: lucide/box
@@ -9,7 +9,16 @@ icon: lucide/box
 
 # Vehicle Scatter { #vehicle }
 
-<p class="kicker">EDITOR · vehicle scatter</p>
+<p class="kicker">TABLES · <!--count--> items</p>
+
+<div class="ts-search">
+  <div class="ts-search__box">
+    <span class="ts-search__icon" aria-hidden="true"></span>
+    <input class="ts-search__input" type="search" autocomplete="off" spellcheck="false" placeholder="Search name or reference…" aria-label="Search this list">
+    <kbd class="ts-search__kbd">Ctrl K</kbd>
+  </div>
+  <p class="ts-search__meta"><!--count--> items · Searches names and reference values</p>
+</div>
 
 !!! quote "Notes"
     Note: template version vao0822. The left preview image is an oblique view looking
@@ -31,7 +40,7 @@ icon: lucide/box
 *[template]: the name an object is referred to by in `template = …`; that is how you look it up
 
 
-## Special vehicles { #special }
+## Special vehicles <span class="ts-count"><!--count--> items</span> { #special }
 
 **The vehicles below are usually spawned by key; their materials and models change with the faction.**
 
@@ -45,7 +54,7 @@ icon: lucide/box
 |  | Tank not spawned for players<br>tank_denied_player | A special spawn mechanic: once the player captures this outpost, the tank inside is not spawned. |
 
 
-## Ordinary vehicles { #normal }
+## Ordinary vehicles <span class="ts-count"><!--count--> items</span> { #normal }
 
 **The vehicles below are spawned by tag.**
 
@@ -167,7 +176,7 @@ icon: lucide/box
 | ![](../assets/tables/vehicle-scatter/056.png) | Snowman<br>snowman.vehicle | The little snowman in its dormant state from the Christmas event; nothing scripts it into spawning, so it can only be pushed around<br>It cannot be activated |
 
 
-## Not generated vehicles { #unspawned }
+## Not generated vehicles <span class="ts-count"><!--count--> items</span> { #unspawned }
 
 **They do not spawn properly in Quick Match mode.**
 

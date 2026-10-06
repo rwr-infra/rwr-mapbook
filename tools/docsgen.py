@@ -153,6 +153,83 @@ def rewrite_shared(body: str, base: str, depth: int) -> str:
     return _LINK.sub(patch, body)
 
 
+# ── 条目数 ────────────────────────────────────────────────────────────────
+
+#: 正文里写 `<!--count-->` 的地方，由本脚本填成**条目数**。
+#:
+#: 为什么这件事在构建期做，而不留给前端脚本：五张清单页（MESH E / Wall E &
+#: Platform E / Building E / Vehicle Scatter / Decal）的版式由
+#: docs/javascripts/table-tools.js 从 DOM 上做，而**那个脚本跑到的时候第一帧
+#: 已经画完了**——浏览器在解析器被主题 bundle 挡住时就会画，实测首页第一帧在
+#: 196ms、脚本 268ms 才跑。也就是说读者先看到 260ms 的**原始 HTML**。
+#: 凡是首帧就该显示对的东西（条目数、页顶那行文案），必须写进发出去的 HTML，
+#: 靠脚本去改就等于「先给看错的、再改对」。
+#:
+#: 位置决定数什么：
+#:   * 写在 `##`~`######` **标题行**里 → 这一节的条目数（数到下一个标题为止）
+#:   * 写在**别处**（页顶的 kicker、搜索框的「共 N 项」） → 整页的条目数
+#:
+#: 与 tools/i18n_check.py 的关系：它是同一条流水线（transform）的一部分，
+#: 派生语种的逐字节比对才会跟着一起算，不必两边各写一遍。
+COUNT_MARK = "<!--count-->"
+
+_HEADING_RE = re.compile(r"^#{2,6}[ \t]+\S")
+#: 一行表格：以 `|` 开头结尾。表头行与正文行都长这样，靠下一行是不是
+#: 分隔行（`| --- | --- |`）把表头认出来。
+_TABLE_ROW_RE = re.compile(r"^\s*\|.*\|\s*$")
+_TABLE_SEP_RE = re.compile(r"^\s*\|[\s:|-]+\|\s*$")
+
+
+def count_rows(lines: list[str]) -> int:
+    """数这些行里表格的**正文行**。
+
+    表头行（紧挨着 `| --- |` 分隔行的那一行）不算条目：
+    数出来的数要与表格里列出来的物件个数一致，页顶上写着「76 项」，
+    表里就得真有 76 行东西。
+    """
+    total = 0
+    for index, line in enumerate(lines):
+        if not _TABLE_ROW_RE.match(line) or _TABLE_SEP_RE.match(line):
+            continue
+        following = lines[index + 1] if index + 1 < len(lines) else ""
+        if _TABLE_SEP_RE.match(following):
+            continue                      # 表头行，下一行是分隔行
+        total += 1
+    return total
+
+
+def fill_counts(text: str) -> str:
+    """把 `<!--count-->` 换成真数（含义见 COUNT_MARK）。"""
+    if COUNT_MARK not in text:
+        return text
+    lines = text.split("\n")
+    out: list[str] = []
+    for index, line in enumerate(lines):
+        if COUNT_MARK not in line:
+            out.append(line)
+            continue
+        if _HEADING_RE.match(line):
+            rest = lines[index + 1:]
+            stop = next((i for i, nxt in enumerate(rest) if _HEADING_RE.match(nxt)), len(rest))
+            number = count_rows(rest[:stop])
+        else:
+            number = count_rows(lines)
+        out.append(line.replace(COUNT_MARK, str(number)))
+    return "\n".join(out)
+
+
+def transform(text: str, base: str, depth: int) -> str:
+    """手写源 → 产物正文，一步都不少。
+
+    ⚠️ 这是**唯一一处**「源文件怎么变成产物」的定义，tools/i18n_check.py
+    复核派生语种时也走它（那件事的判据是产物逐字节等于转换结果，两边各写
+    一遍迟早分叉，而分叉的表现是构建红着、却看不出谁对）。
+    横幅（insert_banner）与 `hide:`（insert_hide）不在其中：它们各自有独立的
+    处理入口，i18n_check 分别调用。
+    """
+    return rewrite_shared(fill_counts(text), base, depth)
+
+
 # ── 生成 ──────────────────────────────────────────────────────────────────
 
 def sources() -> list[Source]:
@@ -222,7 +299,7 @@ def render(source: Source, *, out_lang: str | None = None,
     base = source.path.parent.relative_to(source.content_root).as_posix()
     base = "" if base == "." else base
     text = insert_banner(text, source.path, note)
-    text = rewrite_shared(text, base, depth_of(source.version, lang))
+    text = transform(text, base, depth_of(source.version, lang))
     return convert(text) if convert else text
 
 

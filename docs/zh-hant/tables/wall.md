@@ -8,7 +8,16 @@ icon: "lucide/box"
 
 # Wall E & Platform E { #wall }
 
-<p class="kicker">EDITOR · 牆，以及能不能被打掉</p>
+<p class="kicker">TABLES · 76 項</p>
+
+<div class="ts-search">
+  <div class="ts-search__box">
+    <span class="ts-search__icon" aria-hidden="true"></span>
+    <input class="ts-search__input" type="search" autocomplete="off" spellcheck="false" placeholder="搜索名稱或引用值…" aria-label="搜索清單">
+    <kbd class="ts-search__kbd">Ctrl K</kbd>
+  </div>
+  <p class="ts-search__meta">共 76 項 · 可搜名稱與引用值</p>
+</div>
 
 <div class="grid" markdown>
 
@@ -29,7 +38,7 @@ icon: "lucide/box"
 !!! note "寫這張表的時候記下的"
     註：模板版本 vao0822，視角為側視。爆炸物摧毀判定似乎需要靠近中間；兩側可能炸不掉（未逐項驗證）。如果牆是隱形的，或者形狀/材質看起來異常，多半是配合平臺使用的。
 
-## 正常牆 { #normal }
+## 正常牆 <span class="ts-count">49 項</span> { #normal }
 
 | 預覽 | 名稱 | 備註 |
 | --- | --- | --- |
@@ -83,7 +92,7 @@ icon: "lucide/box"
 | ![](../../assets/tables/wall-e/076.png) | 三號戰壕牆<br>template = TrenchWall3 |  |
 | ![](../../assets/tables/wall-e/077.png) | 木柱圍欄1<br>template = WoodPostFence1 |  |
 
-## 特殊牆 { #special }
+## 特殊牆 <span class="ts-count">27 項</span> { #special }
 
 | 預覽 | 名稱 | 備註 |
 | --- | --- | --- |

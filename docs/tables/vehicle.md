@@ -9,7 +9,16 @@ icon: "lucide/box"
 
 # Vehicle Scatter { #vehicle }
 
-<p class="kicker">EDITOR · 载具散布</p>
+<p class="kicker">TABLES · 200 项</p>
+
+<div class="ts-search">
+  <div class="ts-search__box">
+    <span class="ts-search__icon" aria-hidden="true"></span>
+    <input class="ts-search__input" type="search" autocomplete="off" spellcheck="false" placeholder="搜索名称或引用值…" aria-label="搜索清单">
+    <kbd class="ts-search__kbd">Ctrl K</kbd>
+  </div>
+  <p class="ts-search__meta">共 200 项 · 可搜名称与引用值</p>
+</div>
 
 !!! quote "注意事项"
     注：模板版本 vao0822。预览图左侧为斜向下视角，右侧正对法线，也就是地编视角；判断形状请以水平线为参考，垂直线是点透视，可能让物件看起来倾斜。
@@ -21,7 +30,7 @@ icon: "lucide/box"
     某些未生成载具是因为未装载/地图运行环境不同，或者只是中介载体只存在一瞬间，例如信号车只在Invasion有效，快速比赛模式无法正常生成，这些细节表中未进一步测试及标注。
 
 
-## 特殊载具表 { #special }
+## 特殊载具表 <span class="ts-count">6 项</span> { #special }
 
 **下表中的载具通常使用key进行生成，材质以及模型会随阵营改变。**
 
@@ -34,7 +43,7 @@ icon: "lucide/box"
 |  | 老兵包坦克<br>tank_alt |  |
 |  | 不给玩家生成的坦克<br>tank_denied_player | 一种特殊的生成机制，玩家占领这个据点后，里面的tank不会生成。 |
 
-## 普通载具表 { #normal }
+## 普通载具表 <span class="ts-count">114 项</span> { #normal }
 
 **下表中的载具使用tag进行生成。**
 
@@ -156,7 +165,7 @@ icon: "lucide/box"
 | ![](../assets/tables/vehicle-scatter/056.png) | 雪人<br>snowman.vehicle | 圣诞活动里的休眠状态小雪人；没有脚本将它生成，因此只能被推着移动<br>无法激活 |
 
 
-## 未生成载具表 { #unspawned }
+## 未生成载具表 <span class="ts-count">80 项</span> { #unspawned }
 
 **在快速比赛地图模式下未正常生成。**
 

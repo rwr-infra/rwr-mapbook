@@ -8,7 +8,16 @@ icon: "lucide/box"
 
 # Wall E & Platform E { #wall }
 
-<p class="kicker">EDITOR · 墙，以及能不能被打掉</p>
+<p class="kicker">TABLES · 76 项</p>
+
+<div class="ts-search">
+  <div class="ts-search__box">
+    <span class="ts-search__icon" aria-hidden="true"></span>
+    <input class="ts-search__input" type="search" autocomplete="off" spellcheck="false" placeholder="搜索名称或引用值…" aria-label="搜索清单">
+    <kbd class="ts-search__kbd">Ctrl K</kbd>
+  </div>
+  <p class="ts-search__meta">共 76 项 · 可搜名称与引用值</p>
+</div>
 
 <div class="grid" markdown>
 
@@ -29,7 +38,7 @@ icon: "lucide/box"
 !!! note "写这张表的时候记下的"
     注：模板版本 vao0822，视角为侧视。爆炸物摧毁判定似乎需要靠近中间；两侧可能炸不掉（未逐项验证）。如果墙是隐形的，或者形状/材质看起来异常，多半是配合平台使用的。
 
-## 正常墙 { #normal }
+## 正常墙 <span class="ts-count">49 项</span> { #normal }
 
 | 预览 | 名称 | 备注 |
 | --- | --- | --- |
@@ -83,7 +92,7 @@ icon: "lucide/box"
 | ![](../assets/tables/wall-e/076.png) | 三号战壕墙<br>template = TrenchWall3 |  |
 | ![](../assets/tables/wall-e/077.png) | 木柱围栏1<br>template = WoodPostFence1 |  |
 
-## 特殊墙 { #special }
+## 特殊墙 <span class="ts-count">27 项</span> { #special }
 
 | 预览 | 名称 | 备注 |
 | --- | --- | --- |

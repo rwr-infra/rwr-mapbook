@@ -7,16 +7,27 @@ icon: "lucide/box"
 
 # MESH E { #mesh }
 
+<p class="kicker">TABLES · <!--count--> 项</p>
+
+<div class="ts-search">
+  <div class="ts-search__box">
+    <span class="ts-search__icon" aria-hidden="true"></span>
+    <input class="ts-search__input" type="search" autocomplete="off" spellcheck="false" placeholder="搜索名称或引用值…" aria-label="搜索清单">
+    <kbd class="ts-search__kbd">Ctrl K</kbd>
+  </div>
+  <p class="ts-search__meta">共 <!--count--> 项 · 可搜名称与引用值</p>
+</div>
+
 
 
 !!! quote "注意事项"
     注：模板版本 vao0822。预览图左侧为斜向下视角，右侧正对法线，也就是地编视角；判断形状请以水平线为参考，垂直线是点透视，可能让物件看起来倾斜。千万别把材质错误全部归类成模板引用了受限的文件，冷杉树和海报牌这类错误肯定不属于这种而是另一种引用参数错误 :/
 
-## 自然类（石头/植物） { #nature }
+## 自然类（石头/植物） <span class="ts-count"><!--count--> 项</span> { #nature }
 
 | 预览 | 名称 | 备注 |
 | --- | --- | --- |
-| ![](../assets/tables/mesh-e/001.png)| 石头<br>使用工具放置 | 用MeshE中StoneScatter工具放置<br>有好几种 |
+| ![](../assets/tables/mesh-e/001.png){ .ts-natural }| 石头<br>使用工具放置 | 用MeshE中StoneScatter工具放置<br>有好几种 |
 | ![](../assets/tables/mesh-e/010.png)<br>![](../assets/tables/mesh-e/011.png) | 小石头<br>template = rock_s1 |  |
 | ![](../assets/tables/mesh-e/020.png)<br>![](../assets/tables/mesh-e/021.png) | 小石头<br>template = rock_s2 |  |
 | ![](../assets/tables/mesh-e/030.png)<br>![](../assets/tables/mesh-e/031.png) | 小石头<br>template = rock_s3 |  |
@@ -36,7 +47,7 @@ icon: "lucide/box"
 | ![](../assets/tables/mesh-e/131.png)<br>![](../assets/tables/mesh-e/130.png) | 迷你石头<br>template = stone_3 |  |
 | ![](../assets/tables/mesh-e/138.png)<br>![](../assets/tables/mesh-e/137.png) | 迷你石头<br>template = stone_4 |  |
 | ![](../assets/tables/mesh-e/146.png)<br>![](../assets/tables/mesh-e/145.png) | 迷你石头<br>template = stone_5 | <span class="redact" tabindex="0">hey?</span> |
-| ![](../assets/tables/mesh-e/152.png)| 树<br>使用工具放置 | 用MeshE中TreeScatter工具放置<br>有好几种 |
+| ![](../assets/tables/mesh-e/152.png){ .ts-natural }| 树<br>使用工具放置 | 用MeshE中TreeScatter工具放置<br>有好几种 |
 | ![](../assets/tables/mesh-e/159.png)<br>![](../assets/tables/mesh-e/160.png) | 柏树<br>template = cypress | <span class="redact" tabindex="0">这是树啊？？</span> |
 | ![](../assets/tables/mesh-e/166.png)<br>![](../assets/tables/mesh-e/168.png) | 冷杉树<br>template = fir | 疑似材质错误 |
 | ![](../assets/tables/mesh-e/167.png)<br>![](../assets/tables/mesh-e/174.png) | 一号冷杉树<br>template = fir1 |  |
@@ -74,7 +85,7 @@ icon: "lucide/box"
 | ![](../assets/tables/mesh-e/341.png)<br>![](../assets/tables/mesh-e/342.png) | 十三号热带植物<br>template = tropical_plant_13 |  |
 | ![](../assets/tables/mesh-e/346.png)<br>![](../assets/tables/mesh-e/347.png) | 小麦<br>template = wheat |  |
 
-## 小物件 { #small }
+## 小物件 <span class="ts-count"><!--count--> 项</span> { #small }
 
 | 预览 | 名称 | 备注 |
 | --- | --- | --- |
@@ -215,7 +226,7 @@ icon: "lucide/box"
 | ![](../assets/tables/mesh-e/536.png)<br>![](../assets/tables/mesh-e/537.png) | 车3<br>template = car3 | 不是载具，炸不坏也推不动<br>疑似材质错误 |
 | ![](../assets/tables/mesh-e/538.png)<br>![](../assets/tables/mesh-e/539.png) | 车4<br>template = car4 | 不是载具，炸不坏也推不动<br>疑似材质错误 |
 
-## 大物件 { #large }
+## 大物件 <span class="ts-count"><!--count--> 项</span> { #large }
 
 | 预览 | 名称 | 备注 |
 | --- | --- | --- |
@@ -246,7 +257,7 @@ icon: "lucide/box"
 | ![](../assets/tables/mesh-e/184.png)<br>![](../assets/tables/mesh-e/185.png) | 圣殿<br>template = temple | 门口一小部分无碰撞箱 |
 | ![](../assets/tables/mesh-e/192.png)<br>![](../assets/tables/mesh-e/191.png) | 隧道<br>template = tunnel | 无碰撞箱 |
 
-## 特殊物件 { #special }
+## 特殊物件 <span class="ts-count"><!--count--> 项</span> { #special }
 
 | 预览 | 名称 | 备注 |
 | --- | --- | --- |
@@ -255,7 +266,7 @@ icon: "lucide/box"
 | ![](../assets/tables/mesh-e/026.png)<br>![](../assets/tables/mesh-e/027.png) | 三线电线杆子<br>template = post1_3 |  |
 | ![](../assets/tables/mesh-e/037.png)<br>![](../assets/tables/mesh-e/036.png) | 大臂电线杆子<br>template = post1_4 |  |
 
-## 有严重问题的物件 { #broken }
+## 有严重问题的物件 <span class="ts-count"><!--count--> 项</span> { #broken }
 
 | 预览 | 名称 | 备注 |
 | --- | --- | --- |
