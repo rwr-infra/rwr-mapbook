@@ -1,14 +1,13 @@
 ---
-title: "Wall E"
+title: "Wall E & Platform E"
 description: "Normal walls and special walls, including notes on what destroys them."
-source_sha256: a0db826700fc813cc81c1b00697a1c0fc4ed7d8efc9edf09be688a124905b186
-translated: 2026-09-25
-nav_label: "Wall E"
+source_sha256: af019e8fdc8940a49010581708a7694233a08d1e8c4e6adb647b71ec78df8168
+translated: 2026-10-03
+nav_label: "Wall E & Platform E"
 icon: lucide/box
-tags: [Models, Walls]
 ---
 
-# Wall E { #wall }
+# Wall E & Platform E { #wall }
 
 <p class="kicker">EDITOR · walls, and whether they can be knocked down</p>
 

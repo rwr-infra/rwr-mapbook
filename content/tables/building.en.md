@@ -1,11 +1,10 @@
 ---
 title: "Building E"
 description: "Placeable houses."
-source_sha256: 24bb004bb5754fa51023ff1297ea49653014dede4ca002cd1b79dbc591dfce5d
-translated: 2026-09-25
+source_sha256: e263fa257422d27d5254819953b481951b84a55a306238046cf09746285ef3a3
+translated: 2026-10-03
 nav_label: "Building E"
 icon: lucide/box
-tags: [Models, Buildings]
 ---
 
 # Building E { #building }

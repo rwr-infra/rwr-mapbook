@@ -3,7 +3,6 @@ nav_label: "功能介绍"
 title: "功能介绍"
 icon: "lucide/layout-grid"
 description: "地编界面的功能介绍：顶栏工具逐项说明、交互按键、ID 搜索，以及 mapSettings、3rdParSettings、RefpM 三处配置。"
-tags: [界面, 工具, 配置文件]
 # ⚠️ 由 tools/docsgen.py 从 content/editor/index.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
 hide: [navigation]
 ---

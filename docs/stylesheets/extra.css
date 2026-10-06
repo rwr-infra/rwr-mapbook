@@ -556,9 +556,37 @@
 }
 
 .md-typeset.tables-page--vehicle {
-  --ts-prev-cols: 1;
-  --ts-shot-w: 176px;
-  --ts-shot-h: 146px;
+  /* 这一页有一行（掩体空投信标）是两张图并排的，所以留两格的宽度；
+     其余行的单张图会在这一格里居中。 */
+  --ts-prev-cols: 2;
+  --ts-shot-w: 123px;
+  --ts-shot-h: 102px;
+  /* 这一个页面里**有三张表**（特殊 / 普通 / 未生成）。表的列宽本来是各算各的，
+     于是没有预览图的「特殊载具表」预览列会缩到只剩占位符那么宽，三列跟
+     「普通载具表」对不上。这里把这一页改成 `table-layout: fixed` 并写死前两列，
+     三张表就列对列了（第三列吃掉剩下的）。
+     ⚠️ 固定布局下列**不会**再按内容自动变宽：写窄了内容会顶出去，
+        所以这两个值要跟 `--ts-shot-*` 一起看（下面是预览列该留多少的算法）。 */
+  --ts-pad: 2.2rem;    /* 单元格左右内边距合计（主题是 1.25em×2） */
+  --ts-name-w: 11rem;  /* 名称列 */
+}
+
+.md-typeset.tables-page--vehicle table {
+  table-layout: fixed;
+}
+
+/* ⚠️ 选择器里那个 `table` 不能省：通用规则 `.md-typeset.tables-page th:first-child`
+   也是 (0,3,1)，而且**写在文件后面**，同样权重下后来的赢——它会用 `width: 1%`
+   把这里写死的列宽压掉，三张表就又对不齐了（踩过）。加一个类型选择器提到 (0,3,2)。 */
+.md-typeset.tables-page--vehicle table th:first-child,
+.md-typeset.tables-page--vehicle table td:first-child {
+  width: calc(var(--ts-shot-w) * var(--ts-prev-cols) + var(--ts-shot-gap) * var(--ts-prev-cols)
+             - var(--ts-shot-gap) + var(--ts-pad));
+}
+
+.md-typeset.tables-page--vehicle table th:nth-child(2),
+.md-typeset.tables-page--vehicle table td:nth-child(2) {
+  width: var(--ts-name-w);
 }
 
 .md-typeset.tables-page--decal {
@@ -638,8 +666,10 @@
   max-height: none;
 }
 
-/* Vehicle Scatter 的预览列整列是空的：给一个安静的占位，别像漏了图 */
+/* Vehicle Scatter 的预览列整列是空的：给一个安静的占位（居中），别像漏了图 */
 .md-typeset.tables-page .ts-none {
+  display: block;
+  text-align: center;
   color: var(--md-default-fg-color--light);
   font-size: 0.7rem;
 }
@@ -672,14 +702,25 @@
 
 /* ⚠️ 主题把每张表都裹在 `.md-typeset__scrollwrap` 里，而且**表格元素自己**也带着
    `overflow: auto`（实测两者都是）。overflow 不是 visible 的祖先会**成为 sticky
-   的容器**——表头于是只在那个不滚动的容器里「粘」，看起来完全没生效。这里在宽屏上
-   把两者的 overflow 还原成 visible（我们的表都已经收进内容宽了），窄屏照旧留着
-   横向滚动，两者各取所需。 */
-@media screen and (min-width: 45em) {
-  .md-typeset.tables-page .md-typeset__scrollwrap,
-  .md-typeset.tables-page table {
-    overflow: visible;
-  }
+   的容器**——表头于是只在那个不滚动的容器里「粘」，看起来完全没生效：
+   实测手机上它被钉在表格顶端下方 126px 处，**永远浮在头两行上面**
+   （页眉 48 + 搜索框 78），这行小标题就「错位、挡住下面的列表」。
+   所以这里**任何宽度都要**把两者的 overflow 还原成 visible。
+   代价是表格不能再横向滚动了 —— 于是窄屏必须真的塞得下（见末尾那段媒体查询，
+   手机上把预览框收一档、一行只放一张图）。
+*/
+.md-typeset.tables-page .md-typeset__scrollwrap,
+.md-typeset.tables-page table {
+  overflow: visible;
+}
+
+/* ⚠️ 主题还给表格设了 `display: inline-block`（为了让它自己撑开、横向滚动，
+   并跟着 `.md-typeset__table` 那层收缩）。**inline-block 的表格不是表格盒**：
+   `table-layout: fixed` 与 `position: sticky` 在它身上都不生效——
+   固定列宽因此被无视，三张表各算各的列宽（踩过：桌面上看着对上了，
+   手机上一量才发现是内容凑巧）。我们的表都已经收进内容宽了，还原成表格盒。 */
+.md-typeset.tables-page table {
+  display: table;
 }
 
 /* 表头跟着滚：三百多行的表，滚到一半不知道哪列是哪列。
@@ -907,33 +948,58 @@
   cursor: default;
 }
 
-/* 窄屏：图框整体收一档。⚠️ 这段必须排在各页那组值**之后**——
-   选择器权重一样，靠的就是「后写的赢」。 */
+/* 窄屏：图框整体收一档，而且**一行只放一张图**——手机上没有横向滚动可用
+   （表格的 overflow 已经被还原成 visible，见前面那段），所以表必须真的塞得下：
+   一行两张 158 宽 = 322，加上名称列与备注列的最小宽就顶出屏幕了，两张会一起被挤扁。
+   ⚠️ 这段必须排在各页那组值**之后**——选择器权重一样，靠的就是「后写的赢」。 */
 @media screen and (max-width: 44.9375em) {
   .md-typeset.tables-page,
+  .md-typeset.tables-page--mesh,
+  .md-typeset.tables-page--wall,
+  .md-typeset.tables-page--building,
+  .md-typeset.tables-page--vehicle,
+  .md-typeset.tables-page--decal {
+    --ts-prev-cols: 1;
+  }
+
+  /* 主题给表格单元格的左右内边距是 `.9375em 1.25em`（实测一格 35px），三列就是
+     一百多像素的纯留白；手机上把它收到 0.35rem，省下来的正好还给图框。
+     ⚠️ 选择器要写成 `table:not([class])` 那一档：主题那条是
+     `.md-typeset table:not([class]) td`（0,2,2），我原先写的
+     `.md-typeset.tables-page td` 只有 (0,2,1)，**压不住**（踩过，量了半天没变化）。 */
+  .md-typeset.tables-page table:not([class]) th,
+  .md-typeset.tables-page table:not([class]) td {
+    padding-right: 0.35rem;
+    padding-left: 0.35rem;
+  }
+
+  .md-typeset.tables-page,
   .md-typeset.tables-page--mesh {
-    --ts-shot-w: 116px;
-    --ts-shot-h: 92px;
+    --ts-shot-w: 130px;
+    --ts-shot-h: 102px;
   }
 
   .md-typeset.tables-page--wall {
-    --ts-shot-w: 180px;
-    --ts-shot-h: 104px;
+    --ts-shot-w: 132px;
+    --ts-shot-h: 74px;
   }
 
   .md-typeset.tables-page--building {
-    --ts-shot-w: 150px;
-    --ts-shot-h: 108px;
+    --ts-shot-w: 138px;
+    --ts-shot-h: 96px;
   }
 
   .md-typeset.tables-page--vehicle {
-    --ts-shot-w: 128px;
-    --ts-shot-h: 108px;
+    --ts-shot-w: 112px;
+    --ts-shot-h: 92px;
+    /* 固定布局在窄屏也要跟着收：内边距那一档变成 0.35rem×2，名称列也不能是 11rem */
+    --ts-pad: 0.7rem;
+    --ts-name-w: 7rem;
   }
 
   .md-typeset.tables-page--decal {
-    --ts-shot-w: 140px;
-    --ts-shot-h: 120px;
+    --ts-shot-w: 132px;
+    --ts-shot-h: 112px;
   }
 
   .md-typeset.tables-page .ts-search__kbd {

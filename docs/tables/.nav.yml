@@ -4,7 +4,7 @@
 nav:
 - 模型清单: index.md
 - MESH E: mesh.md
-- Wall E: wall.md
+- Wall E & Platform E: wall.md
 - Building E: building.md
 - Vehicle Scatter: vehicle.md
 - Decal: decal.md

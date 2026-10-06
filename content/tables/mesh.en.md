@@ -1,11 +1,10 @@
 ---
 title: "MESH E"
 description: "Rocks, plants, small props, large props, special props, and the ones with serious problems."
-source_sha256: ec392de210879a34a360793574c64f8552623934791b58247198ddd3aa6331b9
+source_sha256: 4ff4242c44885d62fd2a55f4ac670669c00112c7a402b79e8784a2a512458f41
 translated: 2026-10-03
 nav_label: "MESH E"
 icon: "lucide/box"
-tags: [Models, Materials]
 ---
 
 # MESH E { #mesh }

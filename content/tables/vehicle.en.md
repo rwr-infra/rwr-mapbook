@@ -1,33 +1,59 @@
 ---
 title: "Vehicle Scatter"
 description: "The vehicle scatter list."
-source_sha256: 47cce1c5e40d279ba80a9403537fbbb625b9ebf1495a430ba920b6dbb8532959
-translated: 2026-09-25
+source_sha256: 878c22a78cbb04006dd5636fbb032e434fe0dadf270ac8eace64e6fb929df1b8
+translated: 2026-10-06
 nav_label: "Vehicle Scatter"
 icon: lucide/box
-tags: [Models, Vehicles]
 ---
 
 # Vehicle Scatter { #vehicle }
 
 <p class="kicker">EDITOR · vehicle scatter</p>
 
-!!! tip "How to read this table"
-    The **Preview** column gives two images side by side: the left one looks down at an
-    oblique angle, the right one faces the normal directly. Judge the shape by the
-    **horizontal** line; the vertical one is in perspective.
+!!! quote "Notes"
+    Note: template version vao0822. The left preview image is an oblique view looking
+    down, the right one faces the normal directly — that is, the editor view. Judge the
+    shape by the horizontal line; the vertical one is in perspective and can make an
+    object look tilted.
 
-    One table. The `xxx.vehicle` in the Name column is the key in `common.resources`.
+    The special vehicle table comes from `green_default.resources` in the
+    `steamapps\common\RunningWithRifles\media\packages\vanilla\factions` folder.
+
+    The ordinary table and the not-generated table come from `common.resources` in that
+    same folder.
+
+    Some vehicles are not generated because the package is not loaded, because the map
+    runs in a different environment, or because they are only intermediaries that exist
+    for an instant — the signal truck, for example, only works in Invasion and cannot be
+    generated properly in Quick Match. Those details are not tested or noted further here.
 
 *[template]: the name an object is referred to by in `template = …`; that is how you look it up
 
+
+## Special vehicles { #special }
+
+**The vehicles below are usually spawned by key; their materials and models change with the faction.**
+
+| Preview | Name | Notes |
+| --- | --- | --- |
+|  | Jeep<br>jeep |  |
+|  | APC<br>apc |  |
+|  | Tank<br>tank |  |
+|  | Cargo truck<br>transport_truck |  |
+|  | Veteran pack tank<br>tank_alt |  |
+|  | Tank not spawned for players<br>tank_denied_player | A special spawn mechanic: once the player captures this outpost, the tank inside is not spawned. |
+
+
+## Ordinary vehicles { #normal }
+
+**The vehicles below are spawned by tag.**
 
 | Preview | Name | Notes |
 | --- | --- | --- |
 |  | Machine-gun Humvee<br>humvee.vehicle |  |
 |  | Grenade-launcher Humvee<br>humvee_gl.vehicle |  |
 |  | Respawn truck<br>armored_truck.vehicle |  |
-|  | Signal truck<br>radar_truck.vehicle | Only works in Invasion; Quick Match cannot spawn it properly<br><span class="redact" tabindex="0">The ones marked as not spawning below may be the same quirk</span> |
 |  | Armory truck<br>mobile_armory.vehicle |  |
 |  | Hovercraft<br>rubber_boat.vehicle |  |
 |  | Patrol boat<br>patrol_ship.vehicle |  |
@@ -100,19 +126,75 @@ tags: [Models, Vehicles]
 | ![](../assets/tables/vehicle-scatter/046.png) | Racing car 6<br>racing_car6.vehicle |  |
 | ![](../assets/tables/vehicle-scatter/047.png) | Racing car 7<br>racing_car7.vehicle |  |
 | ![](../assets/tables/vehicle-scatter/048.png) | Racing car 8<br>racing_car8.vehicle |  |
-|  | Pink panda car<br>jeep_ee.vehicle | Does not spawn |
 | ![](../assets/tables/vehicle-scatter/049.png) | Dumpster<br>dumpster.vehicle |  |
 |  | Tractor<br>tractor.vehicle |  |
+|  | Vulcan tank<br>vulcan_tank.vehicle |  |
+|  | Desert patrol buggy<br>buggy.vehicle |  |
+|  | Armed pickup<br>technical.vehicle |  |
+|  | TOW Wiesel<br>wiesel_tow.vehicle |  |
+|  | TOW Wiesel airdrop beacon<br>wiesel_spawn.vehicle | Keeps spawning periodically |
+|  | Banana car<br>banana_car.vehicle |  |
+|  | Banana car airdrop beacon<br>banana_car_spawn.vehicle | Keeps spawning periodically |
+| ![](../assets/tables/vehicle-scatter/050.png) | Banana peel spawner<br>banana_peel_spawner.vehicle | A banana peel that keeps spitting out exploding banana cars<br>Keeps spawning periodically, with a very short gap between them |
+|  | G17/A1 amphibious assault vehicle<br>aav7.vehicle |  |
+|  | G17/A1 amphibious assault vehicle airdrop beacon<br>aav7_spawn.vehicle | Keeps spawning periodically |
+| ![](../assets/tables/vehicle-scatter/052.png)<br>![](../assets/tables/vehicle-scatter/051.png) | Cover airdrop beacon<br>cover_crate_para.vehicle | Keeps spawning periodically |
+|  | Armed truck<br>guntruck.vehicle |  |
+|  | Armed truck airdrop intermediary<br>guntruck_para.vehicle | Armed truck airdrop intermediary; only spawns once at the start of the round, and its effect is to drop one armed truck |
+|  | Armed truck airdrop beacon<br>guntruck_spawn.vehicle | Keeps spawning periodically |
+|  | “Hornet” missile launcher<br>hornet.vehicle |  |
+|  | “Hornet” missile launcher<br>hornet_2.vehicle | Compared with the entry above, treat this as a one-use deployable: after being destroyed it only respawns ten hours later |
+|  | ACAV infantry fighting vehicle<br>m113_tank_acav.vehicle |  |
+|  | ACAV infantry fighting vehicle airdrop beacon<br>vulcan_acav_spawn.vehicle | Keeps spawning periodically |
+|  | Autocannon Wiesel<br>wiesel_mk20.vehicle |  |
+|  | NOXE Ghost missile launcher vehicle<br>noxe.vehicle |  |
+|  | SEV-90 anti-vehicle tank<br>sev90.vehicle |  |
+|  | Legion infantry tank<br>legion.vehicle |  |
+|  | Flamer armoured personnel carrier<br>flamer_tank.vehicle |  |
+|  | M528 fire support vehicle<br>m528.vehicle |  |
+|  | VFS armoured scout vehicle<br>vfs_at.vehicle |  |
+| ![](../assets/tables/vehicle-scatter/053.png) | Missile launcher<br>missile_launcher.vehicle |  |
+| ![](../assets/tables/vehicle-scatter/054.png) | Small cover dug with an entrenching tool<br>sandbag_cover.vehicle |  |
+| ![](../assets/tables/vehicle-scatter/055.png) | Dog crate<br>dogcrate_para.vehicle | Spawns on the ground, then bursts open and spawns one dog<br>Keeps spawning periodically |
+|  | Formula One racing car<br>f1.vehicle |  |
+|  | Formula One racing car airdrop beacon<br>f1_spawn.vehicle | Keeps spawning periodically |
+|  | LAI-109 multiple rocket launcher vehicle<br>lai-109.vehicle |  |
+|  | LAI-109 multiple rocket launcher vehicle airdrop beacon<br>lai-109_spawn.vehicle | Keeps spawning periodically |
+|  | LAILV-002 armoured personnel carrier<br>lailv-002.vehicle |  |
+|  | LAILV-002 armoured personnel carrier airdrop beacon<br>lailv-002_spawn.vehicle | Keeps spawning periodically |
+|  | MMLS-528 self-propelled mine-laying system<br>mmls-528.vehicle |  |
+|  | MMLS-528 self-propelled mine-laying system airdrop beacon<br>mmls-528_spawn.vehicle | Keeps spawning periodically |
+| ![](../assets/tables/vehicle-scatter/056.png) | Snowman<br>snowman.vehicle | The little snowman in its dormant state from the Christmas event; nothing scripts it into spawning, so it can only be pushed around<br>It cannot be activated |
+
+
+## Not generated vehicles { #unspawned }
+
+**They do not spawn properly in Quick Match mode.**
+
+| Preview | Name | Notes |
+| --- | --- | --- |
+|  | Signal truck<br>radar_truck.vehicle | Only works in Invasion; Quick Match cannot spawn it properly<br><span class="redact" tabindex="0">The ones marked as not spawning below may be the same quirk</span> |
+|  | Pink panda car<br>jeep_ee.vehicle | Does not spawn |
+|  | Cargo truck<br>cargo_truck.vehicle | Does not spawn |
+|  | Prison bus<br>prison_bus.vehicle | Does not spawn |
+|  | Prison gate<br>prison_door.vehicle | Does not spawn |
+|  | Prison hatch<br>prison_hatch.vehicle | Does not spawn |
+|  | Radar tank<br>radar_tank.vehicle | Does not spawn |
+|  | Radar tank<br>radar_tank2.vehicle | Does not spawn |
+|  | EMP intermediary<br>emp.vehicle | Does not spawn |
+|  | Ice cream truck<br>icecream.vehicle | Does not spawn |
+|  | Ambulance<br>medivan.vehicle | Does not spawn |
+|  | Repair arm<br>repair_crane.vehicle | Does not spawn |
+|  | Repair vehicle<br>zjx19.vehicle | Does not spawn<br>This is the old repair vehicle, already deleted from the game<br>The new version, zjx19_auto.vehicle, is not recorded in common.resources, and cannot spawn either |
+|  | Repair vehicle airdrop beacon<br>zjx19_spawn.vehicle | Does not spawn, same reason as above |
+|  | Merry Christmas car<br>jeep_xmas.vehicle | Does not spawn |
+|  | Merry Christmas car airdrop beacon<br>jeep_xmas_spawn.vehicle | Does not spawn |
 |  | [No idea what this is]<br>flare_checkpoint.vehicle | Does not spawn |
 |  | [No idea what this is]<br>heli_extraction_broken.vehicle | Does not spawn |
 |  | [No idea what this is]<br>heli_broken1.vehicle | Does not spawn |
 |  | [No idea what this is]<br>heli_broken2.vehicle | Does not spawn |
 |  | [No idea what this is]<br>cargo_helicopter_broken.vehicle | Does not spawn |
 |  | [No idea what this is]<br>cargo_helicopter.vehicle | Does not spawn |
-|  | Cargo truck<br>cargo_truck.vehicle | Does not spawn |
-|  | Prison bus<br>prison_bus.vehicle | Does not spawn |
-|  | Prison gate<br>prison_door.vehicle | Does not spawn |
-|  | Prison hatch<br>prison_hatch.vehicle | Does not spawn |
 |  | [No idea what this is]<br>tank_trap.vehicle | Does not spawn |
 |  | [No idea what this is]<br>special_cargo_vehicle1.vehicle | Does not spawn |
 |  | [No idea what this is]<br>special_cargo_vehicle2.vehicle | Does not spawn |
@@ -170,51 +252,4 @@ tags: [Models, Vehicles]
 |  | [No idea what this is]<br>special_crate_wood8.vehicle | Does not spawn |
 |  | [No idea what this is]<br>special_crate_wood9.vehicle | Does not spawn |
 |  | [No idea what this is]<br>special_crate_wood10.vehicle | Does not spawn |
-|  | Radar tank<br>radar_tank.vehicle | Does not spawn |
-|  | Radar tank<br>radar_tank2.vehicle | Does not spawn |
-|  | Vulcan tank<br>vulcan_tank.vehicle |  |
-|  | Desert patrol buggy<br>buggy.vehicle |  |
-|  | Armed pickup<br>technical.vehicle |  |
-|  | TOW Wiesel<br>wiesel_tow.vehicle |  |
-|  | TOW Wiesel airdrop beacon<br>wiesel_spawn.vehicle | Keeps spawning periodically |
-|  | Banana car<br>banana_car.vehicle |  |
-|  | Banana car airdrop beacon<br>banana_car_spawn.vehicle | Keeps spawning periodically |
-| ![](../assets/tables/vehicle-scatter/050.png) | Banana peel spawner<br>banana_peel_spawner.vehicle | A banana peel that keeps spitting out exploding banana cars<br>Keeps spawning periodically, with a very short gap between them |
-|  | G17/A1 amphibious assault vehicle<br>aav7.vehicle |  |
-|  | G17/A1 amphibious assault vehicle airdrop beacon<br>aav7_spawn.vehicle | Keeps spawning periodically |
-| ![](../assets/tables/vehicle-scatter/051.png)<br>![](../assets/tables/vehicle-scatter/052.png) | Cover airdrop beacon<br>cover_crate_para.vehicle | Keeps spawning periodically |
-|  | EMP intermediary<br>emp.vehicle | Does not spawn |
-|  | Armed truck<br>guntruck.vehicle |  |
-|  | Armed truck airdrop intermediary<br>guntruck_para.vehicle | Armed truck airdrop intermediary; only spawns once at the start of the round, and its effect is to drop one armed truck |
-|  | Armed truck airdrop beacon<br>guntruck_spawn.vehicle | Keeps spawning periodically |
-|  | “Hornet” missile launcher<br>hornet.vehicle |  |
-|  | “Hornet” missile launcher<br>hornet_2.vehicle | Compared with the entry above, treat this as a one-use deployable: after being destroyed it only respawns ten hours later |
-|  | ACAV infantry fighting vehicle<br>m113_tank_acav.vehicle |  |
-|  | Ice cream truck<br>icecream.vehicle | Does not spawn |
-|  | Ambulance<br>medivan.vehicle | Does not spawn |
 |  | [No idea what this is]<br>repair.vehicle | Does not spawn |
-|  | Repair arm<br>repair_crane.vehicle | Does not spawn |
-|  | ACAV infantry fighting vehicle airdrop beacon<br>vulcan_acav_spawn.vehicle | Keeps spawning periodically |
-|  | Repair vehicle<br>zjx19.vehicle | Does not spawn<br>This is the old repair vehicle, already deleted from the game<br>The new version, zjx19_auto.vehicle, is not recorded in common.resources, and cannot spawn either |
-|  | Repair vehicle airdrop beacon<br>zjx19_spawn.vehicle | Does not spawn, same reason as above |
-|  | Autocannon Wiesel<br>wiesel_mk20.vehicle |  |
-|  | NOXE Ghost missile launcher vehicle<br>noxe.vehicle |  |
-|  | SEV-90 anti-vehicle tank<br>sev90.vehicle |  |
-|  | Legion infantry tank<br>legion.vehicle |  |
-|  | Flamer armoured personnel carrier<br>flamer_tank.vehicle |  |
-|  | M528 fire support vehicle<br>m528.vehicle |  |
-|  | VFS armoured scout vehicle<br>vfs_at.vehicle |  |
-|  | Merry Christmas car<br>jeep_xmas.vehicle | Does not spawn |
-|  | Merry Christmas car airdrop beacon<br>jeep_xmas_spawn.vehicle | Does not spawn |
-| ![](../assets/tables/vehicle-scatter/053.png) | Missile launcher<br>missile_launcher.vehicle |  |
-| ![](../assets/tables/vehicle-scatter/054.png) | Small cover dug with an entrenching tool<br>sandbag_cover.vehicle |  |
-| ![](../assets/tables/vehicle-scatter/055.png) | Dog crate<br>dogcrate_para.vehicle | Spawns on the ground, then bursts open and spawns one dog<br>Keeps spawning periodically |
-|  | Formula One racing car<br>f1.vehicle |  |
-|  | Formula One racing car airdrop beacon<br>f1_spawn.vehicle | Keeps spawning periodically |
-|  | LAI-109 multiple rocket launcher vehicle<br>lai-109.vehicle |  |
-|  | LAI-109 multiple rocket launcher vehicle airdrop beacon<br>lai-109_spawn.vehicle | Keeps spawning periodically |
-|  | LAILV-002 armoured personnel carrier<br>lailv-002.vehicle |  |
-|  | LAILV-002 armoured personnel carrier airdrop beacon<br>lailv-002_spawn.vehicle | Keeps spawning periodically |
-|  | MMLS-528 self-propelled mine-laying system<br>mmls-528.vehicle |  |
-|  | MMLS-528 self-propelled mine-laying system airdrop beacon<br>mmls-528_spawn.vehicle | Keeps spawning periodically |
-| ![](../assets/tables/vehicle-scatter/056.png) | Snowman<br>snowman.vehicle | The little snowman in its dormant state from the Christmas event; nothing scripts it into spawning, so it can only be pushed around<br>It cannot be activated |

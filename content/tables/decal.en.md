@@ -1,11 +1,10 @@
 ---
 title: "Decal"
 description: "Ground decals."
-source_sha256: aea723a3bf9da00e25faba1701e4f3cf753430e3ab63aacdf42428774439d0a0
-translated: 2026-09-25
+source_sha256: 66ed37733980091f019c6c58a6922bd5ac6f6ba93b6060f5af692fde8e7c0f49
+translated: 2026-10-03
 nav_label: "Decal"
 icon: lucide/box
-tags: [Models, Decals]
 ---
 
 # Decal { #decal }

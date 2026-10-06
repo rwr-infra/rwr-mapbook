@@ -1,13 +1,12 @@
 ---
-nav_label: "Wall E"
-title: "Wall E"
+nav_label: "Wall E & Platform E"
+title: "Wall E & Platform E"
 description: "正常墙与特殊墙，含爆炸物摧毁判定等备注。"
 icon: "lucide/box"
-tags: [模型, 墙体]
 # ⚠️ 由 tools/docsgen.py 从 content/tables/wall.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
 ---
 
-# Wall E { #wall }
+# Wall E & Platform E { #wall }
 
 <p class="kicker">EDITOR · 墙，以及能不能被打掉</p>
 

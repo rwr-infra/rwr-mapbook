@@ -1,11 +1,10 @@
 ---
 title: "Feature guide"
 description: "The editor's features: every toolbar tool in turn, the key bindings, ID search, and the mapSettings / 3rdParSettings / RefpM configuration files."
-source_sha256: c184757788bead9a32f106a1dc0b124b7941eb3321734bd1688d68f26a47ed5e
-translated: 2026-10-02
+source_sha256: e7b1b2dfde359ab3d64eeb8e06450222fc53dfd7b4e3488506702bc7ea6c3976
+translated: 2026-10-03
 nav_label: "Feature guide"
 icon: lucide/layout-grid
-tags: [Interface, Tools, Config files]
 ---
 
 # Feature guide { #overview }
