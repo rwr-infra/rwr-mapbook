@@ -512,7 +512,19 @@
 
     var rows = [];
 
-    Array.prototype.forEach.call(article.querySelectorAll("table"), function (table) {
+    // ⚠️ 只认**清单表**，判据必须与 docs/stylesheets/extra.css 那段作用域一致：
+    //    不在折叠块 / 提示框里的表才是清单。这一页上还有别的表——Wall E 页尾那份
+    //    判定数据速查整块在 `???` 折叠块里，它们是参考资料，不是清单条目：
+    //    照单处理的话，那张「tag / 几个 / 大意」表里的 `35` 也会被当成引用值加上
+    //    复制芯片（踩过：Wall E 的芯片数从 76 变成 82），搜索也会去索引它们。
+    //    ⚠️ 判据**不能**用 `.md-typeset__scrollwrap` 那一层：那是主题 bundle.js 在
+    //    document$ 时运行时加的，本文件跑在它之前，那时表还是正文的直接子元素——
+    //    按它认的话这里一个表都找不到，芯片会**全部消失**（踩过）。
+    var listing = Array.prototype.filter.call(article.querySelectorAll("table"), function (table) {
+      return !table.closest("details, .admonition");
+    });
+
+    Array.prototype.forEach.call(listing, function (table) {
       var section = headingBefore(article, table);
       var sectionName = headText(section);
       var body = table.tBodies[0];

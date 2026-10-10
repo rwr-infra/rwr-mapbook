@@ -27,16 +27,8 @@ icon: "lucide/box"
 
 </div>
 
-!!! tip "怎麼讀這張表"
-    「預覽」列按兩張圖並排給：左側斜向下視角，右側正對法線。判斷形狀請以**水平線**為準，垂直線是點透視。
-
-    兩張表：正常牆與特殊牆。備註列裡寫的多是待測項（能否翻越、被爆炸摧毀的閾值）。
-
-*[模板]: 物件在 `template = …` 裡引用的名字，地編裡按這個名字找它
-
-
-!!! note "寫這張表的時候記下的"
-    註：模板版本 vao0822，視角為側視。爆炸物摧毀判定似乎需要靠近中間；兩側可能炸不掉（未逐項驗證）。如果牆是隱形的，或者形狀/材質看起來異常，多半是配合平臺使用的。
+!!! note "注意事項"
+    註：模板版本為vao0822，視角為側視。爆炸物摧毀判定似乎需要靠近中間；兩側可能炸不掉（未逐項驗證）。如果牆是隱形的，或者形狀/材質看起來異常，多半是配合平臺使用的。
 
 ## 正常牆 <span class="ts-count">49 項</span> { #normal }
 
@@ -123,3 +115,237 @@ icon: "lucide/box"
 | ![](../../assets/tables/wall-e/051.png) | 一號殘骸牆<br>template = RuinWall1 |  |
 | ![](../../assets/tables/wall-e/053.png) | 二號殘骸牆<br>template = RuinWall2 |  |
 | ![](../../assets/tables/wall-e/055.png) | 牆模板<br>template = Wall_Template |  |
+
+## 判定數據速查 { #data }
+
+上面兩張表的備註欄裡留了一堆「能不能翻過」「被爆炸摧毀的閾值」。答案不在這張表裡，而在遊戲文件中——下面四塊就是從那些文件裡讀出來的原始數據，**內容一字未改**，只是把表頭那一行說明拆到每塊頭上、把並排的幾格換成標簽頁。
+
+數據版本 vao0822。
+
+<div class="ts-ref" markdown>
+
+!!! quote "常用object的主要屬性"
+
+    <p class="ts-ref__src">位於<code>RunningWithRifles\media\packages\vanilla\static_objects</code></p>
+
+    ```text
+    wood_fence1.static_object：
+    <static_object key="wood_fence1.static_object" destroy_on_drive_over="1" destroy_on_blast="1" blast_damage_threshold="2.2" destroy_on_stab="0" undestroy_on_block_activate="1">
+    可被碾壓摧毀：是
+    可被爆炸摧毀：是
+    爆炸所需要的拆毀值：2.2
+    可被近戰摧毀：否
+    在加載範圍外卸載：是
+    ```
+
+    ```text
+    wood_fence.static_object：
+    <static_object key="wood_fence.static_object" destroy_on_drive_over="1" destroy_on_blast="1" blast_damage_threshold="2.2" destroy_on_stab="0" undestroy_on_block_activate="1">
+    可被碾壓摧毀：是
+    可被爆炸摧毀：是
+    爆炸所需要的拆毀值：2.2
+    可被近戰摧毀：否
+    在加載範圍外卸載：是
+    ```
+
+    ```text
+    security_fence.static_object：
+    <static_object key="security_fence.static_object" destroy_on_drive_over="1" destroy_on_blast="1" blast_damage_threshold="7" destroy_on_stab="0" undestroy_on_block_activate="1">
+    可被碾壓摧毀：是
+    可被爆炸摧毀：是
+    爆炸所需要的拆毀值：7
+    可被近戰摧毀：否
+    在加載範圍外卸載：是
+    ```
+
+    ```text
+    scripted_wall.static_object：
+    <static_object key="scripted_wall.static_object" destroy_on_blast="0" destroy_on_drive_over="0" destroy_on_stab="0" destroy_on_request="1" undestroy_on_block_activate="0">
+    可被碾壓摧毀：否
+    可被爆炸摧毀：否
+    可被近戰摧毀：否
+    可被觸發器事件摧毀：是
+    在加載範圍外卸載：否
+    ```
+
+    ```text
+    barbed_wire.static_object：
+    <static_object key="barbed_wire.static_object" destroy_on_blast="1" blast_damage_threshold="2.2" destroy_on_drive_over="1" destroy_on_stab="0" undestroy_on_block_activate="1">
+    可被碾壓摧毀：是
+    可被爆炸摧毀：是
+    爆炸所需要的拆毀值：2.2
+    可被近戰摧毀：否
+    在加載範圍外卸載：是
+    ```
+
+!!! quote "可以被碾碎的具體tag表"
+
+    <p class="ts-ref__src">位於<code>RunningWithRifles\media\packages\vanilla\static_objects</code></p>
+
+    ```text
+    wood_fence1.static_object：
+    <destroy_on_drive_over_tags>
+    <tag name="metal_heavy" /> 重型載具
+    <tag name="any_tank" />  坦克
+    <tag name="apc" /> 步戰車
+    <tag name="truck" /> 卡車
+    <!--<tag name="jeep" /> -->
+    </destroy_on_drive_over_tags>
+    ```
+
+    ```text
+    wood_fence.static_object：
+    <destroy_on_drive_over_tags>
+    <tag name="metal_heavy" /> 重型載具
+    <tag name="any_tank" />  坦克
+    <tag name="apc" /> 步戰車
+    <tag name="truck" /> 卡車
+    <!--<tag name="jeep" /> -->
+    </destroy_on_drive_over_tags>
+    ```
+
+    ```text
+    security_fence.static_object：
+    <destroy_on_drive_over_tags>
+    <!--<tag name="metal_heavy" /> -->
+    <tag name="any_tank" />  坦克
+    <!--<tag name="apc" />  -->
+    <!--<tag name="truck" /> -->
+    <!--<tag name="jeep" /> -->
+    </destroy_on_drive_over_tags>
+    ```
+
+    ```text
+    scripted_wall.static_object：
+    無
+    ```
+
+    ```text
+    barbed_wire.static_object：
+    <destroy_on_drive_over_tags>
+    <tag name="metal_heavy" /> 重型載具
+    <tag name="any_tank" />  坦克
+    <tag name="apc" /> 步戰車
+    <tag name="truck" /> 卡車
+    <!--<tag name="jeep" /> -->
+    </destroy_on_drive_over_tags>
+    ```
+
+!!! quote "常見載具tag"
+
+    <p class="ts-ref__src">（右邊名字空格不是常規空格，僅供參考） · 位於<code>RunningWithRifles\media\packages\vanilla\vehicles</code>，需自行整合文件整理，見&lt;tag name=&quot;metal_heavy&quot; /&gt;此類標識</p>
+
+    === "metal_heavy"
+
+        ```text
+        aav7.vehicle (AAV-G17/A1)
+        apc.vehicle (SIK-AP APC)
+        apc_1.vehicle (GT-C APC)
+        apc_2.vehicle (BTX APC)
+        armored_truck.vehicle (Spawn truck)
+        darkcat.vehicle (DarkCat Tank)
+        flamer_tank.vehicle (FT-CROC)
+        fv101.vehicle (Scorpio AXN)
+        fv107.vehicle (Shamshir AXN)
+        gas_tank.vehicle (Fuel tank)
+        humvee.vehicle (Humvee)
+        humvee_gl.vehicle (Humvee)
+        lailv-002.vehicle (LAILV-002)
+        legion.vehicle (Legion)
+        m113_tank_acav.vehicle (FST ACAV)
+        m113_tank_mortar.vehicle (mortar tank)
+        m528.vehicle (M528)
+        m551.vehicle (M551 Sheriff)
+        mmls-528.vehicle (MMLS-528)
+        patrol_ship.vehicle (Patrol ship)
+        radar_tank.vehicle (Radar Tank)
+        radar_tank2.vehicle (Radar Tank)
+        sev90.vehicle (SEV-90)
+        tank.vehicle (RWR1a1 Tank)
+        tank2.vehicle (DarkCat Tank)
+        tank_1.vehicle (Leopold II Tank)
+        tank_2.vehicle (TroX-80 Tank)
+        vfs_base.vehicle (VFS)
+        vulcan_tank.vehicle (Vulcan Tank)
+        wiesel_mk20.vehicle (mustela)
+        wiesel_tow.vehicle (mustela)
+        zjx19.vehicle (ZJX-19/XE)
+        zjx19_auto.vehicle (ZJX-19/XE)
+        event_crate.vehicle (teddy crate)
+        crate_metal.vehicle (?, spottable="0")
+        ```
+
+    === "any_tank"
+
+        ```text
+        aav7.vehicle (AAV-G17/A1)
+        darkcat.vehicle (DarkCat Tank)
+        fv101.vehicle (Scorpio AXN)
+        fv107.vehicle (Shamshir AXN)
+        legion.vehicle (Legion)
+        m113_tank_acav.vehicle (FST ACAV)
+        m113_tank_mortar.vehicle (mortar tank)
+        m528.vehicle (M528)
+        m551.vehicle (M551 Sheriff)
+        mmls-528.vehicle (MMLS-528)
+        radar_tank.vehicle (Radar Tank)
+        radar_tank2.vehicle (Radar Tank)
+        sev90.vehicle (SEV-90)
+        tank.vehicle (RWR1a1 Tank)
+        tank2.vehicle (DarkCat Tank)
+        tank_1.vehicle (Leopold II Tank)
+        tank_2.vehicle (TroX-80 Tank)
+        vulcan_tank.vehicle (Vulcan Tank)
+        wiesel_mk20.vehicle (mustela)
+        wiesel_tow.vehicle (mustela)
+        zjx19.vehicle (ZJX-19/XE)
+        zjx19_auto.vehicle (ZJX-19/XE)
+        ```
+
+    === "apc"
+
+        ```text
+        apc.vehicle (SIK-AP APC)
+        apc_1.vehicle (GT-C APC)
+        apc_2.vehicle (BTX APC)
+        ```
+
+    === "truck"
+
+        ```text
+        transport_truck.vehicle (Transport truck)
+        transport_truck_1.vehicle (Transport truck)
+        transport_truck_2.vehicle (Transport truck)
+        ```
+
+    === "jeep"
+
+        ```text
+        jeep.vehicle (Jeep)
+        jeep_1.vehicle (Pigeon P5)
+        jeep_2.vehicle (Urbal UAS)
+        ```
+
+!!! quote "常見爆炸物拆毀值"
+
+    <p class="ts-ref__src">位於<code>RunningWithRifles\media\packages\vanilla\weapons</code>，需自行整合整理，見&lt;result class=&quot;blast&quot; radius=&quot;6.0&quot; damage=&quot;4.5&quot; push=&quot;0.3&quot; decal=&quot;1&quot; character_state=&quot;death&quot; /&gt;中的damage</p>
+
+    ```text
+    24 C4炸藥 c4.projectile
+    20 毀滅之錘 dooms_hammer.projectile
+    12 塑性炸藥 plastic_explosive.projectile
+    10.51 信標槍 tracer_missile.projectile
+    8.5 罐裝毀滅之錘 can_cannon_battery.projectile
+    6 MRL mrl_rocket.projectile
+    5.2 PF98火箭筒 pf98_rocket.projectile
+    4.5 罐裝C4炸藥 can_cannon_c4.projectile
+    4.5 標槍反坦克導彈 javelin.projectile
+    4 SMAW火箭筒 smaw_rocket.projectile
+    3.3 M72火箭筒 m72_law_rocket.projectile
+    3.01 RPG-7火箭筒 rpg-7_rocket.projectile
+    2.4 觸髮式手榴彈 impact_grenade.projectile
+    2.2 M202火箭發射器 m202.projectile
+    1.01 手榴彈 hand_grenade.projectile
+    ```
+
+</div>

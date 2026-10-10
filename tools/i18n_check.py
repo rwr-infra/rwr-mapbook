@@ -429,6 +429,11 @@ def inspect_card_blocks() -> dict:
     Markdown 会老老实实生成一堆**空卡片**：标题还在，分隔线、说明与链接全掉了。
     构建不报错、链接体检也查不到（那个链接压根没生成），页面上只是变成一整屏
     光秃秃的标题——这一处踩过。所以在这里按产物兜住。
+
+    ⚠️ 坏卡片的判据是「**链接与分隔线都没有**」，不是「没有链接」：卡片不都用来跳转。
+       「关于」页那张主要说明是纯信息卡（版本号、日期、编辑者），本来就不该有链接，
+       按「没有链接」判会误报（踩过）。而被拆散的卡片是标题之外整块都没了，
+       `---` 渲染出来的 `<hr>` 会一起消失——拿 `<hr>` 当「这张卡片是完整的」的证据。
     """
     site = ROOT / "site"
     record = {"source": "site/（卡片索引）", "target": "site/", "lang": "all", "kind": "cards"}
@@ -443,11 +448,11 @@ def inspect_card_blocks() -> dict:
         for block in card_blocks(html):
             items = re.findall(r"<li>(.*?)</li>", block, re.S)
             total += len(items)
-            gutted = [i for i in items if "<a " not in i]
+            gutted = [i for i in items if "<a " not in i and "<hr" not in i]
             if gutted:
                 rel = page.relative_to(site).as_posix()
                 problems.append(
-                    f"{rel}: {len(gutted)}/{len(items)} 张卡片里没有链接"
+                    f"{rel}: {len(gutted)}/{len(items)} 张卡片只剩一个标题"
                     f"（分隔线、说明与链接多半被拆成了并列的列表项）"
                 )
     record["status"] = "drift" if problems else "ok"

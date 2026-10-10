@@ -186,9 +186,17 @@ def count_rows(lines: list[str]) -> int:
     表头行（紧挨着 `| --- |` 分隔行的那一行）不算条目：
     数出来的数要与表格里列出来的物件个数一致，页顶上写着「76 项」，
     表里就得真有 76 行东西。
+
+    ⚠️ 只数**顶格**写的那种（行首就是 `|`）。清单页的条目一律顶格；缩进的表格都在
+    `???` 折叠块里（Wall E 页尾那份判定数据速查就是这么放的），它们是参考资料，
+    不是这一页列出的物件——算进去的话页顶会写着「109 项」而表里只有 76 个东西。
+    用「缩进」而不是「加个新标记」来区分，是因为缩进本来就是折叠块的一部分，
+    多一个开关就多一处要记得写对的地方。
     """
     total = 0
     for index, line in enumerate(lines):
+        if not line.startswith("|"):
+            continue
         if not _TABLE_ROW_RE.match(line) or _TABLE_SEP_RE.match(line):
             continue
         following = lines[index + 1] if index + 1 < len(lines) else ""

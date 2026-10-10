@@ -1,8 +1,8 @@
 ---
 title: "Wall E & Platform E"
 description: "Normal walls and special walls, including notes on what destroys them."
-source_sha256: 24fb7cc60970b5b90d76fe8a39a606d35c4247c4789a8c42b88c037b77a724de
-translated: 2026-10-06
+source_sha256: 0c0ec392143663179114aef1a4eeb1e2cce6b55551a6ff53d1d6e4ba548d6c97
+translated: 2026-10-10
 nav_label: "Wall E & Platform E"
 icon: lucide/box
 ---
@@ -28,19 +28,11 @@ icon: lucide/box
 
 </div>
 
-!!! tip "How to read this table"
-    The **Preview** column gives two images side by side: the left one looks down at an
-    oblique angle, the right one faces the normal directly. Judge the shape by the
-    **horizontal** line; the vertical one is in perspective.
-
-    Two tables: normal walls and special walls. Most of what is in the Notes column is
-    still untested (whether you can climb over it, what explosion threshold destroys it).
-
-*[template]: the name an object is referred to by in `template = …`; that is how you look it up
-
-
-!!! note "Noted while writing this table"
-    Note: template version vao0822; the views are side-on. Destroying a wall with explosives seems to need hitting it near the middle; hits at the edges may fail to blow it up (not verified case by case). If a wall is invisible, or its shape/material looks odd, it is most likely meant to be used together with a platform.
+!!! note "Notes"
+    Note: template version vao0822; the views are side-on. Destroying a wall with
+    explosives seems to need hitting it near the middle; hits at the edges may fail to
+    blow it up (not verified case by case). If a wall is invisible, or its shape/material
+    looks odd, it is most likely meant to be used together with a platform.
 
 ## Normal walls <span class="ts-count"><!--count--> items</span> { #normal }
 
@@ -127,3 +119,237 @@ icon: lucide/box
 | ![](../assets/tables/wall-e/051.png) | Ruin wall 1<br>template = RuinWall1 |  |
 | ![](../assets/tables/wall-e/053.png) | Ruin wall 2<br>template = RuinWall2 |  |
 | ![](../assets/tables/wall-e/055.png) | Wall template<br>template = Wall_Template |  |
+
+## Reference data { #data }
+
+The remark columns above leave a lot of blanks: what can climb over a wall, what blast damage destroys it. The answers are not in this table but in the game files. The four blocks below are that raw data, **copied verbatim** — the only change is that each block carries its own header note, and the parallel columns became tabs.
+
+Data version vao0822.
+
+<div class="ts-ref" markdown>
+
+!!! quote "常用object的主要属性"
+
+    <p class="ts-ref__src">位于<code>RunningWithRifles\media\packages\vanilla\static_objects</code></p>
+
+    ```text
+    wood_fence1.static_object：
+    <static_object key="wood_fence1.static_object" destroy_on_drive_over="1" destroy_on_blast="1" blast_damage_threshold="2.2" destroy_on_stab="0" undestroy_on_block_activate="1">
+    可被碾压摧毁：是
+    可被爆炸摧毁：是
+    爆炸所需要的拆毁值：2.2
+    可被近战摧毁：否
+    在加载范围外卸载：是
+    ```
+
+    ```text
+    wood_fence.static_object：
+    <static_object key="wood_fence.static_object" destroy_on_drive_over="1" destroy_on_blast="1" blast_damage_threshold="2.2" destroy_on_stab="0" undestroy_on_block_activate="1">
+    可被碾压摧毁：是
+    可被爆炸摧毁：是
+    爆炸所需要的拆毁值：2.2
+    可被近战摧毁：否
+    在加载范围外卸载：是
+    ```
+
+    ```text
+    security_fence.static_object：
+    <static_object key="security_fence.static_object" destroy_on_drive_over="1" destroy_on_blast="1" blast_damage_threshold="7" destroy_on_stab="0" undestroy_on_block_activate="1">
+    可被碾压摧毁：是
+    可被爆炸摧毁：是
+    爆炸所需要的拆毁值：7
+    可被近战摧毁：否
+    在加载范围外卸载：是
+    ```
+
+    ```text
+    scripted_wall.static_object：
+    <static_object key="scripted_wall.static_object" destroy_on_blast="0" destroy_on_drive_over="0" destroy_on_stab="0" destroy_on_request="1" undestroy_on_block_activate="0">
+    可被碾压摧毁：否
+    可被爆炸摧毁：否
+    可被近战摧毁：否
+    可被触发器事件摧毁：是
+    在加载范围外卸载：否
+    ```
+
+    ```text
+    barbed_wire.static_object：
+    <static_object key="barbed_wire.static_object" destroy_on_blast="1" blast_damage_threshold="2.2" destroy_on_drive_over="1" destroy_on_stab="0" undestroy_on_block_activate="1">
+    可被碾压摧毁：是
+    可被爆炸摧毁：是
+    爆炸所需要的拆毁值：2.2
+    可被近战摧毁：否
+    在加载范围外卸载：是
+    ```
+
+!!! quote "可以被碾碎的具体tag表"
+
+    <p class="ts-ref__src">位于<code>RunningWithRifles\media\packages\vanilla\static_objects</code></p>
+
+    ```text
+    wood_fence1.static_object：
+    <destroy_on_drive_over_tags>
+    <tag name="metal_heavy" /> 重型载具
+    <tag name="any_tank" />  坦克
+    <tag name="apc" /> 步战车
+    <tag name="truck" /> 卡车
+    <!--<tag name="jeep" /> -->
+    </destroy_on_drive_over_tags>
+    ```
+
+    ```text
+    wood_fence.static_object：
+    <destroy_on_drive_over_tags>
+    <tag name="metal_heavy" /> 重型载具
+    <tag name="any_tank" />  坦克
+    <tag name="apc" /> 步战车
+    <tag name="truck" /> 卡车
+    <!--<tag name="jeep" /> -->
+    </destroy_on_drive_over_tags>
+    ```
+
+    ```text
+    security_fence.static_object：
+    <destroy_on_drive_over_tags>
+    <!--<tag name="metal_heavy" /> -->
+    <tag name="any_tank" />  坦克
+    <!--<tag name="apc" />  -->
+    <!--<tag name="truck" /> -->
+    <!--<tag name="jeep" /> -->
+    </destroy_on_drive_over_tags>
+    ```
+
+    ```text
+    scripted_wall.static_object：
+    无
+    ```
+
+    ```text
+    barbed_wire.static_object：
+    <destroy_on_drive_over_tags>
+    <tag name="metal_heavy" /> 重型载具
+    <tag name="any_tank" />  坦克
+    <tag name="apc" /> 步战车
+    <tag name="truck" /> 卡车
+    <!--<tag name="jeep" /> -->
+    </destroy_on_drive_over_tags>
+    ```
+
+!!! quote "常见载具tag"
+
+    <p class="ts-ref__src">（右边名字空格不是常规空格，仅供参考） · 位于<code>RunningWithRifles\media\packages\vanilla\vehicles</code>，需自行整合文件整理，见&lt;tag name=&quot;metal_heavy&quot; /&gt;此类标识</p>
+
+    === "metal_heavy"
+
+        ```text
+        aav7.vehicle (AAV-G17/A1)
+        apc.vehicle (SIK-AP APC)
+        apc_1.vehicle (GT-C APC)
+        apc_2.vehicle (BTX APC)
+        armored_truck.vehicle (Spawn truck)
+        darkcat.vehicle (DarkCat Tank)
+        flamer_tank.vehicle (FT-CROC)
+        fv101.vehicle (Scorpio AXN)
+        fv107.vehicle (Shamshir AXN)
+        gas_tank.vehicle (Fuel tank)
+        humvee.vehicle (Humvee)
+        humvee_gl.vehicle (Humvee)
+        lailv-002.vehicle (LAILV-002)
+        legion.vehicle (Legion)
+        m113_tank_acav.vehicle (FST ACAV)
+        m113_tank_mortar.vehicle (mortar tank)
+        m528.vehicle (M528)
+        m551.vehicle (M551 Sheriff)
+        mmls-528.vehicle (MMLS-528)
+        patrol_ship.vehicle (Patrol ship)
+        radar_tank.vehicle (Radar Tank)
+        radar_tank2.vehicle (Radar Tank)
+        sev90.vehicle (SEV-90)
+        tank.vehicle (RWR1a1 Tank)
+        tank2.vehicle (DarkCat Tank)
+        tank_1.vehicle (Leopold II Tank)
+        tank_2.vehicle (TroX-80 Tank)
+        vfs_base.vehicle (VFS)
+        vulcan_tank.vehicle (Vulcan Tank)
+        wiesel_mk20.vehicle (mustela)
+        wiesel_tow.vehicle (mustela)
+        zjx19.vehicle (ZJX-19/XE)
+        zjx19_auto.vehicle (ZJX-19/XE)
+        event_crate.vehicle (teddy crate)
+        crate_metal.vehicle (?, spottable="0")
+        ```
+
+    === "any_tank"
+
+        ```text
+        aav7.vehicle (AAV-G17/A1)
+        darkcat.vehicle (DarkCat Tank)
+        fv101.vehicle (Scorpio AXN)
+        fv107.vehicle (Shamshir AXN)
+        legion.vehicle (Legion)
+        m113_tank_acav.vehicle (FST ACAV)
+        m113_tank_mortar.vehicle (mortar tank)
+        m528.vehicle (M528)
+        m551.vehicle (M551 Sheriff)
+        mmls-528.vehicle (MMLS-528)
+        radar_tank.vehicle (Radar Tank)
+        radar_tank2.vehicle (Radar Tank)
+        sev90.vehicle (SEV-90)
+        tank.vehicle (RWR1a1 Tank)
+        tank2.vehicle (DarkCat Tank)
+        tank_1.vehicle (Leopold II Tank)
+        tank_2.vehicle (TroX-80 Tank)
+        vulcan_tank.vehicle (Vulcan Tank)
+        wiesel_mk20.vehicle (mustela)
+        wiesel_tow.vehicle (mustela)
+        zjx19.vehicle (ZJX-19/XE)
+        zjx19_auto.vehicle (ZJX-19/XE)
+        ```
+
+    === "apc"
+
+        ```text
+        apc.vehicle (SIK-AP APC)
+        apc_1.vehicle (GT-C APC)
+        apc_2.vehicle (BTX APC)
+        ```
+
+    === "truck"
+
+        ```text
+        transport_truck.vehicle (Transport truck)
+        transport_truck_1.vehicle (Transport truck)
+        transport_truck_2.vehicle (Transport truck)
+        ```
+
+    === "jeep"
+
+        ```text
+        jeep.vehicle (Jeep)
+        jeep_1.vehicle (Pigeon P5)
+        jeep_2.vehicle (Urbal UAS)
+        ```
+
+!!! quote "常见爆炸物拆毁值"
+
+    <p class="ts-ref__src">位于<code>RunningWithRifles\media\packages\vanilla\weapons</code>，需自行整合整理，见&lt;result class=&quot;blast&quot; radius=&quot;6.0&quot; damage=&quot;4.5&quot; push=&quot;0.3&quot; decal=&quot;1&quot; character_state=&quot;death&quot; /&gt;中的damage</p>
+
+    ```text
+    24 C4炸药 c4.projectile
+    20 毁灭之锤 dooms_hammer.projectile
+    12 塑性炸药 plastic_explosive.projectile
+    10.51 信标枪 tracer_missile.projectile
+    8.5 罐装毁灭之锤 can_cannon_battery.projectile
+    6 MRL mrl_rocket.projectile
+    5.2 PF98火箭筒 pf98_rocket.projectile
+    4.5 罐装C4炸药 can_cannon_c4.projectile
+    4.5 标枪反坦克导弹 javelin.projectile
+    4 SMAW火箭筒 smaw_rocket.projectile
+    3.3 M72火箭筒 m72_law_rocket.projectile
+    3.01 RPG-7火箭筒 rpg-7_rocket.projectile
+    2.4 触发式手榴弹 impact_grenade.projectile
+    2.2 M202火箭发射器 m202.projectile
+    1.01 手榴弹 hand_grenade.projectile
+    ```
+
+</div>

@@ -1,8 +1,8 @@
 ---
 title: "Building E"
 description: "Placeable houses."
-source_sha256: 6076d490ebe57bb53e2d0d69618d8b9499e6d4eb3bd1041c25c1ae86bfa83892
-translated: 2026-10-06
+source_sha256: 462695b1b696f7fc40788ad2876f7cbc322adca4f1a265df63a822132c63487d
+translated: 2026-10-10
 nav_label: "Building E"
 icon: lucide/box
 ---
@@ -20,12 +20,11 @@ icon: lucide/box
   <p class="ts-search__meta"><!--count--> items · Searches names and reference values</p>
 </div>
 
-!!! tip "How to read this table"
-    The **Preview** column gives two images side by side: the left one looks down at an
-    oblique angle, the right one faces the normal directly. Judge the shape by the
-    **horizontal** line; the vertical one is in perspective.
-
-    One table. The Notes column records what is wrong with each house.
+!!! warning "Notes"
+    Note: the template version is earlier than vao0822 and has not been re-surveyed yet.
+    The left preview image is an oblique view looking down, the right one faces the
+    normal directly — that is, the editor view. Judge the shape by the horizontal line;
+    the vertical one is in perspective and can make an object look tilted.
 
 *[template]: the name an object is referred to by in `template = …`; that is how you look it up
 

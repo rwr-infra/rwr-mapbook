@@ -1,7 +1,7 @@
 ---
 nav_label: "Vehicle Scatter"
 title: "Vehicle Scatter"
-description: "载具散布清单。"
+description: "载具清单。"
 icon: "lucide/box"
 ---
 
@@ -20,7 +20,7 @@ icon: "lucide/box"
 </div>
 
 !!! quote "注意事项"
-    注：模板版本 vao0822。预览图左侧为斜向下视角，右侧正对法线，也就是地编视角；判断形状请以水平线为参考，垂直线是点透视，可能让物件看起来倾斜。
+    注：RWR统计版本为1.98.1。预览图左侧为斜向下视角，右侧正对法线，也就是地编视角；判断形状请以水平线为参考，垂直线是点透视，可能让物件看起来倾斜。
 
     特殊载具表来自steamapps\common\RunningWithRifles\media\packages\vanilla\factions文件夹中的green_default.resources
 

@@ -1,8 +1,8 @@
 ---
 title: "Model inventories"
 description: "Mesh E, Wall E&Platform E, Building E, Vehicle Scatter and Decal."
-source_sha256: b3f462cd5011537577f6b8d87490fdda0039edb69a4b37db3f6403ffb3dcd2b9
-translated: 2026-10-03
+source_sha256: 30f92e2d1e6ffa9ca109fa807c7e9274ca00e7641fbb6fb53efed5d767a02982
+translated: 2026-10-10
 nav_label: "Model inventories"
 icon: lucide/table
 nav: ["mesh", "wall", "building", "vehicle", "decal"]
@@ -12,6 +12,8 @@ hide: [toc]
 
 <meta http-equiv="refresh" content="0; url=mesh/">
 
-This page no longer exists on its own — the five sheets sit directly under
-"Model inventories" in the sidebar. Heading to [MESH E](mesh.md); if the jump
-does not happen, follow that link.
+This page no longer exists on its own after a layout change.
+
+Heading to [MESH E](mesh.md); if the jump does not happen, follow that link.
+
+<span class="redact" tabindex="0">sneaking a bite while nobody is looking</span>

@@ -1,8 +1,8 @@
 ---
 title: "RWR Map Editor's Handbook"
-description: "The handbook for the Running With Rifles map editor: what every panel does, the model and wall inventories, key bindings and common workflows."
-source_sha256: 906d08581347f2e8858862a12e9a509c95e406162452e7a6033690f4f496e106
-translated: 2026-09-27
+description: "The handbook for the Running With Rifles map editor: the model and wall inventories, what every panel does, key bindings and common workflows."
+source_sha256: 321ae74f7a1b6ead8632053ccba9d3e952df9b4416d51d04d7b1b3d7c617370c
+translated: 2026-10-10
 nav_label: "Home"
 icon: lucide/house
 nav: ["prepare", "editor", "tables", "download", "about"]
@@ -10,21 +10,7 @@ nav: ["prepare", "editor", "tables", "download", "about"]
 
 # RWR Map Editor's Handbook
 
-<p class="kicker">RWR · READ THIS BEFORE YOU START MAPPING</p>
-
-What to do before you start making a map — mostly to make the editor less painful to use.
-
-|  |  |
-| --- | --- |
-| Edited | 20260922 |
-| Editor version | 0101 |
-| Current editor | HamSter |
-
-!!! warning "First, what this is"
-    These are **notes by mappers, for mappers** — not an official manual.
-    Where a line says "untested" or "not tried, no idea what this is", it still says that:
-    it means **nobody has tried it yet**, which is not the same as "it works"
-    or "it does not".
+<p class="kicker">No idea what to put on this page yet — later.</p>
 
 ## Where to start
 
@@ -43,7 +29,7 @@ What to do before you start making a map — mostly to make the editor less pain
 
     ---
 
-    Every tool on the main panel, the key bindings, and finding an object by ID.
+    Every tool on the main panel, and what the key bindings do.
 
     [:octicons-arrow-right-24: Feature guide](editor/index.md)
 
@@ -55,33 +41,15 @@ What to do before you start making a map — mostly to make the editor less pain
 
     [:octicons-arrow-right-24: Model inventories](tables/index.md)
 
--   :material-cog-outline:{ .lg .middle } __Three configuration files__
+-   :material-cog-outline:{ .lg .middle } __Download the files__
 
     ---
 
-    mapSettings for the map itself; 3rdParSettings and RefpM for outside resources.
+    The editor itself, templates, and prefabs.
 
-    [:octicons-arrow-right-24: Configuration files](editor/index.md#map-settings)
+    [:octicons-arrow-right-24: Downloads](download/index.md)
 
 </div>
 
-## This site has two axes
-
-**Version** decides which set of pages you are reading; **language** decides which
-script you read it in. The two do not touch: switching version keeps your language,
-and switching language keeps your version.
-
-| Axis | Which side of the header | What changes |
-| --- | --- | --- |
-| Version | the tag icon on the left | only the version; language stays |
-| Language | the translate icon on the right | only the language; version stays |
-
-The version menu holds two entries right now: **地编版本 0101** (this handbook) and
-**彩蛋** — not an old release but a trial run of the freeze mechanism; that branch
-holds a single page<span class="redact" tabindex="0">, meant to say something to
-particular readers</span>.
-
 [Start with getting ready](prepare/index.md){ .md-button .md-button--primary }
 [Go straight to the inventories](tables/index.md){ .md-button }
-
-*[template]: the name an object is referred to by in `template = …`; that is how you look it up

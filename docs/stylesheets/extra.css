@@ -510,6 +510,18 @@
       所以首帧就要显示对的东西（图框尺寸、两图并排、页顶文案、条目数），
       一律在 HTML/CSS 里定，脚本只做「必须有脚本才有」的事（复制、搜索）。
 
+   ⚠️ 作用域为什么写成 `… .md-typeset table:not(details table, .admonition table) …`，
+      而不是只写 `… .md-typeset table …`：
+      这一页上除了清单表还有别的表——Wall E 页尾那份判定数据速查整个在 `???` 折叠块里。
+      只按页面认的话，参考表的首列也会被当成「预览列」，变成 flex + 一整格图框那么宽
+      （踩过：五张参考表首列全被撑到 344px）。折叠出来的表保持主题原本的样子
+      （能横向滚动的普通表）更合适。
+      ⚠️ 判据不能用 `.md-typeset__scrollwrap` 那一层：那是主题 bundle.js 在
+      document$ 时**运行时**加的，静态 HTML 里一次都没有（实测 0 次）。按它认的话
+      CSS 首帧命中不了（首帧修复直接作废）、脚本更是连表都找不到（踩过：芯片全没了）。
+      `details` / `.admonition` 是构建期就在的，首帧在、之后也在。
+      `:not()` 里那串复杂选择器要现代浏览器——本站本来就用着 `:has()`，基线一致。
+
    ── 要调图片大小，只改下面这一组 ────────────────────────────────
    每张预览图都收在一个固定宽高的「图框」里，图按 `object-fit: contain`
    等比缩进框内——**不裁、不拉伸**，所以同一页里所有预览图占的格子一模一样，
@@ -550,6 +562,15 @@ html[data-ts-page] .md-typeset {
      一样宽，但形状照旧是长条）。填 none 就是原尺寸——那会让表格被撑到 1721px、
      整页横向滚动，见下面那一段。 */
   --ts-natural-max: 100%;
+  /* 图框的底色，抽出来是因为**空格子也要用同一个**（见下面 `::after` 那条）：
+     先垫一层不透明的页面底色（所以框色与它落在哪一行无关），再叠两层淡淡的前景
+     ——比交替行的浅色条深一档、与页面底色也不同。明暗两套配色下都成立。
+     ⚠️ 不能用 `--md-default-fg-color--lightest`：那正是交替行的底色，两者一模一样，
+        亮色行上的框会「没填上色」（踩过）。 */
+  --ts-shot-bg-color: var(--md-default-bg-color);
+  --ts-shot-bg-image:
+    linear-gradient(var(--md-default-fg-color--lightest), var(--md-default-fg-color--lightest)),
+    linear-gradient(var(--md-default-fg-color--lightest), var(--md-default-fg-color--lightest));
 }
 
 html[data-ts-page="mesh"] .md-typeset {
@@ -615,16 +636,16 @@ html[data-ts-page="decal"] .md-typeset {
    ⚠️ 宽度必须写死成「正好几列」+ 单元格内边距：不写死，flex 容器的 min-content
    就是**一张图**（换行容器取最大子项），两张会竖着叠、表格也跟着矮一半。
    表头那一格也要给：载具页是 `table-layout: fixed`，固定布局下列宽只由第一行决定。 */
-html[data-ts-page] .md-typeset th:first-child,
-html[data-ts-page] .md-typeset td:first-child {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) th:first-child,
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child {
   width: calc(var(--ts-shot-w) * var(--ts-prev-cols) + var(--ts-shot-gap) * var(--ts-prev-cols) - var(--ts-shot-gap) + var(--ts-pad));
 }
 
-html[data-ts-page] .md-typeset th:first-child {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) th:first-child {
   white-space: nowrap;
 }
 
-html[data-ts-page] .md-typeset td:first-child {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child {
   display: flex;
   flex-wrap: wrap;
   gap: var(--ts-shot-gap);
@@ -632,14 +653,14 @@ html[data-ts-page] .md-typeset td:first-child {
   justify-content: center;
 }
 
-html[data-ts-page] .md-typeset td:first-child > br {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child > br {
   display: none;
 }
 
 /* 图框。宽度落在 `<a>`（灯箱包的那层）与裸 `<img>` 上都要能生效：
    脚本还没跑时图是裸的，跑过之后被灯箱裹进 <a>。 */
-html[data-ts-page] .md-typeset td:first-child > a,
-html[data-ts-page] .md-typeset td:first-child > img {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child > a,
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child > img {
   display: block;
   width: var(--ts-shot-w);
   height: var(--ts-shot-h);
@@ -650,13 +671,15 @@ html[data-ts-page] .md-typeset td:first-child > img {
   min-width: 0;
   overflow: hidden;
   border-radius: 0.15rem;
-  background-color: var(--md-default-fg-color--lightest);
+  /* 底色抽成了 `--ts-shot-bg-*`（道理写在变量那一段）：空格子里的「略」要用同一套 */
+  background-color: var(--ts-shot-bg-color);
+  background-image: var(--ts-shot-bg-image);
 }
 
 /* ⚠️ max-width / max-height 都要显式写回 none：上面那条
    `.md-typeset table img { max-height: none; margin: 0 }` 是本站自己的兜底，
    主题还有一条更宽的 `max-width: 100%`。图框已经给了尺寸，这里只让图**填满框**。 */
-html[data-ts-page] .md-typeset td:first-child img {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child img {
   width: 100%;
   height: 100%;
   max-width: none;
@@ -673,13 +696,13 @@ html[data-ts-page] .md-typeset td:first-child img {
    标记写在 **content/ 里**：那两张图后面跟一句 `{ .ts-natural }`。
    ⚠️ 不能用「这一格有几张图」代替这个标记——Wall E / Building E / Decal 每行
       都只有一张图，那样它们会一起变成原尺寸。 */
-html[data-ts-page] .md-typeset td:first-child:has(img.ts-natural) {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child:has(img.ts-natural) {
   width: auto;
   justify-content: flex-start;
 }
 
-html[data-ts-page] .md-typeset td:first-child:has(img.ts-natural) > a,
-html[data-ts-page] .md-typeset td:first-child:has(img.ts-natural) > img {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child:has(img.ts-natural) > a,
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child:has(img.ts-natural) > img {
   width: 100%;
   height: auto;
   overflow: visible;
@@ -687,25 +710,34 @@ html[data-ts-page] .md-typeset td:first-child:has(img.ts-natural) > img {
   background: none;
 }
 
-html[data-ts-page] .md-typeset td:first-child:has(img.ts-natural) img {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child:has(img.ts-natural) img {
   width: auto;
   height: auto;
   max-width: var(--ts-natural-max);
   max-height: none;
 }
 
-/* Vehicle Scatter 的预览列整列是空的：给一个安静的占位（居中），别像漏了图。
-   ⚠️ 占位文字同样不能留给脚本补：那一页有一百多行是空的，脚本跑到时第一帧
-      早画完了，读者会先看到一列空白再看见字。
-      文字按语言从 `config.extra` 的 tables_none* 取，由 overrides/main.html
-      写进 `<html>` 的行内自定义属性 `--ts-none`（`content` 里取不到别的元素的
-      属性，attr() 只看伪元素自己那个元素）。 */
-html[data-ts-page] .md-typeset td:first-child:not(:has(img))::after {
+/* 预览列没有图的那些行（Vehicle Scatter 两百行里有一百四十多行是空的）：
+   给一个安静的占位，别像漏了图。
+   ⚠️ 占位那两个字**也要有一个和图框一样大小、一样颜色的框**，不能只写两个字：
+      只写两个字的话，有图的行是一块 123×102 的方框、空格的行只有两个小字，
+      整列看着就是「填了一半」（踩过，就是这么报上来的）。所以这里给伪元素
+      套上同一组 `--ts-shot-*` 与 `--ts-shot-bg-*`，行高拿框高把字顶到正中。
+   ⚠️ 占位文字同样不能留给脚本补：脚本跑到时第一帧早画完了，读者会先看到
+      一列空白再看见字。文字按语言从 `config.extra` 的 tables_none* 取，
+      由 overrides/main.html 写进 `<html>` 的行内自定义属性 `--ts-none`
+      （`content` 里取不到别的元素的属性，attr() 只看伪元素自己那个元素）。 */
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child:not(:has(img))::after {
   content: var(--ts-none, "");
   display: block;
-  width: 100%;
+  width: var(--ts-shot-w);
+  height: var(--ts-shot-h);
+  border-radius: 0.15rem;
+  background-color: var(--ts-shot-bg-color);
+  background-image: var(--ts-shot-bg-image);
   color: var(--md-default-fg-color--light);
   font-size: 0.7rem;
+  line-height: var(--ts-shot-h);
   text-align: center;
 }
 
@@ -715,20 +747,20 @@ html[data-ts-page] .md-typeset td:first-child:not(:has(img))::after {
    `width: 1%`：⚠️ 那样写在这里是**同样的权重、更靠后**，会把算好的宽度压成
    「一格图」那么宽，两张图就上下叠起来了（改版式时踩过一次）。 */
 
-html[data-ts-page] .md-typeset tbody tr:nth-child(even) > td {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) tbody tr:nth-child(even) > td {
   background-color: var(--md-default-fg-color--lightest);
 }
 
-html[data-ts-page] .md-typeset tbody tr > td {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) tbody tr > td {
   transition: background-color 0.15s;
 }
 
-html[data-ts-page] .md-typeset tbody tr:hover > td {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) tbody tr:hover > td {
   background-color: var(--md-accent-fg-color--transparent);
 }
 
 /* 搜索结果跳过去的那一行：闪一下，好找 */
-html[data-ts-page] .md-typeset tbody tr.is-hit > td {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) tbody tr.is-hit > td {
   background-color: var(--md-typeset-mark-color);
 }
 
@@ -741,8 +773,8 @@ html[data-ts-page] .md-typeset tbody tr.is-hit > td {
    代价是表格不能再横向滚动了 —— 于是窄屏必须真的塞得下（见末尾那段媒体查询，
    手机上把预览框收一档、一行只放一张图）。
 */
-html[data-ts-page] .md-typeset .md-typeset__scrollwrap,
-html[data-ts-page] .md-typeset table {
+html[data-ts-page] .md-typeset .md-typeset__scrollwrap:not(details .md-typeset__scrollwrap, .admonition .md-typeset__scrollwrap),
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) {
   overflow: visible;
 }
 
@@ -751,13 +783,13 @@ html[data-ts-page] .md-typeset table {
    `table-layout: fixed` 与 `position: sticky` 在它身上都不生效——
    固定列宽因此被无视，三张表各算各的列宽（踩过：桌面上看着对上了，
    手机上一量才发现是内容凑巧）。我们的表都已经收进内容宽了，还原成表格盒。 */
-html[data-ts-page] .md-typeset table {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) {
   display: table;
 }
 
 /* 表头跟着滚：三百多行的表，滚到一半不知道哪列是哪列。
    贴在**搜索框下面**（两个 --ts-* 都是 JS 量出来的），别跟搜索框叠在一起。 */
-html[data-ts-page] .md-typeset thead th {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table) thead th {
   position: sticky;
   top: calc(var(--ts-sticky-top, 0px) + var(--ts-bar-h, 0px));
   z-index: 2;
@@ -1017,9 +1049,10 @@ html[data-ts-page] .md-typeset .ts-hit--more {
      一百多像素的纯留白；手机上把它收到 0.35rem，省下来的正好还给图框。
      ⚠️ 选择器要写成 `table:not([class])` 那一档：主题那条是
      `.md-typeset table:not([class]) td`（0,2,2），我原先写的
-     `html[data-ts-page] .md-typeset td` 只有 (0,2,1)，**压不住**（踩过，量了半天没变化）。 */
-  html[data-ts-page] .md-typeset table:not([class]) th,
-  html[data-ts-page] .md-typeset table:not([class]) td {
+     `html[data-ts-page] .md-typeset td` 只有 (0,2,1)，**压不住**（踩过，量了半天没变化）。
+     折叠块里的参考表不收这一档：它们是能横向滚的普通表，收窄了反而更难看。 */
+  html[data-ts-page] .md-typeset table:not(details table, .admonition table):not([class]) th,
+  html[data-ts-page] .md-typeset table:not(details table, .admonition table):not([class]) td {
     padding-right: 0.35rem;
     padding-left: 0.35rem;
   }
@@ -1056,4 +1089,170 @@ html[data-ts-page] .md-typeset .ts-hit--more {
     display: none;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   判定数据速查：几块并排、顶端对齐（`.ts-ref`）
+
+   Wall E 页尾那份判定数据是照着一份工作表搬过来的，工作表里四块**并排**摆着、
+   每块一个加粗标题格 + 一行来源小字。这里就照这个关系还原，只是换成网页能承受的
+   排法：块本身是 `!!! quote`（`???` 是折叠的，折起来就没法并排看），几块并排
+   靠这一段把它变成网格。
+
+   为什么用 admonition 当块容器，而不是 `<div>`：它的正文本来就缩进 4 格，于是
+   ①docsgen 的「只数顶格表格行」不会把参考表算进页顶那个条目数；
+   ②清单页那组 CSS 与 table-tools.js 的 `:not(… .admonition …)` 天然把它排除在外。
+   再包一层 `<div>` 的话，这两条判据都得再加一项，而判据越多项越容易漏。
+
+   ⚠️ 宽表格那两块（①字段+例子、③载具 tag 五列）要占满整行——挤在半栏里，
+      七列表格的表头会竖着折成三行。判据用 `:nth-child(1)` / `:nth-child(3)`：
+      块是 content/tables/wall.*.md 里写死的四个，顺序变了这里要跟着改。
+   ══════════════════════════════════════════════════════════════ */
+
+.md-typeset .ts-ref {
+  display: grid;
+  /* ⚠️ 这里**不能**写 `minmax(min(100%, …), 1fr)`：auto-fit 数轨道数时解析不了
+      百分比，整条会退化成 `auto`，结果是一列（实测算出来就是容器的整宽）。
+      也**别按 16px/rem 估**：主题的基准是 125%，`1rem` = 20px，写 19rem 就是
+      380px——两列放不进 688px，auto-fit 只给一列，于是 `grid-column: 1 / -1`
+      只跨到那唯一一列（踩过：①③ 都只有 380 宽，五列 tag 被挤成 111px）。
+      15rem = 300px，两列 618px，在 688px 里放得下。窄屏交给下面那段媒体查询。 */
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.9rem;
+  /* 顶端对齐、各块高矮由内容决定——工作表里就是这个样子（下面是参差的） */
+  align-items: start;
+  margin: 1.1em 0;
+}
+
+/* 块：从「左边一条彩色竖线的提示框」改成「工作表那种方格」 */
+.md-typeset .ts-ref > .admonition {
+  margin: 0;
+  padding: 0 0.8rem 0.4rem;
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.3rem;
+  background-color: var(--md-default-bg-color);
+  box-shadow: none;
+}
+
+/* 标题格 */
+.md-typeset .ts-ref > .admonition > .admonition-title {
+  margin: 0 -0.8rem 0.7rem;
+  padding: 0.45rem 0.8rem;
+  background-color: var(--md-default-fg-color--lightest);
+  color: var(--md-default-fg-color);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+/* 提示框类型自带的那枚图标在这儿是噪音（工作表里没有），去掉 */
+.md-typeset .ts-ref .admonition-title::before {
+  display: none;
+}
+
+/* 来源小字：写在每块标题下面，说明这堆数是从哪个目录读的 */
+.md-typeset .ts-ref .ts-ref__src {
+  margin: 0 0 0.6rem;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.6rem;
+  overflow-wrap: anywhere;
+}
+
+/* ── 四块的摆位 ───────────────────────────────────────────────────────
+   ①（字段 + 五个例子）和 ③（载具 tag 五列）占整行：七列的表格、五列的 tag
+   挤在半边里都会竖着折行。②④ 并排收在最后一行。
+
+   ⚠️ 用显式行号而不是听凭自动排布：③ 要占整行，自动排布会先把 ② 放进第 2 行
+      左半边，再把 ③ 顶到第 3 行、④ 顺到第 4 行左半边——右半边空着两块。
+      ② 比 ④ 矮一大截，这一对并排放最后，空出来的那半截就落在整段的末尾，
+      而不是页面中间。行号对应 content/tables/wall.*.md 里写死的四块。 */
+.md-typeset .ts-ref > .admonition:nth-child(1) { grid-column: 1 / -1; grid-row: 1; }
+.md-typeset .ts-ref > .admonition:nth-child(3) { grid-column: 1 / -1; grid-row: 2; }
+.md-typeset .ts-ref > .admonition:nth-child(2) { grid-column: 1;      grid-row: 3; }
+.md-typeset .ts-ref > .admonition:nth-child(4) { grid-column: 2;      grid-row: 3; }
+
+/* 载具 tag 那五列：**并排**，像工作表里一样一列一个 tag。
+   主题给代码块包的是 `.highlight`，几块是兄弟节点，所以直接拿它当列。
+   一列 32%：三列一排，剩下 4% 当间隙；窄屏在下面那段媒体查询里改成一列。 */
+.md-typeset .ts-ref > .admonition:nth-child(3) .highlight {
+  display: inline-block;
+  width: 32%;
+  margin: 0.2rem 0.5% 0.6rem 0;
+  vertical-align: top;
+}
+
+.md-typeset .ts-ref .highlight pre {
+  margin: 0;
+  font-size: 0.6rem;
+  line-height: 1.45;
+}
+
+/* ⚠️ 这几块里的行是有原样搬过来的长行的（`<static_object key="…" … >` 那条 176 字符），
+   而主题给的是 `white-space: pre` + `overflow-x: visible`：不换行、也不出滚动条，
+   字就这么横着溢出到块外面去（实测 pre 的 clientWidth 与 scrollWidth 相等——
+   正是因为 overflow 是 visible，量不出溢出）。资料页宁可折行也不要横着溢。 */
+.md-typeset .ts-ref .highlight pre,
+.md-typeset .ts-ref .highlight pre > code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* 表格式资料：比正文小一号，行也压紧一点，才扫得动 */
+.md-typeset .ts-ref table:not([class]) {
+  /* ⚠️ 主题给表格的是 `display: inline-block`（让它自己撑开、能横向滚）。这里要的是
+     「铺满这一块、列按内容分」——inline-block 下表格只按内容撑宽，三列会被匀成
+     100px 一格，长的文件名一格折三四行，一张 15 行的表能撑到 1449px 高（实测）。
+     这一段的表都在块里，横向滚动有外面那层兜着，不需要表格自己撑。 */
+  display: table;
+  width: 100%;
+  font-size: 0.66rem;
+}
+
+.md-typeset .ts-ref table:not([class]) th,
+.md-typeset .ts-ref table:not([class]) td {
+  padding: 0.35rem 0.5rem;
+}
+
+/* ⚠️ 主题给 `th` 的是 `min-width: 5rem`——本站 1rem = 20px，也就是**每列至少
+   100px**。三列一起顶到 100px 就把这半栏表格（302px）占满了，一点余量都不剩，
+   `can_cannon_battery.projectile` 这种文件名因此一折三四行，一张 15 行的表撑到
+   1449px 高（实测）。松开这个下限，列才按内容分：文件名最长的那列自然拿到最多。 */
+.md-typeset .ts-ref table:not([class]) th {
+  width: auto;
+  min-width: 0;
+}
+
+@media screen and (max-width: 44.9375em) {
+  /* 手机上并排没有意义：一列一块，顺序回到底稿里的 ①②③④。
+     ⚠️ `:nth-child(n)` 与上面那几个 `:nth-child(1..4)` 权重相同、位置更靠后，
+        所以压得住——①的 `grid-column: 1 / -1` 在单列里本来也对，但 ④ 的
+        `grid-column: 2` 会凭空多出一列，必须一起清掉。 */
+  .md-typeset .ts-ref > .admonition:nth-child(n) {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+
+  .md-typeset .ts-ref > .admonition:nth-child(3) .highlight {
+    display: block;
+    width: 100%;
+    margin-right: 0;
+  }
+
+  /* 主题的标签行是 `display:flex` + `overflow:auto` + 不换行：五个 tag 名在手机上
+     一行放不下，最后那个会被挤出去、只剩横向滚（实测差 117px）。这里让它折成两行，
+     并把那条**跟着滚动走的指示线**关掉——折行之后它的位置算不准，选中项本身的
+     颜色变化已经够分辨了。 */
+  .md-typeset .ts-ref .tabbed-labels {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+
+  .md-typeset .ts-ref .tabbed-labels::before {
+    display: none;
+  }
+
+  .md-typeset .ts-ref .tabbed-labels > label {
+    padding: 0.45rem 0.6rem;
+    font-size: 0.62rem;
+  }
+}
+
 

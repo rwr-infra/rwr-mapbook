@@ -1,8 +1,8 @@
 ---
 title: "Feature guide"
 description: "The editor's features: every toolbar tool in turn, the key bindings, ID search, and the mapSettings / 3rdParSettings / RefpM configuration files."
-source_sha256: e7b1b2dfde359ab3d64eeb8e06450222fc53dfd7b4e3488506702bc7ea6c3976
-translated: 2026-10-03
+source_sha256: af3c0c99d1898afe21b5174ca8ce46bd7882a94ebd5db9c9132a5810a3af14c9
+translated: 2026-10-10
 nav_label: "Feature guide"
 icon: lucide/layout-grid
 # ⚠️ 由 tools/docsgen.py 从 content/editor/index.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
@@ -17,10 +17,10 @@ hide: [navigation]
 The editor's main panel.
 ///
 
-* * *
+
 ## The toolbar tools
 
-* * *
+
 ### Save { #save }
 
 !!! note "Saves the map; when it is done you get a sound."

@@ -9,26 +9,15 @@ hide: [navigation]
 
 # RWR 地圖編輯器手冊
 
-<p class="kicker">RWR · 做地圖之前先看這一頁</p>
+<p class="kicker">我去這一頁暫時不知道寫啥，之後再說吧</p>
 
-做地圖之前的準備工作——主要是把地編的交互體驗調順。
 
-|  |  |
-| --- | --- |
-| 編輯日期 | 20260922 |
-| 地編版本 | 0101 |
-| 當前編輯者 | HamSter |
-
-!!! warning "先說清楚這是什麼"
-    這是**做圖的人寫給做圖的人看的**工作記錄，不是官方說明書。
-    標着「待試」「沒試，不知道這是啥」的地方照原樣留着——那表示**還沒人試過**，
-    不代表能用，也不代表不能用。
 
 ## 從哪裡開始
 
 <div class="grid cards" markdown>
 
--   :material-download:{ .lg .middle } __剛拿到地編__
+-   :material-download:{ .lg .middle } __剛拿到地編需要幹什麼__
 
     ---
 
@@ -40,11 +29,11 @@ hide: [navigation]
 
     ---
 
-    主界面各工具、交互按鍵、按 ID 找物件。
+    主界面各工具、交互按鍵的功能說明。
 
     [:octicons-arrow-right-24: 功能介紹](editor/index.md)
 
--   :material-cube-outline:{ .lg .middle } __有哪些模型能擺__
+-   :material-cube-outline:{ .lg .middle } __查看模型圖鑑__
 
     ---
 
@@ -52,30 +41,15 @@ hide: [navigation]
 
     [:octicons-arrow-right-24: 模型清單](tables/index.md)
 
--   :material-cog-outline:{ .lg .middle } __三個配置文件__
+-   :material-cube-outline:{ .lg .middle } __下載相關文件__
 
     ---
 
-    mapSettings 管地圖本身，3rdParSettings 與 RefpM 管外部資源。
+    下載地編、模板與組件（預製件）文件。
 
-    [:octicons-arrow-right-24: 設置文件](editor/index.md#map-settings)
+    [:octicons-arrow-right-24: 文件下載](download/index.md)
 
 </div>
 
-## 這個站有兩條軸
-
-**版本**決定你看到哪一份內容，**語言**決定用哪種文字讀。兩者互不幹涉：
-換版本不會換語言，換語言也不會回版本。
-
-| 軸 | 在頁眉哪一側 | 切換之後 |
-| --- | --- | --- |
-| 版本 | 左側的標簽圖標 | 只換版本，語言留着 |
-| 語言 | 右側的翻譯圖標 | 只換語言，版本留着 |
-
-版本這一格現在只有兩項：**地編版本 0101**（就是你在看的這份）與**彩蛋**。
-彩蛋不是歷史版，是砍版機制的試用品——那一支裡只有一頁話<span class="redact" tabindex="0">，想說給一些人聽</span>。
-
 [從準備工作開始](prepare/index.md){ .md-button .md-button--primary }
 [直接翻模型清單](tables/index.md){ .md-button }
-
-*[模板]: 物件在 `template = …` 裡引用的名字，地編裡按這個名字找它
