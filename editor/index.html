@@ -1,0 +1,2335 @@
+
+<!doctype html>
+<html lang="zh-Hans" class="no-js">
+  <head>
+    
+
+  
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+    <meta name="description" content="地编界面的功能介绍：顶栏工具逐项说明、交互按键、ID 搜索，以及 mapSettings、3rdParSettings、RefpM 三处配置。">
+  
+  
+    <meta name="author" content="RWR 地图编辑组">
+  
+  
+    <link rel="canonical" href="https://rwrme.rwr-infra.uk/editor/">
+  
+  
+    <link rel="prev" href="../prepare/">
+  
+  
+    <link rel="next" href="../tables/">
+  
+  
+    
+    
+    
+    
+    <link rel="alternate" href="./" hreflang="zh-Hans">
+  
+    
+    
+    
+    
+    <link rel="alternate" href="../zh-hant/editor/" hreflang="zh-Hant">
+  
+    
+    
+    
+    
+    <link rel="alternate" href="../en/editor/" hreflang="en">
+  
+  
+  <link rel="icon" href="../assets/favicon.png">
+  <meta name="generator" content="zensical-0.0.62">
+
+    
+  
+    <title>功能介绍 · RWR 地编手册</title>
+  
+
+    
+      
+        
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.ce62732f.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.812a03bb.min.css">
+      
+      
+
+
+    
+    
+
+    
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/glightbox.min.css">
+    
+      <link rel="stylesheet" href="../stylesheets/fonts.css">
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    <script id="__trailing-slash">
+  (() => {
+    const path = location.pathname;
+    if (path.endsWith("/")) return;
+    const last = path.split("/").pop();
+    if (last && !last.includes(".")) {
+      history.replaceState(null, "", path + "/" + location.search + location.hash);
+    }
+  })();
+</script><script>(function(){var m=/\/tables\/([a-z0-9_-]+)\/?$/.exec(location.pathname);if(m){document.documentElement.setAttribute("data-ts-page",m[1]);}else if(/\/download\/?$/.test(location.pathname)){document.documentElement.setAttribute("data-ts-page","download");}document.documentElement.style.setProperty("--ts-none","\"略\"");})();</script>
+  
+  
+  
+  
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="RWR 地编手册">
+  <meta property="og:title" content="功能介绍">
+  <meta property="og:description" content="地编界面的功能介绍：顶栏工具逐项说明、交互按键、ID 搜索，以及 mapSettings、3rdParSettings、RefpM 三处配置。">
+  <meta property="og:url" content="https://rwrme.rwr-infra.uk/editor/">
+  <meta property="og:locale" content="zh_Hans">
+  
+  <meta property="og:locale:alternate" content="zh_Hant">
+  
+  <meta property="og:locale:alternate" content="en">
+  
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="功能介绍">
+  <meta name="twitter:description" content="地编界面的功能介绍：顶栏工具逐项说明、交互按键、ID 搜索，以及 mapSettings、3rdParSettings、RefpM 三处配置。">
+  <meta name="twitter:image" content="https://rwrme.rwr-infra.uk/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://rwrme.rwr-infra.uk/",
+        "url": "https://rwrme.rwr-infra.uk/",
+        "name": "RWR 地编手册",
+        "alternateName": "RWR 地编手册",
+        "description": "地编界面的功能介绍：顶栏工具逐项说明、交互按键、ID 搜索，以及 mapSettings、3rdParSettings、RefpM 三处配置。",
+        "inLanguage": "zh-Hans"
+      },
+      {
+        "@type": "Organization",
+        "name": "RWR 地图编辑组",
+        "alternateName": "RWR 地编手册",
+        "url": "https://rwrme.rwr-infra.uk/"
+      }
+    ]
+  }
+  </script>
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-label="导航栏"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#overview" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+
+
+
+
+
+
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="./.." title="RWR 地编手册" class="md-header__button md-logo" aria-label="RWR 地编手册" data-md-component="logo">
+      
+
+
+
+
+
+  <img src="../assets/rwricon.png" alt="RWR 地编手册">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="导航栏">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RWR 地编手册
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              功能介绍
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        
+
+
+
+<form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换深浅色"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换深浅色" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun-moon" viewBox="0 0 24 24"><path d="M12 2v2M14.837 16.385a6 6 0 1 1-7.223-7.222c.624-.147.97.66.715 1.248a4 4 0 0 0 5.26 5.259c.589-.255 1.396.09 1.248.715M16 12a4 4 0 0 0-4-4M19 5l-1.256 1.256M20 12h2"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到深色"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到深色" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到浅色"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="切换到浅色" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      
+
+
+
+
+<div class="md-header__option">
+  <div class="md-select">
+    <button class="md-header__button md-icon" aria-label="切换地编版本">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5.5 9A1.5 1.5 0 0 0 7 7.5 1.5 1.5 0 0 0 5.5 6 1.5 1.5 0 0 0 4 7.5 1.5 1.5 0 0 0 5.5 9m11.91 2.58c.36.36.59.86.59 1.42 0 .55-.22 1.05-.59 1.41l-5 5a1.996 1.996 0 0 1-2.83 0l-6.99-6.99C2.22 12.05 2 11.55 2 11V6c0-1.11.89-2 2-2h5c.55 0 1.05.22 1.41.58zm-3.87-5.87 1-1 6.87 6.87c.37.36.59.87.59 1.42s-.22 1.05-.58 1.41l-5.38 5.38-1-1L20.75 13z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          
+          
+          
+          
+          <li class="md-select__item">
+            <a href="./"
+               class="md-select__link" aria-current="true">
+              地编版本 0101<small class="md-select__note">2026-09-06</small>
+            </a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="md-select__item">
+            <a href="../egg/editor/"
+               class="md-select__link">
+              彩蛋<small class="md-select__note">2026-05-14</small>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+
+
+
+<div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="选择当前语言">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-languages" viewBox="0 0 24 24"><path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          
+          
+          
+          <li class="md-select__item">
+            <a href="./" hreflang="zh-Hans"
+               class="md-select__link" aria-current="true">
+              简体中文
+            </a>
+          </li>
+        
+          
+          
+          
+          <li class="md-select__item">
+            <a href="../zh-hant/editor/" hreflang="zh-Hant"
+               class="md-select__link">
+              繁體中文
+            </a>
+          </li>
+        
+          
+          
+          
+          <li class="md-select__item">
+            <a href="../en/editor/" hreflang="en"
+               class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    <div class="md-header__source">
+      
+        <a href="https://github.com/Autumnsnail/rwrme" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5v52c0 15 12.5 23.5 27.5 17.5C441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5v-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rwrme
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+
+
+
+
+
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+      
+        
+        
+        
+          
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="./.." class="md-tabs__link">
+        
+  
+  首页
+
+      </a>
+    </li>
+  
+
+        
+      
+        
+        
+        
+          
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../prepare/" class="md-tabs__link">
+          
+  
+  准备工作
+
+        </a>
+      </li>
+    
+  
+
+        
+      
+        
+        
+        
+          
+  
+  
+  
+    
+  
+  
+    
+      
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="././" class="md-tabs__link">
+          
+  
+  功能介绍
+
+        </a>
+      </li>
+    
+  
+
+        
+      
+        
+        
+        
+          
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tables/" class="md-tabs__link">
+          
+  
+  模型清单
+
+        </a>
+      </li>
+    
+  
+
+        
+      
+        
+        
+        
+          
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../download/" class="md-tabs__link">
+          
+  
+  文件下载
+
+        </a>
+      </li>
+    
+  
+
+        
+      
+        
+        
+        
+          
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../about/" class="md-tabs__link">
+          
+  
+  关于
+
+        </a>
+      </li>
+    
+  
+
+        
+      
+        
+        
+        
+      
+        
+        
+        
+      
+        
+        
+        
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./.." title="RWR 地编手册" class="md-nav__button md-logo" aria-label="RWR 地编手册" data-md-component="logo">
+      
+
+
+
+
+
+  <img src="../assets/rwricon.png" alt="RWR 地编手册">
+
+    </a>
+    RWR 地编手册
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Autumnsnail/rwrme" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5v52c0 15 12.5 23.5 27.5 17.5C441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5v-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rwrme
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./.." class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-house" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  首页
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+      
+    
+      
+      
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../prepare/" class="md-nav__link ">
+              
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-download" viewBox="0 0 24 24"><path d="M12 15V3M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  准备工作
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  准备工作
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+      
+    
+      
+      
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="././" class="md-nav__link md-nav__link--active">
+              
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-layout-grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  功能介绍
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  功能介绍
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+      
+    
+      
+      
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../tables/" class="md-nav__link ">
+              
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-table" viewBox="0 0 24 24"><path d="M12 3v18"/><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M3 15h18"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  模型清单
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  模型清单
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tables/mesh/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  MESH E
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tables/wall/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Wall E & Platform E
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tables/building/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Building E
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tables/vehicle/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Vehicle Scatter
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tables/decal/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Decal
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+      
+    
+      
+      
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../download/" class="md-nav__link ">
+              
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-archive" viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8M10 12h4"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  文件下载
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  文件下载
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+      
+    
+      
+      
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../about/" class="md-nav__link ">
+              
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  关于
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  关于
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+      
+    
+      
+      
+      
+      
+    
+      
+      
+      
+      
+    
+      
+      
+      
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                      
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#主界面工具" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        主界面工具
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="主界面工具">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#save" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Save 说明
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#viewmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        ViewMap 说明
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#select" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Select 说明
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pinman" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        PinMan 说明
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walle" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        WallE 说明
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buildinge" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        BuildingE 说明
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#platforme" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        PlatformE 说明
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcobjects" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        FuncObjects 说明
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meshe" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        MeshE 说明
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heightmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        HeightMap 说明
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terrainbash" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        TerrainBash 说明
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#offroadbuilder" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        offroadbuilder 说明
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decal" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Decal 说明
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assaum" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Assaum 说明
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#id-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        ID 搜索说明
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#map-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        mapSettings 说明
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#third-party" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3rdParSettings 说明
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3rdParSettings 说明">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ogreref" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        一、OgreXMLConverter.exe Path 选择
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mesh-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        二、Mesh files path 选择
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#textures-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        三、textures path 选择
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        RefpM 说明
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        交互按键表
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="导航栏" >
+    <ol class="md-path__list">
+      
+        
+          
+  
+  
+    <li class="md-path__item">
+      <a href="./.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    首页
+  </span>
+
+      </a>
+    </li>
+  
+
+        
+        
+          
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="././" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    功能介绍
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+        
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+  
+
+
+<h1 id="overview">功能介绍<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h1>
+<figure>
+<p><a class="glightbox" data-type="image" href="../assets/editor/016.png"><img alt="" src="../assets/editor/016.png" /></a></p>
+<figcaption>
+<p>地编主界面。</p>
+</figcaption>
+</figure>
+<h2 id="主界面工具">主界面工具<a class="headerlink" href="#主界面工具" title="Permanent link">&para;</a></h2>
+<h3 id="save">Save 说明<a class="headerlink" href="#save" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">用来保存地图，保存完成后会有提示音。</p>
+</div>
+<hr />
+<h3 id="viewmap">ViewMap 说明<a class="headerlink" href="#viewmap" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>生成地图的初版预览图（展开以查看详细介绍）</summary>
+<p>点击后会生成一个名为 map_view_ls.png 的文件，这便是初版预览图，其会自动添加一些地图上的元素，比如据点范围等，后续在地图做完后便可根据此图来进行 <abbr title="这里指在RWR游戏里按Tab后展开的那个地图，文件名为map.png。">地图缩略图</abbr> 的制作。</p>
+<p><span class="redact" tabindex="0">对的，从之前到现在每个地图的最终缩略图都是手搓出来的。</span></p>
+</details>
+<hr />
+<h3 id="select">Select 说明<a class="headerlink" href="#select" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>用来选择地图上的对象（展开以查看详细介绍）</summary>
+<p>使用快捷键 <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-1">1</kbd></span> 以快速切换到 Select 工具。</p>
+<hr />
+<p>相关交互：</p>
+<ul>
+<li>
+<p>左键点击选择单个对象、<span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-left-button">Left Button</kbd></span>（点击）或 <span class="keys"><kbd class="key-left-button">Left Button</kbd></span>（按住拖动）选择多个对象。</p>
+</li>
+<li>
+<p>按 <span class="keys"><kbd class="key-escape">Esc</kbd></span> 键取消选择。</p>
+</li>
+<li>
+<p>按 <span class="keys"><kbd class="key-delete">Del</kbd></span> 键删除选择的目标。</p>
+</li>
+<li>
+<p>按 <span class="keys"><kbd class="key-g">G</kbd></span> 键启用移动模式，此时移动鼠标可将选择的对象拖走。</p>
+</li>
+<li>
+<p>按 <span class="keys"><kbd class="key-r">R</kbd></span> 键启用旋转模式，此时移动鼠标可将选择的对象旋转至某个角度。</p>
+</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>无法同时选择多个平台。</p>
+<p>俯视角模式（正交）下会导致部分平台无法正常显示与选择，此时需要切换到飞行模式（透视）来进行选择。</p>
+<p>不建议在飞行模式（透视）下进行移动与旋转，交互体验不佳。</p>
+</div>
+</details>
+<hr />
+<h3 id="pinman">PinMan 说明<a class="headerlink" href="#pinman" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>用来在点击的位置上放置一个虚拟的参照物。（展开以查看详细介绍）</summary>
+<p>使用快捷键 <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-2">2</kbd></span> 以快速切换到 PinMan 中的 TankPin 工具。</p>
+<div class="admonition warning">
+<p class="admonition-title">有三个选项，但只有坦克可用。</p>
+</div>
+</details>
+<hr />
+<h3 id="walle">WallE 说明<a class="headerlink" href="#walle" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>用来在列表中选择各种墙的种类，并使用 PathBush 绘制节点然后按空格自动以摆放顺序连成线。既可以先选择墙的种类后绘制，也可以先绘制然后再选择墙的种类，选择后点击已经画好的墙即可完成替换。（展开以查看详细介绍）</summary>
+<p>使用快捷键 <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-7">7</kbd></span> 以快速切换到 WallE 中的 PathBush 工具。</p>
+<hr />
+<p>在搜索栏中可搜索对应名称来快速选择对象，每种墙的模型见<a href="../tables/wall/">模型清单 · Wall E</a>。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/017.png"><img alt="" src="../assets/editor/017.png" /></a></p>
+<hr />
+<p>在用 Select 选中后，可以在这个界面编辑坐标（第一项为 X 轴向右增长、第二项为 Y 轴向下增长，数据为鼠标当前位置坐标的二倍）、使用 Add Point 来在绘制方向增加一条相连的线段、使用叉号来删除这段节点。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/018.png"><img alt="" src="../assets/editor/018.png" /></a></p>
+<hr />
+<p>在用 Select 选中多个后，可以在这个界面进行删除指定对象的操作，Buiding、Mesh 等同理。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/019.png"><img alt="" src="../assets/editor/019.png" /></a></p>
+<hr />
+<p>在用 Select 选中后，可以在这个界面查看 id、当前层、墙的种类以及设置自定义高度与是否 Merge。</p>
+<p>Marge 默认勾选，目的是防止 AI 卡墙翻不过去。</p>
+<p>勾选 ReHeight 后，可以自行输入墙的高度。
+<a class="glightbox" data-type="image" href="../assets/editor/020.png"><img alt="" src="../assets/editor/020.png" /></a></p>
+</details>
+<hr />
+<h3 id="buildinge">BuildingE 说明<a class="headerlink" href="#buildinge" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>用来在列表中选择各种建筑物的种类，并使用 DrawBush 按住左键拖动来绘制建筑物。既可以先选择建筑物的种类后绘制，也可以先绘制然后再选择建筑物的种类，选择后点击已经画好的建筑物即可完成替换。（展开以查看详细介绍）</summary>
+<p>使用快捷键 <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-3">3</kbd></span> 以快速切换到 BuildingE 中的 DrawBush 工具。</p>
+<p>使用快捷键 <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-4">4</kbd></span> 以快速切换到 BuildingE 中的 RoofSwitch 工具。</p>
+<p>使用快捷键 <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-5">5</kbd></span> 以快速切换到 BuildingE 中的 BuildingMaterialChanger 工具。</p>
+<p>使用快捷键 <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-6">6</kbd></span> 以快速切换到 BuildingE 中的 HeightUp 工具。</p>
+<hr />
+<p>在搜索栏中可搜索对应名称来快速选择对象，每种建筑的模型见<a href="../tables/building/">模型清单 · Building E</a>。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/021.png"><img alt="" src="../assets/editor/021.png" /></a></p>
+<hr />
+<p>最上方 <ins>HeightDown</ins> 与 <ins>HeightUp</ins> 的作用为改变点击位置的 Building 高度，每次变化 2（6）。<ins>RoofSwitch</ins> 的作用为将屋顶变为尖顶/平顶，尖顶方向固定需要选择建筑物后按 <span class="keys"><kbd class="key-r">R</kbd></span> 自行旋转。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/022.png"><img alt="" src="../assets/editor/022.png" /></a></p>
+<div class="admonition quote">
+<p class="admonition-title">建议先调整完 Height 后再在上方叠加新的对象，上方的对象高度不会随下方 Building 高度的变化而变化。</p>
+</div>
+<hr />
+<p>在用 Select 选中后，可以在这个界面查看 id、当前层、屋顶是否为尖顶、建筑物的种类。</p>
+<p>Offset 的作用是设置自定义偏移度（第一项为 X 轴向右增长、第二项为 Z 轴向顶部增长、第三项为 Y 轴向下增长）。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/023.png"><img alt="" src="../assets/editor/023.png" /></a></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>目前 X 轴无法修改。
+如果你想在一个 Building 上面放 Wall、Building、Platform 之类的东西，那么应该在构思完之后从下往上绘制，绘制的时候需要保证起点在上一个元素之内，这样所有的对象就都会按照 layer1、layer2… 去逐个叠加，并自动衔接上一个的高度，攀爬等判定也会正常生效。</p>
+</div>
+</details>
+<hr />
+<h3 id="platforme">PlatformE 说明<a class="headerlink" href="#platforme" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>用来在列表中选择各种平台的种类，并使用 <ins>pathBush</ins> 绘制，与 Wall 类似，不再赘述。（展开以查看详细介绍）</summary>
+<p>使用快捷键 <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-8">8</kbd></span> 以快速切换到 PlatformE 中的 PathBush 工具。</p>
+<p>使用快捷键 <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-9">9</kbd></span> 以快速切换到 PlatformE 中的 TypeChange 工具。</p>
+<p>使用快捷键 <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-0">0</kbd></span> 以快速切换到 PlatformE 中的 PlatformBasewallChanger 工具。</p>
+<hr />
+<p>搜索栏与 Wall 类似，不再赘述。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/026.png"><img alt="" src="../assets/editor/026.png" /></a></p>
+<hr />
+<p>最下方的 <ins>TypeChange</ins> 的作用为让点击位置的 Platform 在"无特殊属性"、"deck 属性"、"bridge" 属性之间切换。</p>
+<p>ChangeHeight 的操作为在设置完高度后按回车进入工具使用状态，作用为改变点击位置的 Platform 高度。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/027.png"><img alt="" src="../assets/editor/027.png" /></a></p>
+<div class="admonition warning">
+<p class="admonition-title">属性介绍这一块还没写完</p>
+</div>
+<hr />
+<p>在用 Select 选中后，可以在这个界面编辑坐标，方法与 Wall 类似，不再赘述。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/028.png"><img alt="" src="../assets/editor/028.png" /></a></p>
+<hr />
+<p>在用 Select 选中后，可以在这个界面查看 type、id、当前层、顶部材质、平台侧面墙的种类、平台上方附加墙的种类、墙的高度。
+平台上方附加墙的种类可以使用 WallE 工具进行更改。
+SetMaterial 中添加的值可以是 wood、grass、pavement、terrian。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/029.png"><img alt="" src="../assets/editor/029.png" /></a></p>
+<div class="admonition warning">
+<p class="admonition-title">材质预览这一块还没写完</p>
+</div>
+<hr />
+<details class="quote">
+<summary>如何画平台？</summary>
+<p>以过渡的山崖平台为例：</p>
+<p>我们这次的目的是要从左侧的高处用缓坡到达谷底的水中，可以看到在<strong>箭头方向</strong>的左侧是一个不那么平  缓的坡，右侧则为陡崖，那我们就应该以左侧的坡的高度为基准制作一个过度的山崖。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/041.png"><img alt="" src="../assets/editor/041.png" /></a></p>
+<p>因为<strong>绘制平台时需保证终点边在起点边行进方向右边</strong>，同时起点边为判定高度的边，所以我们应该先在  箭头的左侧缓坡处，沿着图一的箭头方向绘制。
+<a class="glightbox" data-type="image" href="../assets/editor/042.png"><img alt="" src="../assets/editor/042.png" /></a></p>
+<p>（画了八个点，如果想让变化更均匀可以多点几个）之后按空格，在箭头右侧放置另外对应的八个点，再按  一次空格完成绘制。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/043.png"><img alt="" src="../assets/editor/043.png" /></a></p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/044.png"><img alt="" src="../assets/editor/044.png" /></a></p>
+<p>之后对平台进行细致调整，使其合理。</p>
+<p>（蓝色点为基准点，也就是第一次画线生成的点，蓝点到粉点之间的连线就是地形的过渡）</p>
+<p>（如果你的平台是紫黑相间的错误渲染颜色，那么恭喜你你放反了，请再次注意绘制平台时需保证终点边在  起点边行进方向右边）</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/045.png"><img alt="" src="../assets/editor/045.png" /></a></p>
+<p>进游戏看看~</p>
+<p><span class="redact" tabindex="0">果不其然做的一坨，可见多加几个锚点和完善地形的重要性，希望各位引以为戒:(</span>
+<a class="glightbox" data-type="image" href="../assets/editor/046.png"><img alt="" src="../assets/editor/046.png" /></a></p>
+</details>
+</details>
+<hr />
+<h3 id="funcobjects">FuncObjects 说明<a class="headerlink" href="#funcobjects" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>用来摆放一些有特殊交互的物件。（展开以查看详细介绍）</summary>
+<p><ins>LadderScatter</ins> 与 <ins>LadderEraser</ins> 的作用为放置梯子与删除梯子。放置的梯子会向前自动判定并吸附在旁边建筑物、平台等等有固定碰撞的东西上。</p>
+<div class="admonition warning">
+<p class="admonition-title">如果梯子方向放反了会导致吸附失败无法正常攀爬，并且0101版本的梯子没有正前方指示，调整时尽量别记混梯子朝向。</p>
+</div>
+<hr />
+<p><ins>ItemSupplyScatter</ins> 的作用为放置一个储藏室或军械库的判定区，stash 为储藏室，weapon_rack 为军械库，Select 选中后点击下方 ChangeType 进行切换。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/030.png"><img alt="" src="../assets/editor/030.png" /></a></p>
+<hr />
+<p><ins>CrateScatter</ins> 与 <ins>CrateEraser</ins> 的作用为放置木头箱子与删除木头箱子，里面的物品随机，无法指定。</p>
+<p><ins>SpawnScatter</ins> 与 <ins>SpawnEraser</ins> 的作用为创建复活点与删除复活点，复活点不宜太靠近地图边界。</p>
+<p><ins>BaseScatter</ins> 的作用为左键拖动创建据点，在用 Select 选中后，可以分别更改据点的名字显示（ Name ）与指定该据点最开始被哪个阵营占领（ Faction ）。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/031.png"><img alt="" src="../assets/editor/031.png" /></a></p>
+<details class="quote">
+<summary>关于 Faction 的一些说明</summary>
+<p>不使用Faction那这个据点将会进行随机分配，填写整数数字则会按整数的类别进行分配，玩家阵营默认为0号阵营。
+如果你设置了地图里只有两个阵营作战，那么当 Faction 的值填写为2时，这个据点将会变成没有被任何阵营占领的空白据点。
+map13_2 那种为特殊效果，不做介绍。</p>
+</details>
+</details>
+<hr />
+<h3 id="meshe">MeshE 说明<a class="headerlink" href="#meshe" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>用来在列表中选择各种模型的种类。（展开以查看详细介绍）</summary>
+<p>搜索栏与 Wall 类似，不再赘述。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/032.png"><img alt="" src="../assets/editor/032.png" /></a></p>
+<hr />
+<p><ins>StoneEraser</ins> 与 <ins>StoneScatter</ins> 的作用为删除一个随机石头或放置一个随机石头，石头的样子见<a href="../tables/mesh/">模型清单 · MESH E</a>。</p>
+<p><ins>TreeEraser</ins> 与 <ins>TreeScatter</ins> 的作用为删除一个随机树或放置一个随机树，树的样子见<a href="../tables/mesh/">模型清单 · MESH E</a>。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/033.png"><img alt="" src="../assets/editor/033.png" /></a></p>
+<hr />
+<p>最下方的工具使用方法与 Wall 类似，作用为放置电线杆作为节点，放完后按空格进行按顺序的两两间电线连线，电线仅为装饰物，无碰撞。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/034.png"><img alt="" src="../assets/editor/034.png" /></a></p>
+<hr />
+<p>在用 Select 选中后，可以在这个界面查看 id、种类、碰撞体积（如果是默认则不显示）。
+勾选 ReCollision 后可在上方窗口内更改长、高、宽（以中心为基准）。
+offset 的作用是设置自定义偏移度（第一项为 X 轴向右增长、第二项为 Z 轴向顶部增长、第三项为 Y 轴向下增长）。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/035.png"><img alt="" src="../assets/editor/035.png" /></a></p>
+</details>
+<hr />
+<h3 id="heightmap">HeightMap 说明<a class="headerlink" href="#heightmap" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>用来铺设地面的弧度变化。（展开以查看详细介绍）</summary>
+<p><ins>HeightBush</ins> 的作用为地形刷，左下角界面中的 SetHardness 为硬度，决定着当前刷取地形的高度与背景高度的过渡陡缓，范围为 0 到 1、SerRange 为地形刷的范围、SetHeight 为地形刷的高度，范围为 0 到 1。按 X 横向锁定笔刷，按 Y 纵向锁定。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/036.png"><img alt="" src="../assets/editor/036.png" /></a></p>
+<hr />
+<p><ins>HeightSmudge</ins> 的作用为拖拽鼠标下一定范围内的高度，并跟随鼠标移动方向使临近的地形产生过渡形变。</p>
+<hr />
+<p><ins>Smooth</ins> 的作用为平缓全图的地形。</p>
+<hr />
+<p><ins>Noise</ins> 的作用为对全图增加地形上的噪音，让整个地图不是同一个高度数值的大平地，有些微小起伏。</p>
+<hr />
+<p>heightPath 的作用为路径地形刷，使用方式类似 Wall 工具，相关数据调整左上角均有说明，可自行尝试。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/037.png"><img alt="" src="../assets/editor/037.png" /></a></p>
+</details>
+<hr />
+<h3 id="terrainbash">TerrainBash 说明<a class="headerlink" href="#terrainbash" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>用来铺设地面的质地变化。（展开以查看详细介绍）</summary>
+<p><ins>Pathpainter</ins> 的作用为路径地面质地刷，使用方式类似 Wall 工具，相关数据调整左上角均有说明，可自行尝试。
+衰减指数用 [ 以及 ] 调整，并不是描述重复打成了 [[/]]。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/038.png"><img alt="" src="../assets/editor/038.png" /></a></p>
+<hr />
+<p><ins>painter</ins> 的作用为地面质地刷，Chg Index 为材质种类，填数字、Chg Rng 为范围、Chg Har 为硬度。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/039.png"><img alt="" src="../assets/editor/039.png" /></a></p>
+<div class="admonition warning">
+<p class="admonition-title">0101 版本中使用这个工具的时候左下角可能会有个多余的调节栏，实际没有任何作用。</p>
+</div>
+<hr />
+<p>Smooth 的作用为平缓全图的地面质地。</p>
+</details>
+<hr />
+<h3 id="offroadbuilder">offroadbuilder 说明<a class="headerlink" href="#offroadbuilder" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">用来告诉 AI 这条路是开车路线，AI会在开载具时优先往这条路进行寻路，铺设方法类似 Wall 工具。</p>
+</div>
+<hr />
+<h3 id="decal">Decal 说明<a class="headerlink" href="#decal" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>用来在列表中选择各种贴花的种类，可以理解为在地面质地上再印一层材质，选择后左键即可放置。（展开以查看详细介绍）</summary>
+<p><ins>deleteDecals</ins> 的作用为删除框选范围内的贴花。</p>
+<hr />
+<p>Select 选中后，可以使用 Length 更改这个贴花的大小，也就是缩放比例。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/040.png"><img alt="" src="../assets/editor/040.png" /></a></p>
+</details>
+<hr />
+<h3 id="assaum">Assaum 说明<a class="headerlink" href="#assaum" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>用来在列表中选择各种组件，例如已经制作好碰撞箱和判定区的军械库等，选择后左键即可放置。（展开以查看详细介绍）</summary>
+<p>搜索栏与 Wall 类似，不再赘述。</p>
+<hr />
+<p>如果你想给列表添加你自己的组件，在选择要组装的对象之后，通过 Name 进行命名，之后点 Add 即可将你所选的对象组加入组件列表。</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>组件不跟随模板变动，是独立路径。
+在Add时需要保证对象是多选状态，如果只选了一个不会进行保存。</p>
+</div>
+</details>
+<hr />
+<h3 id="id-search">ID 搜索说明<a class="headerlink" href="#id-search" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>相关步骤</summary>
+<p>1.在这看id。</p>
+<figure>
+<p><a class="glightbox" data-type="image" href="../assets/editor/050.png"><img alt="" src="../assets/editor/050.png" /></a></p>
+<figcaption>
+<p>使用 Select 选中对象查看，或直接拆svg找。</p>
+</figcaption>
+</figure>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>地编每次保存后都会重新排一遍 ID，编号可能和上一次不一样。</p>
+<p>所以<strong>记下来的是当时的 ID</strong>；隔一次保存再搜，未必还是它。</p>
+</div>
+<p>2.把 ID 填进搜索框之后点右边的搜索按钮。</p>
+<figure>
+<p><a class="glightbox" data-type="image" href="../assets/editor/051.png"><img alt="" src="../assets/editor/051.png" /></a></p>
+<figcaption>
+<p>可以看到下面出现小绿字，搜索成功。</p>
+</figcaption>
+</figure>
+</details>
+<details class="quote">
+<summary>一个找id的运用</summary>
+<p>哎呦我去！RWR刚加载完一半我的地图就崩溃了？！
+在C:\Users\用户\AppData\Roaming\Running with rifles路径下翻翻rwr_game.log，可以看到这次是RWR因为没法定位到crate_adjusted.mesh，自爆了。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/052.png"><img alt="" src="../assets/editor/052.png" /></a></p>
+<p>在svg地图中搜一下这个mesh，发现有两个相关的static_object。</p>
+<figure>
+<p><a class="glightbox" data-type="image" href="../assets/editor/053.png"><img alt="" src="../assets/editor/053.png" /></a></p>
+<figcaption>
+<p>这里只展示了一个</p>
+</figcaption>
+</figure>
+<p>再去搜索这俩static_object，哇爆率真的高一下就看到相关id了。</p>
+<figure>
+<p><a class="glightbox" data-type="image" href="../assets/editor/054.png"><img alt="" src="../assets/editor/054.png" /></a></p>
+<figcaption>
+<p>后续就是用id搜索功能给这俩对象从地图上删了就完事了</p>
+</figcaption>
+</figure>
+</details>
+<div class="admonition tip">
+<p class="admonition-title">ID 会变</p>
+<p>地编每次保存后都会重新排一遍 ID，编号可能和上一次不一样。
+所以<strong>记下来的是当时的 ID</strong>；隔一次保存再搜，未必还是它。</p>
+</div>
+<hr />
+<h3 id="map-settings">mapSettings 说明<a class="headerlink" href="#map-settings" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">暂无已校验内容。</p>
+</div>
+<details class="example">
+<summary><strong>待校验内容。</strong>（展开以查看）</summary>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>示例</th>
+<th>备注</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ambience_alert_day_sound</code></td>
+<td><code>ambient_alert_daytime.wav</code><br><code>ambient_lightrain_alert.wav</code></td>
+<td></td>
+<td>没试，不知道这是啥</td>
+</tr>
+<tr>
+<td><code>ambience_day_sound</code></td>
+<td><code>ambient_daytime.wav</code><br><code>ambient_lightrain.wav</code></td>
+<td></td>
+<td>白天的背景音效</td>
+</tr>
+<tr>
+<td><code>ambience_night_sound</code></td>
+<td><code>ambient_lightrain_night.wav</code></td>
+<td></td>
+<td>晚上的背景音效</td>
+</tr>
+<tr>
+<td><code>day_color</code></td>
+<td><code>#e5c685ff</code><br><code>fill</code></td>
+<td>任意 16 进制颜色</td>
+<td>白天的颜色</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>16 bases</code><br><code>2 faction king of the hill map</code><br><code>assault map - 11 bases</code><br><code>conquest map - 10 bases</code><br><code>pure pvp map</code></td>
+<td>可任意填写，但最  好按格式来</td>
+<td>地图描述</td>
+</tr>
+<tr>
+<td><code>flip</code></td>
+<td><code>-1</code></td>
+<td></td>
+<td>不知道这是啥，没试</td>
+</tr>
+<tr>
+<td><code>global_effect</code></td>
+<td><code>ambience_alert_day_sound</code><br><code>ambient_alert_daytime.wav</code><br><code>ambient_lightrain_alert.wav</code></td>
+<td></td>
+<td>全局效果</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>Route 666</code></td>
+<td>可任意填写</td>
+<td>地图名</td>
+</tr>
+<tr>
+<td><code>night_color</code></td>
+<td><code>#136395</code><br><code>#5f5fc0ff</code><br><code>stroke</code></td>
+<td>任意 16 进制颜色</td>
+<td>晚上的颜色</td>
+</tr>
+<tr>
+<td><code>randomize_faction_index</code></td>
+<td><code>0</code><br><code>1</code></td>
+<td></td>
+<td>没试，不知道这是啥</td>
+</tr>
+<tr>
+<td><code>show_base_names_in_map_view</code></td>
+<td><code>0</code></td>
+<td></td>
+<td>不知道这是啥，没试</td>
+</tr>
+<tr>
+<td><code>starting_day_phase</code></td>
+<td><code>0.1</code><br><code>6</code></td>
+<td></td>
+<td>战役开始的时间</td>
+</tr>
+<tr>
+<td><code>visible_in_menu</code></td>
+<td><code>0</code><br><code>1</code></td>
+<td></td>
+<td>是否在列表可见</td>
+</tr>
+</tbody>
+</table>
+</details>
+<div class="admonition warning">
+<p class="admonition-title">map settings不写会导致无法运行地图，实在不知道写啥随便粘贴一个地图的改吧改吧就得了。</p>
+</div>
+<hr />
+<h3 id="third-party">3rdParSettings 说明<a class="headerlink" href="#third-party" title="Permanent link">&para;</a></h3>
+<p>用来加载细致模型以及部分材质，可不用。</p>
+<h4 id="ogreref">一、OgreXMLConverter.exe Path 选择<a class="headerlink" href="#ogreref" title="Permanent link">&para;</a></h4>
+<details class="info">
+<summary>这一步已经在0101版本中内置了，可跳过，展开以查看没啥用的步骤。</summary>
+<ol>
+<li>点击 Select，确认 <code>OgreSDK_vc10_v1-7-4.zip</code> 解压到了哪里，找到它的根目录。</li>
+<li>顺着 <code>OgreSDK_vc10_v1-7-4\bin\release</code> 找到 <code>OgreXMLConverter.exe</code>，选中它。</li>
+<li>基础设置完成，继续第二、三步。</li>
+</ol>
+<div class="admonition example">
+<p class="admonition-title">示例路径，仅供参考</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>D:\RWRMap\OgreSDK_vc10_v1-7-4\bin\release
+</span></code></pre></div>
+</div>
+</details>
+<h4 id="mesh-path">二、Mesh files path 选择<a class="headerlink" href="#mesh-path" title="Permanent link">&para;</a></h4>
+<ol>
+<li>
+<p>找到 Steam 上小兵步枪的根目录。可以在 Steam 界面里「管理 → 浏览本地文件」去定位。</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/047.png"><img alt="" src="../assets/editor/047.png" /></a></p>
+</li>
+<li>
+<p>顺着 <code>RunningWithRifles\media\packages\vanilla</code> 找到 <code>models</code> 文件夹，选中它。</p>
+</li>
+<li>点击 <strong>load mesh</strong>。</li>
+</ol>
+<div class="admonition example">
+<p class="admonition-title">示例路径，仅供参考</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>D:\steam\steamapps\common\RunningWithRifles\media\packages\vanilla
+</span></code></pre></div>
+</div>
+<p>设置完成后效果如下（以 Mesh 为例）：</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/048.png"><img alt="" src="../assets/editor/048.png" /></a></p>
+<h4 id="textures-path">三、textures path 选择<a class="headerlink" href="#textures-path" title="Permanent link">&para;</a></h4>
+<ol>
+<li>与第二步的第 1 步相同。</li>
+<li>顺着 <code>RunningWithRifles\media\packages\vanilla</code> 找到 <code>textures</code> 文件夹，选中它。</li>
+<li>点击 <strong>load textures</strong>。</li>
+</ol>
+<div class="admonition example">
+<p class="admonition-title">示例路径，仅供参考</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>D:\steam\steamapps\common\RunningWithRifles\media\packages\vanilla
+</span></code></pre></div>
+</div>
+<p>设置完成后效果如下（以 Decal 为例）：</p>
+<p><a class="glightbox" data-type="image" href="../assets/editor/049.png"><img alt="" src="../assets/editor/049.png" /></a></p>
+<hr />
+<h3 id="reference-images">RefpM 说明<a class="headerlink" href="#reference-images" title="Permanent link">&para;</a></h3>
+<p>使用 <ins>Import</ins> 导入参考图， <ins>Clear</ins> 移除。
+<ins>ScaleX</ins> 与 <ins>ScaleY</ins> 的作用为横向与纵向压缩或拉长参考图，值填倍率，例如ScaleX填0.5就是横向把参考图压刀一半。
+<ins>OffsetX</ins> 与 <ins>OffsetX<span class="redact" tabindex="0">其实是Y</span></ins> 的作用为横向与纵向偏移参考图，值填距离，第一项为X轴向右增长、第二项为Y轴向上增长。
+<ins>Alpha</ins> 作用为更改参考图透明度，向左淡化向右躯体化。</p>
+<hr />
+<h3 id="keys">交互按键表<a class="headerlink" href="#keys" title="Permanent link">&para;</a></h3>
+<div class="admonition question">
+<p class="admonition-title">这张表真收录全了吗</p>
+<table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="keys"><kbd class="key-f5">F5</kbd></span></td>
+<td>刷新地编界面，以及清理非法元素</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-tab">Tab</kbd></span></td>
+<td>切换俯视角与自由视角</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-w">W</kbd></span> <span class="keys"><kbd class="key-a">A</kbd></span> <span class="keys"><kbd class="key-s">S</kbd></span> <span class="keys"><kbd class="key-d">D</kbd></span></td>
+<td>控制方向</td>
+</tr>
+<tr>
+<td>鼠标滚轮</td>
+<td>俯视角下调整缩放；自由视角下调整摄影机移动速度</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-q">Q</kbd></span> <span class="keys"><kbd class="key-e">E</kbd></span></td>
+<td>自由视角下调整摄像头高度</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-escape">Esc</kbd></span></td>
+<td>取消选择；摄像头锁定鼠标 / 鼠标脱锁</td>
+</tr>
+<tr>
+<td>++shift+数字键++</td>
+<td>快速切换到对应工具</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-x">X</kbd></span></td>
+<td>笔刷横向锁定</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-y">Y</kbd></span></td>
+<td>笔刷纵向锁定</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-r">R</kbd></span></td>
+<td>旋转选择的对象</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-g">G</kbd></span></td>
+<td>移动选择的对象</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-c">C</kbd></span></td>
+<td>复制对象</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-v">V</kbd></span></td>
+<td>粘贴对象</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-z">Z</kbd></span></td>
+<td>撤回</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+  
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        
+
+
+
+
+
+
+
+
+
+<footer class="md-footer">
+  
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../prepare/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 准备工作">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                准备工作
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../tables/" class="md-footer__link md-footer__link--next" aria-label="下一页: 模型清单">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                模型清单
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  <div class="brand-footer">
+    <div class="brand-footer__brand">
+      <a class="brand-footer__title" href="./..">
+        
+        <img class="brand-footer__logo" src="../assets/rwricon.png" alt="RWR 地编手册">
+        
+        RWR 地编手册<span>↗</span>
+      </a>
+      
+      <p>有人试过，才写下来。</p>
+    </div>
+    <div class="brand-footer__meta">
+      
+      由 Zensical 构建<br>字体与脚本全部自托管</div>
+    <div class="brand-footer__bottom">
+      <span>RWR 地图编辑器手册</span><a href="https://github.com/rwr-infra/rwr-mapbook">文档仓库 rwr-infra/rwr-mapbook ↗</a>
+      <a href="#__consent">隐私设置</a>
+      <a href="#top">回到顶部 ↑</a>
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+<h4>数据隐私</h4>
+<p>本站不收集任何访问数据：无统计、无广告，亦不设置 cookie 或发起任何第三方请求。字体、样式与脚本均由本站自行托管，访问任何页面只连接本站一个域名。浏览器本机仅保存一项深浅色显示偏好，清除浏览器数据后即被移除。</p>
+
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">我已知悉</button>
+    
+    
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["announce.dismiss","content.code.annotate","content.code.copy","content.code.select","content.footnote.tooltips","content.tabs.link","content.tooltips","navigation.expand","navigation.footer","navigation.indexes","navigation.path","navigation.sections","navigation.tabs","navigation.top","navigation.tracking","toc.follow"],"redirect":null,"search":"../assets/javascripts/workers/search.7d14d953.min.js","tags":null,"translations":{"clipboard.copied":"已复制","clipboard.copy":"复制","search.result.more.one":"在该页上还有 1 个符合条件的结果","search.result.more.other":"在该页上还有 # 个符合条件的结果","search.result.none":"没有找到符合条件的结果","search.result.one":"找到 1 个符合条件的结果","search.result.other":"# 个符合条件的结果","search.result.placeholder":"键入以开始搜索","search.result.term.missing":"缺少","select.version":"选择当前版本"},"version":[{"current":true,"date":"2026-09-06","id":"0101","label":"地编版本 0101"},{"date":"2026-05-14","id":"egg","label":"彩蛋"}]}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.8dcc8e9c.min.js"></script>
+      
+        <script src="../javascripts/glightbox.min.js"></script>
+      
+        <script src="../javascripts/table-tools.js"></script>
+      
+        <script src="../javascripts/redact.js"></script>
+      
+        <script src="../javascripts/download.js"></script>
+      
+        <script src="../javascripts/lightbox-zoom.js"></script>
+      
+    
+  </body>
+</html>

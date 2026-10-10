@@ -1,0 +1,2351 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+
+  
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+    <meta name="description" content="The editor's features: every toolbar tool in turn, the key bindings, ID search, and the mapSettings / 3rdParSettings / RefpM configuration files.">
+  
+  
+    <meta name="author" content="RWR Map Editing Group">
+  
+  
+    <link rel="canonical" href="https://rwrme.rwr-infra.uk/en/editor/">
+  
+  
+    <link rel="prev" href="../prepare/">
+  
+  
+    <link rel="next" href="../tables/">
+  
+  
+    
+    
+    
+    
+    <link rel="alternate" href="../../editor/" hreflang="zh-Hans">
+  
+    
+    
+    
+    
+    <link rel="alternate" href="../../zh-hant/editor/" hreflang="zh-Hant">
+  
+    
+    
+    
+    
+    <link rel="alternate" href="./" hreflang="en">
+  
+  
+  <link rel="icon" href="../../assets/favicon.png">
+  <meta name="generator" content="zensical-0.0.62">
+
+    
+  
+    <title>Feature guide · RWR Map Editor's Handbook</title>
+  
+
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../assets/stylesheets/modern/main.ce62732f.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/modern/palette.812a03bb.min.css">
+      
+      
+
+
+    
+    
+
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/glightbox.min.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/fonts.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    <script id="__trailing-slash">
+  (() => {
+    const path = location.pathname;
+    if (path.endsWith("/")) return;
+    const last = path.split("/").pop();
+    if (last && !last.includes(".")) {
+      history.replaceState(null, "", path + "/" + location.search + location.hash);
+    }
+  })();
+</script><script>(function(){var m=/\/tables\/([a-z0-9_-]+)\/?$/.exec(location.pathname);if(m){document.documentElement.setAttribute("data-ts-page",m[1]);}else if(/\/download\/?$/.test(location.pathname)){document.documentElement.setAttribute("data-ts-page","download");}document.documentElement.style.setProperty("--ts-none","\"n/a\"");})();</script>
+  
+  
+  
+  
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="RWR Map Editor's Handbook">
+  <meta property="og:title" content="Feature guide">
+  <meta property="og:description" content="The editor's features: every toolbar tool in turn, the key bindings, ID search, and the mapSettings / 3rdParSettings / RefpM configuration files.">
+  <meta property="og:url" content="https://rwrme.rwr-infra.uk/en/editor/">
+  <meta property="og:locale" content="en">
+  <meta property="og:locale:alternate" content="zh_Hans">
+  
+  <meta property="og:locale:alternate" content="zh_Hant">
+  
+  
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Feature guide">
+  <meta name="twitter:description" content="The editor's features: every toolbar tool in turn, the key bindings, ID search, and the mapSettings / 3rdParSettings / RefpM configuration files.">
+  <meta name="twitter:image" content="https://rwrme.rwr-infra.uk/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://rwrme.rwr-infra.uk/",
+        "url": "https://rwrme.rwr-infra.uk/",
+        "name": "RWR Map Editor\u0027s Handbook",
+        "alternateName": "RWR 地编手册",
+        "description": "The editor\u0027s features: every toolbar tool in turn, the key bindings, ID search, and the mapSettings / 3rdParSettings / RefpM configuration files.",
+        "inLanguage": "en"
+      },
+      {
+        "@type": "Organization",
+        "name": "RWR Map Editing Group",
+        "alternateName": "RWR 地编手册",
+        "url": "https://rwrme.rwr-infra.uk/"
+      }
+    ]
+  }
+  </script>
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-label="Navigation"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#overview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+
+
+
+
+
+
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../" title="RWR Map Editor&#x27;s Handbook" class="md-header__button md-logo" aria-label="RWR Map Editor&#x27;s Handbook" data-md-component="logo">
+      
+
+
+
+
+
+  <img src="../../assets/rwricon.png" alt="RWR Map Editor's Handbook">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RWR Map Editor's Handbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Feature guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        
+
+
+
+<form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    
+    
+    
+      
+        
+      
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Toggle light/dark"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Toggle light/dark" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun-moon" viewBox="0 0 24 24"><path d="M12 2v2M14.837 16.385a6 6 0 1 1-7.223-7.222c.624-.147.97.66.715 1.248a4 4 0 0 0 5.26 5.259c.589-.255 1.396.09 1.248.715M16 12a4 4 0 0 0-4-4M19 5l-1.256 1.256M20 12h2"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    
+    
+    
+      
+        
+      
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    
+    
+    
+      
+        
+      
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      
+
+
+
+
+<div class="md-header__option">
+  <div class="md-select">
+    <button class="md-header__button md-icon" aria-label="切换地编版本">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5.5 9A1.5 1.5 0 0 0 7 7.5 1.5 1.5 0 0 0 5.5 6 1.5 1.5 0 0 0 4 7.5 1.5 1.5 0 0 0 5.5 9m11.91 2.58c.36.36.59.86.59 1.42 0 .55-.22 1.05-.59 1.41l-5 5a1.996 1.996 0 0 1-2.83 0l-6.99-6.99C2.22 12.05 2 11.55 2 11V6c0-1.11.89-2 2-2h5c.55 0 1.05.22 1.41.58zm-3.87-5.87 1-1 6.87 6.87c.37.36.59.87.59 1.42s-.22 1.05-.58 1.41l-5.38 5.38-1-1L20.75 13z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          
+          
+          
+          
+          <li class="md-select__item">
+            <a href="./"
+               class="md-select__link" aria-current="true">
+              地编版本 0101<small class="md-select__note">2026-09-06</small>
+            </a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="md-select__item">
+            <a href="../../egg/en/editor/"
+               class="md-select__link">
+              彩蛋<small class="md-select__note">2026-05-14</small>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+
+
+
+<div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-languages" viewBox="0 0 24 24"><path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          
+          
+          
+          <li class="md-select__item">
+            <a href="../../editor/" hreflang="zh-Hans"
+               class="md-select__link">
+              简体中文
+            </a>
+          </li>
+        
+          
+          
+          
+          <li class="md-select__item">
+            <a href="../../zh-hant/editor/" hreflang="zh-Hant"
+               class="md-select__link">
+              繁體中文
+            </a>
+          </li>
+        
+          
+          
+          
+          <li class="md-select__item">
+            <a href="./" hreflang="en"
+               class="md-select__link" aria-current="true">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    <div class="md-header__source">
+      
+        <a href="https://github.com/Autumnsnail/rwrme" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5v52c0 15 12.5 23.5 27.5 17.5C441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5v-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rwrme
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+
+
+
+
+
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+      
+        
+        
+        
+      
+        
+        
+        
+      
+        
+        
+        
+      
+        
+        
+        
+      
+        
+        
+        
+      
+        
+        
+        
+      
+        
+        
+        
+          
+            
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  Home
+
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../prepare/" class="md-tabs__link">
+          
+  
+  Getting ready
+
+        </a>
+      </li>
+    
+  
+
+          
+            
+  
+  
+  
+    
+  
+  
+    
+      
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="././" class="md-tabs__link">
+          
+  
+  Feature guide
+
+        </a>
+      </li>
+    
+  
+
+          
+            
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tables/" class="md-tabs__link">
+          
+  
+  Model inventories
+
+        </a>
+      </li>
+    
+  
+
+          
+            
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../download/" class="md-tabs__link">
+          
+  
+  File downloads
+
+        </a>
+      </li>
+    
+  
+
+          
+            
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../about/" class="md-tabs__link">
+          
+  
+  About
+
+        </a>
+      </li>
+    
+  
+
+          
+        
+      
+        
+        
+        
+      
+        
+        
+        
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../" title="RWR Map Editor&#x27;s Handbook" class="md-nav__button md-logo" aria-label="RWR Map Editor&#x27;s Handbook" data-md-component="logo">
+      
+
+
+
+
+
+  <img src="../../assets/rwricon.png" alt="RWR Map Editor's Handbook">
+
+    </a>
+    RWR Map Editor's Handbook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Autumnsnail/rwrme" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5v52c0 15 12.5 23.5 27.5 17.5C441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5v-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rwrme
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+      
+    
+      
+      
+      
+      
+    
+      
+      
+      
+      
+    
+      
+      
+      
+      
+    
+      
+      
+      
+      
+    
+      
+      
+      
+      
+    
+      
+      
+      
+      
+          
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-house" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Home
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+        
+          
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_en_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../prepare/" class="md-nav__link ">
+              
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-download" viewBox="0 0 24 24"><path d="M12 15V3M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Getting ready
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_en_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_en_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Getting ready
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+        
+          
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_en_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="././" class="md-nav__link md-nav__link--active">
+              
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-layout-grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Feature guide
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_en_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_en_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Feature guide
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+        
+          
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_en_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../tables/" class="md-nav__link ">
+              
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-table" viewBox="0 0 24 24"><path d="M12 3v18"/><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M3 15h18"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Model inventories
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_en_4" id="__nav_en_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_en_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_en_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Model inventories
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tables/mesh/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  MESH E
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tables/wall/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Wall E & Platform E
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tables/building/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Building E
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tables/vehicle/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Vehicle Scatter
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tables/decal/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Decal
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+        
+          
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_en_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../download/" class="md-nav__link ">
+              
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-archive" viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8M10 12h4"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  File downloads
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_en_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_en_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  File downloads
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+        
+          
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_en_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../about/" class="md-nav__link ">
+              
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  About
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_en_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_en_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  About
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+        
+      
+    
+      
+      
+      
+      
+    
+      
+      
+      
+      
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                      
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-toolbar-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        The toolbar tools
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The toolbar tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#save" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Save
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#viewmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        ViewMap
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#select" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Select
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pinman" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        PinMan
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#walle" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        WallE
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buildinge" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        BuildingE
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#platforme" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        PlatformE
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcobjects" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        FuncObjects
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#meshe" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        MeshE
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heightmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        HeightMap
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terrainbash" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        TerrainBash
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#offroadbuilder" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        offroadbuilder
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decal" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Decal
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assaum" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Assaum
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#id-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        ID search
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#map-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        mapSettings
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#third-party" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3rdParSettings
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3rdParSettings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ogreref" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        1. Choosing the OgreXMLConverter.exe Path
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mesh-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        2. Choosing the Mesh files path
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#textures-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3. Choosing the textures path
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reference-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        RefpM
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Key bindings
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        <li class="md-path__item"><a href="../" class="md-path__link">
+            <span class="md-ellipsis">Home</span>
+          </a>
+        </li>
+        
+          
+        
+          
+            
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="././" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Feature guide
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+          
+        
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+  
+
+
+<h1 id="overview">Feature guide<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h1>
+<figure>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/016.png"><img alt="" src="../../assets/editor/016.png" /></a></p>
+<figcaption>
+<p>The editor's main panel.</p>
+</figcaption>
+</figure>
+<h2 id="the-toolbar-tools">The toolbar tools<a class="headerlink" href="#the-toolbar-tools" title="Permanent link">&para;</a></h2>
+<h3 id="save">Save<a class="headerlink" href="#save" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Saves the map; when it is done you get a sound.</p>
+</div>
+<hr />
+<h3 id="viewmap">ViewMap<a class="headerlink" href="#viewmap" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>Generates the map's first preview image (expand for details)</summary>
+<p>Clicking it produces a file called map_view_ls.png — that is the first preview image. It adds some map elements automatically, base perimeters for instance; once the map is finished you can build the <abbr title="the map that opens in RWR when you press Tab; its file name is map.png.">map thumbnail</abbr> from it.</p>
+<p><span class="redact" tabindex="0">Yep — every map's final thumbnail, from back then until now, has been made by hand.</span></p>
+</details>
+<hr />
+<h3 id="select">Select<a class="headerlink" href="#select" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>Used to select objects on the map (expand for details)</summary>
+<p>Use the <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-1">1</kbd></span> shortcut to jump quickly to the Select tool.</p>
+<hr />
+<p>Related interaction:</p>
+<ul>
+<li>
+<p>Left click selects a single object; <span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-left-button">Left Button</kbd></span> (click) or <span class="keys"><kbd class="key-left-button">Left Button</kbd></span> (hold and drag) selects several.</p>
+</li>
+<li>
+<p>Press <span class="keys"><kbd class="key-escape">Esc</kbd></span> to deselect.</p>
+</li>
+<li>
+<p>Press <span class="keys"><kbd class="key-delete">Del</kbd></span> to delete the selected target.</p>
+</li>
+<li>
+<p>Press <span class="keys"><kbd class="key-g">G</kbd></span> to switch on move mode; moving the mouse then drags the selected objects away.</p>
+</li>
+<li>
+<p>Press <span class="keys"><kbd class="key-r">R</kbd></span> to switch on rotate mode; moving the mouse then rotates the selected objects to some angle.</p>
+</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You cannot select several platforms at once.</p>
+<p>In top-down view (orthographic) some platforms will not display or select properly; you have to switch to free camera (perspective) to select them.</p>
+<p>Moving and rotating in free camera (perspective) is not recommended; the interaction is poor.</p>
+</div>
+</details>
+<hr />
+<h3 id="pinman">PinMan<a class="headerlink" href="#pinman" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>Used to place a virtual reference object at the point you click. (expand for details)</summary>
+<p>Use the <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-2">2</kbd></span> shortcut to jump quickly to the TankPin tool inside PinMan.</p>
+<div class="admonition warning">
+<p class="admonition-title">There are three options, but only the tank works.</p>
+</div>
+</details>
+<hr />
+<h3 id="walle">WallE<a class="headerlink" href="#walle" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>Used to pick the kind of wall from the list, and to draw nodes with PathBush and then press space to join them into a line in placement order. You can pick the wall kind first and then draw, or draw first and then pick the wall kind — once you have picked, click the wall you already drew and the replacement is done. (expand for details)</summary>
+<p>Use the <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-7">7</kbd></span> shortcut to jump quickly to the PathBush tool inside WallE.</p>
+<hr />
+<p>The search bar finds an object quickly by name, and for what each wall's model looks like see <a href="../tables/wall/">Model inventories · Wall E</a>.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/017.png"><img alt="" src="../../assets/editor/017.png" /></a></p>
+<hr />
+<p>With it selected by Select, you can edit the coordinates on this panel (the first field grows along X to the right, the second grows along Y downwards; the values are twice the coordinates of the current mouse position), use Add Point to add a connected segment in the drawing direction, and use the cross to delete that node.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/018.png"><img alt="" src="../../assets/editor/018.png" /></a></p>
+<hr />
+<p>With several selected by Select, you can delete the specified objects on this panel; the same goes for Buiding, Mesh and the rest.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/019.png"><img alt="" src="../../assets/editor/019.png" /></a></p>
+<hr />
+<p>With it selected by Select, you can see the id, the current layer and the wall kind on this panel, and set a custom height and whether to Merge.</p>
+<p>Marge is ticked by default, to stop the AI getting stuck on the wall and failing to climb over it.</p>
+<p>With ReHeight ticked you can type in the wall's height yourself.
+<a class="glightbox" data-type="image" href="../../assets/editor/020.png"><img alt="" src="../../assets/editor/020.png" /></a></p>
+</details>
+<hr />
+<h3 id="buildinge">BuildingE<a class="headerlink" href="#buildinge" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>Used to pick the kind of building from the list, and to draw buildings with DrawBush by holding the left button and dragging. You can pick the building kind first and then draw, or draw first and then pick the building kind — once you have picked, click the building you already drew and the replacement is done. (expand for details)</summary>
+<p>Use the <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-3">3</kbd></span> shortcut to jump quickly to the DrawBush tool inside BuildingE.</p>
+<p>Use the <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-4">4</kbd></span> shortcut to jump quickly to the RoofSwitch tool inside BuildingE.</p>
+<p>Use the <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-5">5</kbd></span> shortcut to jump quickly to the BuildingMaterialChanger tool inside BuildingE.</p>
+<p>Use the <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-6">6</kbd></span> shortcut to jump quickly to the HeightUp tool inside BuildingE.</p>
+<hr />
+<p>The search bar finds an object quickly by name, and for what each building's model looks like see <a href="../tables/building/">Model inventories · Building E</a>.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/021.png"><img alt="" src="../../assets/editor/021.png" /></a></p>
+<hr />
+<p>At the very top <ins>HeightDown</ins> and <ins>HeightUp</ins> change the height of the Building at the clicked spot, by 2 each time (6). <ins>RoofSwitch</ins> turns the roof into a pitched/flat roof; the pitched direction is fixed, so you have to select the building and press <span class="keys"><kbd class="key-r">R</kbd></span> to rotate it yourself.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/022.png"><img alt="" src="../../assets/editor/022.png" /></a></p>
+<div class="admonition quote">
+<p class="admonition-title">It is best to finish adjusting Height first and then stack new objects on top: the height of the objects above does not follow changes in the height of the Building below.</p>
+</div>
+<hr />
+<p>With it selected by Select, you can see the id, the current layer, whether the roof is pitched and the building kind on this panel.</p>
+<p>Offset sets a custom offset (the first field grows along X to the right, the second grows along Z towards the top, the third grows along Y downwards).</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/023.png"><img alt="" src="../../assets/editor/023.png" /></a></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Right now the X axis cannot be changed.
+If you want to put a Wall, Building, Platform or the like on top of a Building, then once you have thought it through you should draw from the bottom up; when drawing you have to make sure the start point is inside the previous element. That way all the objects stack one by one as layer1, layer2…, pick up the height of the previous one automatically, and climbing and other checks work properly too.</p>
+</div>
+</details>
+<hr />
+<h3 id="platforme">PlatformE<a class="headerlink" href="#platforme" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>Used to pick the kind of platform from the list and draw with <ins>pathBush</ins>; like Wall, so no more detail here. (expand for details)</summary>
+<p>Use the <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-8">8</kbd></span> shortcut to jump quickly to the PathBush tool inside PlatformE.</p>
+<p>Use the <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-9">9</kbd></span> shortcut to jump quickly to the TypeChange tool inside PlatformE.</p>
+<p>Use the <span class="keys"><kbd class="key-shift">Shift</kbd><span>+</span><kbd class="key-0">0</kbd></span> shortcut to jump quickly to the PlatformBasewallChanger tool inside PlatformE.</p>
+<hr />
+<p>The search bar is like Wall's, so no more detail here.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/026.png"><img alt="" src="../../assets/editor/026.png" /></a></p>
+<hr />
+<p>At the very bottom <ins>TypeChange</ins> switches the Platform at the clicked spot between "no special property", the "deck" property and the "bridge" property.</p>
+<p>ChangeHeight works by setting the height and then pressing Enter to put the tool into use; it changes the height of the Platform at the clicked spot.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/027.png"><img alt="" src="../../assets/editor/027.png" /></a></p>
+<div class="admonition warning">
+<p class="admonition-title">The write-up of the properties is not finished</p>
+</div>
+<hr />
+<p>With it selected by Select, you can edit the coordinates on this panel; the method is like Wall's, so no more detail here.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/028.png"><img alt="" src="../../assets/editor/028.png" /></a></p>
+<hr />
+<p>With it selected by Select, you can see the type, id, current layer, top material, the kind of wall on the platform's sides, the kind of wall added on top of the platform and the wall height on this panel.
+The kind of wall added on top of the platform can be changed with the WallE tool.
+The value added in SetMaterial can be wood, grass, pavement, terrian.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/029.png"><img alt="" src="../../assets/editor/029.png" /></a></p>
+<div class="admonition warning">
+<p class="admonition-title">The material preview part is not finished</p>
+</div>
+<hr />
+<details class="quote">
+<summary>How do you draw a platform?</summary>
+<p>Take a transition cliff platform as the example:</p>
+<p>The goal this time is to get from the high ground on the left down a gentle slope into the water at the bottom of the valley. You can see that to the left of the <strong>arrow direction</strong> there is a slope that is not all that gentle, and to the right a sheer cliff, so the transition cliff should take the height of the slope on the left as its baseline.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/041.png"><img alt="" src="../../assets/editor/041.png" /></a></p>
+<p>Because <strong>when drawing a platform you have to make sure the end edge is to the right of the direction the start edge travels in</strong>, and the start edge is the edge that decides the height, we should first draw on the gentle slope to the left of the arrow, following the arrow direction of figure 1.
+<a class="glightbox" data-type="image" href="../../assets/editor/042.png"><img alt="" src="../../assets/editor/042.png" /></a></p>
+<p>(Eight points were drawn; if you want the change to be more even you can place a few more.) Then press space, place the other corresponding eight points to the right of the arrow, and press space a second time to finish drawing.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/043.png"><img alt="" src="../../assets/editor/043.png" /></a></p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/044.png"><img alt="" src="../../assets/editor/044.png" /></a></p>
+<p>Then fine-tune the platform to make it reasonable.</p>
+<p>(The blue points are the reference points, that is the points generated by the first line drawn; the line between a blue point and a pink point is the terrain's transition.)</p>
+<p>(If your platform is that purple-and-black broken render colour, then congratulations, you placed it the wrong way round — please note once more that when drawing a platform you have to make sure the end edge is to the right of the direction the start edge travels in.)</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/045.png"><img alt="" src="../../assets/editor/045.png" /></a></p>
+<p>Have a look in game~</p>
+<p><span class="redact" tabindex="0">Sure enough it came out a total mess — which shows how important it is to add a few more anchors and polish the terrain. Let this be a warning to you all :(</span>
+<a class="glightbox" data-type="image" href="../../assets/editor/046.png"><img alt="" src="../../assets/editor/046.png" /></a></p>
+</details>
+</details>
+<hr />
+<h3 id="funcobjects">FuncObjects<a class="headerlink" href="#funcobjects" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>Used to place objects that have some special interaction. (expand for details)</summary>
+<p><ins>LadderScatter</ins> and <ins>LadderEraser</ins> place ladders and delete ladders. A placed ladder checks forwards automatically and snaps to nearby buildings, platforms and anything else with fixed collision.</p>
+<div class="admonition warning">
+<p class="admonition-title">If a ladder is placed the wrong way round the snapping fails and you cannot climb it, and in version 0101 ladders have no forward indicator, so try not to mix up which way a ladder faces when adjusting it.</p>
+</div>
+<hr />
+<p><ins>ItemSupplyScatter</ins> places the trigger area of a stash or an armory: stash is the stash, weapon_rack is the armory; once Select has picked it, click ChangeType below to switch.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/030.png"><img alt="" src="../../assets/editor/030.png" /></a></p>
+<hr />
+<p><ins>CrateScatter</ins> and <ins>CrateEraser</ins> place wooden crates and delete wooden crates; the items inside are random and cannot be specified.</p>
+<p><ins>SpawnScatter</ins> and <ins>SpawnEraser</ins> create spawn points and delete spawn points; a spawn point should not sit too close to the map edge.</p>
+<p><ins>BaseScatter</ins> creates a base by left-dragging. With it selected by Select, you can change the base's displayed name (Name) and specify which faction captured this base first (Faction).</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/031.png"><img alt="" src="../../assets/editor/031.png" /></a></p>
+<details class="quote">
+<summary>A note on Faction</summary>
+<p>If you do not use Faction the base is assigned at random; filling in an integer assigns it by that integer's category, and the player faction defaults to faction 0.
+If you have set the map so that only two factions fight, then when Faction is 2 this base becomes a blank base that no faction holds.
+map13_2 is a special case, not covered here.</p>
+</details>
+</details>
+<hr />
+<h3 id="meshe">MeshE<a class="headerlink" href="#meshe" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>Used to pick the kind of model from the list. (expand for details)</summary>
+<p>The search bar is like Wall's, so no more detail here.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/032.png"><img alt="" src="../../assets/editor/032.png" /></a></p>
+<hr />
+<p><ins>StoneEraser</ins> and <ins>StoneScatter</ins> delete a random rock or place a random rock; for what the rocks look like see <a href="../tables/mesh/">Model inventories · MESH E</a>.</p>
+<p><ins>TreeEraser</ins> and <ins>TreeScatter</ins> delete a random tree or place a random tree; for what the trees look like see <a href="../tables/mesh/">Model inventories · MESH E</a>.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/033.png"><img alt="" src="../../assets/editor/033.png" /></a></p>
+<hr />
+<p>The tool at the very bottom is used like Wall: it places power poles as nodes, and once they are placed you press space to run wires in order between each pair — the wires are decoration only, with no collision.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/034.png"><img alt="" src="../../assets/editor/034.png" /></a></p>
+<hr />
+<p>With it selected by Select, you can see the id, the kind and the collision box on this panel (not shown if it is the default).
+With ReCollision ticked you can change length, height and width in the window above (measured from the centre).
+offset sets a custom offset (the first field grows along X to the right, the second grows along Z towards the top, the third grows along Y downwards).</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/035.png"><img alt="" src="../../assets/editor/035.png" /></a></p>
+</details>
+<hr />
+<h3 id="heightmap">HeightMap<a class="headerlink" href="#heightmap" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>Used to lay down the terrain's curvature. (expand for details)</summary>
+<p><ins>HeightBush</ins> is the terrain brush. In the panel at the bottom left, SetHardness is the hardness, which decides how steep the transition is between the height you are painting and the background height, range 0 to 1; SerRange is the terrain brush's range; SetHeight is the terrain brush's height, range 0 to 1. Press X to lock the brush horizontally, Y to lock it vertically.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/036.png"><img alt="" src="../../assets/editor/036.png" /></a></p>
+<hr />
+<p><ins>HeightSmudge</ins> drags the height within a certain range under the mouse and, following the direction the mouse moves, makes the nearby terrain deform as a transition.</p>
+<hr />
+<p><ins>Smooth</ins> flattens the terrain over the whole map.</p>
+<hr />
+<p><ins>Noise</ins> adds noise to the terrain over the whole map, so that the map is not a big flat plain at a single height value but has some tiny bumps.</p>
+<hr />
+<p>heightPath is the path terrain brush; it is used like the Wall tool, the top left explains the relevant values and you can try it yourself.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/037.png"><img alt="" src="../../assets/editor/037.png" /></a></p>
+</details>
+<hr />
+<h3 id="terrainbash">TerrainBash<a class="headerlink" href="#terrainbash" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>Used to lay down changes in the ground texture. (expand for details)</summary>
+<p><ins>Pathpainter</ins> is the path ground-texture brush; it is used like the Wall tool, the top left explains the relevant values and you can try it yourself.
+The decay exponent is adjusted with [ and ]; it is not a description typed twice that turned into [[/]].</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/038.png"><img alt="" src="../../assets/editor/038.png" /></a></p>
+<hr />
+<p><ins>painter</ins> is the ground-texture brush: Chg Index is the material kind, a number; Chg Rng is the range; Chg Har is the hardness.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/039.png"><img alt="" src="../../assets/editor/039.png" /></a></p>
+<div class="admonition warning">
+<p class="admonition-title">In version 0101, when you use this tool there may be a spare adjustment bar in the bottom left; it has no effect at all.</p>
+</div>
+<hr />
+<p>Smooth flattens the ground texture over the whole map.</p>
+</details>
+<hr />
+<h3 id="offroadbuilder">offroadbuilder<a class="headerlink" href="#offroadbuilder" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Used to tell the AI that this route is a driving route; when driving, the AI prefers to pathfind along it. It is laid like the Wall tool.</p>
+</div>
+<hr />
+<h3 id="decal">Decal<a class="headerlink" href="#decal" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>Used to pick the kind of decal from the list; you can think of it as printing another layer of material on top of the ground texture. Once picked, left click to place it. (expand for details)</summary>
+<p><ins>deleteDecals</ins> deletes the decals inside the marquee you drag.</p>
+<hr />
+<p>Once Select has picked it, you can use Length to change this decal's size, that is its scale.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/040.png"><img alt="" src="../../assets/editor/040.png" /></a></p>
+</details>
+<hr />
+<h3 id="assaum">Assaum<a class="headerlink" href="#assaum" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>Used to pick assemblies from the list, an armory with its collision box and trigger area already built for example. Once picked, left click to place it. (expand for details)</summary>
+<p>The search bar is like Wall's, so no more detail here.</p>
+<hr />
+<p>If you want to add an assembly of your own to the list, select the objects you want to group, give it a name via Name, then click Add and the group you picked joins the assembly list.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Assemblies do not follow the template; they are on a path of their own.
+When you click Add the objects have to be multi-selected; if only one is selected nothing is saved.</p>
+</div>
+</details>
+<hr />
+<h3 id="id-search">ID search<a class="headerlink" href="#id-search" title="Permanent link">&para;</a></h3>
+<details class="note">
+<summary>The steps</summary>
+<ol>
+<li>Read the id here.</li>
+</ol>
+<figure>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/050.png"><img alt="" src="../../assets/editor/050.png" /></a></p>
+<figcaption>
+<p>Select the object to see it, or crack open the svg and look.</p>
+</figcaption>
+</figure>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The editor re-numbers every ID each time it saves, so the number may differ from the last one.</p>
+<p>So <strong>what you wrote down is the ID at that moment</strong>; after one more save, searching again may not find it.</p>
+</div>
+<ol>
+<li>Put the ID into the search box and then click the search button on the right.</li>
+</ol>
+<figure>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/051.png"><img alt="" src="../../assets/editor/051.png" /></a></p>
+<figcaption>
+<p>You can see small green text appear below — the search worked.</p>
+</figcaption>
+</figure>
+</details>
+<details class="quote">
+<summary>One use for finding an id</summary>
+<p>Oh no! RWR crashed halfway through loading my map?!
+Look through rwr_game.log under C:\Users\user\AppData\Roaming\Running with rifles and you can see that this time RWR blew up because it could not locate crate_adjusted.mesh.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/052.png"><img alt="" src="../../assets/editor/052.png" /></a></p>
+<p>Search the svg map for this mesh and you find there are two related static_objects.</p>
+<figure>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/053.png"><img alt="" src="../../assets/editor/053.png" /></a></p>
+<figcaption>
+<p>Only one is shown here</p>
+</figcaption>
+</figure>
+<p>Search for those two static_objects and — wow, the hit rate really is high — you see the related id straight away.</p>
+<figure>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/054.png"><img alt="" src="../../assets/editor/054.png" /></a></p>
+<figcaption>
+<p>After that you just use the id search to delete those two objects from the map and you are done</p>
+</figcaption>
+</figure>
+</details>
+<div class="admonition tip">
+<p class="admonition-title">IDs change</p>
+<p>The editor re-numbers every ID each time it saves, so the number may differ from the last one.
+So <strong>what you wrote down is the ID at that moment</strong>; after one more save, searching again may not find it.</p>
+</div>
+<hr />
+<h3 id="map-settings">mapSettings<a class="headerlink" href="#map-settings" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Nothing verified yet.</p>
+</div>
+<details class="example">
+<summary><strong>Content still to be verified.</strong> (expand)</summary>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Example</th>
+<th>Notes</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ambience_alert_day_sound</code></td>
+<td><code>ambient_alert_daytime.wav</code><br><code>ambient_lightrain_alert.wav</code></td>
+<td></td>
+<td>not tried, no idea what this is</td>
+</tr>
+<tr>
+<td><code>ambience_day_sound</code></td>
+<td><code>ambient_daytime.wav</code><br><code>ambient_lightrain.wav</code></td>
+<td></td>
+<td>daytime ambient sound</td>
+</tr>
+<tr>
+<td><code>ambience_night_sound</code></td>
+<td><code>ambient_lightrain_night.wav</code></td>
+<td></td>
+<td>nighttime ambient sound</td>
+</tr>
+<tr>
+<td><code>day_color</code></td>
+<td><code>#e5c685ff</code><br><code>fill</code></td>
+<td>any hex colour</td>
+<td>the daytime colour</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>16 bases</code><br><code>2 faction king of the hill map</code><br><code>assault map - 11 bases</code><br><code>conquest map - 10 bases</code><br><code>pure pvp map</code></td>
+<td>you can enter anything, but keeping to the format is better</td>
+<td>the map description</td>
+</tr>
+<tr>
+<td><code>flip</code></td>
+<td><code>-1</code></td>
+<td></td>
+<td>no idea what this is, not tried</td>
+</tr>
+<tr>
+<td><code>global_effect</code></td>
+<td><code>ambience_alert_day_sound</code><br><code>ambient_alert_daytime.wav</code><br><code>ambient_lightrain_alert.wav</code></td>
+<td></td>
+<td>global effect</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>Route 666</code></td>
+<td>you can enter anything</td>
+<td>the map name</td>
+</tr>
+<tr>
+<td><code>night_color</code></td>
+<td><code>#136395</code><br><code>#5f5fc0ff</code><br><code>stroke</code></td>
+<td>any hex colour</td>
+<td>the nighttime colour</td>
+</tr>
+<tr>
+<td><code>randomize_faction_index</code></td>
+<td><code>0</code><br><code>1</code></td>
+<td></td>
+<td>not tried, no idea what this is</td>
+</tr>
+<tr>
+<td><code>show_base_names_in_map_view</code></td>
+<td><code>0</code></td>
+<td></td>
+<td>no idea what this is, not tried</td>
+</tr>
+<tr>
+<td><code>starting_day_phase</code></td>
+<td><code>0.1</code><br><code>6</code></td>
+<td></td>
+<td>when the campaign starts</td>
+</tr>
+<tr>
+<td><code>visible_in_menu</code></td>
+<td><code>0</code><br><code>1</code></td>
+<td></td>
+<td>whether it shows up in the list</td>
+</tr>
+</tbody>
+</table>
+</details>
+<div class="admonition warning">
+<p class="admonition-title">If map settings are not written the map will not run; if you really do not know what to write, paste another map's and tweak it.</p>
+</div>
+<hr />
+<h3 id="third-party">3rdParSettings<a class="headerlink" href="#third-party" title="Permanent link">&para;</a></h3>
+<p>Used to load detailed models and part of the materials; you can skip it.</p>
+<h4 id="ogreref">1. Choosing the OgreXMLConverter.exe Path<a class="headerlink" href="#ogreref" title="Permanent link">&para;</a></h4>
+<details class="info">
+<summary>Version 0101 has this built in already, so you can skip it — expand to see the steps that no longer matter.</summary>
+<ol>
+<li>Click Select, check where <code>OgreSDK_vc10_v1-7-4.zip</code> was unzipped, and find its root folder.</li>
+<li>Follow <code>OgreSDK_vc10_v1-7-4\bin\release</code> down to <code>OgreXMLConverter.exe</code> and pick it.</li>
+<li>That is the first configuration done — on to steps two and three.</li>
+</ol>
+<div class="admonition example">
+<p class="admonition-title">Example paths, for reference only</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>D:\RWRMap\OgreSDK_vc10_v1-7-4\bin\release
+</span></code></pre></div>
+</div>
+</details>
+<h4 id="mesh-path">2. Choosing the Mesh files path<a class="headerlink" href="#mesh-path" title="Permanent link">&para;</a></h4>
+<ol>
+<li>
+<p>Find the root folder of Running With Rifles on Steam. You can locate it in the Steam client via Manage → Browse local files.</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/047.png"><img alt="" src="../../assets/editor/047.png" /></a></p>
+</li>
+<li>
+<p>Follow <code>RunningWithRifles\media\packages\vanilla</code> down to the <code>models</code> folder and pick it.</p>
+</li>
+<li>Click <strong>load mesh</strong>.</li>
+</ol>
+<div class="admonition example">
+<p class="admonition-title">Example paths, for reference only</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>D:\steam\steamapps\common\RunningWithRifles\media\packages\vanilla
+</span></code></pre></div>
+</div>
+<p>Once it is set the result looks like this (a Mesh, as an example):</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/048.png"><img alt="" src="../../assets/editor/048.png" /></a></p>
+<h4 id="textures-path">3. Choosing the textures path<a class="headerlink" href="#textures-path" title="Permanent link">&para;</a></h4>
+<ol>
+<li>The same as step 1 of the section before.</li>
+<li>Follow <code>RunningWithRifles\media\packages\vanilla</code> down to the <code>textures</code> folder and pick it.</li>
+<li>Click <strong>load textures</strong>.</li>
+</ol>
+<div class="admonition example">
+<p class="admonition-title">Example paths, for reference only</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>D:\steam\steamapps\common\RunningWithRifles\media\packages\vanilla
+</span></code></pre></div>
+</div>
+<p>Once it is set the result looks like this (a Decal, as an example):</p>
+<p><a class="glightbox" data-type="image" href="../../assets/editor/049.png"><img alt="" src="../../assets/editor/049.png" /></a></p>
+<hr />
+<h3 id="reference-images">RefpM<a class="headerlink" href="#reference-images" title="Permanent link">&para;</a></h3>
+<p>Use <ins>Import</ins> to bring in a reference image, <ins>Clear</ins> to remove it.
+<ins>ScaleX</ins> and <ins>ScaleY</ins> squeeze or stretch the reference image horizontally and vertically; the value is a multiplier, so ScaleX 0.5 squeezes it to half width.
+<ins>OffsetX</ins> and <ins>OffsetX<span class="redact" tabindex="0">really Y</span></ins> shift the reference image horizontally and vertically; the value is a distance, the first field grows along X to the right, the second along Y upwards.
+<ins>Alpha</ins> changes the reference image's transparency, fading it towards the left and making it solid towards the right.</p>
+<hr />
+<h3 id="keys">Key bindings<a class="headerlink" href="#keys" title="Permanent link">&para;</a></h3>
+<div class="admonition question">
+<p class="admonition-title">Is this table really complete?</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="keys"><kbd class="key-f5">F5</kbd></span></td>
+<td>Refresh the editor interface, and clean up illegal elements</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-tab">Tab</kbd></span></td>
+<td>Toggle between top-down view and free camera</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-w">W</kbd></span> <span class="keys"><kbd class="key-a">A</kbd></span> <span class="keys"><kbd class="key-s">S</kbd></span> <span class="keys"><kbd class="key-d">D</kbd></span></td>
+<td>Directional control</td>
+</tr>
+<tr>
+<td>Mouse wheel</td>
+<td>In top-down view, adjusts the zoom; in free camera, adjusts the camera's movement speed</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-q">Q</kbd></span> <span class="keys"><kbd class="key-e">E</kbd></span></td>
+<td>In free camera, adjusts the camera height</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-escape">Esc</kbd></span></td>
+<td>Deselect; lock the camera to the mouse / release the mouse</td>
+</tr>
+<tr>
+<td>++shift+number key++</td>
+<td>Switch quickly to the matching tool</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-x">X</kbd></span></td>
+<td>Brush horizontal lock</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-y">Y</kbd></span></td>
+<td>Brush vertical lock</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-r">R</kbd></span></td>
+<td>Rotate the selected object</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-g">G</kbd></span></td>
+<td>Move the selected object</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-c">C</kbd></span></td>
+<td>Copy object</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-v">V</kbd></span></td>
+<td>Paste object</td>
+</tr>
+<tr>
+<td><span class="keys"><kbd class="key-control">Ctrl</kbd><span>+</span><kbd class="key-z">Z</kbd></span></td>
+<td>Undo</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+  
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        
+
+
+
+
+
+
+
+
+
+<footer class="md-footer">
+  
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../prepare/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Getting ready">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Getting ready
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../tables/" class="md-footer__link md-footer__link--next" aria-label="Next: Model inventories">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Model inventories
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  <div class="brand-footer">
+    <div class="brand-footer__brand">
+      <a class="brand-footer__title" href="../">
+        
+        <img class="brand-footer__logo" src="../../assets/rwricon.png" alt="RWR Map Editor's Handbook">
+        
+        RWR Map Editor's Handbook<span>↗</span>
+      </a>
+      
+      <p>Written down because someone tried it.</p>
+    </div>
+    <div class="brand-footer__meta">
+      
+      Built with Zensical<br>Fonts and scripts are entirely self-hosted</div>
+    <div class="brand-footer__bottom">
+      <span>RWR MAP EDITOR'S HANDBOOK</span><a href="https://github.com/rwr-infra/rwr-mapbook">Docs repository rwr-infra/rwr-mapbook ↗</a>
+      <a href="#__consent">Privacy settings</a>
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+<h4>Data & privacy</h4>
+<p>This site collects no visitor data. There is no analytics, no advertising, no cookie and no third-party request of any kind. Fonts, styles and scripts are all self-hosted, so any page contacts this site’s domain only. A single light/dark display preference is stored locally by the browser, and is removed when browser data is cleared.</p>
+
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Acknowledged</button>
+    
+    
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["announce.dismiss","content.code.annotate","content.code.copy","content.code.select","content.footnote.tooltips","content.tabs.link","content.tooltips","navigation.expand","navigation.footer","navigation.indexes","navigation.path","navigation.sections","navigation.tabs","navigation.top","navigation.tracking","toc.follow"],"redirect":null,"search":"../../assets/javascripts/workers/search.7d14d953.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":[{"current":true,"date":"2026-09-06","id":"0101","label":"地编版本 0101"},{"date":"2026-05-14","id":"egg","label":"彩蛋"}]}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.8dcc8e9c.min.js"></script>
+      
+        <script src="../../javascripts/glightbox.min.js"></script>
+      
+        <script src="../../javascripts/table-tools.js"></script>
+      
+        <script src="../../javascripts/redact.js"></script>
+      
+        <script src="../../javascripts/download.js"></script>
+      
+        <script src="../../javascripts/lightbox-zoom.js"></script>
+      
+    
+  </body>
+</html>
