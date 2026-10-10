@@ -23,6 +23,15 @@ zensical.offline.toml
 __pycache__/
 *.py[cod]
 
+# 密钥与凭据：**永不入库**。
+# tools/r2/ 那套归档工具要一对 R2 的 access key，那是使用者的东西，不属于仓库：
+# 仓库里只有 creds.example.env（占位版）。这一条是兜底——真正拦住它的是推送工具里
+# 那道独立守门（走 GitHub API 建提交时 .gitignore 一点作用都没有）。
+creds.env
+*.env
+!*.example.env
+!*.env.example
+
 # 编辑器与系统
 .DS_Store
 .idea/

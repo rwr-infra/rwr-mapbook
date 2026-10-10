@@ -247,8 +247,24 @@ https://assets.rwr-infra.uk/rwrme-web-assets/<文件名>
 
 ### 往上放新文件
 
-走 S3 兼容接口（R2 的 endpoint + 一对 access key，`boto3` / `rclone` / `aws-cli`
-都能用；密钥在 Cloudflare 面板上，**不要写进仓库**）。顺序是：
+仓库里带着工具：**[`tools/r2/`](tools/r2/README.md)**（`r2.bat list / head / upload /
+upload-dir / sha256 / delete / verify / creds / lock`）。它把下面这套规矩都实现好了——
+算 sha256、按扩展名给类型、长缓存、同名挡下来、传完 HEAD 校一遍，最后打印公开地址与哈希。
+
+```
+tools/r2/
+  r2.py            工具本体（boto3）
+  r2.bat           Windows 上的包一层
+  creds.example.env  占位版：复制成 creds.env 再填
+  README.md        用法、命令、密钥怎么放
+```
+
+> 🔑 **工具在仓库里，密钥永远不在。** 仓库里只有代码和占位版 `creds.example.env`；
+> 真正的 `creds.env` 由使用者自己保存（`.gitignore` 挡着，推送工具另有一道独立守门）。
+> **需要能上传 / 删除归档的凭据，联系 <https://github.com/bananaxiao2333>。**
+
+手工做（没装 boto3 时）也行，走 S3 兼容接口（R2 的 endpoint + 一对 access key，
+`boto3` / `rclone` / `aws-cli` 都能用；密钥在 Cloudflare 面板上，**不要写进仓库**）：
 
 1. 先算本地文件的 sha256，与页面上写的那一份对上再传——传错文件是这里唯一
    会静默出错的地方；
@@ -256,6 +272,11 @@ https://assets.rwr-infra.uk/rwrme-web-assets/<文件名>
    `.svg` → `image/svg+xml`），`Cache-Control` 按上面的长缓存给；
 3. 传完 HEAD 一下：大小对不对、公开地址能不能取到；
 4. 改了文件才动页面上的哈希；没改文件就别动——归档是冻结的。
+
+改完下载页再跑一次 `r2.bat verify`：页面上每条直链、哈希、大小标签，与线上挨个对一遍
+（`--hash` 会把线上文件流式读一遍真算一次，可选）。十几条站外直链不在 `linkcheck`
+的范围内，这一步就是补它。
+
 
 ---
 
@@ -311,10 +332,21 @@ docs/                 构建层（.md 与跳转桩是生成物）+ 手写资产
   assets/tables/      清单里的 705 张图
   stylesheets/ javascripts/   手写
 tools/                生成器、看门脚本与体检；langs.py 是语言清单的唯一出处
+  r2/                 归档上传/删除/体检（密钥不入库，见「历史版本归档放在站外」）
+  preview/            本机用的热更新预览（不想装 uv 时；见下）
 overrides/            主题模板覆盖
 site/                 构建产物，不入库
 .staging/             源文档抽取的中间产物，不入库
 ```
+
+### `tools/preview/`：本机的热更新预览
+
+正常预览是 `make serve` + `make watch`，装了 uv 的环境用那套就好。
+`tools/preview/` 是一份**等价但自带依赖探测**的备选：双击 `start.bat` 起服务、
+改 `content/` 存盘约一秒页面自己刷新，`fullcheck.bat` 一次跑完构建与三项体检。
+它不引入新的判据——盯梢清单与轮询间隔直接 import `tools/watch.py`，构建仍走
+`zensical`。这一段存在的理由是**本机现状**（没有 make、`uv` 拉不动 pyyaml），
+细节与实测数据见 [`tools/preview/README.md`](tools/preview/README.md)。
 
 `docs/` 提交进仓库但它**是生成物**。构建直接读 `docs/`，改了 `content/` 却忘了
 `make gen`，发出去的就是旧内容且**不会有任何报错**——`make build` 与 CI 都先跑生成，
