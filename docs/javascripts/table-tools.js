@@ -54,7 +54,9 @@
 
   /* ── 认页面 ─────────────────────────────────────────────────────── */
 
-  var PAGES = ["mesh", "wall", "building", "vehicle", "decal"];
+  // ⚠️ "download" 是下载页的**组件下载**分区：它要的是这套页内搜索与图框，
+  //    但那一页上还有别的表格（它们包在 `.ts-plain` 里，下面按判据排掉）。
+  var PAGES = ["mesh", "wall", "building", "vehicle", "decal", "download"];
 
   function pageOf() {
     // 页面身份由 overrides/main.html 在 <head> 里写进 `<html data-ts-page>`：
@@ -520,8 +522,10 @@
     //    ⚠️ 判据**不能**用 `.md-typeset__scrollwrap` 那一层：那是主题 bundle.js 在
     //    document$ 时运行时加的，本文件跑在它之前，那时表还是正文的直接子元素——
     //    按它认的话这里一个表都找不到，芯片会**全部消失**（踩过）。
+    // ⚠️ `.ts-plain` 与 CSS 同源（下载页上不是清单的那几张表）——两处必须一致，
+    //    否则会出现「有版式没芯片」或「没版式却有芯片」这种各认一半的情况。
     var listing = Array.prototype.filter.call(article.querySelectorAll("table"), function (table) {
-      return !table.closest("details, .admonition");
+      return !table.closest("details, .admonition, .ts-plain");
     });
 
     Array.prototype.forEach.call(listing, function (table) {

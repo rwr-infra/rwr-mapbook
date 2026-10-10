@@ -2,12 +2,12 @@
 nav_label: "文件下載"
 title: "文件下載"
 icon: "lucide/archive"
-description: "地編各版本的完整歸檔與配套模板，放在站外的對象存儲上，每一條都是直鏈。"
+description: "地編各版本的完整歸檔、三種模板與預製件組件，放在站外的對象存儲上，每一條都是直鏈。"
 # ⚠️ 由 tools/docsgen.py 從 content/download/index.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
 hide: [navigation]
 ---
 
-用來下載地編與模板，地編目前最新版本為0101，模板目前有普通模式模板vao0822，雪地模式模板與沙漠模式模板正在製作中。
+用來下載地編、模板與預製件。地編目前最新版本為0101；模板現有三種：普通模式模板vao0822、沙漠模式模板vdao、雪地模式模板vwao。
 
 ## 地編下載 { #download .section-title }
 
@@ -18,6 +18,8 @@ hide: [navigation]
 都得先下幾百 MB，而這份倉庫裡真正會變的是正文。所以它們放在站外的對象存儲上
 （Cloudflare R2），下面每一條都是**直鏈**：瀏覽器能下，下載器（IDM、aria2、迅雷）
 也能下，右鍵就能交給它們。
+
+<div class="ts-plain" markdown="1">
 
 **最新版本：**
 
@@ -38,6 +40,8 @@ hide: [navigation]
     | 地編 070 | `070.rar`　26.2 MB | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/070.rar){ .md-button .md-button--primary } |
     | 地編 060 | `060.zip`　32.1 MB | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/060.zip){ .md-button .md-button--primary } |
 
+</div>
+
 !!! warning "先看清是哪一版"
     歸檔是**凍結的**：哪一版就是當時那一版的全部文件，之後不會再改。
     手冊正文講的是最新版；拿舊版地編對着看，界面與清單可能對不上。
@@ -46,11 +50,53 @@ hide: [navigation]
 
 做地圖要用的模板，下載後放進地編的 `templates` 文件夾即可（**注意該文件夾中只有一個模板會生效，可以先將其它模板改下後綴防止讀錯**）。模板的作用是提供比較完備的Mesh、Wall等素材庫，並且根據模板的種類（普通、沙漠、雪地）來對地圖進行不同地面渲染。
 
+三種模板**並列**在這裡，挑你要的那一種下載即可。
+
+<div class="ts-plain ts-align" markdown="1">
+
 **原版模板（以map8為基礎）**
 
 | 材料 | 文件 | 下載 |
 | --- | --- | --- |
 | 普通模式模板（清單版本 vao0822） | `vao0822.svg`　441 kB | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/vao0822.svg){ .md-button .md-button--primary download="vao0822.svg" } |
+
+**沙漠模板**
+
+| 材料 | 文件 | 下載 |
+| --- | --- | --- |
+| 沙漠模式模板 | `vdao.svg`　431 kB | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/vdao.svg){ .md-button .md-button--primary download="vdao.svg" } |
+
+**雪地模板**
+
+| 材料 | 文件 | 下載 |
+| --- | --- | --- |
+| 雪地模式模板 | `vwao.svg`　426 kB | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/vwao.svg){ .md-button .md-button--primary download="vwao.svg" } |
+
+</div>
+
+## 組件下載 { #prefabs .section-title }
+
+預製件（`.asmb`）是**一組擺好的物件**：下完之後放進地編讀取組件的文件夾
+（`assaumbles`），就能整組拿來用，不用一個個擺。
+
+<div class="ts-search">
+  <div class="ts-search__box">
+    <span class="ts-search__icon" aria-hidden="true"></span>
+    <input class="ts-search__input" type="search" autocomplete="off" spellcheck="false" placeholder="搜索組件名稱…" aria-label="搜索組件">
+    <kbd class="ts-search__kbd">Ctrl K</kbd>
+  </div>
+  <p class="ts-search__meta">共 3 項 · 可搜組件名稱</p>
+</div>
+
+| 預覽 | 名稱 | 備註 | 下載 |
+| --- | --- | --- | --- |
+| <span class="ts-shot"></span><span class="ts-shot"></span> | 島上的機庫<br>`HangarOnIsland_objects.asmb`　5.8 kB | 待補 | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/HangarOnIsland_objects.asmb){ .md-button .md-button--primary download="HangarOnIsland_objects.asmb" } |
+| <span class="ts-shot"></span><span class="ts-shot"></span> | 藏匿點<br>`Stash_vao0822.asmb`　4.2 kB | 待補 | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/Stash_vao0822.asmb){ .md-button .md-button--primary download="Stash_vao0822.asmb" } |
+| <span class="ts-shot"></span><span class="ts-shot"></span> | 軍械庫<br>`Armory_vao0822.asmb`　2.7 kB | 待補 | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/Armory_vao0822.asmb){ .md-button .md-button--primary download="Armory_vao0822.asmb" } |
+
+!!! note "預覽圖與備註還沒補"
+    這三行的預覽圖與備註都還空着：位置先佔出來了（每行兩個圖框），
+    圖與說明補齊後會換掉。文件名與哈希是準的，可以先下。
 
 ## 相關說明 { .section-title }
 
@@ -67,10 +113,17 @@ hide: [navigation]
     84d18efd2fe7de947efe9f44374662961f2a4d5f7e09cb65e4165aafcddd742a  0100.rar
     49de6d2c0175f6a6a01f0f6eaaab93c4f0af394d82151576ad9b36c33c849a55  0101.rar
     e4ec1869d92fc802d8760e8898eba9953b55a2face1c39e74dffee850f1bfc31  vao0822.svg
+    67a34f77b43b1520dde8515e83c1b6e78413a14293938a85479aa1de3aa0dc48  vdao.svg
+    d6959ab114a5ef17d628449a882e019e1ad7d1dd245adad40a0db80f27a9657f  vwao.svg
+    42b39c0476684493dcafb7d0a4fd4954f55f960b034591f3dcf1a614c9047d19  HangarOnIsland_objects.asmb
+    c1228e7973441ee118e15f31dd0fd4babdcbe1b3d09035022cd8284c493353f5  Stash_vao0822.asmb
+    ccbdcdb74b362ddbc559fd66c10d3d9aeaee1b7423907997326ae79c3404ba5c  Armory_vao0822.asmb
     ```
 
     歸檔是**凍結**的，哈希不會變；哪天真換了文件，這裡會跟着改——
     它與上面的表格是同一批數字，兩處對不上就是有人改漏了一處。
+    哈希是從線上那份文件算出來的（不是本地另算一遍），數字取自
+    `_r2_cunchu` 裡的 `sha256` 命令。
 
 ??? quote "這些東西存在哪兒"
     立在 `assets.rwr-infra.uk` 那個域上（Cloudflare R2 的對象存儲），
