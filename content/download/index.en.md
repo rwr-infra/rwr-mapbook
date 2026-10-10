@@ -1,7 +1,7 @@
 ---
 title: "File downloads"
 description: "Complete archives of every editor version, the three templates and the prefabs, hosted outside the repository as direct links."
-source_sha256: f33988a54cd7da3a7a3d8e2622990afa768936cac33abc9097d602f91a24105e
+source_sha256: a0ee85ae7c6fdb451e19a0108fa2a37c1c9d5f65c81f2ff04e5a36b18f7003da
 translated: 2026-10-10
 nav_label: "File downloads"
 icon: lucide/archive
@@ -142,7 +142,8 @@ placing objects one by one.
     The archives are **frozen**, so these do not change; if a file is ever replaced, this
     block changes with it. These are the same numbers as the tables above — if the two ever
     disagree, one of them was missed. The numbers are taken from the file as it sits on the
-    storage (not recomputed locally), with the `sha256` command in `_r2_cunchu`.
+    storage (not recomputed locally), with the `sha256` command in `tools/r2/` — the
+    archiving tool's code lives in the repository, its keys do not.
 
 ??? quote "Where these files live"
     On the `assets.rwr-infra.uk` domain (Cloudflare R2 object storage). The repository keeps
