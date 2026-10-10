@@ -19,14 +19,6 @@ icon: "lucide/box"
   <p class="ts-search__meta">共 76 項 · 可搜名稱與引用值</p>
 </div>
 
-<div class="grid" markdown>
-
-[:octicons-arrow-right-24: 正常牆](#normal){ .card }
-
-[:octicons-arrow-right-24: 特殊牆](#special){ .card }
-
-</div>
-
 !!! note "注意事項"
     註：模板版本為vao0822，視角為側視。爆炸物摧毀判定似乎需要靠近中間；兩側可能炸不掉（未逐項驗證）。如果牆是隱形的，或者形狀/材質看起來異常，多半是配合平臺使用的。
 

@@ -510,7 +510,7 @@
       所以首帧就要显示对的东西（图框尺寸、两图并排、页顶文案、条目数），
       一律在 HTML/CSS 里定，脚本只做「必须有脚本才有」的事（复制、搜索）。
 
-   ⚠️ 作用域为什么写成 `… .md-typeset table:not(details table, .admonition table) …`，
+   ⚠️ 作用域为什么写成 `… .md-typeset table:not(details table, .admonition table, .ts-plain table) …`，
       而不是只写 `… .md-typeset table …`：
       这一页上除了清单表还有别的表——Wall E 页尾那份判定数据速查整个在 `???` 折叠块里。
       只按页面认的话，参考表的首列也会被当成「预览列」，变成 flex + 一整格图框那么宽
@@ -520,6 +520,9 @@
       document$ 时**运行时**加的，静态 HTML 里一次都没有（实测 0 次）。按它认的话
       CSS 首帧命中不了（首帧修复直接作废）、脚本更是连表都找不到（踩过：芯片全没了）。
       `details` / `.admonition` 是构建期就在的，首帧在、之后也在。
+      ⚠️ `.ts-plain` 是**下载页**自己的豁免：那一页现在也有 `data-ts-page`（组件表要
+      用这套图框与搜索），但页上还有地编版本表与三张模板表，它们不是清单——
+      在 content 里给那几张表包一层 `.ts-plain`，这里排掉，它们就保持普通表的样子。
       `:not()` 里那串复杂选择器要现代浏览器——本站本来就用着 `:has()`，基线一致。
 
    ── 要调图片大小，只改下面这一组 ────────────────────────────────
@@ -622,6 +625,71 @@ html[data-ts-page="decal"] .md-typeset {
   --ts-shot-h: 170px;
 }
 
+/* 下载页的**组件表**：照 MESH E 的尺寸来，一行两张图。 */
+html[data-ts-page="download"] .md-typeset {
+  --ts-prev-cols: 2;
+  --ts-shot-w: 158px;
+  --ts-shot-h: 124px;
+}
+
+/* 三张模板表**并列**摆着（原版 / 沙漠 / 雪地），各自的列宽要是各算各的，
+   三张表就列不对列——内容长的那张把「材料」列撑宽，短的跟着窄一截。
+   这里给它们一套**写死的列宽**（不是按内容算）：三张表宽度一致，看着才是一组。
+   比例按最长那一行定（普通模式模板那行），长句子折行，不撑破表格。
+   ⚠️ 只管模板表（`.ts-align`）——同页的地编版本表是另一种列，别一起套。
+   ⚠️ `table-layout: fixed` 下列宽只由**第一行**（表头）决定，所以 th/td 都要给。
+   ⚠️ 还差一步：主题给表格的是 `display: inline-block`（让它自己撑开、能横向滚），
+      而模板表在 `.ts-plain` 里、被那条「还原成表格盒」的规则排掉了——
+      inline-block 的表格不是表格盒，fixed 与 width: 100% 都不作数，
+      三张表各按内容缩（实测 552 / 386 / 389px）。所以要把表格**和它外面
+      那两层包装**一起拉回正常流：包装层铺满正文区，表格再铺满包装层。 */
+html[data-ts-page="download"] .md-typeset .ts-align .md-typeset__table,
+html[data-ts-page="download"] .md-typeset .ts-align .md-typeset__scrollwrap {
+  display: block;
+  width: 100%;
+}
+
+html[data-ts-page="download"] .md-typeset .ts-align table {
+  display: table;
+  table-layout: fixed;
+  /* ⚠️ 没有 width: 100% 的话，fixed 布局形同虚设：表格还是 auto 宽、
+     按内容缩着，三张表就宽窄不一（实测：同一组百分比，宽的 810px、窄的 555px）。
+     撑满正文区之后，下面的百分比列宽才真正是「同一个值」。 */
+  width: 100%;
+}
+
+html[data-ts-page="download"] .md-typeset .ts-align table th:nth-child(1),
+html[data-ts-page="download"] .md-typeset .ts-align table td:nth-child(1) {
+  width: 46%;  /* 材料 */
+}
+
+html[data-ts-page="download"] .md-typeset .ts-align table th:nth-child(2),
+html[data-ts-page="download"] .md-typeset .ts-align table td:nth-child(2) {
+  width: 32%;  /* 文件 */
+}
+
+html[data-ts-page="download"] .md-typeset .ts-align table th:nth-child(3),
+html[data-ts-page="download"] .md-typeset .ts-align table td:nth-child(3) {
+  width: 22%;  /* 下载按钮 */
+}
+
+/* 组件表那些**还没给图**的行：先把两个图框占出来（等补图），
+   别让整列看着像填了一半。写成 `span.ts-shot` 而不是空着，是因为格子里
+   一放图，这两个框就要换成 `<br>` 隔开的两张图——位置与数量对得上。
+   ⚠️ 下面那条「空格子占位」的伪元素要同时排掉 `.ts-shot`，否则会多出第三个框。 */
+html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:first-child > span.ts-shot {
+  display: block;
+  width: var(--ts-shot-w);
+  height: var(--ts-shot-h);
+  border-radius: 0.15rem;
+  background-color: var(--ts-shot-bg-color);
+  background-image: var(--ts-shot-bg-image);
+  color: var(--md-default-fg-color--light);
+  font-size: 0.7rem;
+  line-height: var(--ts-shot-h);
+  text-align: center;
+}
+
 /* ── 预览列：两张图并排 · 统一图框 ─────────────────────────────────
    这一段全部作用在**内容层原本的标记**上：格子里就是若干个 `<a><img></a>`，
    图与图之间隔着 `<br>`。**没有中间那层 `.ts-shot` / `.ts-prev` 包装**——
@@ -636,16 +704,16 @@ html[data-ts-page="decal"] .md-typeset {
    ⚠️ 宽度必须写死成「正好几列」+ 单元格内边距：不写死，flex 容器的 min-content
    就是**一张图**（换行容器取最大子项），两张会竖着叠、表格也跟着矮一半。
    表头那一格也要给：载具页是 `table-layout: fixed`，固定布局下列宽只由第一行决定。 */
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) th:first-child,
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) th:first-child,
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:first-child {
   width: calc(var(--ts-shot-w) * var(--ts-prev-cols) + var(--ts-shot-gap) * var(--ts-prev-cols) - var(--ts-shot-gap) + var(--ts-pad));
 }
 
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) th:first-child {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) th:first-child {
   white-space: nowrap;
 }
 
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:first-child {
   display: flex;
   flex-wrap: wrap;
   gap: var(--ts-shot-gap);
@@ -653,14 +721,14 @@ html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:fi
   justify-content: center;
 }
 
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child > br {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:first-child > br {
   display: none;
 }
 
 /* 图框。宽度落在 `<a>`（灯箱包的那层）与裸 `<img>` 上都要能生效：
    脚本还没跑时图是裸的，跑过之后被灯箱裹进 <a>。 */
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child > a,
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child > img {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:first-child > a,
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:first-child > img {
   display: block;
   width: var(--ts-shot-w);
   height: var(--ts-shot-h);
@@ -679,7 +747,7 @@ html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:fi
 /* ⚠️ max-width / max-height 都要显式写回 none：上面那条
    `.md-typeset table img { max-height: none; margin: 0 }` 是本站自己的兜底，
    主题还有一条更宽的 `max-width: 100%`。图框已经给了尺寸，这里只让图**填满框**。 */
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child img {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:first-child img {
   width: 100%;
   height: 100%;
   max-width: none;
@@ -696,13 +764,13 @@ html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:fi
    标记写在 **content/ 里**：那两张图后面跟一句 `{ .ts-natural }`。
    ⚠️ 不能用「这一格有几张图」代替这个标记——Wall E / Building E / Decal 每行
       都只有一张图，那样它们会一起变成原尺寸。 */
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child:has(img.ts-natural) {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:first-child:has(img.ts-natural) {
   width: auto;
   justify-content: flex-start;
 }
 
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child:has(img.ts-natural) > a,
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child:has(img.ts-natural) > img {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:first-child:has(img.ts-natural) > a,
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:first-child:has(img.ts-natural) > img {
   width: 100%;
   height: auto;
   overflow: visible;
@@ -710,7 +778,7 @@ html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:fi
   background: none;
 }
 
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child:has(img.ts-natural) img {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:first-child:has(img.ts-natural) img {
   width: auto;
   height: auto;
   max-width: var(--ts-natural-max);
@@ -727,7 +795,7 @@ html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:fi
       一列空白再看见字。文字按语言从 `config.extra` 的 tables_none* 取，
       由 overrides/main.html 写进 `<html>` 的行内自定义属性 `--ts-none`
       （`content` 里取不到别的元素的属性，attr() 只看伪元素自己那个元素）。 */
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:first-child:not(:has(img))::after {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:first-child:not(:has(img)):not(:has(span.ts-shot))::after {
   content: var(--ts-none, "");
   display: block;
   width: var(--ts-shot-w);
@@ -747,20 +815,20 @@ html[data-ts-page] .md-typeset table:not(details table, .admonition table) td:fi
    `width: 1%`：⚠️ 那样写在这里是**同样的权重、更靠后**，会把算好的宽度压成
    「一格图」那么宽，两张图就上下叠起来了（改版式时踩过一次）。 */
 
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) tbody tr:nth-child(even) > td {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr:nth-child(even) > td {
   background-color: var(--md-default-fg-color--lightest);
 }
 
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) tbody tr > td {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr > td {
   transition: background-color 0.15s;
 }
 
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) tbody tr:hover > td {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr:hover > td {
   background-color: var(--md-accent-fg-color--transparent);
 }
 
 /* 搜索结果跳过去的那一行：闪一下，好找 */
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) tbody tr.is-hit > td {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr.is-hit > td {
   background-color: var(--md-typeset-mark-color);
 }
 
@@ -774,7 +842,7 @@ html[data-ts-page] .md-typeset table:not(details table, .admonition table) tbody
    手机上把预览框收一档、一行只放一张图）。
 */
 html[data-ts-page] .md-typeset .md-typeset__scrollwrap:not(details .md-typeset__scrollwrap, .admonition .md-typeset__scrollwrap),
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) {
   overflow: visible;
 }
 
@@ -783,13 +851,13 @@ html[data-ts-page] .md-typeset table:not(details table, .admonition table) {
    `table-layout: fixed` 与 `position: sticky` 在它身上都不生效——
    固定列宽因此被无视，三张表各算各的列宽（踩过：桌面上看着对上了，
    手机上一量才发现是内容凑巧）。我们的表都已经收进内容宽了，还原成表格盒。 */
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) {
   display: table;
 }
 
 /* 表头跟着滚：三百多行的表，滚到一半不知道哪列是哪列。
    贴在**搜索框下面**（两个 --ts-* 都是 JS 量出来的），别跟搜索框叠在一起。 */
-html[data-ts-page] .md-typeset table:not(details table, .admonition table) thead th {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) thead th {
   position: sticky;
   top: calc(var(--ts-sticky-top, 0px) + var(--ts-bar-h, 0px));
   z-index: 2;
@@ -1051,8 +1119,8 @@ html[data-ts-page] .md-typeset .ts-hit--more {
      `.md-typeset table:not([class]) td`（0,2,2），我原先写的
      `html[data-ts-page] .md-typeset td` 只有 (0,2,1)，**压不住**（踩过，量了半天没变化）。
      折叠块里的参考表不收这一档：它们是能横向滚的普通表，收窄了反而更难看。 */
-  html[data-ts-page] .md-typeset table:not(details table, .admonition table):not([class]) th,
-  html[data-ts-page] .md-typeset table:not(details table, .admonition table):not([class]) td {
+  html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table):not([class]) th,
+  html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table):not([class]) td {
     padding-right: 0.35rem;
     padding-left: 0.35rem;
   }

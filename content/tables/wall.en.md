@@ -1,7 +1,7 @@
 ---
 title: "Wall E & Platform E"
 description: "Normal walls and special walls, including notes on what destroys them."
-source_sha256: 0c0ec392143663179114aef1a4eeb1e2cce6b55551a6ff53d1d6e4ba548d6c97
+source_sha256: 7a4ec3629747b8c8edd24708371979cff0278f1c47b6fe977b461a496f94f150
 translated: 2026-10-10
 nav_label: "Wall E & Platform E"
 icon: lucide/box
@@ -18,14 +18,6 @@ icon: lucide/box
     <kbd class="ts-search__kbd">Ctrl K</kbd>
   </div>
   <p class="ts-search__meta"><!--count--> items · Searches names and reference values</p>
-</div>
-
-<div class="grid" markdown>
-
-[:octicons-arrow-right-24: Normal walls](#normal){ .card }
-
-[:octicons-arrow-right-24: Special walls](#special){ .card }
-
 </div>
 
 !!! note "Notes"
