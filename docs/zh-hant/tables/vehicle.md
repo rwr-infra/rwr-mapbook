@@ -1,7 +1,7 @@
 ---
 nav_label: "Vehicle Scatter"
 title: "Vehicle Scatter"
-description: "載具散布清單。"
+description: "載具清單。"
 icon: "lucide/box"
 # ⚠️ 由 tools/docsgen.py 從 content/tables/vehicle.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
 ---
@@ -21,7 +21,7 @@ icon: "lucide/box"
 </div>
 
 !!! quote "注意事項"
-    註：模板版本 vao0822。預覽圖左側為斜向下視角，右側正對法線，也就是地編視角；判斷形狀請以水平線為參考，垂直線是點透視，可能讓物件看起來傾斜。
+    註：RWR統計版本為1.98.1。預覽圖左側為斜向下視角，右側正對法線，也就是地編視角；判斷形狀請以水平線為參考，垂直線是點透視，可能讓物件看起來傾斜。
 
     特殊載具表來自steamapps\common\RunningWithRifles\media\packages\vanilla\factions文件夾中的green_default.resources
 

@@ -73,22 +73,35 @@ INTERVAL = 1.0
 
 
 def stamp() -> float:
-    """手写层里最新的一个修改时间。"""
+    """手写层里最新的一个修改时间。
+
+    ⚠️ 取时间要**容忍文件当场消失**：编辑器与 agent 保存文件时，常见做法是
+    「写一个临时文件再改名覆盖」，两件事之间的那一瞬间，原文件名是不存在的。
+    早先这里直接 `path.stat()`，正好撞上那一刻就抛 FileNotFoundError、整个监视器
+    当场退出——表现是「改着改着预览就不刷新了」，而且看不出为什么（踩过）。
+    少一个文件不影响「有没有东西被改过」这个判断，跳过就是。
+    """
+    def mtime(path) -> float:
+        try:
+            return path.stat().st_mtime
+        except OSError:
+            return 0.0
+
     newest = 0.0
     for directory in WATCH_DIRS:
         if not directory.is_dir():
             continue
         for path in directory.rglob("*"):
             if path.is_file():
-                newest = max(newest, path.stat().st_mtime)
+                newest = max(newest, mtime(path))
     for pattern in WATCH_GLOBS:
         directory, glob = pattern
         if directory.is_dir():
             for path in directory.glob(glob):
-                newest = max(newest, path.stat().st_mtime)
+                newest = max(newest, mtime(path))
     for path in WATCH_FILES:
         if path.is_file():
-            newest = max(newest, path.stat().st_mtime)
+            newest = max(newest, mtime(path))
     return newest
 
 

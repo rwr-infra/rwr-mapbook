@@ -1,8 +1,8 @@
 ---
 title: "Decal"
 description: "Ground decals."
-source_sha256: f93a510824bc4a8e367c4b34f07d8a570f9b805bb9a4cc5fb3f251ea3b4043b0
-translated: 2026-10-06
+source_sha256: 5a351816c11014b78ebbb31f257620d5ca266726bdc930d8e52d3793b9a92669
+translated: 2026-10-10
 nav_label: "Decal"
 icon: lucide/box
 # ⚠️ 由 tools/docsgen.py 从 content/tables/decal.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
@@ -22,12 +22,11 @@ hide: [toc]
   <p class="ts-search__meta">20 items · Searches names and reference values</p>
 </div>
 
-!!! tip "How to read this table"
-    The **Preview** column gives two images side by side: the left one looks down at an
-    oblique angle, the right one faces the normal directly. Judge the shape by the
-    **horizontal** line; the vertical one is in perspective.
-
-    One table. The Notes column says whether the texture reference has any problems.
+!!! warning "Notes"
+    Note: the template version is earlier than vao0822 and has not been re-surveyed yet.
+    The left preview image is an oblique view looking down, the right one faces the
+    normal directly — that is, the editor view. Judge the shape by the horizontal line;
+    the vertical one is in perspective and can make an object look tilted.
 
 *[template]: the name an object is referred to by in `template = …`; that is how you look it up
 

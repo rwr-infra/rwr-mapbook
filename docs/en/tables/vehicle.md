@@ -1,8 +1,8 @@
 ---
 title: "Vehicle Scatter"
-description: "The vehicle scatter list."
-source_sha256: 99c1d13f7c236d2aa7bb97128bddd3d54c7553834342436ead49d1b0524aaa2c
-translated: 2026-10-06
+description: "The vehicle list."
+source_sha256: 690d27d37933a7f680c89e323285b72c3c0a414104c7bd60e18ca96bc9cb80e6
+translated: 2026-10-10
 nav_label: "Vehicle Scatter"
 icon: lucide/box
 # ⚠️ 由 tools/docsgen.py 从 content/tables/vehicle.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
@@ -22,10 +22,10 @@ icon: lucide/box
 </div>
 
 !!! quote "Notes"
-    Note: template version vao0822. The left preview image is an oblique view looking
-    down, the right one faces the normal directly — that is, the editor view. Judge the
-    shape by the horizontal line; the vertical one is in perspective and can make an
-    object look tilted.
+    Note: RWR statistics version 1.98.1. The left preview image is an oblique view
+    looking down, the right one faces the normal directly — that is, the editor view.
+    Judge the shape by the horizontal line; the vertical one is in perspective and can
+    make an object look tilted.
 
     The special vehicle table comes from `green_default.resources` in the
     `steamapps\common\RunningWithRifles\media\packages\vanilla\factions` folder.

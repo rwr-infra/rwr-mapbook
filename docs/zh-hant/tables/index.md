@@ -10,5 +10,8 @@ hide: [toc]
 
 <meta http-equiv="refresh" content="0; url=mesh/">
 
-這一頁不再單獨存在——五張清單就排在左邊目錄的「模型清單」底下。
-正在前往 [MESH E](mesh.md)；沒有自動跳過去的話，點這個鏈接。
+這一頁因排版改動不再單獨存在。
+
+正在前往 [MESH E](mesh.md)，如果未主動跳轉請自行點擊鏈接。
+
+<span class="redact" tabindex="0">趁沒人注意偷摸喫口屎</span>

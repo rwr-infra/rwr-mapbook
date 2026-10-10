@@ -1,8 +1,8 @@
 ---
 title: "MESH E"
 description: "Rocks, plants, small props, large props, special props, and the ones with serious problems."
-source_sha256: 9dc5f5c09ca61a672475cbcc851688674a0833952385d25893c7b9f16407191e
-translated: 2026-10-06
+source_sha256: f506648b39453ce87b05e329b6f309edcb29161b5c95663e2a34a5c68d60115f
+translated: 2026-10-10
 nav_label: "MESH E"
 icon: "lucide/box"
 # ⚠️ 由 tools/docsgen.py 从 content/tables/mesh.en.md 生成，请勿手改；要改请改 content/ 下的源文件。

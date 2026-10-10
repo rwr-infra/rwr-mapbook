@@ -1,73 +1,53 @@
 ---
 title: "About"
-description: "Which editor version this handbook covers, how the URLs are laid out, and what has not been verified yet."
-source_sha256: 45c67585d25d144b876e7cbd1c9272c1fe6f916f814d83c492fed4fb701fdff5
-translated: 2026-09-27
+description: "What this handbook is, who puts it together, and which sections it has."
+source_sha256: 1676ee192896f65de498df82f731272b6a9449d8e46fe0a0248260833599ca78
+translated: 2026-10-10
 nav_label: "About"
 icon: lucide/info
 ---
 
 # About
 
-This is a handbook for the Running With Rifles map editor: **what every panel does, which
-models you can place, which key does what, and how to fill in the configuration files**.
-It was written by people who make maps, not by the developers.
+<div class="grid cards" markdown>
 
-|  |  |
-| --- | --- |
-| Editor version | 0101 |
-| Handbook edited | 20260922 |
-| Current editor | HamSter |
-| Inventory template version | vao0822 |
+-   :material-folder-open:{ .lg .middle } __Main facts__
+
+    ---
+
+    Handbook editor version: 0101
+
+    Handbook edited: 20261010
+
+    Current editors: HamSter
+
+    Inventory template version: vao0822
+
+    Note on the handbook: apart from Mesh and Wall, the inventories are not surveyed yet.
+
+</div>
+
+This is an introductory guide and reference handbook for the Running With Rifles map
+editor. It is put together by people outside the development team; if something is
+missing or wrong, contact the current editors. Group chat: 516722330.
+
+Site built by: 兴科科技 (bananaxiao2333)
+
+Content maintained by: HamSter
+
+Content guidance: TerranConfederacy, Autumnsnail, 构巡二 (sq)
+
+Content proofread by: 构巡二 (sq)
+
+Site project: https://github.com/rwr-infra/rwr-mapbook
+
+Editor project: https://github.com/Autumnsnail/rwrme
 
 ## What this handbook covers
 
 | Section | What is in it |
 | --- | --- |
-| [Getting ready](../prepare/index.md) | How to configure the editor once you have it, how to sync it with your RWR folder, and how to switch on the built-in camera mod |
-| [Feature guide](../editor/index.md) | Every tool on the main panel, the key bindings, finding an object by ID, and the mapSettings / 3rdParSettings / RefpM configuration files |
-| [Model inventories](../tables/index.md) | Five inventories, six hundred objects, with previews and notes |
-| [File downloads](../download/index.md) | The latest editor, complete archives of every earlier version, and the companion template |
-
-## How the URLs are laid out
-
-Version first, language second — so the same page has its own address in every version
-and every language:
-
-```mermaid
-graph TD
-  A["/ · current · Simplified"] --> B["/en/ · current · English"]
-  A --> C["/zh-hant/ · current · Traditional"]
-  A --> D["/egg/ · the egg · Simplified"]
-  D --> E["/egg/en/"]
-  D --> F["/egg/zh-hant/"]
-```
-
-## What has not been verified
-
-Not every line has been tried. Where that is the case, the page says so — read with care:
-
-| Marker | What it means |
-| --- | --- |
-| **Untested** | the whole page has not been checked item by item |
-| **Incomplete** | written only halfway, or mentioned in a single sentence |
-| not tried / no idea what this is | the author did not verify that row either — **fill it in as shown, but do not treat it as a conclusion** |
-
-The "it is said that…" passages are kept as written too.
-**This handbook does not second-guess the source.**
-
-!!! quote "What is written straight, and what you have to click open"
-    These notes are written for people who build maps: conclusions are written
-    straight, with the wording left alone — "crashes on load", "no collision box",
-    "whatever you do, do not file every material error under template meshes" all
-    stay exactly as written. Polished into formal prose, a reader could no longer
-    tell how certain the author was.
-
-    Anything unverified still carries its marker: "untested", "not tried". The
-    meaning has not changed — it means nobody has tried it yet, which is not the
-    same as "it works" or "it does not".
-
-    The author's own asides and complaints are a separate case: they affect no
-    conclusion, but left in the body they make the whole page read like something
-    other than a manual, so they go into **click-to-open** blocks. Clicking one still
-    shows the original wording, so a reader can still tell how certain the author was.
+| [Getting ready](../prepare/index.md) | How to set the editor up once you have it, sync it with your RWR folder, and switch on the built-in camera mod |
+| [Feature guide](../editor/index.md) | Every tool on the main panel, the key bindings, and finding an object by ID |
+| [Model inventories](../tables/index.md) | Five inventories, six hundred objects, with previews and notes, plus a search |
+| [File downloads](../download/index.md) | The latest editor, complete archives of earlier versions, and the companion template |
