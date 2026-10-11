@@ -712,7 +712,8 @@ html[data-ts-page="download"] .md-typeset .ts-plain:not(.ts-align) table {
      实测表格盒 938px、单元格网格却只按 802px 分列，右侧空出 135px 的死皮
      （用户截图报的「排版没修好」就是这个）。下载页的 .ts-plain 包装层已经
      拉回正常流、表格也都收进内容宽，不需要 inline-block 自己撑开了；
-     手机上的卡片化规则（媒体查询里）自带 display: block，会盖掉这条。 */
+     下载页的卡片化规则（≤76.1875em 的媒体查询里）自带 display: block，
+     且 :is() 把权重提到了同档、位置更靠后，会盖掉这条。 */
   display: table;
 }
 
@@ -1477,99 +1478,289 @@ html[data-ts-page] .md-typeset .ts-hit--more {
     word-break: break-all;
   }
 
-  /* ── 版本表与三张模板表（.ts-plain）：加了备注列之后四列在 360px 塞不下
-     （实测下载按钮被切出屏幕）。手机上同样卡片化：表头藏掉，一行变一张卡，
-     各格纵着排——版本号、文件名、备注、按钮，含义自明。 */
-  html[data-ts-page="download"] .md-typeset .ts-plain table {
+  html[data-ts-page] .md-typeset table .md-button {
+    white-space: nowrap;
+  }
+}
+
+/* ── 两张清单页家族（五张模型清单 + 下载页四张表）卡片化 ──────────────
+   断点 76.1875em（≈1220px）
+   之前断点在 45em，后来提到 60em——都不对。量出来的实情是：这个主题
+   ≤76.1875em 时把左侧栏收进抽屉，但**仍给它占着 242px 的 flex 槽**
+   （1024 视口实测：.md-content 只有 782px，右边空出一整条）——桌面四列
+   在这段区间被压到 750px 还左对齐，就是用户报的「平板和桌面尺寸下
+   组件下载列表有问题」。所以卡片化必须一路覆盖到 76.1875em：这以下
+   全用卡片，以上侧栏才真正可见、正文 ≥944px，四列表两头都体面。
+
+   分三层写（选择器用 :is(.ts-plain.ts-align, .ts-plain:not(.ts-align))
+   是故意的：上面 .ts-plain 的 display:table 那条权重是 (0,4,2)，这里必须
+   同档且更靠后才压得住；td 那条反过来用 :where() 压低权重，把排版决定权
+   让给下面两层的单元格规则）：
+   · 共用层：表壳拆成卡片盒——thead 藏掉、tbody/tr/td 转块级、表壳自己
+     的 1px 边框与底色清掉（不清的话卡片缝里会露出两截「连线」，用户圈过）；
+     这一层**两张清单页家族共用**（`html[data-ts-page]`，五张模型清单与
+     下载页都在内，判据同源）；
+   · 竖排层（≤44.9375em 手机）：一行一卡从上往下堆——
+     模型清单：预览图 → 名称 → 备注；下载页：标题 → 文件 → 备注 → 按钮；
+   · 横排层（45em–76.1875em 平板/半开窗口）：卡片有 700–950px 宽，
+     竖排会空得发慌，改成「列表行」：图框或版本在左、文字居中、按钮
+     靠右垂直居中（下载页）——应用商店下载列表的路数。
+   ⚠️ 两类页面的列数不同（清单三列、下载页四列），所以下面两层里
+     清单页那几条一律带 `:not([data-ts-page="download"])`，两处判据
+     不重叠、不互相踩。 */
+@media screen and (max-width: 76.1875em) {
+  html[data-ts-page] .md-typeset :is(.ts-plain.ts-align, .ts-plain:not(.ts-align)) table,
+  html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) {
     display: block;
     width: 100%;
+    border: 0;                 /* 表壳的框：卡片缝里「连线」的来源 */
+    background: transparent;   /* 桌面端斑马/底色在卡片布局里没有意义 */
   }
 
-  html[data-ts-page="download"] .md-typeset .ts-plain table thead {
+  html[data-ts-page] .md-typeset :is(.ts-plain.ts-align, .ts-plain:not(.ts-align)) table thead,
+  html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) thead {
     display: none;
   }
 
-  html[data-ts-page="download"] .md-typeset .ts-plain table tbody {
+  html[data-ts-page] .md-typeset :is(.ts-plain.ts-align, .ts-plain:not(.ts-align)) table tbody,
+  html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody {
     display: block;
   }
 
-  html[data-ts-page="download"] .md-typeset .ts-plain table tbody tr {
+  /* 一行 = 一张卡 */
+  html[data-ts-page] .md-typeset :is(.ts-plain.ts-align, .ts-plain:not(.ts-align)) table tbody tr,
+  html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr {
     display: block;
-    padding: 0.55rem 0.2rem;
+    margin: 0 0 1rem;
+    padding: 0.75rem 0.9rem 0.85rem;
+    border: 0.05rem solid var(--md-default-fg-color--lightest);
+    border-radius: 0.6rem;
+    background-color: var(--md-code-bg-color);
   }
 
-  html[data-ts-page="download"] .md-typeset .ts-plain table tbody tr + tr {
-    border-top: 0.05rem solid var(--md-default-fg-color--lightest);
+  html[data-ts-page] .md-typeset :is(.ts-plain.ts-align, .ts-plain:not(.ts-align)) table tbody tr:last-child,
+  html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr:last-child {
+    margin-bottom: 0;
   }
 
-  html[data-ts-page="download"] .md-typeset .ts-plain table tbody tr th,
-  html[data-ts-page="download"] .md-typeset .ts-plain table tbody tr td {
+  html[data-ts-page] .md-typeset :where(:is(.ts-plain.ts-align, .ts-plain:not(.ts-align)) table, table:not(details table, .admonition table, .ts-plain table)) tbody tr td {
     display: block;
     width: auto !important;  /* 压掉桌面端那套百分比列宽 */
-    padding: 0.15rem 0.35rem;
+    padding: 0 !important;   /* 卡片自己的内边距够了，主题的格距不要 */
+    border: 0 !important;    /* 主题画在 td 上的通栏横线去掉，卡片内靠留白分段 */
   }
 
-  html[data-ts-page="download"] .md-typeset table .md-button {
-    padding: 0.5em 0.8em;
-    font-size: 0.75em;
-  }
-
-  /* ── 下载页组件表：四列在手机上塞不下，改成卡片 ──────────────────────
-     实测 360px 视口这张表 min-content 446px——预览列(130) + 名称列
-     （长文件名）+ 备注列 + 下载按钮，四列并排怎么排都超。
-     手机上把行改成两列网格：预览在左跨三行，名称 / 备注 / 下载按钮
-     在右自上而下。表头藏掉（卡片里不需要「预览/名称/备注/下载」）。 */
-  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) {
+  /* ⚠️ 表格外面那两层包装（`.md-typeset__table` / `.md-typeset__scrollwrap`）
+     也要拉回正常流：主题给的是 inline-block + ±16px 负边距（全出血补偿），
+     于是卡片宽度会按**内容**缩——Building E 的卡 326px、Decal 287px，
+     同一页上宽窄不一（实测）。下载页早就有这一条（不限宽度），
+     这里把它放进共用层，两张清单页家族都吃得到。
+     ⚠️ 桌面（>76.1875em）不动：清单页的表格本来就是按内容收缩的，
+     改了会波及已经看习惯的宽屏版式。 */
+  html[data-ts-page] .md-typeset .md-typeset__table:not(details .md-typeset__table, .admonition .md-typeset__table),
+  html[data-ts-page] .md-typeset .md-typeset__scrollwrap:not(details .md-typeset__scrollwrap, .admonition .md-typeset__scrollwrap) {
     display: block;
-    width: 100%;
+    width: auto;
+    margin-right: 0;
+    margin-left: 0;
+    padding-right: 0;
+    padding-left: 0;
   }
 
-  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody {
-    display: block;
+  /* 按钮：正常大小的小按钮，不再是整格居中悬着 */
+  html[data-ts-page] .md-typeset table .md-button {
+    display: inline-block;
+    padding: 0.55em 1.1em;
+    font-size: 0.8em;
+  }
+}
+
+/* ── 手机：竖排卡 ─────────────────────────────────────────────────── */
+@media screen and (max-width: 44.9375em) {
+  /* ── 五张模型清单（预览 / 名称 / 备注）：图框行 → 名称 → 备注 ──
+     图框那一格本来就是 flex 居中（预览列那段的规则），卡片里保持居中即可，
+     这里只管卡片内的节奏。名称列是「中文名<br>template = xxx」两行，
+     不加粗——加粗会把可复制芯片一起压重，反而分不清哪里能点。 */
+  html[data-ts-page]:not([data-ts-page="download"]) .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:first-child {
+    margin-bottom: 0.55rem;
   }
 
-  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) thead {
+  html[data-ts-page]:not([data-ts-page="download"]) .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(2) {
+    margin-bottom: 0.3rem;
+  }
+
+  html[data-ts-page]:not([data-ts-page="download"]) .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(3) {
+    color: var(--md-default-fg-color--light);
+    font-size: 0.72rem;
+    line-height: 1.7;
+  }
+
+  /* 备注列绝大多数是空的：整格不渲染，别在每张卡底下留一行空白 */
+  html[data-ts-page]:not([data-ts-page="download"]) .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(3):empty {
     display: none;
+  }
+
+  /* 版本表 / 模板表：标题 → 文件 → 备注 → 按钮 */
+  html[data-ts-page="download"] .md-typeset .ts-plain table tbody tr td:nth-child(1) {
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+  }
+
+  html[data-ts-page="download"] .md-typeset .ts-plain table tbody tr td:nth-child(2) {
+    margin-bottom: 0.35rem;
+  }
+
+  html[data-ts-page="download"] .md-typeset .ts-plain table tbody tr td:nth-child(3) {
+    color: var(--md-default-fg-color--light);
+    font-size: 0.72rem;
+    line-height: 1.7;
+    margin-bottom: 0.7rem;
+  }
+
+  /* 组件卡：预览图框行 → 名称+文件 → 备注 → 按钮
+     图框横排：两个 130px 框 + 间隙 ≈ 272px，360px 的卡内宽度放得下。 */
+  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(1) {
+    display: flex;
+    gap: 0.45rem;
+    margin-bottom: 0.55rem;
+  }
+
+  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(2) {
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(3) {
+    color: var(--md-default-fg-color--light);
+    font-size: 0.72rem;
+    line-height: 1.7;
+    margin-bottom: 0.7rem;
+  }
+
+  /* 组件表备注还空着：空格整格不渲染，别留一行空白 */
+  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(3):empty {
+    display: none;
+  }
+
+  html[data-ts-page="download"] .md-typeset .ts-plain table tbody tr td:last-child,
+  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:last-child {
+    text-align: left;  /* 比 .ts-plain td:last-child 居中那条多两级，压得住 */
+  }
+}
+
+/* ── 平板 / 半开窗口：横排「列表行」卡 ──────────────────────────────
+   卡片有 700–950px 宽，竖着堆文字会空一大片。改成行内布局：
+   版本/模板卡 = 左列（版本 → 归档 → 备注）+ 右侧下载按钮（跨行垂直居中）；
+   组件卡 = 左侧两个图框 + 中间名称与备注 + 右侧按钮。
+   单元格用 grid-area 落位，行距靠单元格自己的 margin，不用 row-gap——
+   备注为空被藏掉时行高才会跟着塌成 0。 */
+@media screen and (min-width: 45em) and (max-width: 76.1875em) {
+  /* ── 五张模型清单：图框在左，名称与备注在右（备注常空）────────────
+     没有下载页那种「按钮列」，所以只有两列：图框占 auto、文字占剩下的。
+     ⚠️ 不按「图 | 名称 | 备注」三列排：备注列在清单里大多为空、少数几行
+        又很长（Wall E 那行有六问），并排会把名称列压窄、还留一段空格。 */
+  html[data-ts-page]:not([data-ts-page="download"]) .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "shot main"
+      "shot notes";
+    column-gap: 1.1rem;
+    align-content: center;
+  }
+
+  html[data-ts-page]:not([data-ts-page="download"]) .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:first-child {
+    grid-area: shot;
+    align-self: center;
+    margin-bottom: 0;
+  }
+
+  html[data-ts-page]:not([data-ts-page="download"]) .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(2) {
+    grid-area: main;
+  }
+
+  html[data-ts-page]:not([data-ts-page="download"]) .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(3) {
+    grid-area: notes;
+    color: var(--md-default-fg-color--light);
+    font-size: 0.72rem;
+    line-height: 1.7;
+  }
+
+  html[data-ts-page]:not([data-ts-page="download"]) .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(3):empty {
+    display: none;
+  }
+
+  /* ⚠️ tr 这条要用与共用层同档的 :is 写法（共用层 display:block 权重 (0,4,4)，
+     普通写法只有 (0,3,4) 会被压住；td 那几条对面是 :where 压低的，不怕）。 */
+  html[data-ts-page="download"] .md-typeset :is(.ts-plain.ts-align, .ts-plain:not(.ts-align)) table tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "ver    action"
+      "file   action"
+      "notes  action";
+    column-gap: 1.2rem;
+  }
+
+  html[data-ts-page="download"] .md-typeset .ts-plain table tbody tr td:nth-child(1) {
+    grid-area: ver;
+    font-weight: 700;
+  }
+
+  html[data-ts-page="download"] .md-typeset .ts-plain table tbody tr td:nth-child(2) {
+    grid-area: file;
+  }
+
+  html[data-ts-page="download"] .md-typeset .ts-plain table tbody tr td:nth-child(3) {
+    grid-area: notes;
+    color: var(--md-default-fg-color--light);
+    font-size: 0.72rem;
+    line-height: 1.7;
+  }
+
+  html[data-ts-page="download"] .md-typeset .ts-plain table tbody tr td:last-child {
+    grid-area: action;
+    align-self: center;
+    text-align: right;   /* 比 .ts-plain td:last-child 居中那条多两级，压得住 */
   }
 
   html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr {
     display: grid;
-    grid-template-columns: auto 1fr;
-    column-gap: 0.7rem;
-    row-gap: 0.3rem;
-    padding: 0.6rem 0.2rem;
-  }
-
-  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr + tr {
-    border-top: 0.05rem solid var(--md-default-fg-color--lightest);
-  }
-
-  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td {
-    display: block;
-    width: auto;
-    padding: 0 0.35rem;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "shot main   action"
+      "shot notes  action";
+    column-gap: 1.1rem;
+    align-content: center;  /* 文字比图框矮：整块相对图框垂直居中，别顶在上头 */
   }
 
   html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(1) {
-    grid-column: 1;
-    grid-row: 1 / span 3;
+    grid-area: shot;
+    display: flex;
+    gap: 0.45rem;
     align-self: center;
   }
 
   html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(2) {
-    grid-column: 2;
-    grid-row: 1;
+    grid-area: main;
+    font-weight: 700;
   }
 
   html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(3) {
-    grid-column: 2;
-    grid-row: 2;
+    grid-area: notes;
+    color: var(--md-default-fg-color--light);
+    font-size: 0.72rem;
+    line-height: 1.7;
   }
 
-  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(4) {
-    grid-column: 2;
-    grid-row: 3;
-    justify-self: start;
+  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(3):empty {
+    display: none;
+  }
+
+  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:last-child {
+    grid-area: action;
+    align-self: center;
+    text-align: right;
   }
 }
 

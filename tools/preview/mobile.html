@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>手机预览 · rwr-mapbook</title>
+<style>
+  /* 一个自给自足的「设备框」：iframe 按真实 CSS 像素宽度渲染，
+     页面里的媒体查询按手机宽度走（不是缩放桌面页），热更新在里面照常刷新。
+     用法：先双击 start.bat 把预览开起来，再双击 start-mobile.bat 打开本页。
+     预览端口不是 8000 时：地址后面加 ?port=8010，或直接 ?origin=http://127.0.0.1:8010。 */
+  :root { --bar: #2b2f36; --bar2: #3a4048; --ink: #e8eaed; --dim: #9aa0a6; }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    display: flex; flex-direction: column;
+    background: #1b1e22; color: var(--ink);
+    font: 13px/1.5 -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+  }
+
+  /* ── 顶栏 ───────────────────────────────────────────── */
+  header {
+    display: flex; align-items: center; gap: .6rem;
+    flex: none; padding: .5rem .75rem;
+    background: var(--bar); border-bottom: 1px solid #000;
+  }
+  header .title { font-weight: 600; margin-right: .2rem; white-space: nowrap; }
+  header input[type=text] {
+    flex: 1 1 14rem; min-width: 8rem;
+    padding: .3rem .5rem; border-radius: .25rem;
+    border: 1px solid #111; background: #1f2329; color: var(--ink);
+    font: inherit;
+  }
+  button, select {
+    padding: .3rem .6rem; border-radius: .25rem;
+    border: 1px solid #111; background: var(--bar2); color: var(--ink);
+    font: inherit; cursor: pointer;
+  }
+  button:hover, select:hover { background: #454c56; }
+  button.on { background: #526cfe; border-color: #526cfe; color: #fff; }
+  .dot { width: .5rem; height: .5rem; border-radius: 50%; background: #5f6368; flex: none; }
+  .dot.up { background: #34a853; }
+  .dot.down { background: #ea4335; }
+  .hint { color: var(--dim); font-size: .8rem; }
+
+  /* ── 设备选择区 ─────────────────────────────────────── */
+  .rack {
+    display: flex; align-items: center; gap: .5rem; flex-wrap: wrap;
+    flex: none; padding: .4rem .75rem;
+    background: #23272d; border-bottom: 1px solid #000;
+  }
+  .rack .sep { width: 1px; height: 1.2rem; background: #454c56; }
+  .chip {
+    padding: .25rem .55rem; border-radius: 1rem;
+    background: #2f343b; border: 1px solid #111; cursor: pointer;
+  }
+  .chip:hover { background: #454c56; }
+  .chip.on { background: #526cfe; border-color: #526cfe; color: #fff; }
+  .size { color: var(--dim); font-variant-numeric: tabular-nums; }
+
+  /* ── 舞台：居中的设备框 ─────────────────────────────── */
+  main {
+    flex: 1 1 auto; min-height: 0;
+    display: flex; align-items: flex-start; justify-content: center;
+    padding: 1rem; overflow: auto;
+  }
+  .device {
+    flex: none; transform-origin: top center;
+    border: 10px solid #111; border-radius: 1.6rem;
+    box-shadow: 0 .6rem 2rem rgba(0,0,0,.5); background: #fff;
+  }
+  .device iframe { display: block; border: 0; background: #fff; }
+
+  /* 服务没开时的提示条 */
+  .dead {
+    flex: none; margin: 0 1rem 1rem; padding: .6rem .8rem;
+    border-radius: .3rem; background: #4a2b2b; color: #ffd7d7;
+  }
+  .dead[hidden] { display: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="title">手机预览</span>
+  <span id="dot" class="dot" title="预览服务状态"></span>
+  <input id="url" type="text" spellcheck="false" placeholder="/download/">
+  <button id="go">打开</button>
+  <button id="reload" title="重新加载框内这一页">刷新</button>
+  <button id="tab" title="用真实浏览器标签打开同一地址">新标签</button>
+  <span class="hint" id="state"></span>
+</header>
+
+<div class="rack">
+  <span class="hint">机型</span>
+  <button class="chip" data-w="360"  data-h="780">安卓 360×780</button>
+  <button class="chip" data-w="390"  data-h="844">iPhone 390×844</button>
+  <button class="chip" data-w="412"  data-h="915">Pixel 412×915</button>
+  <button class="chip" data-w="768"  data-h="1024">平板 768×1024</button>
+  <button class="chip" data-w="1024" data-h="768">桌面 1024×768</button>
+  <span class="sep"></span>
+  <button id="rotate">横竖屏</button>
+  <button id="fit" class="on">适应窗口</button>
+  <span class="sep"></span>
+  <span class="hint">常用页</span>
+  <button class="chip" data-go="/">首页</button>
+  <button class="chip" data-go="/download/">文件下载</button>
+  <button class="chip" data-go="/editor/">功能介绍</button>
+  <button class="chip" data-go="/tables/">模型清单</button>
+  <span class="sep"></span>
+  <span class="size" id="size"></span>
+</div>
+
+<div class="dead" id="dead" hidden>
+  框里打不开？多半是预览服务没起——先回到 <b>tools/preview</b> 双击 <b>start.bat</b>，
+  等浏览器出现 http://127.0.0.1:8000/ 之后再回来刷新本页。
+  （预览换了端口：本页地址后面加 <b>?port=8010</b>。）
+</div>
+
+<main id="stage">
+  <div class="device" id="device">
+    <!-- src 由脚本按预览服务地址拼出来；这里留空，免得 file:// 打开时先去撞一次不存在的 file:/// -->
+    <iframe id="frame" src="about:blank"></iframe>
+  </div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  // 预览服务的地址（start.bat 那个）。默认 8000，可用 ?port=8010 或
+  // ?origin=http://127.0.0.1:8010 覆盖——serve.py 换了端口时要指过来。
+  var Q = new URLSearchParams(location.search);
+  var ORIGIN = (Q.get("origin") || ("http://127.0.0.1:" + (Q.get("port") || "8000"))).replace(/\/+$/, "");
+  var KEY = "rwr-mobile-preview";
+
+  var frame = document.getElementById("frame");
+  var url = document.getElementById("url");
+  var device = document.getElementById("device");
+  var sizeText = document.getElementById("size");
+  var dead = document.getElementById("dead");
+  var dot = document.getElementById("dot");
+
+  var st = { w: 360, h: 780, u: "/", fit: true };
+  try {
+    var saved = JSON.parse(localStorage.getItem(KEY) || "{}");
+    if (saved.w) { st.w = saved.w; st.h = saved.h; }
+    if (saved.u) { st.u = saved.u; }
+    if (typeof saved.fit === "boolean") { st.fit = saved.fit; }
+  } catch (e) { /* 头一次打开，用默认值 */ }
+
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
+
+  function norm(p) {
+    p = String(p || "").trim();
+    if (!p) { return "/"; }
+    if (/^https?:\/\//i.test(p)) { return p; }         // 给了完整地址就用它
+    if (p.charAt(0) !== "/") { p = "/" + p; }          // download/ → /download/
+    return ORIGIN + p;
+  }
+
+  function show() {
+    var target = norm(st.u);
+    frame.style.width = st.w + "px";
+    frame.style.height = st.h + "px";
+    if (frame.src !== target) { frame.src = target; }
+    url.value = st.u;
+    sizeText.textContent = st.w + " × " + st.h + " CSS px";
+    [].forEach.call(document.querySelectorAll(".chip[data-w]"), function (c) {
+      c.classList.toggle("on", Number(c.dataset.w) === st.w && Number(c.dataset.h) === st.h);
+    });
+    resize();
+    save();
+  }
+
+  // 「适应窗口」：框比舞台宽就整体缩一点，只缩放不动 CSS 宽度——
+  // 版面还是按 st.w 那套手机断点算的，缩的只是显示尺寸。
+  function resize() {
+    if (!st.fit) { device.style.transform = ""; return; }
+    var pad = 44;                                       // 边框 10*2 + 舞台留白
+    var avail = document.getElementById("stage").clientWidth - pad;
+    var s = Math.min(1, avail / st.w);
+    device.style.transform = s < 1 ? "scale(" + s.toFixed(3) + ")" : "";
+  }
+
+  // 服务活着吗：no-cors 拿不到内容，但只要没报网络错就说明 8000 上有人。
+  function probe() {
+    fetch(ORIGIN + "/__hot", { mode: "no-cors", cache: "no-store" })
+      .then(function () {
+        dot.className = "dot up"; dot.title = "预览服务在线";
+        dead.hidden = true;
+      })
+      .catch(function () {
+        dot.className = "dot down"; dot.title = "预览服务没开";
+        dead.hidden = false;
+      });
+  }
+
+  function open(u) { st.u = u || url.value || "/"; show(); }
+
+  document.getElementById("go").onclick = function () { open(); };
+  url.addEventListener("keydown", function (e) { if (e.key === "Enter") { open(); } });
+  document.getElementById("reload").onclick = function () {
+    frame.src = frame.src;                              // 重新拉一次，绕过缓存
+  };
+  document.getElementById("tab").onclick = function () { window.open(norm(st.u), "_blank"); };
+
+  [].forEach.call(document.querySelectorAll(".chip[data-w]"), function (c) {
+    c.onclick = function () { st.w = Number(c.dataset.w); st.h = Number(c.dataset.h); show(); };
+  });
+  [].forEach.call(document.querySelectorAll(".chip[data-go]"), function (c) {
+    c.onclick = function () { open(c.dataset.go); };
+  });
+
+  document.getElementById("rotate").onclick = function () {
+    var w = st.w, h = st.h; st.w = h; st.h = w; show();
+  };
+  var fitBtn = document.getElementById("fit");
+  fitBtn.onclick = function () {
+    st.fit = !st.fit;
+    fitBtn.classList.toggle("on", st.fit);
+    resize(); save();
+  };
+
+  frame.addEventListener("load", function () {
+    // 框内点链接换了页：地址栏跟着走（同源，读得到）
+    try {
+      var p = frame.contentWindow.location.pathname + frame.contentWindow.location.hash;
+      if (p && p !== st.u) { st.u = p; url.value = p; save(); }
+    } catch (e) { /* 跨域就读不到，地址栏保持手填的那个 */ }
+  });
+
+  window.addEventListener("resize", resize);
+  fitBtn.classList.toggle("on", st.fit);
+  show();
+  probe();
+  setInterval(probe, 3000);
+})();
+</script>
+</body>
+</html>
