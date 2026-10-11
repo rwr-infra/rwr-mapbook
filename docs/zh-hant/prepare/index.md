@@ -39,12 +39,12 @@ hide: [navigation]
 
 ## 一、配置地編 { #setup }
 
-1. [下載最新版本地編](../download/index.md#download)（本站可直接下載，也可從群文件下載）後，將文件解壓到你自己喜歡的路徑。
+1. 下載[最新版本地編](../download/index.md#download)後，將文件解壓到你自己喜歡的路徑。
 
     ![](../../assets/editor/001.png)
 
     /// caption
-    解壓到任意路徑
+    解壓到任意非中文路徑
     ///
 
 
@@ -53,10 +53,10 @@ hide: [navigation]
     ![](../../assets/editor/002.png)
 
     /// caption
-    建 templates 與 map 兩個文件夾
+    新建 templates 與 map 兩個文件夾
     ///
 
-3. [選擇並下載模板](../download/index.md#materials)（本站可直接下載，也可照舊從群文件拿），放進地編的 `templates` 文件夾中。
+3. 選擇並下載[模板](../download/index.md#materials)，放進地編的 `templates` 文件夾中。
 
     ![](../../assets/editor/003.png)
 
@@ -64,8 +64,6 @@ hide: [navigation]
     把模板放進 templates
     ///
 
-    !!! note "目前只有原版地圖的模板"
-        沙漠與雪地的模板暫未製作完成。
 
 4. 選一個你喜歡的地圖作為等待魔改的底圖，放進地編的 `map` 文件夾。拿不準就用 `map7`（它就是模板文件的底稿，兩個相統一可以避開一些神秘問題）。
 
@@ -82,9 +80,9 @@ hide: [navigation]
     ///
 
     !!! warning "地圖分三類，模板要對得上"
-        RWR 原版地圖分為三個類型：普通模式、沙漠模式、雪地模式。用哪個類型就要裝對應的模板，而目前**只做了「普通模式」這一類**，所以只能用 `\vanilla\maps` 裡的文件。
+        RWR 原版地圖分為三個類型：普通模式、沙漠模式、雪地模式。用哪個類型就要裝對應的模板，分別對應RWR中 `vanilla` 、 `vanilla.desert` 、 `vanilla.winter` 這三個文件夾中的文件。
 
-        `map19`、`\vanilla.desert\maps`、`\vanilla.winter\maps` 裡的地圖可能會有適配問題（打開看看不影響，但拿它們當底子做就算了）。
+        部分極特殊地圖（比如map19）可能會有適配問題（打開看看不影響，但拿它們當底子做就算了）。
 
         當然，你也可以把你地圖文件夾中的 `.svg` 文件直接複製到 `templates` 文件夾中充當模板，雖然這個原生模板沒經過人工完善，但仍然可以和你選的地圖較好適配。
 
@@ -145,8 +143,7 @@ hide: [navigation]
     填入啟動選項
     ///
 
-    !!! warning
-        添加了 debugmode 後無法加入多人服務器，如果想使用請刪除 debugmode 相關代碼再次運行遊戲。
+    !!! warning "添加了 debugmode 後無法加入多人服務器，需刪除 debugmode 代碼再次運行遊戲。"
 
     ??? quote "其實只加 debugmode 這一條就行"
         加 debugmode 這一條可以正常使用 F4 開啟自由視角了，剩下的啟動項代碼是配置遊戲自帶的相機 mod 的，這個 mod 可以實現擴大渲染範圍或開啟法線視圖等功能。

@@ -6,78 +6,69 @@ description: "地编各版本的完整归档、三种模板与预制件组件，
 # ⚠️ 由 tools/docsgen.py 从 content/download/index.zh-hans.md 生成，请勿手改；要改请改 content/ 下的源文件。
 hide: [navigation]
 ---
-
-用来下载地编、模板与预制件。地编目前最新版本为0101；模板现有三种：普通模式模板vao0822、沙漠模式模板vdao、雪地模式模板vwao。
+目前可以提供的下载项目有地编软件、地图模板以及组件（预制件）。
 
 ## 地编下载 { #download .section-title }
 
-这里是历次地编版本的完整归档，从 060 到 0101。每个包就是那一版地编的全套文件，
-与当时发在群文件里的一致。
-
-归档**不在本站的仓库里**。单是这些归档就有 234 MB，跟着仓库走的话，每个想改文档的人
-都得先下几百 MB，而这份仓库里真正会变的是正文。所以它们放在站外的对象存储上
-（Cloudflare R2），下面每一条都是**直链**：浏览器能下，下载器（IDM、aria2、迅雷）
-也能下，右键就能交给它们。
+这里是历次地编版本的完整归档，从 060 到 0101 。每个包就是那一版地编的全套文件，与群里发布的一致。
 
 <div class="ts-plain" markdown="1">
 
 **最新版本：**
 
-| 版本 | 归档 | 下载 |
-| --- | --- | --- |
-| 地编 0101 | `0101.rar`　26.2 MB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/0101.rar){ .md-button .md-button--primary } |
+| 版本 | 归档 | 备注 | 下载 |
+| --- | --- | --- | --- |
+| 地编 0101 | `0101.rar`　26.2 MB | 最新版本，教程正文对着它写 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/0101.rar){ .md-button .md-button--primary } |
 
 **历史版本：**
 
 ??? note "展开查看全部历史版本（060 到 0100）"
-    | 版本 | 归档 | 下载 |
-    | --- | --- | --- |
-    | 地编 0100 | `0100.rar`　31.2 MB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/0100.rar){ .md-button .md-button--primary } |
-    | 地编 091 | `091.rar`　26.2 MB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/091.rar){ .md-button .md-button--primary } |
-    | 地编 090 | `090.rar`　30.7 MB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/090.rar){ .md-button .md-button--primary } |
-    | 地编 081 | `081.rar`　30.7 MB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/081.rar){ .md-button .md-button--primary } |
-    | 地编 080 | `080.rar`　30.7 MB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/080.rar){ .md-button .md-button--primary } |
-    | 地编 070 | `070.rar`　26.2 MB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/070.rar){ .md-button .md-button--primary } |
-    | 地编 060 | `060.zip`　32.1 MB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/060.zip){ .md-button .md-button--primary } |
+    | 版本 | 归档 | 备注 | 下载 |
+    | --- | --- | --- | --- |
+    | 地编 0100 | `0100.rar`　31.2 MB | 上一版，与 0101 差异不大 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/0100.rar){ .md-button .md-button--primary } |
+    | 地编 091 | `091.rar`　26.2 MB | 旧版，界面与清单可能对不上 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/091.rar){ .md-button .md-button--primary } |
+    | 地编 090 | `090.rar`　30.7 MB | 旧版，界面与清单可能对不上 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/090.rar){ .md-button .md-button--primary } |
+    | 地编 081 | `081.rar`　30.7 MB | 旧版，界面与清单可能对不上 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/081.rar){ .md-button .md-button--primary } |
+    | 地编 080 | `080.rar`　30.7 MB | 旧版，界面与清单可能对不上 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/080.rar){ .md-button .md-button--primary } |
+    | 地编 070 | `070.rar`　26.2 MB | 更早的版本，仅供对照 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/070.rar){ .md-button .md-button--primary } |
+    | 地编 060 | `060.zip`　32.1 MB | 归档里最老的一版，注意是 zip | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/060.zip){ .md-button .md-button--primary } |
 
 </div>
 
 !!! warning "先看清是哪一版"
-    归档是**冻结的**：哪一版就是当时那一版的全部文件，之后不会再改。
-    手册正文讲的是最新版；拿旧版地编对着看，界面与清单可能对不上。
+    手册正文默认讲的是最新版，如果不是会特殊标明；拿旧版地编对着看，界面与清单可能对不上。
 
 ## 模板下载 { #materials .section-title }
 
-做地图要用的模板，下载后放进地编的 `templates` 文件夹即可（**注意该文件夹中只有一个模板会生效，可以先将其它模板改下后缀防止读错**）。模板的作用是提供比较完备的Mesh、Wall等素材库，并且根据模板的种类（普通、沙漠、雪地）来对地图进行不同地面渲染。
+做地图要用的模板，下载后放进地编的 `templates` 文件夹即可（**注意该文件夹中只有一个模板会生效，可以先将其它模板改下后缀防止读错**）。
 
-三种模板**并列**在这里，挑你要的那一种下载即可。
+模板的作用是提供比较完备的Mesh、Wall等素材库，并且根据模板的种类（普通、沙漠、雪地）来对地图进行不同地面渲染。
 
 <div class="ts-plain ts-align" markdown="1">
 
-**原版模板（以map8为基础）**
+**原版模板（以map7为基础）**
 
-| 材料 | 文件 | 下载 |
-| --- | --- | --- |
-| 普通模式模板（清单版本 vao0822） | `vao0822.svg`　441 kB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/vao0822.svg){ .md-button .md-button--primary download="vao0822.svg" } |
+| 版本 | 归档 | 备注 | 下载 |
+| --- | --- | --- | --- |
+| 普通模式模板（清单版本 vao0822） | `vao0822.svg`　441 kB | 默认环境 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/vao0822.svg){ .md-button .md-button--primary download="vao0822.svg" } |
 
 **沙漠模板**
 
-| 材料 | 文件 | 下载 |
-| --- | --- | --- |
-| 沙漠模式模板 | `vdao.svg`　431 kB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/vdao.svg){ .md-button .md-button--primary download="vdao.svg" } |
+| 版本 | 归档 | 备注 | 下载 |
+| --- | --- | --- | --- |
+| 沙漠模式模板 | `vdao.svg`　431 kB | 环境材质为沙漠<br>该模板还未细化测试 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/vdao.svg){ .md-button .md-button--primary download="vdao.svg" } |
 
 **雪地模板**
 
-| 材料 | 文件 | 下载 |
-| --- | --- | --- |
-| 雪地模式模板 | `vwao.svg`　426 kB | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/vwao.svg){ .md-button .md-button--primary download="vwao.svg" } |
+| 版本 | 归档 | 备注 | 下载 |
+| --- | --- | --- | --- |
+| 雪地模式模板 | `vwao.svg`　426 kB | 环境材质为雪地<br>该模板还未细化测试 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/vwao.svg){ .md-button .md-button--primary download="vwao.svg" } |
 
 </div>
 
 ## 组件下载 { #prefabs .section-title }
 
-预制件（`.asmb`）是**一组摆好的物件**：下完之后放进地编读取组件的文件夹
-（`assaumbles`），就能整组拿来用，不用一个个摆。
+组件也称预制件，格式为xxx.asmb，是一组已经组装好的对象：下载之后放进地编读取组件的文件夹`assaumbles`就能在地编中使用了，一般可以多个模板通用。
 
 <div class="ts-search">
   <div class="ts-search__box">
@@ -90,13 +81,12 @@ hide: [navigation]
 
 | 预览 | 名称 | 备注 | 下载 |
 | --- | --- | --- | --- |
-| <span class="ts-shot"></span><span class="ts-shot"></span> | 岛上的机库<br>`HangarOnIsland_objects.asmb`　5.8 kB | 待补 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/HangarOnIsland_objects.asmb){ .md-button .md-button--primary download="HangarOnIsland_objects.asmb" } |
-| <span class="ts-shot"></span><span class="ts-shot"></span> | 藏匿点<br>`Stash_vao0822.asmb`　4.2 kB | 待补 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/Stash_vao0822.asmb){ .md-button .md-button--primary download="Stash_vao0822.asmb" } |
-| <span class="ts-shot"></span><span class="ts-shot"></span> | 军械库<br>`Armory_vao0822.asmb`　2.7 kB | 待补 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/Armory_vao0822.asmb){ .md-button .md-button--primary download="Armory_vao0822.asmb" } |
+| <span class="ts-shot"></span><span class="ts-shot"></span> | 机库<br>`HangarOnIsland_objects`<span class="ts-ext">.asmb</span>　5.8 kB |  | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/HangarOnIsland_objects.asmb){ .md-button .md-button--primary download="HangarOnIsland_objects.asmb" } |
+| <span class="ts-shot"></span><span class="ts-shot"></span> | 储藏室<br>`Stash_vao0822`<span class="ts-ext">.asmb</span>　4.2 kB |  | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/Stash_vao0822.asmb){ .md-button .md-button--primary download="Stash_vao0822.asmb" } |
+| <span class="ts-shot"></span><span class="ts-shot"></span> | 军械库<br>`Armory_vao0822`<span class="ts-ext">.asmb</span>　2.7 kB |  | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/Armory_vao0822.asmb){ .md-button .md-button--primary download="Armory_vao0822.asmb" } |
 
 !!! note "预览图与备注还没补"
-    这三行的预览图与备注都还空着：位置先占出来了（每行两个图框），
-    图与说明补齐后会换掉。文件名与哈希是准的，可以先下。
+    这三行的预览图与备注都还空着：位置先占出来了（每行两个图框），图与说明补齐后会换掉。
 
 ## 相关说明 { .section-title }
 

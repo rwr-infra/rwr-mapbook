@@ -1,14 +1,22 @@
 ---
 title: "MESH E"
 description: "Rocks, plants, small props, large props, special props, and the ones with serious problems."
-source_sha256: f506648b39453ce87b05e329b6f309edcb29161b5c95663e2a34a5c68d60115f
-translated: 2026-10-10
+source_sha256: 83df16c690f830e78d4ab5123e2bd177999b6c5d3eb153ea4811240c62c00bbf
+translated: 2026-10-11
 nav_label: "MESH E"
 icon: "lucide/box"
 # ⚠️ 由 tools/docsgen.py 从 content/tables/mesh.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
 ---
 
 # MESH E { #mesh }
+!!! quote "Notes"
+    Note: template version vao0822. The left preview image is an oblique view
+    looking down, the right one faces the normal directly — that is, the editor
+    view. Judge the shape by the horizontal line; the vertical one is in
+    perspective and can make an object look tilted. And whatever you do, don't
+    lump every material error under "the template points at a restricted file";
+    errors like the fir tree and the placard are definitely not that — they are
+    another kind of reference-parameter error :/
 
 <p class="kicker">TABLES · 311 items</p>
 
@@ -20,15 +28,6 @@ icon: "lucide/box"
   </div>
   <p class="ts-search__meta">311 items · Searches names and reference values</p>
 </div>
-
-!!! quote "Notes"
-    Note: template version vao0822. The left preview image is an oblique view
-    looking down, the right one faces the normal directly — that is, the editor
-    view. Judge the shape by the horizontal line; the vertical one is in
-    perspective and can make an object look tilted. And whatever you do, don't
-    lump every material error under "the template points at a restricted file";
-    errors like the fir tree and the placard are definitely not that — they are
-    another kind of reference-parameter error :/
 
 ## Nature (rocks and plants) <span class="ts-count">57 items</span> { #nature }
 

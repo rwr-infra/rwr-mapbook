@@ -1,14 +1,21 @@
 ---
 title: "Wall E & Platform E"
 description: "Normal walls and special walls, including notes on what destroys them."
-source_sha256: 7a4ec3629747b8c8edd24708371979cff0278f1c47b6fe977b461a496f94f150
-translated: 2026-10-10
+source_sha256: 88b326b370c68cc1c11e4b00f8c4da8fcdff2a4bb1d49eb8bb0d0ac67e56cf2e
+translated: 2026-10-11
 nav_label: "Wall E & Platform E"
 icon: lucide/box
 # ⚠️ 由 tools/docsgen.py 从 content/tables/wall.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
 ---
 
 # Wall E & Platform E { #wall }
+!!! quote "Notes"
+    Note: template version vao0822; the views are side-on. Destroying a wall with
+    explosives seems to need hitting it near the middle; hits at the edges may fail to
+    blow it up (not verified case by case). If a wall is invisible, or its shape/material
+    looks odd, it is most likely meant to be used together with a platform. Walls and
+    platforms share one asset library, which is why the handbook puts both on this page.
+!!! warning "Platform previews are not in yet — hold on, the plan is a preview toggle."
 
 <p class="kicker">TABLES · 76 items</p>
 
@@ -20,12 +27,6 @@ icon: lucide/box
   </div>
   <p class="ts-search__meta">76 items · Searches names and reference values</p>
 </div>
-
-!!! note "Notes"
-    Note: template version vao0822; the views are side-on. Destroying a wall with
-    explosives seems to need hitting it near the middle; hits at the edges may fail to
-    blow it up (not verified case by case). If a wall is invisible, or its shape/material
-    looks odd, it is most likely meant to be used together with a platform.
 
 ## Normal walls <span class="ts-count">49 items</span> { #normal }
 

@@ -1,25 +1,13 @@
 ---
 title: "Vehicle Scatter"
 description: "The vehicle list."
-source_sha256: 690d27d37933a7f680c89e323285b72c3c0a414104c7bd60e18ca96bc9cb80e6
-translated: 2026-10-10
+source_sha256: 7e5a5391ee67d9f5f51964a8d16a87407a15c78787e8f0d66db7dc236f21d196
+translated: 2026-10-11
 nav_label: "Vehicle Scatter"
 icon: lucide/box
 ---
 
 # Vehicle Scatter { #vehicle }
-
-<p class="kicker">TABLES · <!--count--> items</p>
-
-<div class="ts-search">
-  <div class="ts-search__box">
-    <span class="ts-search__icon" aria-hidden="true"></span>
-    <input class="ts-search__input" type="search" autocomplete="off" spellcheck="false" placeholder="Search name or reference…" aria-label="Search this list">
-    <kbd class="ts-search__kbd">Ctrl K</kbd>
-  </div>
-  <p class="ts-search__meta"><!--count--> items · Searches names and reference values</p>
-</div>
-
 !!! quote "Notes"
     Note: RWR statistics version 1.98.1. The left preview image is an oblique view
     looking down, the right one faces the normal directly — that is, the editor view.
@@ -36,6 +24,17 @@ icon: lucide/box
     runs in a different environment, or because they are only intermediaries that exist
     for an instant — the signal truck, for example, only works in Invasion and cannot be
     generated properly in Quick Match. Those details are not tested or noted further here.
+
+<p class="kicker">TABLES · <!--count--> items</p>
+
+<div class="ts-search">
+  <div class="ts-search__box">
+    <span class="ts-search__icon" aria-hidden="true"></span>
+    <input class="ts-search__input" type="search" autocomplete="off" spellcheck="false" placeholder="Search name or reference…" aria-label="Search this list">
+    <kbd class="ts-search__kbd">Ctrl K</kbd>
+  </div>
+  <p class="ts-search__meta"><!--count--> items · Searches names and reference values</p>
+</div>
 
 *[template]: the name an object is referred to by in `template = …`; that is how you look it up
 
