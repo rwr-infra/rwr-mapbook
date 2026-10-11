@@ -1,8 +1,8 @@
 ---
 title: "Decal"
 description: "Ground decals."
-source_sha256: 5a351816c11014b78ebbb31f257620d5ca266726bdc930d8e52d3793b9a92669
-translated: 2026-10-10
+source_sha256: 0cfa78ebf3c412a43c29ad4efa7f0c33c7aed745bca2574a3dac0f4e28d5a079
+translated: 2026-10-11
 nav_label: "Decal"
 icon: lucide/box
 # ⚠️ 由 tools/docsgen.py 从 content/tables/decal.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
@@ -10,6 +10,11 @@ hide: [toc]
 ---
 
 # Decal { #decal }
+!!! warning "Notes"
+    Note: the template version is earlier than vao0822 and has not been re-surveyed yet.
+    The left preview image is an oblique view looking down, the right one faces the
+    normal directly — that is, the editor view. Judge the shape by the horizontal line;
+    the vertical one is in perspective and can make an object look tilted.
 
 <p class="kicker">TABLES · 20 items</p>
 
@@ -21,12 +26,6 @@ hide: [toc]
   </div>
   <p class="ts-search__meta">20 items · Searches names and reference values</p>
 </div>
-
-!!! warning "Notes"
-    Note: the template version is earlier than vao0822 and has not been re-surveyed yet.
-    The left preview image is an oblique view looking down, the right one faces the
-    normal directly — that is, the editor view. Judge the shape by the horizontal line;
-    the vertical one is in perspective and can make an object look tilted.
 
 *[template]: the name an object is referred to by in `template = …`; that is how you look it up
 

@@ -1,7 +1,7 @@
 ---
 title: "File downloads"
 description: "Complete archives of every editor version, the three templates and the prefabs, hosted outside the repository as direct links."
-source_sha256: a0ee85ae7c6fdb451e19a0108fa2a37c1c9d5f65c81f2ff04e5a36b18f7003da
+source_sha256: 0e4b32537510e33dd15a572db3b29d651d7b0e26236c2cdaf2dc9c49e50160c3
 translated: 2026-10-10
 nav_label: "File downloads"
 icon: lucide/archive
@@ -35,22 +35,22 @@ fetch it, and so can a download manager (IDM, aria2, Thunder) — right-click ha
 
 **Latest version:**
 
-| Version | Archive | Download |
-| --- | --- | --- |
-| Editor 0101 | `0101.rar`　26.2 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/0101.rar){ .md-button .md-button--primary } |
+| Version | Archive | Notes | Download |
+| --- | --- | --- | --- |
+| Editor 0101 | `0101.rar`　26.2 MB | The latest — the handbook describes this one | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/0101.rar){ .md-button .md-button--primary } |
 
 **Previous versions:**
 
 ??? note "Expand for every earlier version (060 to 0100)"
-    | Version | Archive | Download |
-    | --- | --- | --- |
-    | Editor 0100 | `0100.rar`　31.2 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/0100.rar){ .md-button .md-button--primary } |
-    | Editor 091 | `091.rar`　26.2 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/091.rar){ .md-button .md-button--primary } |
-    | Editor 090 | `090.rar`　30.7 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/090.rar){ .md-button .md-button--primary } |
-    | Editor 081 | `081.rar`　30.7 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/081.rar){ .md-button .md-button--primary } |
-    | Editor 080 | `080.rar`　30.7 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/080.rar){ .md-button .md-button--primary } |
-    | Editor 070 | `070.rar`　26.2 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/070.rar){ .md-button .md-button--primary } |
-    | Editor 060 | `060.zip`　32.1 MB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/060.zip){ .md-button .md-button--primary } |
+    | Version | Archive | Notes | Download |
+    | --- | --- | --- | --- |
+    | Editor 0100 | `0100.rar`　31.2 MB | The previous release, close to 0101 | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/0100.rar){ .md-button .md-button--primary } |
+    | Editor 091 | `091.rar`　26.2 MB | Older — the UI may not match the inventories | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/091.rar){ .md-button .md-button--primary } |
+    | Editor 090 | `090.rar`　30.7 MB | Older — the UI may not match the inventories | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/090.rar){ .md-button .md-button--primary } |
+    | Editor 081 | `081.rar`　30.7 MB | Older — the UI may not match the inventories | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/081.rar){ .md-button .md-button--primary } |
+    | Editor 080 | `080.rar`　30.7 MB | Older — the UI may not match the inventories | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/080.rar){ .md-button .md-button--primary } |
+    | Editor 070 | `070.rar`　26.2 MB | Much older, kept for comparison only | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/070.rar){ .md-button .md-button--primary } |
+    | Editor 060 | `060.zip`　32.1 MB | The oldest archive — note the .zip | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/060.zip){ .md-button .md-button--primary } |
 
 </div>
 
@@ -73,21 +73,21 @@ The three templates are listed **side by side** — take the one you want.
 
 **Original template (based on map8)**
 
-| Item | File | Download |
-| --- | --- | --- |
-| Normal-mode template (inventory version vao0822) | `vao0822.svg`　441 kB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/vao0822.svg){ .md-button .md-button--primary download="vao0822.svg" } |
+| Version | Archive | Notes | Download |
+| --- | --- | --- | --- |
+| Normal-mode template (inventory version vao0822) | `vao0822.svg`　441 kB | The default ground — start with this one | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/vao0822.svg){ .md-button .md-button--primary download="vao0822.svg" } |
 
 **Desert template**
 
-| Item | File | Download |
-| --- | --- | --- |
-| Desert-mode template | `vdao.svg`　431 kB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/vdao.svg){ .md-button .md-button--primary download="vdao.svg" } |
+| Version | Archive | Notes | Download |
+| --- | --- | --- | --- |
+| Desert-mode template | `vdao.svg`　431 kB | Ground texture only — the rest is the same | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/vdao.svg){ .md-button .md-button--primary download="vdao.svg" } |
 
 **Winter template**
 
-| Item | File | Download |
-| --- | --- | --- |
-| Winter-mode template | `vwao.svg`　426 kB | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/vwao.svg){ .md-button .md-button--primary download="vwao.svg" } |
+| Version | Archive | Notes | Download |
+| --- | --- | --- | --- |
+| Winter-mode template | `vwao.svg`　426 kB | Ground texture only — the rest is the same | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/vwao.svg){ .md-button .md-button--primary download="vwao.svg" } |
 
 </div>
 
@@ -108,9 +108,9 @@ placing objects one by one.
 
 | Preview | Name | Notes | Download |
 | --- | --- | --- | --- |
-| <span class="ts-shot"></span><span class="ts-shot"></span> | Hangar on the island<br>`HangarOnIsland_objects.asmb`　5.8 kB | To be filled in | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/HangarOnIsland_objects.asmb){ .md-button .md-button--primary download="HangarOnIsland_objects.asmb" } |
-| <span class="ts-shot"></span><span class="ts-shot"></span> | Stash<br>`Stash_vao0822.asmb`　4.2 kB | To be filled in | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/Stash_vao0822.asmb){ .md-button .md-button--primary download="Stash_vao0822.asmb" } |
-| <span class="ts-shot"></span><span class="ts-shot"></span> | Armory<br>`Armory_vao0822.asmb`　2.7 kB | To be filled in | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/Armory_vao0822.asmb){ .md-button .md-button--primary download="Armory_vao0822.asmb" } |
+| <span class="ts-shot"></span><span class="ts-shot"></span> | Hangar on the island<br>`HangarOnIsland_objects`<span class="ts-ext">.asmb</span>　5.8 kB | To be filled in | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/HangarOnIsland_objects.asmb){ .md-button .md-button--primary download="HangarOnIsland_objects.asmb" } |
+| <span class="ts-shot"></span><span class="ts-shot"></span> | Stash<br>`Stash_vao0822`<span class="ts-ext">.asmb</span>　4.2 kB | To be filled in | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/Stash_vao0822.asmb){ .md-button .md-button--primary download="Stash_vao0822.asmb" } |
+| <span class="ts-shot"></span><span class="ts-shot"></span> | Armory<br>`Armory_vao0822`<span class="ts-ext">.asmb</span>　2.7 kB | To be filled in | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/Armory_vao0822.asmb){ .md-button .md-button--primary download="Armory_vao0822.asmb" } |
 
 !!! note "Previews and notes are still empty"
     The preview images and the notes for these three rows are not in yet: the slots are

@@ -37,12 +37,12 @@ description: "下载后的配置、与 RWR 地图文件夹的联接，以及开�
 
 ## 一、配置地编 { #setup }
 
-1. [下载最新版本地编](../download/index.md#download)（本站可直接下载，也可从群文件下载）后，将文件解压到你自己喜欢的路径。
+1. 下载[最新版本地编](../download/index.md#download)后，将文件解压到你自己喜欢的路径。
 
     ![](../assets/editor/001.png)
 
     /// caption
-    解压到任意路径
+    解压到任意非中文路径
     ///
 
 
@@ -51,10 +51,10 @@ description: "下载后的配置、与 RWR 地图文件夹的联接，以及开�
     ![](../assets/editor/002.png)
 
     /// caption
-    建 templates 与 map 两个文件夹
+    新建 templates 与 map 两个文件夹
     ///
 
-3. [选择并下载模板](../download/index.md#materials)（本站可直接下载，也可照旧从群文件拿），放进地编的 `templates` 文件夹中。
+3. 选择并下载[模板](../download/index.md#materials)，放进地编的 `templates` 文件夹中。
 
     ![](../assets/editor/003.png)
 
@@ -62,8 +62,6 @@ description: "下载后的配置、与 RWR 地图文件夹的联接，以及开�
     把模板放进 templates
     ///
 
-    !!! note "目前只有原版地图的模板"
-        沙漠与雪地的模板暂未制作完成。
 
 4. 选一个你喜欢的地图作为等待魔改的底图，放进地编的 `map` 文件夹。拿不准就用 `map7`（它就是模板文件的底稿，两个相统一可以避开一些神秘问题）。
 
@@ -80,9 +78,9 @@ description: "下载后的配置、与 RWR 地图文件夹的联接，以及开�
     ///
 
     !!! warning "地图分三类，模板要对得上"
-        RWR 原版地图分为三个类型：普通模式、沙漠模式、雪地模式。用哪个类型就要装对应的模板，而目前**只做了「普通模式」这一类**，所以只能用 `\vanilla\maps` 里的文件。
+        RWR 原版地图分为三个类型：普通模式、沙漠模式、雪地模式。用哪个类型就要装对应的模板，分别对应RWR中 `vanilla` 、 `vanilla.desert` 、 `vanilla.winter` 这三个文件夹中的文件。
 
-        `map19`、`\vanilla.desert\maps`、`\vanilla.winter\maps` 里的地图可能会有适配问题（打开看看不影响，但拿它们当底子做就算了）。
+        部分极特殊地图（比如map19）可能会有适配问题（打开看看不影响，但拿它们当底子做就算了）。
 
         当然，你也可以把你地图文件夹中的 `.svg` 文件直接复制到 `templates` 文件夹中充当模板，虽然这个原生模板没经过人工完善，但仍然可以和你选的地图较好适配。
 
@@ -143,8 +141,7 @@ description: "下载后的配置、与 RWR 地图文件夹的联接，以及开�
     填入启动选项
     ///
 
-    !!! warning
-        添加了 debugmode 后无法加入多人服务器，如果想使用请删除 debugmode 相关代码再次运行游戏。
+    !!! warning "添加了 debugmode 后无法加入多人服务器，需删除 debugmode 代码再次运行游戏。"
 
     ??? quote "其实只加 debugmode 这一条就行"
         加 debugmode 这一条可以正常使用 F4 开启自由视角了，剩下的启动项代码是配置游戏自带的相机 mod 的，这个 mod 可以实现扩大渲染范围或开启法线视图等功能。

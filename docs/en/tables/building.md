@@ -1,8 +1,8 @@
 ---
 title: "Building E"
 description: "Placeable houses."
-source_sha256: 462695b1b696f7fc40788ad2876f7cbc322adca4f1a265df63a822132c63487d
-translated: 2026-10-10
+source_sha256: 358b0d5e3fad13c182b75e1ad0cfc44616670a13084feb7347a567664d7f9963
+translated: 2026-10-11
 nav_label: "Building E"
 icon: lucide/box
 # ⚠️ 由 tools/docsgen.py 从 content/tables/building.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
@@ -10,6 +10,11 @@ hide: [toc]
 ---
 
 # Building E { #building }
+!!! warning "Notes"
+    Note: the template version is earlier than vao0822 and has not been re-surveyed yet.
+    The left preview image is an oblique view looking down, the right one faces the
+    normal directly — that is, the editor view. Judge the shape by the horizontal line;
+    the vertical one is in perspective and can make an object look tilted.
 
 <p class="kicker">TABLES · 12 items</p>
 
@@ -21,12 +26,6 @@ hide: [toc]
   </div>
   <p class="ts-search__meta">12 items · Searches names and reference values</p>
 </div>
-
-!!! warning "Notes"
-    Note: the template version is earlier than vao0822 and has not been re-surveyed yet.
-    The left preview image is an oblique view looking down, the right one faces the
-    normal directly — that is, the editor view. Judge the shape by the horizontal line;
-    the vertical one is in perspective and can make an object look tilted.
 
 *[template]: the name an object is referred to by in `template = …`; that is how you look it up
 

@@ -70,7 +70,7 @@ hide: [navigation]
 ??? note "用来在列表中选择各种墙的种类，并使用 PathBush 绘制节点然后按空格自动以摆放顺序连成线。既可以先选择墙的种类后绘制，也可以先绘制然后再选择墙的种类，选择后点击已经画好的墙即可完成替换。（展开以查看详细介绍）"
     使用快捷键 ++shift+7++ 以快速切换到 WallE 中的 PathBush 工具。
     * * *    
-    在搜索栏中可搜索对应名称来快速选择对象，每种墙的模型见[模型清单 · Wall E](../tables/wall.md)。
+    在搜索栏中可搜索对应名称来快速选择对象，每种墙的模型见[模型清单 · Wall E & Platform E](../tables/wall.md)。
 
     ![](../assets/editor/017.png)
 
@@ -112,7 +112,7 @@ hide: [navigation]
     ![](../assets/editor/021.png)
 
     * * *
-    最上方 ^^HeightDown^^ 与 ^^HeightUp^^ 的作用为改变点击位置的 Building 高度，每次变化 2（6）。^^RoofSwitch^^ 的作用为将屋顶变为尖顶/平顶，尖顶方向固定需要选择建筑物后按 ++r++ 自行旋转。
+    最上方 HeightDown 与 HeightUp 的作用为改变点击位置的 Building 高度，每次变化 2（6）。RoofSwitch 的作用为将屋顶变为尖顶/平顶，尖顶方向固定需要选择建筑物后按 ++r++ 自行旋转。
 
     ![](../assets/editor/022.png)
 
@@ -132,18 +132,18 @@ hide: [navigation]
 * * *
 ### PlatformE 说明 { #platforme }
 
-??? note "用来在列表中选择各种平台的种类，并使用 ^^pathBush^^ 绘制，与 Wall 类似，不再赘述。（展开以查看详细介绍）"
+??? note "用来在列表中选择各种平台的种类，并使用 pathBush 绘制，与 Wall 类似，不再赘述。（展开以查看详细介绍）"
     使用快捷键 ++shift+8++ 以快速切换到 PlatformE 中的 PathBush 工具。
 
     使用快捷键 ++shift+9++ 以快速切换到 PlatformE 中的 TypeChange 工具。
 
     使用快捷键 ++shift+0++ 以快速切换到 PlatformE 中的 PlatformBasewallChanger 工具。
     * * *
-    搜索栏与 Wall 类似，不再赘述。
+    搜索栏与 Wall 类似，不再赘述，每种平台的模型见[模型清单 · Wall E & Platform E](../tables/wall.md)。
     
     ![](../assets/editor/026.png)
     * * *
-    最下方的 ^^TypeChange^^ 的作用为让点击位置的 Platform 在"无特殊属性"、"deck 属性"、"bridge" 属性之间切换。
+    最下方的 TypeChange 的作用为让点击位置的 Platform 在"无特殊属性"、"deck 属性"、"bridge" 属性之间切换。
 
     ChangeHeight 的操作为在设置完高度后按回车进入工具使用状态，作用为改变点击位置的 Platform 高度。
 
@@ -197,21 +197,21 @@ hide: [navigation]
 * * *
 ### FuncObjects 说明 { #funcobjects }
 ??? note "用来摆放一些有特殊交互的物件。（展开以查看详细介绍）"
-    ^^LadderScatter^^ 与 ^^LadderEraser^^ 的作用为放置梯子与删除梯子。放置的梯子会向前自动判定并吸附在旁边建筑物、平台等等有固定碰撞的东西上。
+    LadderScatter 与 LadderEraser 的作用为放置梯子与删除梯子。放置的梯子会向前自动判定并吸附在旁边建筑物、平台等等有固定碰撞的东西上。
 
     !!! warning "如果梯子方向放反了会导致吸附失败无法正常攀爬，并且0101版本的梯子没有正前方指示，调整时尽量别记混梯子朝向。"
     * * *
 
-    ^^ItemSupplyScatter^^ 的作用为放置一个储藏室或军械库的判定区，stash 为储藏室，weapon_rack 为军械库，Select 选中后点击下方 ChangeType 进行切换。
+    ItemSupplyScatter 的作用为放置一个储藏室或军械库的判定区，stash 为储藏室，weapon_rack 为军械库，Select 选中后点击下方 ChangeType 进行切换。
 
     ![](../assets/editor/030.png)
     * * *
 
-    ^^CrateScatter^^ 与 ^^CrateEraser^^ 的作用为放置木头箱子与删除木头箱子，里面的物品随机，无法指定。
+    CrateScatter 与 CrateEraser 的作用为放置木头箱子与删除木头箱子，里面的物品随机，无法指定。
 
-    ^^SpawnScatter^^ 与 ^^SpawnEraser^^ 的作用为创建复活点与删除复活点，复活点不宜太靠近地图边界。
+    SpawnScatter 与 SpawnEraser 的作用为创建复活点与删除复活点，复活点不宜太靠近地图边界。
 
-    ^^BaseScatter^^ 的作用为左键拖动创建据点，在用 Select 选中后，可以分别更改据点的名字显示（ Name ）与指定该据点最开始被哪个阵营占领（ Faction ）。
+    BaseScatter 的作用为左键拖动创建据点，在用 Select 选中后，可以分别更改据点的名字显示（ Name ）与指定该据点最开始被哪个阵营占领（ Faction ）。
 
 
     ![](../assets/editor/031.png)
@@ -230,9 +230,9 @@ hide: [navigation]
 
     ![](../assets/editor/032.png)
     * * *
-    ^^StoneEraser^^ 与 ^^StoneScatter^^ 的作用为删除一个随机石头或放置一个随机石头，石头的样子见[模型清单 · MESH E](../tables/mesh.md)。
+    StoneEraser 与 StoneScatter 的作用为删除一个随机石头或放置一个随机石头，石头的样子见[模型清单 · MESH E](../tables/mesh.md)。
 
-    ^^TreeEraser^^ 与 ^^TreeScatter^^ 的作用为删除一个随机树或放置一个随机树，树的样子见[模型清单 · MESH E](../tables/mesh.md)。
+    TreeEraser 与 TreeScatter 的作用为删除一个随机树或放置一个随机树，树的样子见[模型清单 · MESH E](../tables/mesh.md)。
 
     ![](../assets/editor/033.png)
     * * *
@@ -251,15 +251,15 @@ hide: [navigation]
 ### HeightMap 说明 { #heightmap }
 
 ??? note "用来铺设地面的弧度变化。（展开以查看详细介绍）"
-    ^^HeightBush^^ 的作用为地形刷，左下角界面中的 SetHardness 为硬度，决定着当前刷取地形的高度与背景高度的过渡陡缓，范围为 0 到 1、SerRange 为地形刷的范围、SetHeight 为地形刷的高度，范围为 0 到 1。按 X 横向锁定笔刷，按 Y 纵向锁定。
+    HeightBush 的作用为地形刷，左下角界面中的 SetHardness 为硬度，决定着当前刷取地形的高度与背景高度的过渡陡缓，范围为 0 到 1、SerRange 为地形刷的范围、SetHeight 为地形刷的高度，范围为 0 到 1。按 X 横向锁定笔刷，按 Y 纵向锁定。
 
     ![](../assets/editor/036.png)
     * * *
-    ^^HeightSmudge^^ 的作用为拖拽鼠标下一定范围内的高度，并跟随鼠标移动方向使临近的地形产生过渡形变。
+    HeightSmudge 的作用为拖拽鼠标下一定范围内的高度，并跟随鼠标移动方向使临近的地形产生过渡形变。
     * * *
-    ^^Smooth^^ 的作用为平缓全图的地形。
+    Smooth 的作用为平缓全图的地形。
     * * *
-    ^^Noise^^ 的作用为对全图增加地形上的噪音，让整个地图不是同一个高度数值的大平地，有些微小起伏。
+    Noise 的作用为对全图增加地形上的噪音，让整个地图不是同一个高度数值的大平地，有些微小起伏。
     * * *
     heightPath 的作用为路径地形刷，使用方式类似 Wall 工具，相关数据调整左上角均有说明，可自行尝试。
 
@@ -268,12 +268,12 @@ hide: [navigation]
 * * *
 ### TerrainBash 说明 { #terrainbash }
 ??? note "用来铺设地面的质地变化。（展开以查看详细介绍）"
-    ^^Pathpainter^^ 的作用为路径地面质地刷，使用方式类似 Wall 工具，相关数据调整左上角均有说明，可自行尝试。
+    Pathpainter 的作用为路径地面质地刷，使用方式类似 Wall 工具，相关数据调整左上角均有说明，可自行尝试。
     衰减指数用 [ 以及 ] 调整，并不是描述重复打成了 [[/]]。
 
     ![](../assets/editor/038.png)
     * * *
-    ^^painter^^ 的作用为地面质地刷，Chg Index 为材质种类，填数字、Chg Rng 为范围、Chg Har 为硬度。
+    painter 的作用为地面质地刷，Chg Index 为材质种类，填数字、Chg Rng 为范围、Chg Har 为硬度。
 
     ![](../assets/editor/039.png)
     !!! warning "0101 版本中使用这个工具的时候左下角可能会有个多余的调节栏，实际没有任何作用。"
@@ -290,7 +290,7 @@ hide: [navigation]
 ### Decal 说明 { #decal }
 
 ??? note "用来在列表中选择各种贴花的种类，可以理解为在地面质地上再印一层材质，选择后左键即可放置。（展开以查看详细介绍）"
-    ^^deleteDecals^^ 的作用为删除框选范围内的贴花。
+    deleteDecals 的作用为删除框选范围内的贴花。
     * * *
     Select 选中后，可以使用 Length 更改这个贴花的大小，也就是缩放比例。
 
@@ -300,13 +300,14 @@ hide: [navigation]
 * * *
 ### Assaum 说明 { #assaum }
 ??? note "用来在列表中选择各种组件，例如已经制作好碰撞箱和判定区的军械库等，选择后左键即可放置。（展开以查看详细介绍）"
+    可以在[文件下载 · 组件下载](../download/index.md#prefabs)处预览并下载相关组件。
+    * * *
     搜索栏与 Wall 类似，不再赘述。
     * * *
-    如果你想给列表添加你自己的组件，在选择要组装的对象之后，通过 Name 进行命名，之后点 Add 即可将你所选的对象组加入组件列表。
-    !!! warning
-        组件不跟随模板变动，是独立路径。
-        在Add时需要保证对象是多选状态，如果只选了一个不会进行保存。
+    如果你想添加你自己做的组件，在选择好要组装的对象之后，通过 Name 进行命名，之后点 Add 即可将你所选的对象组加入组件列表。
+    !!! warning "组件不跟随模板变动，是作为独立路径储存在 assaumbles 文件夹中，且在Add时需要保证对象是多选状态，如果只选了一个不会进行保存。"
 
+    * * *
 
 
 
@@ -434,10 +435,10 @@ hide: [navigation]
 * * *
 ### RefpM 说明 { #reference-images }
 
-使用 ^^Import^^ 导入参考图， ^^Clear^^ 移除。
-^^ScaleX^^ 与 ^^ScaleY^^ 的作用为横向与纵向压缩或拉长参考图，值填倍率，例如ScaleX填0.5就是横向把参考图压刀一半。
-^^OffsetX^^ 与 ^^OffsetX<span class="redact" tabindex="0">其实是Y</span>^^ 的作用为横向与纵向偏移参考图，值填距离，第一项为X轴向右增长、第二项为Y轴向上增长。
-^^Alpha^^ 作用为更改参考图透明度，向左淡化向右躯体化。
+使用 Import 导入参考图， Clear 移除。
+ScaleX 与 ScaleY 的作用为横向与纵向压缩或拉长参考图，值填倍率，例如ScaleX填0.5就是横向把参考图压刀一半。
+OffsetX 与 OffsetX<span class="redact" tabindex="0">其实是Y</span> 的作用为横向与纵向偏移参考图，值填距离，第一项为X轴向右增长、第二项为Y轴向上增长。
+Alpha 作用为更改参考图透明度，向左淡化向右躯体化。
 
 * * *
 ### 交互按键表 { #keys }
@@ -448,10 +449,10 @@ hide: [navigation]
     | ++f5++ | 刷新地编界面，以及清理非法元素 |
     | ++tab++ | 切换俯视角与自由视角 |
     | ++w++ ++a++ ++s++ ++d++ | 控制方向 |
-    | 鼠标滚轮 | 俯视角下调整缩放；自由视角下调整摄影机移动速度 |
+    | 鼠标滚轮滚动 | 俯视角下调整缩放；自由视角下调整摄影机移动速度 |
     | ++q++ ++e++ | 自由视角下调整摄像头高度 |
     | ++esc++ | 取消选择；摄像头锁定鼠标 / 鼠标脱锁 |
-    | ++shift+数字键++ | 快速切换到对应工具 |
+    | ++shift+++数字键 | 快速切换到对应工具 |
     | ++x++ | 笔刷横向锁定 |
     | ++y++ | 笔刷纵向锁定 |
     | ++r++ | 旋转选择的对象 |

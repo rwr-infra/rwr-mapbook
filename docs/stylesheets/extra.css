@@ -643,10 +643,16 @@ html[data-ts-page="download"] .md-typeset {
       inline-block 的表格不是表格盒，fixed 与 width: 100% 都不作数，
       三张表各按内容缩（实测 552 / 386 / 389px）。所以要把表格**和它外面
       那两层包装**一起拉回正常流：包装层铺满正文区，表格再铺满包装层。 */
+/* ⚠️ 包装层要**清边距**而不是给 width:100%：主题给包装层的是水平负边距
+   （±16px，本来是用来做「全出血」补偿的），给 width:100% 会把负边距变成
+   整体左移——表格反而两边都不贴（实测 92..1030，正文是 108..1046）。
+   边距清零 + 表格 width:100%，两层才真正与正文区同宽。 */
 html[data-ts-page="download"] .md-typeset .ts-align .md-typeset__table,
 html[data-ts-page="download"] .md-typeset .ts-align .md-typeset__scrollwrap {
   display: block;
-  width: 100%;
+  width: auto;
+  margin-right: 0;
+  margin-left: 0;
 }
 
 html[data-ts-page="download"] .md-typeset .ts-align table {
@@ -658,19 +664,140 @@ html[data-ts-page="download"] .md-typeset .ts-align table {
   width: 100%;
 }
 
+/* 四列（材料 / 文件 / 备注 / 下载）。备注列约占 20 个字（0.7rem × 20 ≈ 14em，
+   正文区约 700px 时 ≈ 32%）——再窄了备注要折行，再宽了文件和按钮白占地方。
+   原来是三列 46/32/22，加了备注列后重新分配：材料 27%、文件 21%、
+   备注 32%、下载 20%。 */
 html[data-ts-page="download"] .md-typeset .ts-align table th:nth-child(1),
 html[data-ts-page="download"] .md-typeset .ts-align table td:nth-child(1) {
-  width: 46%;  /* 材料 */
+  width: 27%;  /* 材料 */
 }
 
 html[data-ts-page="download"] .md-typeset .ts-align table th:nth-child(2),
 html[data-ts-page="download"] .md-typeset .ts-align table td:nth-child(2) {
-  width: 32%;  /* 文件 */
+  width: 21%;  /* 文件 */
 }
 
 html[data-ts-page="download"] .md-typeset .ts-align table th:nth-child(3),
 html[data-ts-page="download"] .md-typeset .ts-align table td:nth-child(3) {
-  width: 22%;  /* 下载按钮 */
+  width: 32%;  /* 备注 */
+}
+
+html[data-ts-page="download"] .md-typeset .ts-align table th:nth-child(4),
+html[data-ts-page="download"] .md-typeset .ts-align table td:nth-child(4) {
+  width: 20%;  /* 下载按钮 */
+}
+
+/* 地编版本表（版本 / 归档 / 备注 / 下载）与组件表（预览 / 名称 / 备注 / 下载）
+   都是四列清单，列宽按同一套比例算——但两处「第一列」的意义不同：
+   版本表的第一列是文字（版本号），组件表的第一列是预览图框（宽度由
+   上面那个算式给定，不能按百分比压）。所以分开写，不共用一条。
+
+   ⚠️ 这两张表都是 `table-layout: fixed`（列宽只认第一行写的宽度），
+      所以 th 与 td 要成对给；第一列在组件表里必须给回算式那一档，
+      否则预览列会被 auto 均分吃掉（实测被顶到 366px）。 */
+html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) {
+  table-layout: fixed;
+}
+
+/* 下载页的**版本表**（版本 / 归档 / 备注 / 下载）：它不在 `.ts-align` 里，
+   是 auto 布局——width:100% 之后多出来的宽度全被塞进后面几列，
+   下载按钮右边空出一大截（用户截图报的「排版有问题」）。照模板表同一套
+   固定布局与列宽，四列比例就一致了。 */
+html[data-ts-page="download"] .md-typeset .ts-plain:not(.ts-align) table {
+  table-layout: fixed;
+  /* ⚠️ `display: table` 不能省。主题给表格的是 `display: inline-block`，而上面那条
+     「还原成表格盒」的全局规则把 `.ts-plain table` 排除在外（当初为了给清单页
+     留横向滚动）。inline-block 的表格不是表格盒：fixed 与 width:100% 都半身不遂——
+     实测表格盒 938px、单元格网格却只按 802px 分列，右侧空出 135px 的死皮
+     （用户截图报的「排版没修好」就是这个）。下载页的 .ts-plain 包装层已经
+     拉回正常流、表格也都收进内容宽，不需要 inline-block 自己撑开了；
+     手机上的卡片化规则（媒体查询里）自带 display: block，会盖掉这条。 */
+  display: table;
+}
+
+html[data-ts-page="download"] .md-typeset .ts-plain:not(.ts-align) table th:nth-child(1),
+html[data-ts-page="download"] .md-typeset .ts-plain:not(.ts-align) table td:nth-child(1) {
+  width: 27%;  /* 版本 */
+}
+
+html[data-ts-page="download"] .md-typeset .ts-plain:not(.ts-align) table th:nth-child(2),
+html[data-ts-page="download"] .md-typeset .ts-plain:not(.ts-align) table td:nth-child(2) {
+  width: 21%;  /* 归档（文件名 + 体积） */
+}
+
+html[data-ts-page="download"] .md-typeset .ts-plain:not(.ts-align) table th:nth-child(3),
+html[data-ts-page="download"] .md-typeset .ts-plain:not(.ts-align) table td:nth-child(3) {
+  width: 32%;  /* 备注，约 20 个字 */
+}
+
+html[data-ts-page="download"] .md-typeset .ts-plain:not(.ts-align) table th:nth-child(4),
+html[data-ts-page="download"] .md-typeset .ts-plain:not(.ts-align) table td:nth-child(4) {
+  width: 20%;  /* 下载按钮 */
+}
+
+/* 表头居中：表头是「这一列是什么」的标签，居中与下方内容（按钮居中、
+   预览图居中）的视觉重心一致，也贴合清单表的观感（用户要求）。 */
+html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table) thead th {
+  text-align: center;
+}
+
+/* 下载页的**版本表**（最新版那条）：版本 / 归档 / 备注 / 下载 */
+html[data-ts-page="download"] .md-typeset .ts-align table th:nth-child(1),
+html[data-ts-page="download"] .md-typeset .ts-align table td:nth-child(1) {
+  width: 27%;  /* 材料 */
+}
+
+/* ── 组件表（预览 / 名称 / 备注 / 下载）的列宽 ──────────────────────
+   `table-layout: fixed` 下，没写宽度的列会**均分剩余宽度**——预览列因此被
+   顶到 366px（实测），图框虽然没变形但整列空得离谱。这里把四列按
+   「预览列 = 算式值、其余按比例」写死：备注列约 20 个字（约 14em）。
+   算式的值由上面那条 `th:first-child` 给出，这里只压其余三列。 */
+html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) th:nth-child(2),
+html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:nth-child(2) {
+  width: 30%;  /* 名称（含文件名与体积） */
+}
+
+html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) th:nth-child(3),
+html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:nth-child(3) {
+  width: 32%;  /* 备注，约 20 个字 */
+}
+
+html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) th:nth-child(4),
+html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:nth-child(4) {
+  width: 12%;  /* 下载按钮：只放得下一个 */
+}
+
+/* ⚠️ 组件表的预览列要**再压一次**，而且必须压在这里（上面那条按图框算宽度的
+   规则是 `html[data-ts-page]`，与 `[data-ts-page="download"]` 权重相同——
+   它写在前面，就会被下面这几条按百分比写的列宽顶掉，实测预览列被均分到 366px）。
+   这里是同一个文件里更靠后的位置，且选择器带上 `="download"`，压得住。 */
+html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) th:first-child,
+html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:first-child {
+  width: calc(var(--ts-shot-w) * var(--ts-prev-cols) + var(--ts-shot-gap) * var(--ts-prev-cols) - var(--ts-shot-gap) + var(--ts-pad));
+}
+
+/* 下载页**所有**表（组件表、地编版本表、三张模板表）统一铺满正文区、
+   左右缘与提示框对齐：清单表原本按内容缩、版本表不在 `.ts-align` 里——
+   同一页上几张表宽窄不一（用户截图报的）。表格外面的包装层见下一条。 */
+html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table) {
+  width: 100%;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+/* ⚠️ 主题在运行时给每张表包 `.md-typeset__table` 与 `.md-typeset__scrollwrap`，
+   且带 ±16px 的水平负边距（全出血补偿）。这里统一拉回正常流、边距清零，
+   包装层、表格与正文区三层左右缘才真正重合（实测 108..1046 一致）。 */
+html[data-ts-page="download"] .md-typeset .md-typeset__table,
+html[data-ts-page="download"] .md-typeset .md-typeset__scrollwrap {
+  display: block;
+  width: auto;
+  margin-right: 0;
+  margin-left: 0;
+  /* 主题还给这层 16px 的水平内边距（表格两侧各缩一截的另一半来源） */
+  padding-right: 0;
+  padding-left: 0;
 }
 
 /* 组件表那些**还没给图**的行：先把两个图框占出来（等补图），
@@ -719,6 +846,7 @@ html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-p
   gap: var(--ts-shot-gap);
   align-items: center;
   justify-content: center;
+  vertical-align: middle;
 }
 
 html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:first-child > br {
@@ -815,20 +943,25 @@ html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-p
    `width: 1%`：⚠️ 那样写在这里是**同样的权重、更靠后**，会把算好的宽度压成
    「一格图」那么宽，两张图就上下叠起来了（改版式时踩过一次）。 */
 
-html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr:nth-child(even) > td {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr:nth-child(even) {
   background-color: var(--md-default-fg-color--lightest);
 }
 
-html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr > td {
+/* ⚠️ 斑纹/悬停/命中底色要画在 **tr** 上、不能画在 td 上（2026-10-11 手机反馈
+   「颜色填充不完全」）：预览列的 td 是 `display: flex`——它不再是 table-cell，
+   表格布局会给它包一个**匿名 table-cell**。画在 td 上的底色只盖住 td 自己那块
+   （内容高），行被备注列撑高之后，预览列剩下的部分是匿名 cell 的——没有底色，
+   看着就是「这一列填了一半」。tr 的背景是表格布局自己铺满整行的，匿名 cell 也盖到。 */
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr {
   transition: background-color 0.15s;
 }
 
-html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr:hover > td {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr:hover {
   background-color: var(--md-accent-fg-color--transparent);
 }
 
 /* 搜索结果跳过去的那一行：闪一下，好找 */
-html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr.is-hit > td {
+html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr.is-hit {
   background-color: var(--md-typeset-mark-color);
 }
 
@@ -841,7 +974,7 @@ html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-p
    代价是表格不能再横向滚动了 —— 于是窄屏必须真的塞得下（见末尾那段媒体查询，
    手机上把预览框收一档、一行只放一张图）。
 */
-html[data-ts-page] .md-typeset .md-typeset__scrollwrap:not(details .md-typeset__scrollwrap, .admonition .md-typeset__scrollwrap),
+html[data-ts-page] .md-typeset .md-typeset__scrollwrap:not(details .md-typeset__scrollwrap, .admonition .md-typeset__scrollwrap, .ts-plain .md-typeset__scrollwrap),
 html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) {
   overflow: visible;
 }
@@ -1321,6 +1454,228 @@ html[data-ts-page] .md-typeset .ts-hit--more {
     padding: 0.45rem 0.6rem;
     font-size: 0.62rem;
   }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   手机端修正（2026-10-11 反馈的一批）
+   ══════════════════════════════════════════════════════════════ */
+@media screen and (max-width: 44.9375em) {
+  /* ── 右侧滑不动的空白：清单表在 360px 视口上 min-content 超宽 ──────────
+     实测（无头 Chrome，360px 视口）：Building E 页 scrollWidth 386、
+     下载页 478。两处来源：
+     · 主题给 th 的 `min-width: 5rem`（本站 1rem=20px → 每列至少 100px），
+       备注列在手机上根本用不了这么宽；
+     · 引用值芯片里没有下划线的长值（BuildingWhite1RoofStorage1）是
+       一整个不可断的 token，min-content 一格就顶出屏幕。
+     表格的 overflow 已经被还原成 visible（粘性表头那段的代价），超出来的
+     这几十像素直接变成整页的横向滚动——右侧那块空白就是这么来的。 */
+  html[data-ts-page] .md-typeset table:not(details table, .admonition table, .ts-plain table) th {
+    min-width: 0;
+  }
+
+  html[data-ts-page] .md-typeset .ts-tpl__text {
+    word-break: break-all;
+  }
+
+  /* ── 版本表与三张模板表（.ts-plain）：加了备注列之后四列在 360px 塞不下
+     （实测下载按钮被切出屏幕）。手机上同样卡片化：表头藏掉，一行变一张卡，
+     各格纵着排——版本号、文件名、备注、按钮，含义自明。 */
+  html[data-ts-page="download"] .md-typeset .ts-plain table {
+    display: block;
+    width: 100%;
+  }
+
+  html[data-ts-page="download"] .md-typeset .ts-plain table thead {
+    display: none;
+  }
+
+  html[data-ts-page="download"] .md-typeset .ts-plain table tbody {
+    display: block;
+  }
+
+  html[data-ts-page="download"] .md-typeset .ts-plain table tbody tr {
+    display: block;
+    padding: 0.55rem 0.2rem;
+  }
+
+  html[data-ts-page="download"] .md-typeset .ts-plain table tbody tr + tr {
+    border-top: 0.05rem solid var(--md-default-fg-color--lightest);
+  }
+
+  html[data-ts-page="download"] .md-typeset .ts-plain table tbody tr th,
+  html[data-ts-page="download"] .md-typeset .ts-plain table tbody tr td {
+    display: block;
+    width: auto !important;  /* 压掉桌面端那套百分比列宽 */
+    padding: 0.15rem 0.35rem;
+  }
+
+  html[data-ts-page="download"] .md-typeset table .md-button {
+    padding: 0.5em 0.8em;
+    font-size: 0.75em;
+  }
+
+  /* ── 下载页组件表：四列在手机上塞不下，改成卡片 ──────────────────────
+     实测 360px 视口这张表 min-content 446px——预览列(130) + 名称列
+     （长文件名）+ 备注列 + 下载按钮，四列并排怎么排都超。
+     手机上把行改成两列网格：预览在左跨三行，名称 / 备注 / 下载按钮
+     在右自上而下。表头藏掉（卡片里不需要「预览/名称/备注/下载」）。 */
+  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) {
+    display: block;
+    width: 100%;
+  }
+
+  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody {
+    display: block;
+  }
+
+  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) thead {
+    display: none;
+  }
+
+  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 0.7rem;
+    row-gap: 0.3rem;
+    padding: 0.6rem 0.2rem;
+  }
+
+  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr + tr {
+    border-top: 0.05rem solid var(--md-default-fg-color--lightest);
+  }
+
+  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td {
+    display: block;
+    width: auto;
+    padding: 0 0.35rem;
+  }
+
+  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    align-self: center;
+  }
+
+  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(2) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(3) {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) tbody tr td:nth-child(4) {
+    grid-column: 2;
+    grid-row: 3;
+    justify-self: start;
+  }
+}
+
+/* ── 组件名里的格式后缀：不许从中间劈开 ─────────────────────────────
+   名字列放的是「`名字`.asmb　体积」——`.asmb` 在代码芯片**外面**（芯片里只有
+   名字本体，点击复制的就是它）。实测名称列较窄时，".asmb" 会被从中间劈成
+   「.asm / b」两行（overflow-wrap: break-word 的手笔）。套个 nowrap，
+   塞不下时整个后缀挪到下一行，别劈。 */
+.md-typeset .ts-ext {
+  white-space: nowrap;
+}
+
+/* ── 下载按钮：不许把「下载」折成两行竖排 ─────────────────────────────
+   模板表/版本表的下载列只有 22%（手机上 70px 出头），按钮里的字一折行，
+   整个按钮就被撑成一个大圆坨。按钮文字永远单行；表格里的那格顺势居中。 */
+.md-typeset .md-button {
+  white-space: nowrap;
+}
+
+html[data-ts-page="download"] .md-typeset .ts-plain table td:last-child {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   缩写注释（`*[文字]: 解释` 渲染成的 <abbr title>）的点按气泡
+
+   桌面端悬停即显、手机端长按才显（长按还会顺手选中文字），都不理想。
+   javascripts/abbr-tap.js 把 title 挪到 aria-label 并接管交互：
+   **点一下就弹、再点一下或点别处就收**，桌面手机一个行为。
+   气泡挂在 body 下、按视口定位（position: fixed），滚动即收。
+   ══════════════════════════════════════════════════════════════ */
+.md-typeset abbr {
+  cursor: help;
+}
+
+.abbr-tip {
+  position: fixed;
+  z-index: 999;
+  max-width: min(20rem, calc(100vw - 1.5rem));
+  padding: 0.45rem 0.7rem;
+  border-radius: 0.3rem;
+  background-color: var(--md-default-fg-color);
+  color: var(--md-default-bg-color);
+  font-size: 0.68rem;
+  line-height: 1.6;
+  box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   可复制的行内代码（javascripts/copy-code.js）
+
+   范围：表格里的行内 `code`——功能介绍页 mapSettings 那张「待校验」表，
+   以及下载页组件表的文件名。一格里有多个示例（`<br>` 隔开）时，
+   每个 code 是**各自独立**的一块，点了只复制它自己那一个值。
+   样式上只做 hover 提示与复制后的回执，不改变排布。
+
+   ⚠️ 图标不是装饰：这块行内码看着就和普通代码一模一样，不给个图标没人
+   知道它能点（用户是这么报上来的：「改成一键复制」，而它其实早就能复制）。
+   图标与清单页芯片（`.ts-tpl`，table-tools.js）同一组，观感一致。
+   ══════════════════════════════════════════════════════════════ */
+.md-typeset code.cp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  cursor: copy;
+  transition: color 0.15s;
+}
+
+.md-typeset code.cp-chip:is(:hover, :focus-visible) {
+  color: var(--md-accent-fg-color);
+}
+
+.md-typeset code.cp-chip.is-copied,
+.md-typeset code.cp-chip.is-failed {
+  color: var(--md-accent-fg-color);
+}
+
+.md-typeset code.cp-chip .cp-icon {
+  flex: none;
+  width: 0.85em;
+  height: 0.85em;
+  fill: currentColor;
+  opacity: 0.45;
+  transition: opacity 0.15s;
+}
+
+.md-typeset code.cp-chip:is(:hover, :focus-visible) .cp-icon {
+  opacity: 0.8;
+}
+
+/* 复制成功那 1.4 秒换成对勾，再换回来 */
+.md-typeset code.cp-chip .cp-icon--done,
+.md-typeset code.cp-chip.is-copied .cp-icon--copy {
+  display: none;
+}
+
+.md-typeset code.cp-chip.is-copied .cp-icon--done {
+  display: block;
+}
+
+.md-typeset code.cp-chip.is-copied::after,
+.md-typeset code.cp-chip.is-failed::after {
+  content: " " attr(data-cp-done);
+  font-size: 0.85em;
 }
 
 

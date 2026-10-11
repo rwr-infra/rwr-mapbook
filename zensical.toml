@@ -75,6 +75,8 @@ extra_javascript = [
   "javascripts/glightbox.min.js",
   "javascripts/table-tools.js",
   "javascripts/redact.js",
+  "javascripts/abbr-tap.js",
+  "javascripts/copy-code.js",
   "javascripts/download.js",
   "javascripts/lightbox-zoom.js",
 ]

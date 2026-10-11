@@ -1,8 +1,8 @@
 ---
 title: "Getting ready"
 description: "How to configure the editor once it is downloaded, link it to your RWR map folder, and switch on the free camera."
-source_sha256: 7f8a019addf29e641888e4a810e273e22eabd6437367ba15e0997912253ef9d5
-translated: 2026-09-27
+source_sha256: 2f5686b219bd076a42cec679a069b892eb6ddcfd6137bbf0986279bc583e21d6
+translated: 2026-10-11
 nav_label: "Getting ready"
 icon: lucide/download
 # ⚠️ 由 tools/docsgen.py 从 content/prepare/index.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
@@ -54,13 +54,13 @@ hide: [navigation]
 
 ## 1. Configure the editor { #setup }
 
-1. [Download the latest editor build](../download/index.md#download) — straight from this
-    site, or from the group files — then unzip the file to whatever path you like.
+1. Download the [latest editor build](../download/index.md#download), then unzip the file to
+    whatever path you like.
 
     ![](../../assets/editor/001.png)
 
     /// caption
-    Unzip it to any path
+    Unzip it to a path without Chinese characters
     ///
 
 2. Inside `1007_Data`, create a `templates` folder and a `map` folder.
@@ -71,17 +71,14 @@ hide: [navigation]
     Create the two folders, templates and map
     ///
 
-3. [Pick and download a template](../download/index.md#materials) — straight from this site,
-    or from the group files as before — and put it in the editor's `templates` folder.
+3. Pick and download a [template](../download/index.md#materials) and put it in the editor's
+    `templates` folder.
 
     ![](../../assets/editor/003.png)
 
     /// caption
     Put the template into templates
     ///
-
-    !!! note "So far only vanilla maps have a template"
-        The desert and winter templates are not finished yet.
 
 4. Pick a map you like as the foundation you are about to hack on, and put it in the editor's
     `map` folder. If you are not sure, use `map7` (it is the basis of the template file, and
@@ -101,13 +98,11 @@ hide: [navigation]
 
     !!! warning "Maps come in three kinds, and the template has to match"
         RWR's vanilla maps come in three kinds: normal mode, desert mode, winter mode.
-        Whichever kind you use you have to install the matching template — and so far
-        **only the "normal mode" kind has been made**, so you can only use the files under
-        `\vanilla\maps`.
+        Whichever kind you use you have to install the matching template — they correspond
+        to the files in RWR's `vanilla`, `vanilla.desert` and `vanilla.winter` folders.
 
-        Maps from `map19`, `\vanilla.desert\maps` and `\vanilla.winter\maps` may have
-        compatibility problems (opening them to look is harmless, but do not use them as a
-        base).
+        A few unusual maps (map19, for example) may have compatibility problems (opening
+        them to look is harmless, but do not use them as a base).
 
         Of course, you can also copy the `.svg` file from your map folder straight into the
         `templates` folder to serve as a template; this native template has not been polished
@@ -177,9 +172,7 @@ that step.
     Fill in the launch options
     ///
 
-    !!! warning
-        Once debugmode is added you cannot join multiplayer servers; if you want to use it,
-        remove the debugmode code and run the game again.
+    !!! warning "Once debugmode is added you cannot join multiplayer servers — remove the debugmode code and run the game again."
 
     ??? quote "Adding the debugmode line alone is enough"
         Adding the debugmode line alone already lets you use F4 to switch on the free camera.

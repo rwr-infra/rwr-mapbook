@@ -8,6 +8,14 @@ icon: "lucide/box"
 
 
 # Vehicle Scatter { #vehicle }
+!!! quote "注意事項"
+    註：RWR統計版本為1.98.1。預覽圖左側為斜向下視角，右側正對法線，也就是地編視角；判斷形狀請以水平線為參考，垂直線是點透視，可能讓物件看起來傾斜。
+
+    特殊載具表來自steamapps\common\RunningWithRifles\media\packages\vanilla\factions文件夾中的green_default.resources
+
+    普通載具表以及未生成載具表來自steamapps\common\RunningWithRifles\media\packages\vanilla\factions文件夾中的common.resources
+    
+    某些未生成載具是因為未裝載/地圖運行環境不同，或者只是中介載體只存在一瞬間，例如信號車只在Invasion有效，快速比賽模式無法正常生成，這些細節表中未進一步測試及標註。
 
 <p class="kicker">TABLES · 200 項</p>
 
@@ -19,15 +27,6 @@ icon: "lucide/box"
   </div>
   <p class="ts-search__meta">共 200 項 · 可搜名稱與引用值</p>
 </div>
-
-!!! quote "注意事項"
-    註：RWR統計版本為1.98.1。預覽圖左側為斜向下視角，右側正對法線，也就是地編視角；判斷形狀請以水平線為參考，垂直線是點透視，可能讓物件看起來傾斜。
-
-    特殊載具表來自steamapps\common\RunningWithRifles\media\packages\vanilla\factions文件夾中的green_default.resources
-
-    普通載具表以及未生成載具表來自steamapps\common\RunningWithRifles\media\packages\vanilla\factions文件夾中的common.resources
-    
-    某些未生成載具是因為未裝載/地圖運行環境不同，或者只是中介載體只存在一瞬間，例如信號車只在Invasion有效，快速比賽模式無法正常生成，這些細節表中未進一步測試及標註。
 
 
 ## 特殊載具表 <span class="ts-count">6 項</span> { #special }

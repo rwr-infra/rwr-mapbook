@@ -1,8 +1,8 @@
 ---
 title: "Feature guide"
 description: "The editor's features: every toolbar tool in turn, the key bindings, ID search, and the mapSettings / 3rdParSettings / RefpM configuration files."
-source_sha256: af3c0c99d1898afe21b5174ca8ce46bd7882a94ebd5db9c9132a5810a3af14c9
-translated: 2026-10-10
+source_sha256: d7a8d7e316f4c4f66c490ae8832813cd66a87061deb8126b6d0acaabb2cd4d58
+translated: 2026-10-11
 nav_label: "Feature guide"
 icon: lucide/layout-grid
 # ⚠️ 由 tools/docsgen.py 从 content/editor/index.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
@@ -71,7 +71,7 @@ The editor's main panel.
 ??? note "Used to pick the kind of wall from the list, and to draw nodes with PathBush and then press space to join them into a line in placement order. You can pick the wall kind first and then draw, or draw first and then pick the wall kind — once you have picked, click the wall you already drew and the replacement is done. (expand for details)"
     Use the ++shift+7++ shortcut to jump quickly to the PathBush tool inside WallE.
     * * *    
-    The search bar finds an object quickly by name, and for what each wall's model looks like see [Model inventories · Wall E](../tables/wall.md).
+    The search bar finds an object quickly by name, and for what each wall's model looks like see [Model inventories · Wall E & Platform E](../tables/wall.md).
 
     ![](../../assets/editor/017.png)
 
@@ -113,7 +113,7 @@ The editor's main panel.
     ![](../../assets/editor/021.png)
 
     * * *
-    At the very top ^^HeightDown^^ and ^^HeightUp^^ change the height of the Building at the clicked spot, by 2 each time (6). ^^RoofSwitch^^ turns the roof into a pitched/flat roof; the pitched direction is fixed, so you have to select the building and press ++r++ to rotate it yourself.
+    At the very top HeightDown and HeightUp change the height of the Building at the clicked spot, by 2 each time (6). RoofSwitch turns the roof into a pitched/flat roof; the pitched direction is fixed, so you have to select the building and press ++r++ to rotate it yourself.
 
     ![](../../assets/editor/022.png)
 
@@ -133,18 +133,18 @@ The editor's main panel.
 * * *
 ### PlatformE { #platforme }
 
-??? note "Used to pick the kind of platform from the list and draw with ^^pathBush^^; like Wall, so no more detail here. (expand for details)"
+??? note "Used to pick the kind of platform from the list and draw with pathBush; like Wall, so no more detail here. (expand for details)"
     Use the ++shift+8++ shortcut to jump quickly to the PathBush tool inside PlatformE.
 
     Use the ++shift+9++ shortcut to jump quickly to the TypeChange tool inside PlatformE.
 
     Use the ++shift+0++ shortcut to jump quickly to the PlatformBasewallChanger tool inside PlatformE.
     * * *
-    The search bar is like Wall's, so no more detail here.
+    The search bar is like Wall's, so no more detail here — for what each platform's model looks like see [Model inventories · Wall E & Platform E](../tables/wall.md).
     
     ![](../../assets/editor/026.png)
     * * *
-    At the very bottom ^^TypeChange^^ switches the Platform at the clicked spot between "no special property", the "deck" property and the "bridge" property.
+    At the very bottom TypeChange switches the Platform at the clicked spot between "no special property", the "deck" property and the "bridge" property.
 
     ChangeHeight works by setting the height and then pressing Enter to put the tool into use; it changes the height of the Platform at the clicked spot.
 
@@ -198,21 +198,21 @@ The editor's main panel.
 * * *
 ### FuncObjects { #funcobjects }
 ??? note "Used to place objects that have some special interaction. (expand for details)"
-    ^^LadderScatter^^ and ^^LadderEraser^^ place ladders and delete ladders. A placed ladder checks forwards automatically and snaps to nearby buildings, platforms and anything else with fixed collision.
+    LadderScatter and LadderEraser place ladders and delete ladders. A placed ladder checks forwards automatically and snaps to nearby buildings, platforms and anything else with fixed collision.
 
     !!! warning "If a ladder is placed the wrong way round the snapping fails and you cannot climb it, and in version 0101 ladders have no forward indicator, so try not to mix up which way a ladder faces when adjusting it."
     * * *
 
-    ^^ItemSupplyScatter^^ places the trigger area of a stash or an armory: stash is the stash, weapon_rack is the armory; once Select has picked it, click ChangeType below to switch.
+    ItemSupplyScatter places the trigger area of a stash or an armory: stash is the stash, weapon_rack is the armory; once Select has picked it, click ChangeType below to switch.
 
     ![](../../assets/editor/030.png)
     * * *
 
-    ^^CrateScatter^^ and ^^CrateEraser^^ place wooden crates and delete wooden crates; the items inside are random and cannot be specified.
+    CrateScatter and CrateEraser place wooden crates and delete wooden crates; the items inside are random and cannot be specified.
 
-    ^^SpawnScatter^^ and ^^SpawnEraser^^ create spawn points and delete spawn points; a spawn point should not sit too close to the map edge.
+    SpawnScatter and SpawnEraser create spawn points and delete spawn points; a spawn point should not sit too close to the map edge.
 
-    ^^BaseScatter^^ creates a base by left-dragging. With it selected by Select, you can change the base's displayed name (Name) and specify which faction captured this base first (Faction).
+    BaseScatter creates a base by left-dragging. With it selected by Select, you can change the base's displayed name (Name) and specify which faction captured this base first (Faction).
 
 
     ![](../../assets/editor/031.png)
@@ -231,9 +231,9 @@ The editor's main panel.
 
     ![](../../assets/editor/032.png)
     * * *
-    ^^StoneEraser^^ and ^^StoneScatter^^ delete a random rock or place a random rock; for what the rocks look like see [Model inventories · MESH E](../tables/mesh.md).
+    StoneEraser and StoneScatter delete a random rock or place a random rock; for what the rocks look like see [Model inventories · MESH E](../tables/mesh.md).
 
-    ^^TreeEraser^^ and ^^TreeScatter^^ delete a random tree or place a random tree; for what the trees look like see [Model inventories · MESH E](../tables/mesh.md).
+    TreeEraser and TreeScatter delete a random tree or place a random tree; for what the trees look like see [Model inventories · MESH E](../tables/mesh.md).
 
     ![](../../assets/editor/033.png)
     * * *
@@ -252,15 +252,15 @@ The editor's main panel.
 ### HeightMap { #heightmap }
 
 ??? note "Used to lay down the terrain's curvature. (expand for details)"
-    ^^HeightBush^^ is the terrain brush. In the panel at the bottom left, SetHardness is the hardness, which decides how steep the transition is between the height you are painting and the background height, range 0 to 1; SerRange is the terrain brush's range; SetHeight is the terrain brush's height, range 0 to 1. Press X to lock the brush horizontally, Y to lock it vertically.
+    HeightBush is the terrain brush. In the panel at the bottom left, SetHardness is the hardness, which decides how steep the transition is between the height you are painting and the background height, range 0 to 1; SerRange is the terrain brush's range; SetHeight is the terrain brush's height, range 0 to 1. Press X to lock the brush horizontally, Y to lock it vertically.
 
     ![](../../assets/editor/036.png)
     * * *
-    ^^HeightSmudge^^ drags the height within a certain range under the mouse and, following the direction the mouse moves, makes the nearby terrain deform as a transition.
+    HeightSmudge drags the height within a certain range under the mouse and, following the direction the mouse moves, makes the nearby terrain deform as a transition.
     * * *
-    ^^Smooth^^ flattens the terrain over the whole map.
+    Smooth flattens the terrain over the whole map.
     * * *
-    ^^Noise^^ adds noise to the terrain over the whole map, so that the map is not a big flat plain at a single height value but has some tiny bumps.
+    Noise adds noise to the terrain over the whole map, so that the map is not a big flat plain at a single height value but has some tiny bumps.
     * * *
     heightPath is the path terrain brush; it is used like the Wall tool, the top left explains the relevant values and you can try it yourself.
 
@@ -269,12 +269,12 @@ The editor's main panel.
 * * *
 ### TerrainBash { #terrainbash }
 ??? note "Used to lay down changes in the ground texture. (expand for details)"
-    ^^Pathpainter^^ is the path ground-texture brush; it is used like the Wall tool, the top left explains the relevant values and you can try it yourself.
+    Pathpainter is the path ground-texture brush; it is used like the Wall tool, the top left explains the relevant values and you can try it yourself.
     The decay exponent is adjusted with [ and ]; it is not a description typed twice that turned into [[/]].
 
     ![](../../assets/editor/038.png)
     * * *
-    ^^painter^^ is the ground-texture brush: Chg Index is the material kind, a number; Chg Rng is the range; Chg Har is the hardness.
+    painter is the ground-texture brush: Chg Index is the material kind, a number; Chg Rng is the range; Chg Har is the hardness.
 
     ![](../../assets/editor/039.png)
     !!! warning "In version 0101, when you use this tool there may be a spare adjustment bar in the bottom left; it has no effect at all."
@@ -291,7 +291,7 @@ The editor's main panel.
 ### Decal { #decal }
 
 ??? note "Used to pick the kind of decal from the list; you can think of it as printing another layer of material on top of the ground texture. Once picked, left click to place it. (expand for details)"
-    ^^deleteDecals^^ deletes the decals inside the marquee you drag.
+    deleteDecals deletes the decals inside the marquee you drag.
     * * *
     Once Select has picked it, you can use Length to change this decal's size, that is its scale.
 
@@ -301,12 +301,14 @@ The editor's main panel.
 * * *
 ### Assaum { #assaum }
 ??? note "Used to pick assemblies from the list, an armory with its collision box and trigger area already built for example. Once picked, left click to place it. (expand for details)"
+    Ready-made assemblies (armory, stash, hangar) can be previewed and downloaded on the [File downloads · Prefabs](../download/index.md#prefabs) page — drop one into the editor's `assaumbles` folder and it shows up here.
+    * * *
     The search bar is like Wall's, so no more detail here.
     * * *
-    If you want to add an assembly of your own to the list, select the objects you want to group, give it a name via Name, then click Add and the group you picked joins the assembly list.
-    !!! warning
-        Assemblies do not follow the template; they are on a path of their own.
-        When you click Add the objects have to be multi-selected; if only one is selected nothing is saved.
+    If you want to add an assembly you made yourself, select the objects you want to group, give it a name via Name, then click Add and the group you picked joins the assembly list.
+    !!! warning "Assemblies do not follow the template: they live at a path of their own inside the `assaumbles` folder. When you click Add the objects have to be multi-selected; if only one is selected nothing is saved."
+
+    * * *
 
 
 
@@ -436,10 +438,10 @@ Once it is set the result looks like this (a Decal, as an example):
 * * *
 ### RefpM { #reference-images }
 
-Use ^^Import^^ to bring in a reference image, ^^Clear^^ to remove it.
-^^ScaleX^^ and ^^ScaleY^^ squeeze or stretch the reference image horizontally and vertically; the value is a multiplier, so ScaleX 0.5 squeezes it to half width.
-^^OffsetX^^ and ^^OffsetX<span class="redact" tabindex="0">really Y</span>^^ shift the reference image horizontally and vertically; the value is a distance, the first field grows along X to the right, the second along Y upwards.
-^^Alpha^^ changes the reference image's transparency, fading it towards the left and making it solid towards the right.
+Use Import to bring in a reference image, Clear to remove it.
+ScaleX and ScaleY squeeze or stretch the reference image horizontally and vertically; the value is a multiplier, so ScaleX 0.5 squeezes it to half width.
+OffsetX and OffsetX<span class="redact" tabindex="0">really Y</span> shift the reference image horizontally and vertically; the value is a distance, the first field grows along X to the right, the second along Y upwards.
+Alpha changes the reference image's transparency, fading it towards the left and making it solid towards the right.
 
 * * *
 ### Key bindings { #keys }
