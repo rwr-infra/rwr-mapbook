@@ -620,16 +620,23 @@ html[data-ts-page="vehicle"] .md-typeset table td:nth-child(2) {
 }
 
 html[data-ts-page="decal"] .md-typeset {
-  --ts-prev-cols: 1;
-  --ts-shot-w: 200px;
-  --ts-shot-h: 170px;
+  /* ⚠️ 这一页每行现在是**两张**图（左斜视 / 右正视），列宽要跟着按两格算——
+     2026-10-12 按新表重录时从 1 格改回 2 格；图框也从近方形那套（200×170）
+     降到 150×138，两图并排才不至于把备注列挤没。清单里的素材本身就偏方，
+     框取近方形（≈1.09），贴进去的图不至于缩成一小条。 */
+  --ts-prev-cols: 2;
+  --ts-shot-w: 150px;
+  --ts-shot-h: 138px;
 }
 
-/* 下载页的**组件表**：照 MESH E 的尺寸来，一行两张图。 */
+/* 下载页的**组件表**：一行两张图。⚠️ 图框别太大——预览列宽是按图框算死的
+   （两张 + 间隙 + 格内边距），框越大这一列吃得越多，后面三列就被挤得
+   越不匀（158×124 时预览列 366px，名称列的文件名被折成两行、下载按钮
+   直接顶出表格右缘，用户截图报过）。130×102 时预览列 310px，正好。 */
 html[data-ts-page="download"] .md-typeset {
   --ts-prev-cols: 2;
-  --ts-shot-w: 158px;
-  --ts-shot-h: 124px;
+  --ts-shot-w: 130px;
+  --ts-shot-h: 102px;
 }
 
 /* 三张模板表**并列**摆着（原版 / 沙漠 / 雪地），各自的列宽要是各算各的，
@@ -756,17 +763,23 @@ html[data-ts-page="download"] .md-typeset .ts-align table td:nth-child(1) {
    算式的值由上面那条 `th:first-child` 给出，这里只压其余三列。 */
 html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) th:nth-child(2),
 html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:nth-child(2) {
-  width: 30%;  /* 名称（含文件名与体积） */
+  width: 36%;  /* 名称（含文件名与体积）：最宽的一列，`名字`+`.asmb`+体积 不折行 */
 }
 
 html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) th:nth-child(3),
 html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:nth-child(3) {
-  width: 32%;  /* 备注，约 20 个字 */
+  width: 18%;  /* 备注：现在还空着，别占地方；补内容后再看要不要放宽 */
 }
 
 html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) th:nth-child(4),
 html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:nth-child(4) {
-  width: 12%;  /* 下载按钮：只放得下一个 */
+  width: 14%;  /* 下载按钮：⚠️ 12% 时扣掉格内边距比按钮还窄，按钮溢出顶到表格右缘 */
+}
+
+/* 组件表的下载格照 `.ts-plain` 那条居中——按钮悬在列中间，不再贴着表格右缘 */
+html[data-ts-page="download"] .md-typeset table:not(details table, .admonition table, .ts-plain table) td:last-child {
+  text-align: center;
+  vertical-align: middle;
 }
 
 /* ⚠️ 组件表的预览列要**再压一次**，而且必须压在这里（上面那条按图框算宽度的

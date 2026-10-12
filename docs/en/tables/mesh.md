@@ -1,8 +1,8 @@
 ---
 title: "MESH E"
 description: "Rocks, plants, small props, large props, special props, and the ones with serious problems."
-source_sha256: 83df16c690f830e78d4ab5123e2bd177999b6c5d3eb153ea4811240c62c00bbf
-translated: 2026-10-11
+source_sha256: ee7411f2cad6983eae622cac5e76d7b0ab97dd3ca2ff72107323c267bf60d2ab
+translated: 2026-10-12
 nav_label: "MESH E"
 icon: "lucide/box"
 # ⚠️ 由 tools/docsgen.py 从 content/tables/mesh.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
@@ -267,11 +267,13 @@ icon: "lucide/box"
 
 
 ## Special props <span class="ts-count">4 items</span> { #special }
+!!! 注意 "This prop is unusual: it is mainly meant to be placed in a chain, and the pole points along the bisector of the angle between the two wires."
+    ![](../../assets/tables/mesh-e/018.png) 
 
 | Preview | Name | Notes |
 | --- | --- | --- |
-| ![](../../assets/tables/mesh-e/007.png)<br>![](../../assets/tables/mesh-e/008.png) | Single-wire utility pole<br>template = post1_1 | this one is special: its main use is placing them in a chain<br>looking at the normal is not much use;<br>the pole points along the bisector of the angle between the two wires<br>as shown below: |
-| ![](../../assets/tables/mesh-e/016.png)<br>![](../../assets/tables/mesh-e/017.png) | Two-wire utility pole<br>template = post1_ | ![](../../assets/tables/mesh-e/018.png) |
+| ![](../../assets/tables/mesh-e/007.png)<br>![](../../assets/tables/mesh-e/008.png) | Single-wire utility pole<br>template = post1_1 | Placed the same way as walls: keep placing, then press space to finish. Same below |
+| ![](../../assets/tables/mesh-e/016.png)<br>![](../../assets/tables/mesh-e/017.png) | Two-wire utility pole<br>template = post1_ |  |
 | ![](../../assets/tables/mesh-e/026.png)<br>![](../../assets/tables/mesh-e/027.png) | Three-wire utility pole<br>template = post1_3 |  |
 | ![](../../assets/tables/mesh-e/037.png)<br>![](../../assets/tables/mesh-e/036.png) | Long-arm utility pole<br>template = post1_4 |  |
 
