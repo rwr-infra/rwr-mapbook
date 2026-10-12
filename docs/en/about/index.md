@@ -1,8 +1,8 @@
 ---
 title: "About"
 description: "What this handbook is, who puts it together, and which sections it has."
-source_sha256: 086cb8d97494f6cf37bb5c59f73ae10178c13b0774a88a8dfc8374db66be2c26
-translated: 2026-10-11
+source_sha256: 2a29a4ef9b5e40b9526f781ddac434f28ef7199c3adb8477c807196c261924f3
+translated: 2026-10-12
 nav_label: "About"
 icon: lucide/info
 # ⚠️ 由 tools/docsgen.py 从 content/about/index.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
@@ -19,7 +19,7 @@ hide: [navigation]
 
     Handbook editor version: 0101
 
-    Handbook edited: 20261011
+    Handbook edited: 20261012
 
     Current editors: HamSter
 

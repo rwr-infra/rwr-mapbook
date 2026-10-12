@@ -1,8 +1,8 @@
 ---
 title: "File downloads"
 description: "Complete archives of every editor version, the three templates and the prefabs, hosted outside the repository as direct links."
-source_sha256: 0e4b32537510e33dd15a572db3b29d651d7b0e26236c2cdaf2dc9c49e50160c3
-translated: 2026-10-10
+source_sha256: 0c0cc99c54ac39beda9e74e1fb1c7133af515c00d34f9dd841cc2916dc569aa9
+translated: 2026-10-12
 nav_label: "File downloads"
 icon: lucide/archive
 ---
@@ -96,6 +96,7 @@ The three templates are listed **side by side** — take the one you want.
 A prefab (`.asmb`) is **a group of objects already laid out**: drop it into the folder the
 editor reads prefabs from (`assaumbles`) and you can use the whole group at once instead of
 placing objects one by one.
+!!! warning "0101 does not seem able to save placed prefabs into the map data."
 
 <div class="ts-search">
   <div class="ts-search__box">

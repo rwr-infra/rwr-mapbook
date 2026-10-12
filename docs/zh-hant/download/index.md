@@ -69,6 +69,8 @@ hide: [navigation]
 ## 組件下載 { #prefabs .section-title }
 
 組件也稱預製件，格式為xxx.asmb，是一組已經組裝好的對象：下載之後放進地編讀取組件的文件夾`assaumbles`就能在地編中使用了，一般可以多個模板通用。
+!!! warning "0101版本似乎無法將擺放的組件儲存到地圖數據中。"
+
 
 <div class="ts-search">
   <div class="ts-search__box">

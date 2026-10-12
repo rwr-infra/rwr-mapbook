@@ -258,11 +258,13 @@ icon: "lucide/box"
 | ![](../assets/tables/mesh-e/192.png)<br>![](../assets/tables/mesh-e/191.png) | 隧道<br>template = tunnel | 无碰撞箱 |
 
 ## 特殊物件 <span class="ts-count">4 项</span> { #special }
+!!! 注意 "这个物件比较特殊，主要用途是连成一串摆放，杆子方向为两根电线夹角的角平分线方向。"
+    ![](../assets/tables/mesh-e/018.png) 
 
 | 预览 | 名称 | 备注 |
 | --- | --- | --- |
-| ![](../assets/tables/mesh-e/007.png)<br>![](../assets/tables/mesh-e/008.png) | 单线电线杆子<br>template = post1_1 | 这个物件比较特殊，主要用途是连成一串摆放<br>看法线意义不大，<br>杆子方向取两根电线夹角的角平分线方向<br>如下图所示： |
-| ![](../assets/tables/mesh-e/016.png)<br>![](../assets/tables/mesh-e/017.png) | 双线电线杆子<br>template = post1_ | ![](../assets/tables/mesh-e/018.png) |
+| ![](../assets/tables/mesh-e/007.png)<br>![](../assets/tables/mesh-e/008.png) | 单线电线杆子<br>template = post1_1 | 摆放规则和Wall类似，连着放完拍空格完成。下同 |
+| ![](../assets/tables/mesh-e/016.png)<br>![](../assets/tables/mesh-e/017.png) | 双线电线杆子<br>template = post1_ |  |
 | ![](../assets/tables/mesh-e/026.png)<br>![](../assets/tables/mesh-e/027.png) | 三线电线杆子<br>template = post1_3 |  |
 | ![](../assets/tables/mesh-e/037.png)<br>![](../assets/tables/mesh-e/036.png) | 大臂电线杆子<br>template = post1_4 |  |
 

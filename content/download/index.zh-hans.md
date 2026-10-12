@@ -67,6 +67,8 @@ description: "地编各版本的完整归档、三种模板与预制件组件，
 ## 组件下载 { #prefabs .section-title }
 
 组件也称预制件，格式为xxx.asmb，是一组已经组装好的对象：下载之后放进地编读取组件的文件夹`assaumbles`就能在地编中使用了，一般可以多个模板通用。
+!!! warning "0101版本似乎无法将摆放的组件储存到地图数据中。"
+
 
 <div class="ts-search">
   <div class="ts-search__box">
