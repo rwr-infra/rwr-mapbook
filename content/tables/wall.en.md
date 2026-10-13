@@ -1,8 +1,8 @@
 ---
 title: "Wall E & Platform E"
 description: "Normal walls and special walls, including notes on what destroys them."
-source_sha256: 88b326b370c68cc1c11e4b00f8c4da8fcdff2a4bb1d49eb8bb0d0ac67e56cf2e
-translated: 2026-10-11
+source_sha256: 114359493509ee654f8607f1e7fd4cc2aa53afa38b1c328a220609c4b48ae64d
+translated: 2026-10-13
 nav_label: "Wall E & Platform E"
 icon: lucide/box
 ---
@@ -113,11 +113,9 @@ icon: lucide/box
 | ![](../assets/tables/wall-e/053.png) | Ruin wall 2<br>template = RuinWall2 |  |
 | ![](../assets/tables/wall-e/055.png) | Wall template<br>template = Wall_Template |  |
 
-## Reference data { #data }
+## Other data { #data }
 
-The remark columns above leave a lot of blanks: what can climb over a wall, what blast damage destroys it. The answers are not in this table but in the game files. The four blocks below are that raw data, **copied verbatim** — the only change is that each block carries its own header note, and the parallel columns became tabs.
-
-Data version vao0822.
+Running With Rifles version 1.98.1.
 
 <div class="ts-ref" markdown>
 
@@ -346,3 +344,49 @@ Data version vao0822.
     ```
 
 </div>
+
+???+ example "**To be edited, to be verified.** (expand to view)"
+
+    | Key | Value | Meaning | Notes |
+    | --- | --- | --- | --- |
+    | name | string (e.g. BrickWall1, SandbagWall1, SecurityFence1) | Wall template name | 76 distinct values in all; 2 more blocks have no name at all. |
+    | height | number (0.0–8.0) | Wall height | 35 values, commonly 1.2 / 1.3 / 2.5 / 7. |
+    | depth | number, negatives included (e.g. -1.0, 0.2–1.8) | Wall thickness (depth) | 15 values, commonly 0.4 / 0.5 / 0.6 / 0.7 / 0.8; negatives exist (-0.3, -1, -1.0) and their meaning is unconfirmed. |
+    | wall_height | 0.0 | Wall height (a second one) | Used by 1 block only, value 0.0; how it divides the work with height is unconfirmed — looks like a legacy / redundant field. |
+    | color | fill<br>stroke<br>#6f6555<br>#808080<br>#dadada<br>1.0 1.0 1.0 1.0 | Main wall colour | `fill` / `stroke` take the rectangle's own fill or stroke colour; hex colours and RGBA numbers are also accepted. 6 values in all. |
+    | color_variance | 0.607 0.639 0.639 | Random wall-colour offset range | Used by 1 block in the whole set. |
+    | side_texture | wall_atlas1.png<br>fence_atlas1.png<br>ruinwall.png<br>invisiblewall.png<br>none<br>your own atlas file name | Wall side texture | 8 values; `none` means it is not drawn. |
+    | side_texture_atlas_cell | column, row, total columns, total rows, margin, margin value (e.g. 2 0 8 8 0.0078125) | Cell of the side texture inside the atlas | 23 values, using both a 5-number and a 6-number spelling; with only the first margin it seems to default to a square, and one entry writes no margin at all. |
+    | side_texture_scale | X scale, Y scale (e.g. 2.0 2.0, 6.0 6.0) | Side texture scale | 20 values, commonly 2.0 2.0 / 2.65 2.65 / 3.0 3.0. |
+    | side_color | fill | Colour given for the side alone | Used by 2 blocks only. |
+    | side_cutout_texture | cutout.png<br>cutout_1.png | Side cut-out texture | 2 values, not tested. |
+    | side_cutout_texture_channel | 1<br>2 | Colour channel read from the side cut-out texture | Unlike building materials, which only ever use 1, a 2 turns up here. |
+    | side_cutout_texture_scale | X, Y scale (10 10 / 15 15 / 20 20 / 40 8 and so on) | Side cut-out texture scale | 7 values, including non-uniform ones (e.g. 40 8). |
+    | top_texture | wall_atlas1.png<br>ruinwall.png<br>invisiblewall.png<br>none<br>your own atlas file name | Wall top (coping) texture | 5 values. |
+    | top_texture_atlas_cell | column, row, total columns, total rows, margin, margin value | Cell of the top texture inside the atlas | 15 values. |
+    | top_texture_scale | X, Y scale (e.g. 2.0 1.0, 6.0 0.4) | Top texture scale | 11 values; X and Y are often unequal (the top is a long strip). |
+    | top_color | stroke | Colour given for the top alone | Used by 2 blocks only. |
+    | separator_color | fill<br>stroke<br>#6f6555<br>#808080<br>#938c7d<br>#dadada<br>1.0 1.0 1.0 1.0 | Coping colour | 8 values, same rule as `color`; one entry in the raw data spells it `fil` (looks like a typo for fill). |
+    | separator_color_variance | 0.607 0.639 0.639 | Random coping-colour offset range | Used by 1 block only. |
+    | separator_depth | number (0.0–1.7) | Coping thickness (depth) | 16 values, commonly 0.2 / 0.6 / 0.7 / 0.8. |
+    | separator_height | 0 | Coping height | Used by 2 blocks only, both 0; how it divides the work with separator_over_height is unconfirmed — looks like a reserved field. |
+    | separator_over_height | number (0.0–2.8) | How far the coping rises above the wall | 14 values, commonly 0.1 / 0.2 / 0.3 / 0.4. |
+    | separator_side_texture | wall_atlas1.png<br>ruinwall.png<br>invisiblewall.png<br>none<br>your own atlas file name | Coping side texture | 6 values. |
+    | separator_side_texture_atlas_cell | column, row, total columns, total rows, margin, margin value | Atlas cell of the coping side texture | 20 values. |
+    | separator_side_texture_scale | X, Y scale (e.g. 0.6 2.65, 3 3) | Coping side texture scale | 12 values. |
+    | separator_side_cutout_texture | cutout.png | Coping side cut-out texture | Used by 1 block only. |
+    | separator_side_cutout_texture_channel | 1 | Coping side cut-out texture channel | Used by 1 block only. |
+    | separator_side_cutout_texture_scale | 1 1 | Coping side cut-out texture scale | Used by 1 block only. |
+    | separator_top_texture | wall_atlas1.png<br>ruinwall.png<br>invisiblewall.png<br>none<br>your own atlas file name | Coping top texture | 5 values. |
+    | separator_top_texture_atlas_cell | column, row, total columns, total rows, margin, margin value | Atlas cell of the coping top texture | 16 values. |
+    | separator_top_texture_scale | X, Y scale (e.g. 0.6 0.6, 3 3) | Coping top texture scale | 14 values; 2 of them write `separator_top_texture_atlas_cell = ...` into the value as well, which looks like a mistake in the raw data. |
+    | separator_texture_scale | 3 3 | Overall coping texture scale | Used by 17 blocks, always 3 3; how it relates to the side / top scales is unconfirmed. |
+    | climbable | 0<br>1 | Climbable or not | 0 = not climbable, 1 = climbable; 20 / 16 maps respectively, a fairly even split. |
+    | climb_type | 0<br>1 | How it is climbed / the type | What exactly differs between 0 and 1 is unconfirmed (0 = cannot climb over, 1 = can, it seems). |
+    | penetrability | number from 0 to 1 (0 / 0.51 / 0.7 / 0.9 / 1.0 and so on) | Bullet penetrability | 8 values; 0 = stops bullets completely, 1 = fully penetrable; the larger the number, the easier it is to shoot through. |
+    | see_through | 0<br>1 | Whether sight passes through | 0 = no, 1 = yes; wire fences and the like usually use 1. |
+    | walkable | 1 | Whether you can walk on top of it | Used by 5 blocks only, all 1. |
+    | vertex_noise | 0.7 | Vertex noise strength (makes the wall edge look irregular) | Used by 17 blocks, always 0.7, not tested. |
+    | mesh_set_template | barbwire_set<br>hedgerow_set<br>rock1 | Mesh-set template it refers to | 3 values. |
+    | static_object_type_key | security_fence.static_object<br>wood_fence.static_object<br>wood_fence1.static_object<br>barbed_wire.static_object<br>barbed_wire_fence.static_object<br>scripted_wall.static_object | The static-object type it is tied to | 6 values, pointing at a `.static_object` definition. |
+    | hack1 | 1 | Unknown (looks like a debug / temporary switch) | Appears in 20 maps, always 1, meaning unclear and untested. |

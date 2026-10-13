@@ -1122,6 +1122,17 @@ html[data-ts-page] .md-typeset .ts-search {
   background-color: var(--md-default-bg-color);
 }
 
+/* ⚠️ 窄屏（≤76.1875em）上主题把右侧目录收成**浮动小卡**（点「目录」展开），
+   主题只给了 z-index: 2——被上面 z3 的粘性搜索栏压住，展开的目录从中间
+   被搜索框横着切掉一条（Decal / Wall E 手机端都这样，用户截图报过）。
+   提到 4：盖过搜索栏（3），与页眉同档——浮层 fixed 在屏幕下半区，
+   永远碰不到页眉，不会真的压上去。桌面端目录是普通侧栏不浮动，不动。 */
+@media screen and (max-width: 76.1875em) {
+  .md-sidebar--secondary {
+    z-index: 4;
+  }
+}
+
 html[data-ts-page] .md-typeset .ts-search__box {
   display: flex;
   align-items: center;

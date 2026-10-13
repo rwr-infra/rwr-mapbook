@@ -110,11 +110,9 @@ icon: "lucide/box"
 | ![](../assets/tables/wall-e/053.png) | 二号残骸墙<br>template = RuinWall2 |  |
 | ![](../assets/tables/wall-e/055.png) | 墙模板<br>template = Wall_Template |  |
 
-## 判定数据速查 { #data }
+## 其它数据 { #data }
 
-上面两张表的备注栏里留了一堆「能不能翻过」「被爆炸摧毁的阈值」。答案不在这张表里，而在游戏文件中——下面四块就是从那些文件里读出来的原始数据，**内容一字未改**，只是把表头那一行说明拆到每块头上、把并排的几格换成标签页。
-
-数据版本 vao0822。
+小兵步枪版本 1.98.1 。
 
 <div class="ts-ref" markdown>
 
@@ -343,3 +341,50 @@ icon: "lucide/box"
     ```
 
 </div>
+
+???+ example "**待编辑待校验内容。**（展开以查看）"
+
+    | 代码 | 值 | 说明 | 备注 |
+    | --- | --- | --- | --- |
+    | name | 字符串（如 BrickWall1、SandbagWall1、SecurityFence1） | 墙体模板名 | 共 76 种取值，另有 2 个块完全没有 name。 |
+    | height | 数值（0.0~8.0） | 墙体高度 | 35 种取值，常见 1.2 / 1.3 / 2.5 / 7。 |
+    | depth | 数值（含负值，如 -1.0、0.2~1.8） | 墙体厚度（进深） | 15 种取值，常见 0.4 / 0.5 / 0.6 / 0.7 / 0.8；存在负值（-0.3、-1、-1.0），含义待确认。 |
+    | wall_height | 0.0 | 墙体高度（另一处） | 仅 1 个块使用且值为 0.0，与 height 的分工待确认，疑似旧 / 冗余字段。 |
+    | color | fill<br>stroke<br>#6f6555<br>#808080<br>#dadada<br>1.0 1.0 1.0 1.0 | 墙体主色 | fill / stroke 表示直接取矩形自身的填充色或描边色；也可写十六进制色或 RGBA 数值。共 6 种取值。 |
+    | color_variance | 0.607 0.639 0.639 | 墙体颜色随机偏移范围 | 全库仅 1 个块使用。 |
+    | side_texture | wall_atlas1.png<br>fence_atlas1.png<br>ruinwall.png<br>invisiblewall.png<br>none<br>自定义图集文件名 | 墙体侧面贴图 | 8 种取值，none 表示不绘制。 |
+    | side_texture_atlas_cell | 列、行、总列数、总行数、边距、边距数值（如 2 0 8 8 0.0078125） | 侧面贴图在图集中的单元位置 | 23 种取值，并存 5 个数与 6 个数两种写法；只写第一个边距时疑似默认正方形，甚至有 1 条完全没写边距。 |
+    | side_texture_scale | X缩放、Y缩放数值（如 2.0 2.0、6.0 6.0） | 侧面贴图缩放 | 20 种取值，常见 2.0 2.0 / 2.65 2.65 / 3.0 3.0。 |
+    | side_color | fill | 侧面单独指定的颜色 | 仅 2 个块使用。 |
+    | side_cutout_texture | cutout.png<br>cutout_1.png | 侧面镂空图 | 2 种取值，未实测。 |
+    | side_cutout_texture_channel | 1<br>2 | 侧面镂空图读取的颜色通道 | 与建筑材质只取 1 不同，这里出现了 2。 |
+    | side_cutout_texture_scale | X、Y缩放数值（10 10 / 15 15 / 20 20 / 40 8 等） | 侧面镂空图缩放 | 7 种取值，存在非等比写法（如 40 8）。 |
+    | top_texture | wall_atlas1.png<br>ruinwall.png<br>invisiblewall.png<br>none<br>自定义图集文件名 | 墙体顶面（墙头）贴图 | 5 种取值。 |
+    | top_texture_atlas_cell | 列、行、总列数、总行数、边距、边距数值 | 顶面贴图在图集中的单元位置 | 15 种取值。 |
+    | top_texture_scale | X、Y缩放数值（如 2.0 1.0、6.0 0.4） | 顶面贴图缩放 | 11 种取值，X / Y 常不相等（顶面为长条形）。 |
+    | top_color | stroke | 顶面单独指定的颜色 | 仅 2 个块使用。 |
+    | separator_color | fill<br>stroke<br>#6f6555<br>#808080<br>#938c7d<br>#dadada<br>1.0 1.0 1.0 1.0 | 压顶条颜色 | 8 种取值，取值规则与 color 相同；原数据里有 1 条写成 fil（疑似 fill 的笔误）。 |
+    | separator_color_variance | 0.607 0.639 0.639 | 压顶条颜色随机偏移范围 | 仅 1 个块使用。 |
+    | separator_depth | 数值（0.0~1.7） | 压顶条厚度（进深） | 16 种取值，常见 0.2 / 0.6 / 0.7 / 0.8。 |
+    | separator_height | 0 | 压顶条高度 | 仅 2 个块使用且均为 0，与 separator_over_height 的分工待确认，疑似预留字段。 |
+    | separator_over_height | 数值（0.0~2.8） | 压顶条高出墙体部分的高度 | 14 种取值，常见 0.1 / 0.2 / 0.3 / 0.4。 |
+    | separator_side_texture | wall_atlas1.png<br>ruinwall.png<br>invisiblewall.png<br>none<br>自定义图集文件名 | 压顶条侧面贴图 | 6 种取值。 |
+    | separator_side_texture_atlas_cell | 列、行、总列数、总行数、边距、边距数值 | 压顶条侧面贴图图集单元位置 | 20 种取值。 |
+    | separator_side_texture_scale | X、Y缩放数值（如 0.6 2.65、3 3） | 压顶条侧面贴图缩放 | 12 种取值。 |
+    | separator_side_cutout_texture | cutout.png | 压顶条侧面镂空图 | 仅 1 个块使用。 |
+    | separator_side_cutout_texture_channel | 1 | 压顶条侧面镂空图通道 | 仅 1 个块使用。 |
+    | separator_side_cutout_texture_scale | 1 1 | 压顶条侧面镂空图缩放 | 仅 1 个块使用。 |
+    | separator_top_texture | wall_atlas1.png<br>ruinwall.png<br>invisiblewall.png<br>none<br>自定义图集文件名 | 压顶条顶面贴图 | 5 种取值。 |
+    | separator_top_texture_atlas_cell | 列、行、总列数、总行数、边距、边距数值 | 压顶条顶面贴图图集单元位置 | 16 种取值。 |
+    | separator_top_texture_scale | X、Y缩放数值（如 0.6 0.6、3 3） | 压顶条顶面贴图缩放 | 14 种取值；其中 2 条把 `separator_top_texture_atlas_cell = ...` 也写进了值里，疑似原数据书写错误。 |
+    | separator_texture_scale | 3 3 | 压顶条贴图整体缩放 | 17 个块使用，值固定为 3 3；与 side / top 各自 scale 的关系待确认。 |
+    | climbable | 0<br>1 | 是否可攀爬 | 0=不可攀爬，1=可攀爬；20 / 16 个地图分别出现，分布较均衡。 |
+    | climb_type | 0<br>1 | 攀爬方式 / 类型 | 0 与 1 的具体差异待确认（疑似 0=不能翻越、1=可翻越）。 |
+    | penetrability | 0 ~ 1 的数值（0 / 0.51 / 0.7 / 0.9 / 1.0 等） | 子弹穿透性 | 8 种取值，0=完全挡弹，1=完全穿透，数值越大越容易被打穿。 |
+    | see_through | 0<br>1 | 视线是否可穿过 | 0=否，1=是；铁丝网一类通常取 1。 |
+    | walkable | 1 | 是否可在其上方行走 | 仅 5 个块使用且均为 1。 |
+    | vertex_noise | 0.7 | 顶点扰动强度（让墙边缘显得不规则） | 17 个块使用，值固定 0.7，未实测。 |
+    | mesh_set_template | barbwire_set<br>hedgerow_set<br>rock1 | 引用的网格集合模板 | 3 种取值。 |
+    | static_object_type_key | security_fence.static_object<br>wood_fence.static_object<br>wood_fence1.static_object<br>barbed_wire.static_object<br>barbed_wire_fence.static_object<br>scripted_wall.static_object | 关联的静态物体类型 | 6 种取值，指向 .static_object 定义。 |
+    | hack1 | 1 | 未知（疑似调试 / 临时开关） | 20 个地图出现，值固定为 1，含义不明且未实测。 |
+
