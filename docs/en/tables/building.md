@@ -1,8 +1,8 @@
 ---
 title: "Building E"
 description: "Placeable houses."
-source_sha256: 358b0d5e3fad13c182b75e1ad0cfc44616670a13084feb7347a567664d7f9963
-translated: 2026-10-11
+source_sha256: 8cb9dee6910818f7b370b3a0f9b65efa77a711f60742540c8f1d75337fd70f84
+translated: 2026-10-13
 nav_label: "Building E"
 icon: lucide/box
 # ⚠️ 由 tools/docsgen.py 从 content/tables/building.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
@@ -11,36 +11,40 @@ hide: [toc]
 
 # Building E { #building }
 !!! warning "Notes"
-    Note: the template version is earlier than vao0822 and has not been re-surveyed yet.
-    The left preview image is an oblique view looking down, the right one faces the
-    normal directly — that is, the editor view. Judge the shape by the horizontal line;
-    the vertical one is in perspective and can make an object look tilted.
+    Note: a building is only materials arranged against one another, so this page
+    documents the relevant keys and nothing else — put the combinations together
+    yourself and try.
 
-<p class="kicker">TABLES · 12 items</p>
+!!! note "Nothing verified yet."
 
-<div class="ts-search">
-  <div class="ts-search__box">
-    <span class="ts-search__icon" aria-hidden="true"></span>
-    <input class="ts-search__input" type="search" autocomplete="off" spellcheck="false" placeholder="Search name or reference…" aria-label="Search this list">
-    <kbd class="ts-search__kbd">Ctrl K</kbd>
-  </div>
-  <p class="ts-search__meta">12 items · Searches names and reference values</p>
-</div>
-
-*[template]: the name an object is referred to by in `template = …`; that is how you look it up
-
-
-| Preview | Name | Notes |
-| --- | --- | --- |
-| ![](../../assets/tables/building-e/001.png) | A slightly cleaner white house<br>template = BuildingWhite1 |  |
-| ![](../../assets/tables/building-e/002.png) | House covered in flyers<br>template = BuildingRoofStory1 |  |
-| ![](../../assets/tables/building-e/003.png) | Brick workshop<br>template = BuildingFactory1 |  |
-| ![](../../assets/tables/building-e/004.png) | White house covered in flyers<br>template = BuildingWhite1RoofStory1 |  |
-| ![](../../assets/tables/building-e/005.png) | Desert house<br>template = BuildingDesert |  |
-| ![](../../assets/tables/building-e/006.png) | Desert house with no windows<br>template = BuildingDesertroofstory |  |
-| ![](../../assets/tables/building-e/007.png) | Big-window house<br>template = BuildingWhite2 |  |
-| ![](../../assets/tables/building-e/008.png) | Big-window house with more windows<br>template = BuildingWhite2Busy |  |
-| ![](../../assets/tables/building-e/009.png) | Big-window house with fewer windows<br>template = BuildingWhite2Empty |  |
-| ![](../../assets/tables/building-e/010.png) | White house covered in flyers<br>template = BuildingWhite2RoofStory1 |  |
-| ![](../../assets/tables/building-e/011.png) | Brick workshop with more windows<br>template = BuildingFactoryRoofStory1 |  |
-| ![](../../assets/tables/building-e/012.png) | Shop house with shutters<br>template = BuildingShopShutter |  |
+???+ example "**Unverified content.** (expand to view)"
+    | Key | Value | Meaning | Notes |
+    | --- | --- | --- | --- |
+    | name | string | Building name | Usually kept identical to the outer rect's id (`material_XXX`); a building rect refers to it with `material=XXX`. The template need not show it — defaulting them to the same thing is fine. |
+    | color | fill<br>stroke<br>0–1 alpha, R, G, B | Wall colour | E.g. `0.8 0.8 0.8 1.0`. The template should offer a few common fixed values plus a custom option; offering only the first would do as well. |
+    | color_variance | 0–1 R, G, B | Random wall-colour offset range | Gives instances sharing one material a slight colour difference, e.g. `0.0 0.0 0.3`. The template should offer two choices — zero offset, and a custom offset; offering only the first would do as well. |
+    | detail_texture | wall_atlas1.png<br>your own atlas file name | Wall texture atlas | Normally `wall_atlas1.png`. The template need not show it; fixing the texture seems fine. |
+    | detail_texture_atlas_cell | column, row, total columns, total rows, margin, margin value | Cell of the wall texture inside the atlas | The data uses both a 5-number and a 6-number spelling, e.g. `0 1 8 8 0.0078125 0.0078125`; writing only the first margin seems to default to a square? Most entries write only the first margin, and one writes none at all. The template should offer a few named choices — picking one turns the attribute into the matching cell; I will list what each of them looks like in the atlas later. |
+    | detail_texture_scale | X scale, Y scale | Wall texture scale | `3 3` is the most common. The template can use a preset per texture; not shown. |
+    | detail_cutout_texture | cutout.png | Wall cut-out texture | Only this one value, untested. The template can just fix it; not shown. |
+    | detail_cutout_texture_channel | 1 | Colour channel read from the wall cut-out texture | Only this one value, untested. The template can just fix it; not shown. |
+    | detail_cutout_texture_scale | X scale, Y scale | Wall cut-out texture scale | The template can fix it to the matching preset. |
+    | atlas_texture | building_atlas2.png<br>building_atlas3.png<br>building_atlas4.png<br>your own atlas file name | Main wall atlas image | A picker in the template? Then I will show what these look like in the atlas. |
+    | 1st_floor_1 | name of the `style` it refers to | Ground floor, front wall texture | The template can default to all four faces being alike and expand into four faces once they differ; presets are enough. Shown in the atlas afterwards. Same below. |
+    | 1st_floor_2 | name of the `style` it refers to | Ground floor, right wall texture |  |
+    | 1st_floor_3 | name of the `style` it refers to | Ground floor, back wall texture |  |
+    | 1st_floor_4 | name of the `style` it refers to | Ground floor, left wall texture |  |
+    | other_floor_1 | name of the `style` it refers to | Upper floors, front wall texture |  |
+    | other_floor_2 | name of the `style` it refers to | Upper floors, right wall texture |  |
+    | other_floor_3 | name of the `style` it refers to | Upper floors, back wall texture |  |
+    | other_floor_4 | name of the `style` it refers to | Upper floors, left wall texture |  |
+    | roof_texture | wall_atlas1.png<br>your own atlas file name | Roof texture atlas | The template can fix it. |
+    | roof_texture_atlas_cell | column, row, total columns, total rows, margin, margin value | Cell of the roof texture inside the atlas | Same format as `detail_texture_atlas_cell`. The template should offer a few named choices — picking one turns the attribute into the matching cell; I will list what each of them looks like in the atlas later. |
+    | roof_texture_scale | X scale, Y scale | Roof texture scale | The template can use a preset per texture; not shown. |
+    | roof_scale | X scale, Y scale | Overall roof texture scale | Untested. The template should probably preset it from the pick as well. |
+    | roof_color | fill<br>stroke<br>0–1 alpha, R, G, B | Roof colour | Same rule as `color`. The template should offer a few common fixed values plus a custom option; offering only the first would do as well. |
+    | roof_color_variance | 0–1 R, G, B | Random roof-colour offset range | Same rule as `color_variance`. The template should offer two choices — zero offset, and a custom offset; offering only the first would do as well. |
+    | roof_cutout_texture | cutout.png<br>your own cut-out file name | Roof cut-out texture | Only these two values, untested. The template does not show it. |
+    | roof_cutout_texture_channel | 1 | Colour channel read from the roof cut-out texture | Only this one value, untested. The template does not show it. |
+    | roof_cutout_texture_scale | X scale, Y scale | Roof cut-out texture scale | The template can fix it to the matching preset. |
+    | climbable | 0<br>1 | Climbable or not | 0 = not climbable, 1 = climbable. An option in the template? |
