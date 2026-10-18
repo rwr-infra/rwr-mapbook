@@ -1,11 +1,11 @@
 ---
 title: "Model inventories"
 description: "Mesh E, Wall E&Platform E, Building E, Vehicle Scatter and Decal."
-source_sha256: 30f92e2d1e6ffa9ca109fa807c7e9274ca00e7641fbb6fb53efed5d767a02982
-translated: 2026-10-10
+source_sha256: 2cb69f7ae8aeeef7431ee85a49557a59fc1aae1c0f1299a71a2479e5daa6fd95
+translated: 2026-10-18
 nav_label: "Model inventories"
 icon: lucide/table
-nav: ["mesh", "wall", "building", "vehicle", "decal"]
+nav: ["wall", "building", "vehicle", "mesh", "decal"]
 ---
 
 <meta http-equiv="refresh" content="0; url=mesh/">

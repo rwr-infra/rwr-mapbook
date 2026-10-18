@@ -3,7 +3,7 @@ nav_label: "模型清单"
 title: "模型清单"
 icon: "lucide/table"
 description: "Mesh E、Wall E&Platform E、Building E、Vehicle Scatter、Decal 五张清单。"
-nav: ["mesh", "wall", "building", "vehicle", "decal"]
+nav: ["wall", "building", "vehicle", "mesh", "decal"]
 ---
 
 <meta http-equiv="refresh" content="0; url=mesh/">

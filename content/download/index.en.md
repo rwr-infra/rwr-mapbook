@@ -1,8 +1,8 @@
 ---
 title: "File downloads"
 description: "Complete archives of every editor version, the three templates and the prefabs, hosted outside the repository as direct links."
-source_sha256: 0c0cc99c54ac39beda9e74e1fb1c7133af515c00d34f9dd841cc2916dc569aa9
-translated: 2026-10-12
+source_sha256: a1fe461b884c21ef710030aedddb713b63caef56ed607f6584c5b1cc0d3087eb
+translated: 2026-10-18
 nav_label: "File downloads"
 icon: lucide/archive
 ---
@@ -118,7 +118,7 @@ placing objects one by one.
     already there (two frames per row) and will be replaced once the images arrive.
     The file names and the checksums are final, so the downloads work as they are.
 
-## Related notes { .section-title }
+## Related notes { #notes .section-title }
 
 ??? quote "Checksums (sha256)"
     To confirm you got the original file:

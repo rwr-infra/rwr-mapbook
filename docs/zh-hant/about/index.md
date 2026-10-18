@@ -4,7 +4,7 @@ title: "關於"
 icon: "lucide/info"
 description: ""
 # ⚠️ 由 tools/docsgen.py 從 content/about/index.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
-hide: [navigation]
+hide: [navigation, toc]
 ---
 
 # 關於
@@ -17,7 +17,7 @@ hide: [navigation]
 
     手冊地編版本：0101
 
-    手冊編輯日期：20261013
+    手冊編輯日期：20261018
 
     當前編輯人員：HamSter
 
@@ -33,21 +33,10 @@ hide: [navigation]
 
 內容維護：HamSter
 
-內容指導：TerranConfederacy、Autumnsnail、構巡二（sq）
+內容指導：TerranConfederacy、Autumnsnail、構巡二（Square）
 
-內容校對：構巡二（sq）
+內容校對：構巡二（Square）
 
 網站項目：https://github.com/rwr-infra/rwr-mapbook
 
 地編項目：https://github.com/Autumnsnail/rwrme
-
-
-
-## 這份手冊有哪些內容？
-
-| 分區 | 講什麼 |
-| --- | --- |
-| [準備工作](../prepare/index.md) | 拿到地編之後怎麼配置、怎麼與 RWR 的文件夾同步、怎麼打開自帶的相機 mod |
-| [功能介紹](../editor/index.md) | 主界面各工具逐項說明、交互按鍵、按 ID 找物件 |
-| [模型清單](../tables/index.md) | 五張清單、六百多個物件，帶預覽圖與備註，提供查找功能 |
-| [文件下載](../download/index.md) | 最新版地編、歷次版本的完整歸檔，以及配套模板 |

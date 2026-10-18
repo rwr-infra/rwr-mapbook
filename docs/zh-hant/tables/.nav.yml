@@ -3,8 +3,8 @@
 # 重新生成： uv run python tools/navgen.py
 nav:
 - 模型清單: index.md
-- MESH E: mesh.md
 - Wall E & Platform E: wall.md
 - Building E: building.md
 - Vehicle Scatter: vehicle.md
+- MESH E: mesh.md
 - Decal: decal.md

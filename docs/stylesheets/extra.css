@@ -147,9 +147,15 @@
   display: block;
   width: auto;
   height: auto;
-  max-width: 100%;
-  max-height: 304px;
+  /* 宽度统一收到 40rem：大截图不再顶着正文边铺满一行（原来 1000px 宽的图
+     直接占满 700px 正文，一页看下来全是图）；小图仍按原样显示、不放大。
+     竖图由 max-height 兜底，别让一张图占两屏。 */
+  max-width: min(100%, 40rem);
+  max-height: 26rem;
   margin: 0 auto;
+  /* 截图多是白底窗口，直接贴在暗色页面上边缘毛糙——补个圆角和一圈淡边 */
+  border-radius: 0.4rem;
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
 }
 
 /* 兜底：表格里的目录图任何时候都不套上面那条 */
@@ -263,8 +269,13 @@
 .brand-footer__logo {
   width: 3.6rem;
   height: 2.3rem;
-  margin-bottom: 0.85rem;
   object-fit: contain;
+  /* logo 和站名在同一个 `<a>` 里（footer.html），img 默认按**基线**对齐——
+     图片底边贴着文字基线，logo 整体浮在上面、文字沉在下面（用户截图）。
+     改成垂直居中；那个 margin-bottom 是早先「logo 叠在标题上方」竖排布局
+     的遗留，横排里只会把行撑高，去掉。 */
+  vertical-align: middle;
+  margin-bottom: 0;
 }
 
 .brand-footer__brand p {
@@ -1894,3 +1905,248 @@ html[data-ts-page="download"] .md-typeset .ts-plain table td:last-child {
 }
 
 
+
+/* ══════════════════════════════════════════════════════════════
+   首页「快速跳转」：整站界面与小节的一张大列表
+   ══════════════════════════════════════════════════════════════
+   首页底部原来是两个大按钮（「从准备工作开始」「直接翻模型清单」）——
+   只指向两页、还各占一整行，剩下的界面只能去侧栏翻。改成一张大列表：
+   按页面分组（组标题就是那一页的入口），组内是那一页的小节锚点，
+   点一下直接落到小节上（不只是落到页顶）。
+
+   ⚠️ 选择器一律带 `.md-typeset`：主题自己有 `.md-typeset ul { display:
+      flow-root }` 之类，同权重的裸 `.ts-jump__group ul` 压不过它。
+   ⚠️ 组标题用 `####`（h4）：比 `##` 轻，也不会被收进右侧目录。
+   ⚠️ 条目多的一组（功能介绍十九个小节）内部再分两列，否则那一列
+      会拖得比别的组长一倍多（`.ts-jump__group--wide`）。 */
+.md-typeset .ts-jump {
+  display: grid;
+  /* 首页没有目录侧栏，正文比别的页宽 242px（1220 vs 978），这里取 17rem：
+     下面三组正好铺满一行（三列各约 400px），再多一列就会空一格。 */
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 0.2rem 2rem;
+  margin: 1.1rem 0 0.4rem;
+}
+
+/* 条目最多的那一组（功能介绍十九个小节）横跨整行：挤在半行宽的一列里
+   再分两列，每条只剩 140px 宽、一列拖十行。占满整行后条目可以排三列，
+   十九个小节变成三摞，高度还比别人矮——这也是把它挪到第一组的原因
+   ⚠️ `grid-column: 1 / -1` 必须从行首开始，放第二组会让第一行空一格。 */
+.md-typeset .ts-jump__group--wide {
+  grid-column: 1 / -1;
+}
+
+.md-typeset .ts-jump__group {
+  margin: 0 0 1.1rem;
+}
+
+.md-typeset .ts-jump__group h4 {
+  margin: 0 0 0.4rem;
+  padding: 0 0 0.3rem;
+  border-bottom: 0.05rem solid var(--md-default-fg-color--lightest);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+/* ⚠️ 组标题与条目都要显式压掉主题的链接样式：主题给 `<a>` 的是主色蓝 +
+   下划线，不写这两条的话整个快速跳转就是一片蓝下划线，跟上面中性胶囊的
+   「准备工作」块完全两副面孔（用户截图报的「不搭」就是它）。 */
+.md-typeset .ts-jump__group h4 > a {
+  color: var(--md-default-fg-color);
+  text-decoration: none;
+}
+
+.md-typeset .ts-jump__group h4 > a:hover {
+  color: var(--md-default-fg-color);
+  text-decoration: none;
+}
+
+.md-typeset .ts-jump__group li > a {
+  text-decoration: none;
+}
+
+.md-typeset .ts-jump__group li > a:hover {
+  text-decoration: none;
+}
+
+.md-typeset .ts-jump__group h4 .twemoji,
+.md-typeset .ts-jump__group h4 .twemoji svg {
+  display: inline-block;
+  width: 1.05em;
+  height: 1.05em;
+  margin-right: 0.25rem;
+  vertical-align: -0.15em;
+}
+
+.md-typeset .ts-jump__group h4 > a {
+  font-weight: 700;
+}
+
+.md-typeset .ts-jump__group ul {
+  display: block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.md-typeset .ts-jump__group li {
+  margin: 0;
+}
+
+.md-typeset .ts-jump__group li > a {
+  display: block;
+  padding: 0.16rem 0.35rem;
+  margin-left: -0.35rem;
+  border-radius: 0.2rem;
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset .ts-jump__group li > a:hover {
+  background-color: var(--md-default-fg-color--lightest);
+  color: var(--md-default-fg-color);   /* hover 只加深，不变主色——整页不用蓝 */
+}
+
+.md-typeset .ts-jump__group li > a::before {
+  content: "·";
+  display: inline-block;
+  width: 0.6em;
+  margin-right: 0.1em;
+  color: var(--md-default-fg-color--lighter);
+}
+
+@media screen and (min-width: 45em) {
+  .md-typeset .ts-jump__group--wide ul {
+    columns: 2;
+    column-gap: 1.6rem;
+  }
+}
+
+@media screen and (min-width: 60em) {
+  .md-typeset .ts-jump__group--wide ul {
+    columns: 3;
+  }
+}
+
+/* 组标题下面那句「这一页是干什么的」：原来卡片里的说明搬到这儿，
+   比条目更小更淡，一行到两行——让人知道点进去是什么，不抢条目的位置。 */
+.md-typeset .ts-jump__note {
+  margin: -0.15rem 0 0.55rem;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.68rem;   /* 比条目（0.78rem）再小一档：说明是配角，别跟条目抢眼 */
+  line-height: 1.5;
+}
+
+/* ── 首页「准备工作」独立块：只用看一次的那几步 ────────────────────────
+   它跟下面的清单不是一类东西：那几页是要反复翻的，准备工作只在第一次
+   装地编时走一遍。所以不混进网格，单独做成一块主色边框的高亮区，
+   三个步骤并排成胶囊，一眼看得见、走完就完。 */
+.md-typeset .ts-first {
+  margin: 1.5rem 0 1.9rem;
+  padding: 0.9rem 1.1rem 1.05rem;
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  /* ⚠️ 这一块**不碰主色**：整站只有这一处是「一次性流程」的提示，用主色蓝
+     会把首页的第一眼抢走。改用中性灰的粗左边条来强调，同样显眼、不抢戏。 */
+  border-left: 0.2rem solid var(--md-default-fg-color--light);
+  border-radius: 0.5rem;
+  background-color: var(--md-code-bg-color);
+}
+
+.md-typeset .ts-first h4 {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.md-typeset .ts-first h4 .twemoji,
+.md-typeset .ts-first h4 .twemoji svg {
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  margin-right: 0.3rem;
+  vertical-align: -0.15em;
+}
+
+.md-typeset .ts-first__note {
+  margin: 0 0 0.7rem;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+
+.md-typeset .ts-first ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.md-typeset .ts-first li {
+  margin: 0;
+}
+
+.md-typeset .ts-first h4 > a {
+  /* 主题给 <a> 的是主色（那条蓝），这一块整块都不用蓝 */
+  color: var(--md-default-fg-color);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.md-typeset .ts-first h4 > a:hover {
+  color: var(--md-default-fg-color);
+  text-decoration: none;
+}
+
+/* 三个步骤：横排胶囊。**不蓝、不带下划线**——可点这件事由胶囊的边框和底色说明，
+   不需要下划线再来强调一遍（主题默认只在 hover 给下划线，这里连 hover 也去掉，
+   反馈交给边框加深）。 */
+.md-typeset .ts-first li > a {
+  display: inline-block;
+  padding: 0.28rem 0.8rem;
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 999px;
+  background-color: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.md-typeset .ts-first li > a:hover {
+  border-color: var(--md-default-fg-color--light);
+  color: var(--md-default-fg-color);
+  text-decoration: none;
+}
+
+/* 「快速跳转」这个标题是手写 HTML 的 `<h2>`，不是 markdown 的 `##`：
+   这样它不会被收进 Material 的目录——首页只有一块跳转区，右上角那个
+   目录浮层纯属占位（用户要求去掉，正好把那块地方腾给正文）。 */
+.md-typeset .ts-jump__title {
+  margin-top: 1.4em;
+}
+
+/* ⚠️ 首页右上角那个目录浮层是多余的：这一页就一块跳转区，而 Material 会把
+   组标题（`####`）也收进目录，于是目录里整整齐齐又列了一遍「准备工作 /
+   功能介绍 / …」——跟下面的列表一模一样。整块侧栏藏掉，正文还能宽 242px。
+   ⚠️ 选择器用 `html:has(.ts-jump__title)`：只有首页有这个手写 HTML 标题，
+      不能写成按语言判断的（中英繁三语的标题文案都不一样）。 */
+html:has(.ts-jump__title) .md-sidebar--secondary {
+  display: none;
+}
+
+/* 手机上「准备工作」的三个步骤竖着排：横排 flex-wrap 在窄屏会折成
+   「两个一行 + 一个一行」（用户截图），与其挤不如每个占满一行、居中。 */
+@media screen and (max-width: 44.9375em) {
+  .md-typeset .ts-first ul {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .md-typeset .ts-first li > a {
+    display: block;
+    text-align: center;
+  }
+}

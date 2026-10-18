@@ -1,12 +1,12 @@
 ---
 title: "About"
 description: "What this handbook is, who puts it together, and which sections it has."
-source_sha256: 409640e2ca42f1e92f5e49164e38b3e935793b262a45a4b2c2b44fbe676ea5cf
-translated: 2026-10-13
+source_sha256: fd31efad377c672390e6f1a143ad0b4ac50d8eb928302329af7317185d64da7c
+translated: 2026-10-18
 nav_label: "About"
 icon: lucide/info
 # ⚠️ 由 tools/docsgen.py 从 content/about/index.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
-hide: [navigation]
+hide: [navigation, toc]
 ---
 
 # About
@@ -19,7 +19,7 @@ hide: [navigation]
 
     Handbook editor version: 0101
 
-    Handbook edited: 20261013
+    Handbook edited: 20261018
 
     Current editors: HamSter
 
@@ -44,12 +44,3 @@ Content proofread by: 构巡二 (sq)
 Site project: https://github.com/rwr-infra/rwr-mapbook
 
 Editor project: https://github.com/Autumnsnail/rwrme
-
-## What this handbook covers
-
-| Section | What is in it |
-| --- | --- |
-| [Getting ready](../prepare/index.md) | How to set the editor up once you have it, sync it with your RWR folder, and switch on the built-in camera mod |
-| [Feature guide](../editor/index.md) | Every tool on the main panel, the key bindings, and finding an object by ID |
-| [Model inventories](../tables/index.md) | Five inventories, six hundred objects, with previews and notes, plus a search |
-| [File downloads](../download/index.md) | The latest editor, complete archives of earlier versions, and the companion template |
