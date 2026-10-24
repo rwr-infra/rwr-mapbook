@@ -4,7 +4,6 @@ title: "Building E"
 description: "可放置的房子。"
 icon: "lucide/box"
 # ⚠️ 由 tools/docsgen.py 從 content/tables/building.zh-hans.md 生成，請勿手改；要改請改 content/ 下的源文件。 （本頁由 zh-hans 版腳本轉換而來，不是另譯）
-hide: [toc]
 ---
 
 # Building E { #building }
@@ -44,3 +43,13 @@ hide: [toc]
     | roof_cutout_texture_channel | 1 | 屋頂鏤空圖讀取的顏色通道 | 一共就這一個值，還沒試。模板不展示。 |
     | roof_cutout_texture_scale | X縮放、Y縮放倍數數值 | 屋頂鏤空圖縮放 | 模板按相應的預設固定得了。 |
     | climbable | 0<br>1 | 是否可攀爬 | 0=不可攀爬，1=可攀爬。模板給個選項？ |
+
+## 3D 預覽
+
+下面是按地編模板 `vao0822.svg` 裡的建築定義拼出來的樓：每一層**四個面**（正面 / 右面 / 背面 / 左面）各用自己那份貼圖，層與層之間有樓板，屋頂單獨一套規則。拖動畫面可以轉，滾輪縮放。
+
+<div class="ts-b3d"></div>
+
+!!! info "這些圖是從哪來的"
+    牆面上的一格格圖案來自建築圖集（模板裡記着「單元名 = 列,行」的對應關係）；一棟樓的一面牆 = 一串這樣的單元橫着拼起來。層數、牆面色、屋頂色都能自己改着看，改的是預覽，不動模板。
+

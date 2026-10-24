@@ -2150,3 +2150,153 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
     text-align: center;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   Building E 的 3D 预览（docs/javascripts/building3d.js）
+   ══════════════════════════════════════════════════════════════ */
+.ts-b3d {
+  margin: 1.2em 0 1.6em;
+}
+
+.ts-b3d__row {
+  display: flex;
+  gap: 1.4rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.ts-b3d__stage {
+  flex: 0 0 auto;
+}
+
+.ts-b3d__stage canvas {
+  display: block;
+  max-width: 100%;
+  /* 灰底：与 WebGL 里的 clearColor 一致，深色底会把灰色贴图衬得像没画出来 */
+  background: #757577;
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.4rem;
+}
+
+.ts-b3d__ctrls {
+  margin-top: 0.6rem;
+}
+
+.ts-b3d__btn {
+  padding: 0.25rem 0.7rem;
+  font-size: 0.72rem;
+  color: var(--md-default-fg-color--light);
+  background: var(--md-code-bg-color);
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.ts-b3d__btn:hover {
+  border-color: var(--md-primary-fg-color);
+}
+
+.ts-b3d__side {
+  flex: 1 1 260px;
+  min-width: 260px;
+}
+
+.ts-b3d__field {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.45rem;
+  font-size: 0.78rem;
+  color: var(--md-default-fg-color--light);
+}
+
+.ts-b3d__field select,
+.ts-b3d__field input {
+  font-size: 0.78rem;
+  color: var(--md-default-fg-color);
+  background: var(--md-code-bg-color);
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.3rem;
+  padding: 0.15rem 0.35rem;
+}
+
+.ts-b3d__info {
+  margin-top: 0.7rem;
+  font-size: 0.72rem;
+}
+
+.ts-b3d__kv {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+  padding: 0.15rem 0;
+  border-bottom: 0.05rem solid var(--md-default-fg-color--lightest);
+}
+
+.ts-b3d__kv > span:first-child {
+  flex: 0 0 5.6em;
+  color: var(--md-default-fg-color--light);
+}
+
+.ts-b3d__kv code {
+  flex: 1 1 auto;
+  font-size: 0.72rem;
+  word-break: break-all;
+  background: none;
+  padding: 0;
+}
+
+.ts-b3d__dim {
+  flex: 0 0 auto;
+  color: var(--md-default-fg-color--light);
+}
+
+/* 英文参数名/单元名的中文注释（<abbr title>，与站内 abbr-tap.js 同一套） */
+.ts-b3d__kv abbr {
+  text-decoration: underline dotted;
+  text-underline-offset: 0.15em;
+  cursor: help;
+}
+
+/* 自定义调节没开时：素材下拉与格子输入只读（按模板固定值来） */
+.ts-b3d__info select:disabled,
+.ts-b3d__info input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ts-b3d__btn--on {
+  color: var(--md-primary-fg-color);
+  border-color: var(--md-primary-fg-color);
+}
+
+/* 3D 预览滚出视口 → 右下角浮窗（画布整块搬过去，WebGL 上下文不丢） */
+.ts-b3d__float {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 30;
+  padding: 0.5rem;
+  background: var(--md-default-bg-color);
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.5rem;
+  box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.28);
+}
+
+.ts-b3d__float[hidden] {
+  display: none;
+}
+
+.ts-b3d__float canvas {
+  max-width: 320px;
+}
+
+.ts-b3d__floatbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.72rem;
+  color: var(--md-default-fg-color--light);
+}

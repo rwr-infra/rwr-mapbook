@@ -334,6 +334,7 @@ docs/                 构建层（.md 与跳转桩是生成物）+ 手写资产
 tools/                生成器、看门脚本与体检；langs.py 是语言清单的唯一出处
   r2/                 归档上传/删除/体检（密钥不入库，见「历史版本归档放在站外」）
   preview/            本机用的热更新预览（不想装 uv 时；见下）
+  building3d.py       从地编模板抽建筑定义，生成 Building E 的 3D 预览数据
 overrides/            主题模板覆盖
 site/                 构建产物，不入库
 .staging/             源文档抽取的中间产物，不入库
@@ -351,6 +352,23 @@ site/                 构建产物，不入库
 `docs/` 提交进仓库但它**是生成物**。构建直接读 `docs/`，改了 `content/` 却忘了
 `make gen`，发出去的就是旧内容且**不会有任何报错**——`make build` 与 CI 都先跑生成，
 就是为了堵这个缺口。
+
+### `tools/building3d.py`：Building E 的 3D 预览数据
+
+Building E 页底那台 3D 预览（`docs/javascripts/building3d.js`，原生 WebGL，
+不引外部库）不读游戏资源，只读一份 `docs/assets/tables/building/data.json`。
+这份 JSON 由 `tools/building3d.py` 生成：从地编模板 `vao0822.svg` 里取每栋楼的
+`material_XXX` 定义、`building_style_XXX` 的单元序列、`texture_groups__XXX` 的
+「单元名 = 列,行」坐标表，再从游戏贴图目录把图集与各贴图拷到
+`docs/assets/tables/building/`。
+
+```bash
+python tools/building3d.py     # 重新生成 data.json + 贴图（要本机的模板与游戏目录）
+```
+
+脚本里的 `TEMPLATE` 与 `GAME` 是**本机绝对路径**，换台机器要改这两个常量；
+产物（JSON + PNG）是入库的，所以只有换模板版本或补图集时才需要重跑。
+页面上「自定义调节」只是改预览参数，不动模板，也不回写这个 JSON。
 
 ### 标题锚点钉住，别靠自动生成
 

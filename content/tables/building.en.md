@@ -1,8 +1,8 @@
 ---
 title: "Building E"
 description: "Placeable houses."
-source_sha256: 8cb9dee6910818f7b370b3a0f9b65efa77a711f60742540c8f1d75337fd70f84
-translated: 2026-10-13
+source_sha256: 2fd196ff45c55386cc1f3f0f314bb10b4cb828c69b4d8287a8d52b7b43732940
+translated: 2026-10-24
 nav_label: "Building E"
 icon: lucide/box
 ---
@@ -46,3 +46,13 @@ icon: lucide/box
     | roof_cutout_texture_channel | 1 | Colour channel read from the roof cut-out texture | Only this one value, untested. The template does not show it. |
     | roof_cutout_texture_scale | X scale, Y scale | Roof cut-out texture scale | The template can fix it to the matching preset. |
     | climbable | 0<br>1 | Climbable or not | 0 = not climbable, 1 = climbable. An option in the template? |
+
+## 3D preview
+
+Below is a building assembled from the definitions in the editor template `vao0822.svg`: each floor has its **own texture on each of the four sides** (front / right / back / left), floors are separated by a slab, and the roof has its own set of rules. Drag to rotate, scroll to zoom.
+
+<div class="ts-b3d"></div>
+
+!!! info "Where the textures come from"
+    The little tiles on the walls come from the building atlas (the template stores a `cell name = column,row` table); one wall of a building is a row of those cells laid out side by side. Floor count, wall colour and roof colour are all adjustable here — this only changes the preview, not the template.
+
