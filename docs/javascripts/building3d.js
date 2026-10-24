@@ -36,7 +36,54 @@
   var STYLE_TEX = {};       // style → 合成好的墙面纹理
   var view = null;          // BoxView 实例
   // editable=false：按模板固定值来，素材下拉/格子输入只读；点「自定义调节」才解锁
-  var state = { name: "", floors: 2, wall: "#cfc9bd", roof: "#8a8578", bright: 1.05, rotX: 0.58, rotY: 0.4, zoom: 1.1, editable: false };
+  var state = { name: "", floors: 2, wall: "#cfc9bd", roof: "#8a8578", bright: 1.05, rotX: 0.38, rotY: 0.72, zoom: 0.82, editable: false };
+
+  var LANG = (document.documentElement.lang || "zh-hans").toLowerCase();
+  var COPY = {
+    "zh-hans": {
+      eyebrow: "交互式材质检查器", title: "建筑预览", live: "实时渲染",
+      hint: "拖动旋转 · 滚轮或双指缩放", reset: "复位视角",
+      customizeOff: "自定义调节：关", customizeOn: "自定义调节：开",
+      customizeHint: "解锁后可更换素材与图集格子", building: "建筑",
+      custom: "自定义", floors: "层数", wall: "墙面色", roof: "屋顶色",
+      brightness: "亮度", details: "材质与图集参数", none: "（无）",
+      follower: "3D 预览 · 跟随", back: "回到原位", close: "收起",
+      noWebgl: "这个浏览器没有启用 WebGL，无法显示预览。", failed: "预览出错：",
+      dataFailed: "预览数据加载失败", atlas: "图集", grid: "网格 列×行",
+      cells: "图集格子 atlas_cell（列 / 行，修改后实时更新）",
+      params: "模板参数（修改后实时更新）", cellsUnit: " 格",
+      faces: ["一层正面", "一层右面", "一层背面", "一层左面", "其它层正面", "其它层右面", "其它层背面", "其它层左面"]
+    },
+    "zh-hant": {
+      eyebrow: "互動式材質檢查器", title: "建築預覽", live: "即時渲染",
+      hint: "拖曳旋轉 · 滾輪或雙指縮放", reset: "重設視角",
+      customizeOff: "自訂調節：關", customizeOn: "自訂調節：開",
+      customizeHint: "解鎖後可更換素材與圖集格子", building: "建築",
+      custom: "自訂", floors: "層數", wall: "牆面色", roof: "屋頂色",
+      brightness: "亮度", details: "材質與圖集參數", none: "（無）",
+      follower: "3D 預覽 · 跟隨", back: "回到原位", close: "收起",
+      noWebgl: "此瀏覽器未啟用 WebGL，無法顯示預覽。", failed: "預覽出錯：",
+      dataFailed: "預覽資料載入失敗", atlas: "圖集", grid: "網格 欄×列",
+      cells: "圖集格子 atlas_cell（欄 / 列，修改後即時更新）",
+      params: "範本參數（修改後即時更新）", cellsUnit: " 格",
+      faces: ["一樓正面", "一樓右面", "一樓背面", "一樓左面", "其他樓層正面", "其他樓層右面", "其他樓層背面", "其他樓層左面"]
+    },
+    en: {
+      eyebrow: "Interactive material inspector", title: "Building preview", live: "Live render",
+      hint: "Drag to orbit · scroll or pinch to zoom", reset: "Reset view",
+      customizeOff: "Custom controls: off", customizeOn: "Custom controls: on",
+      customizeHint: "Unlock materials and atlas cells", building: "Building",
+      custom: "Custom", floors: "Floors", wall: "Wall tint", roof: "Roof tint",
+      brightness: "Brightness", details: "Material and atlas parameters", none: "(none)",
+      follower: "3D preview · following", back: "Back to preview", close: "Dismiss",
+      noWebgl: "WebGL is disabled in this browser, so the preview cannot be shown.", failed: "Preview error: ",
+      dataFailed: "Preview data could not be loaded", atlas: "Atlas", grid: "Grid cols×rows",
+      cells: "Atlas cells (column / row; updates live)", params: "Template parameters (updates live)",
+      cellsUnit: " cells",
+      faces: ["First floor · front", "First floor · right", "First floor · back", "First floor · left", "Upper floors · front", "Upper floors · right", "Upper floors · back", "Upper floors · left"]
+    }
+  };
+  var TEXT = COPY[LANG] || (LANG.indexOf("zh-hant") === 0 ? COPY["zh-hant"] : (LANG.indexOf("en") === 0 ? COPY.en : COPY["zh-hans"]));
 
   /* ── 英文名的中文注释：鼠标悬停/点一下就能看到（站内 <abbr title> 那套）── */
   var ZH_KEY = {
@@ -84,6 +131,9 @@
   function abbr(text, tip) {
     if (!tip) return esc(text);
     return '<abbr title="' + esc(tip) + '">' + esc(text) + '</abbr>';
+  }
+  function named(text) {
+    return LANG.indexOf("en") === 0 ? esc(text) : abbr(text, zhOf(text));
   }
   function esc(s) {
     return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;")
@@ -237,9 +287,10 @@
 
   /* ── 极简 WebGL 盒子渲染器（与 rwr-material-preview/render3d.js 同源） ── */
   function BoxView(canvas) {
-    var gl = canvas.getContext("webgl", { antialias: true, alpha: true, preserveDrawingBuffer: true });
+    var gl = canvas.getContext("webgl", { antialias: true, alpha: false, powerPreference: "high-performance" });
     if (!gl) return null;
-    this.gl = gl; this.canvas = canvas; this.texCache = {};
+    this.gl = gl; this.canvas = canvas; this.texCache = {}; this.geometry = [];
+    this._frame = 0;
     this.rotX = state.rotX; this.rotY = state.rotY; this.zoom = state.zoom; this.bright = state.bright;
     this.boxes = [];
     var vs = "attribute vec3 aPos;attribute vec2 aUV;attribute vec3 aN;uniform mat4 uP;uniform mat4 uV;" +
@@ -265,27 +316,59 @@
     };
     gl.enable(gl.DEPTH_TEST); gl.enable(gl.CULL_FACE);
     // 背景灰：原来那套深色底在贴图上看着像没画出来，灰色更接近游戏里的雾底
-    gl.clearColor(0.46, 0.46, 0.47, 1);
+    gl.clearColor(0.23, 0.25, 0.24, 1);
     this._bind();
+    if (window.ResizeObserver) {
+      var selfView = this;
+      this._resizeObserver = new ResizeObserver(function () { selfView.scheduleDraw(); });
+      this._resizeObserver.observe(canvas);
+    }
   }
+  BoxView.prototype.scheduleDraw = function () {
+    var self = this;
+    if (this._frame) return;
+    this._frame = requestAnimationFrame(function () { self._frame = 0; self.draw(); });
+  };
   BoxView.prototype._bind = function () {
     var self = this, cv = this.canvas;
-    var drag = false, lx = 0, ly = 0;
+    var pointers = {}, pinch = 0;
+    function distance() {
+      var ps = Object.keys(pointers).map(function (k) { return pointers[k]; });
+      return ps.length < 2 ? 0 : Math.hypot(ps[0][0] - ps[1][0], ps[0][1] - ps[1][1]);
+    }
     cv.style.touchAction = "none";
-    cv.addEventListener("pointerdown", function (e) { drag = true; lx = e.clientX; ly = e.clientY; });
-    cv.addEventListener("pointerup", function () { drag = false; });
+    cv.addEventListener("pointerdown", function (e) {
+      pointers[e.pointerId] = [e.clientX, e.clientY];
+      pinch = distance();
+      if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId);
+      cv.classList.add("is-dragging");
+    });
+    function release(e) {
+      delete pointers[e.pointerId]; pinch = distance();
+      if (!Object.keys(pointers).length) cv.classList.remove("is-dragging");
+    }
+    cv.addEventListener("pointerup", release);
+    cv.addEventListener("pointercancel", release);
     cv.addEventListener("pointermove", function (e) {
-      if (!drag) return;
-      self.rotY -= (e.clientX - lx) * 0.01;
+      if (!pointers[e.pointerId]) return;
+      var oldX = pointers[e.pointerId][0], oldY = pointers[e.pointerId][1];
+      pointers[e.pointerId] = [e.clientX, e.clientY];
+      if (Object.keys(pointers).length > 1) {
+        var nextPinch = distance();
+        if (pinch && nextPinch) self.zoom = Math.max(0.22, Math.min(3.2, self.zoom * nextPinch / pinch));
+        pinch = nextPinch;
+        self.scheduleDraw();
+        return;
+      }
+      self.rotY -= (e.clientX - oldX) * 0.009;
       // 上下：往下拖 → 模型往下转（相机升高、俯看，模型顶部朝屏幕下方倒）
-      self.rotX = Math.max(-1.3, Math.min(1.3, self.rotX + (e.clientY - ly) * 0.01));
-      lx = e.clientX; ly = e.clientY;
-      self.draw();
+      self.rotX = Math.max(-1.15, Math.min(1.2, self.rotX + (e.clientY - oldY) * 0.009));
+      self.scheduleDraw();
     });
     cv.addEventListener("wheel", function (e) {
       e.preventDefault();
-      self.zoom = Math.max(0.12, Math.min(9, self.zoom * (e.deltaY > 0 ? 1.12 : 0.89)));
-      self.draw();
+      self.zoom = Math.max(0.22, Math.min(3.2, self.zoom * Math.exp(-e.deltaY * 0.0012)));
+      self.scheduleDraw();
     }, { passive: false });
   };
   BoxView.prototype.tex = function (canvas, key) {
@@ -309,9 +392,53 @@
     this._w = this.tex(c, "__white__");
     return this._w;
   };
-  BoxView.prototype.setBoxes = function (b) { this.boxes = b; };
+  BoxView.prototype.setBoxes = function (b) {
+    var gl = this.gl;
+    this.geometry.forEach(function (entry) {
+      entry.buffers.forEach(function (buf) { gl.deleteBuffer(buf); });
+    });
+    this.boxes = b;
+    this.geometry = b.map(function (box) {
+      var g = boxGeo(box.size[0], box.size[1], box.size[2], box.x || 0, box.y || 0, box.z || 0);
+      var buffers = [];
+      function upload(data, target) {
+        var buffer = gl.createBuffer(); buffers.push(buffer);
+        gl.bindBuffer(target, buffer); gl.bufferData(target, data, gl.STATIC_DRAW);
+        return buffer;
+      }
+      return {
+        box: box, buffers: buffers,
+        pos: upload(g.pos, gl.ARRAY_BUFFER), uv: upload(g.uv, gl.ARRAY_BUFFER),
+        nor: upload(g.nor, gl.ARRAY_BUFFER), idx: upload(g.idx, gl.ELEMENT_ARRAY_BUFFER)
+      };
+    });
+    if (this.arrow) this.arrow.buffers.forEach(function (buf) { gl.deleteBuffer(buf); });
+    var fd = 0;
+    b.forEach(function (box) { if (!box.ground) fd = Math.max(fd, box.size[2]); });
+    var y = 0.1, z0 = fd / 2 + 0.2, z1 = z0 + 0.85, z2 = z1 + 0.6;
+    var arrowPos = new Float32Array([
+      -0.16, y, z1, -0.16, y, z0, 0.16, y, z0,
+      -0.16, y, z1, 0.16, y, z0, 0.16, y, z1,
+      0, y, z2, 0.55, y, z1, -0.55, y, z1
+    ]);
+    var arrowUv = new Float32Array(arrowPos.length / 3 * 2);
+    var arrowNor = new Float32Array(arrowPos.length);
+    for (var i = 1; i < arrowNor.length; i += 3) arrowNor[i] = 1;
+    var arrowBuffers = [];
+    function arrowUpload(data) {
+      var buffer = gl.createBuffer(); arrowBuffers.push(buffer);
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer); gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+      return buffer;
+    }
+    this.arrow = { buffers: arrowBuffers, pos: arrowUpload(arrowPos), uv: arrowUpload(arrowUv), nor: arrowUpload(arrowNor) };
+  };
   BoxView.prototype.draw = function () {
     var gl = this.gl, cv = this.canvas, self = this;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cssW = Math.max(1, Math.round(cv.clientWidth));
+    var cssH = Math.max(1, Math.round(cv.clientHeight));
+    var pixelW = Math.round(cssW * dpr), pixelH = Math.round(cssH * dpr);
+    if (cv.width !== pixelW || cv.height !== pixelH) { cv.width = pixelW; cv.height = pixelH; }
     gl.viewport(0, 0, cv.width, cv.height);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     var span = 1, h = 1;
@@ -337,21 +464,15 @@
       x3[0], y3[0], z[0], 0, x3[1], y3[1], z[1], 0, x3[2], y3[2], z[2], 0,
       -dot3(x3, [cx, cy, cz]), -dot3(y3, [cx, cy, cz]), -dot3(z, [cx, cy, cz]), 1]));
     gl.uniform3fv(this.loc.uLight, new Float32Array([0.4, 0.9, 0.6]));
-    this.boxes.forEach(function (b) {
-      var g = boxGeo(b.size[0], b.size[1], b.size[2], b.x || 0, b.y || 0, b.z || 0);
-      var bufs = [];
-      function mk(data, target) {
-        var bb = gl.createBuffer(); bufs.push(bb);
-        gl.bindBuffer(target, bb); gl.bufferData(target, data, gl.STATIC_DRAW);
-        return bb;
-      }
-      gl.bindBuffer(gl.ARRAY_BUFFER, mk(g.pos, gl.ARRAY_BUFFER));
+    this.geometry.forEach(function (entry) {
+      var b = entry.box;
+      gl.bindBuffer(gl.ARRAY_BUFFER, entry.pos);
       gl.enableVertexAttribArray(self.loc.aPos); gl.vertexAttribPointer(self.loc.aPos, 3, gl.FLOAT, false, 0, 0);
-      gl.bindBuffer(gl.ARRAY_BUFFER, mk(g.uv, gl.ARRAY_BUFFER));
+      gl.bindBuffer(gl.ARRAY_BUFFER, entry.uv);
       gl.enableVertexAttribArray(self.loc.aUV); gl.vertexAttribPointer(self.loc.aUV, 2, gl.FLOAT, false, 0, 0);
-      gl.bindBuffer(gl.ARRAY_BUFFER, mk(g.nor, gl.ARRAY_BUFFER));
+      gl.bindBuffer(gl.ARRAY_BUFFER, entry.nor);
       gl.enableVertexAttribArray(self.loc.aN); gl.vertexAttribPointer(self.loc.aN, 3, gl.FLOAT, false, 0, 0);
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, mk(g.idx, gl.ELEMENT_ARRAY_BUFFER));
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, entry.idx);
       ["front", "back", "right", "left", "top", "bottom"].forEach(function (k, fi) {
         var m = b.faces[k] || b.faces.default;
         if (!m) return;
@@ -366,7 +487,6 @@
         gl.uniform1f(self.loc.uBright, self.bright);
         gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, fi * 12);
       });
-      bufs.forEach(function (bb) { gl.deleteBuffer(bb); });
     });
     // 正方向箭头：整场只画一支，贴着建筑正面底边（贴图边缘）向外指——
     //    ⚠️ 两个坑：① 之前画在每个盒子的循环里，地面/楼板/屋檐各来一支，
@@ -375,33 +495,12 @@
     //      跟偏移量无关。所以这里把顶点反过来（法线 +Y）并在画箭头期间
     //      临时关掉背面剔除，任何视角都不会消失。
     (function () {
-      var fd = 0;
-      self.boxes.forEach(function (b) {
-        if (b.ground) return;
-        fd = Math.max(fd, b.size[2]);
-      });
-      var y = 0.1;                       // 略高于地面顶面（y=0），避免 z-fighting
-      var z0 = fd / 2 + 0.2, z1 = z0 + 0.85, z2 = z1 + 0.6;
-      // 绕序：按 -Z→+Z、先左后右排（从上方看是逆时针，法线 +Y）
-      var pos = new Float32Array([
-        -0.16, y, z1, -0.16, y, z0, 0.16, y, z0,
-        -0.16, y, z1, 0.16, y, z0, 0.16, y, z1,
-        0, y, z2, 0.55, y, z1, -0.55, y, z1
-      ]);
-      var uv = new Float32Array(pos.length / 3 * 2);
-      var nor = new Float32Array(pos.length / 3 * 3);
-      for (var i = 1; i < nor.length; i += 3) nor[i] = 1;
-      var bb = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, bb);
-      gl.bufferData(gl.ARRAY_BUFFER, pos, gl.STATIC_DRAW);
+      if (!self.arrow) return;
+      gl.bindBuffer(gl.ARRAY_BUFFER, self.arrow.pos);
       gl.enableVertexAttribArray(self.loc.aPos); gl.vertexAttribPointer(self.loc.aPos, 3, gl.FLOAT, false, 0, 0);
-      var ub = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, ub);
-      gl.bufferData(gl.ARRAY_BUFFER, uv, gl.STATIC_DRAW);
+      gl.bindBuffer(gl.ARRAY_BUFFER, self.arrow.uv);
       gl.enableVertexAttribArray(self.loc.aUV); gl.vertexAttribPointer(self.loc.aUV, 2, gl.FLOAT, false, 0, 0);
-      var nb = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, nb);
-      gl.bufferData(gl.ARRAY_BUFFER, nor, gl.STATIC_DRAW);
+      gl.bindBuffer(gl.ARRAY_BUFFER, self.arrow.nor);
       gl.enableVertexAttribArray(self.loc.aN); gl.vertexAttribPointer(self.loc.aN, 3, gl.FLOAT, false, 0, 0);
       gl.bindTexture(gl.TEXTURE_2D, self.white());
       gl.uniform1i(self.loc.uT, 0);
@@ -412,7 +511,6 @@
       gl.disable(gl.CULL_FACE);          // 相机转到地平线以下时也不能消失
       gl.drawArrays(gl.TRIANGLES, 0, 9);
       gl.enable(gl.CULL_FACE);
-      [bb, ub, nb].forEach(function (b2) { gl.deleteBuffer(b2); });
     })();
   };
   function boxGeo(w, h, d, ox, oy, oz) {
@@ -445,24 +543,27 @@
   /* ── 界面 ──────────────────────────────────────────────── */
   function ui() {
     holder.innerHTML =
-      '<div class="ts-b3d__row">' +
-      '<div class="ts-b3d__stage"><canvas id="b3dCanvas" width="480" height="360"></canvas>' +
+      '<section class="ts-b3d__shell" aria-label="' + esc(TEXT.title) + '">' +
+      '<header class="ts-b3d__head"><div><span class="ts-b3d__eyebrow">' + TEXT.eyebrow + '</span>' +
+      '<strong>' + TEXT.title + '</strong></div><span class="ts-b3d__live"><i></i>' + TEXT.live + '</span></header>' +
+      '<div class="ts-b3d__stage"><canvas id="b3dCanvas" width="960" height="720" aria-label="' + esc(TEXT.title) + '"></canvas>' +
+      '<span class="ts-b3d__hint">' + TEXT.hint + '</span>' +
       '<div class="ts-b3d__ctrls">' +
-      '<button class="ts-b3d__btn" id="b3dReset">复位视角</button> ' +
-      '<button class="ts-b3d__btn" id="b3dUnlock">自定义调节：关</button>' +
-      '<span class="ts-b3d__dim" style="margin-left:.5rem">开启后可自由选择素材与图集格子</span>' +
+      '<button class="ts-b3d__btn" id="b3dReset" type="button">' + TEXT.reset + '</button>' +
+      '<button class="ts-b3d__btn" id="b3dUnlock" type="button" aria-pressed="false">' + TEXT.customizeOff + '</button>' +
+      '<span class="ts-b3d__dim">' + TEXT.customizeHint + '</span>' +
       '</div></div>' +
       '<div class="ts-b3d__side">' +
-      '<label class="ts-b3d__field">建筑 ' +
+      '<div class="ts-b3d__basic"><label class="ts-b3d__field ts-b3d__field--wide"><span>' + TEXT.building + '</span>' +
       '<select id="b3dPick">' + DATA.order.map(function (n) {
         return '<option value="' + n + '">' + n + '</option>';
-      }).join("") + '<option value="__custom__">自定义</option>' + '</select></label>' +
-      '<label class="ts-b3d__field">层数 <input type="number" id="b3dFloors" min="1" max="12" value="2"></label>' +
-      '<label class="ts-b3d__field">墙面色 <input type="color" id="b3dWall" value="#cfc9bd"></label>' +
-      '<label class="ts-b3d__field">屋顶色 <input type="color" id="b3dRoof" value="#8a8578"></label>' +
-      '<label class="ts-b3d__field">亮度 <input type="range" id="b3dBright" min="0.6" max="3" step="0.1" value="1.05"></label>' +
-      '<div class="ts-b3d__info" id="b3dInfo"></div>' +
-      '</div></div>';
+      }).join("") + '<option value="__custom__">' + TEXT.custom + '</option>' + '</select></label>' +
+      '<label class="ts-b3d__field"><span>' + TEXT.floors + '</span><input type="number" id="b3dFloors" min="1" max="12" value="2"></label>' +
+      '<label class="ts-b3d__field"><span>' + TEXT.wall + '</span><input type="color" id="b3dWall" value="#cfc9bd"></label>' +
+      '<label class="ts-b3d__field"><span>' + TEXT.roof + '</span><input type="color" id="b3dRoof" value="#8a8578"></label>' +
+      '<label class="ts-b3d__field ts-b3d__field--range"><span>' + TEXT.brightness + '</span><input type="range" id="b3dBright" min="0.6" max="3" step="0.1" value="1.05"></label></div>' +
+      '<details class="ts-b3d__details"><summary>' + TEXT.details + '</summary><div class="ts-b3d__info" id="b3dInfo"></div></details>' +
+      '</div></section>';
     var pick = document.getElementById("b3dPick");
     var fl = document.getElementById("b3dFloors");
     var wall = document.getElementById("b3dWall");
@@ -474,7 +575,7 @@
       if (state.name === "__custom__" && !state.editable) {
         var ub = document.getElementById("b3dUnlock");
         state.editable = true;
-        if (ub) { ub.textContent = "自定义调节：开"; ub.classList.add("ts-b3d__btn--on"); }
+        if (ub) { ub.textContent = TEXT.customizeOn; ub.classList.add("ts-b3d__btn--on"); ub.setAttribute("aria-pressed", "true"); }
       }
       // 换建筑 → 墙/屋顶色回到模板语义色（color/roof_color 指 fill 还是 stroke）
       if (state.name !== "__custom__" && DATA.materials[state.name])
@@ -484,17 +585,23 @@
     fl.onchange = function () { state.floors = +fl.value; draw(); };
     wall.oninput = function () { state.wall = wall.value; draw(); };
     roof.oninput = function () { state.roof = roof.value; draw(); };
-    br.oninput = function () { state.bright = +br.value; if (view) view.bright = state.bright; draw(); };
+    br.oninput = function () {
+      state.bright = +br.value;
+      if (view) { view.bright = state.bright; view.scheduleDraw(); }
+      if (floatView) { floatView.bright = state.bright; floatView.scheduleDraw(); }
+    };
     document.getElementById("b3dReset").onclick = function () {
-      state.rotX = 0.45; state.rotY = 0.8; state.zoom = 1;
-      if (view) { view.rotX = 0.45; view.rotY = 0.8; view.zoom = 1; view.draw(); }
+      state.rotX = 0.38; state.rotY = 0.72; state.zoom = 0.82;
+      if (view) { view.rotX = state.rotX; view.rotY = state.rotY; view.zoom = state.zoom; view.scheduleDraw(); }
     };
     // 自定义调节开关：关着的时候所有素材下拉/格子输入都是只读（按模板固定值渲染）
     var unlockBtn = document.getElementById("b3dUnlock");
     unlockBtn.onclick = function () {
       state.editable = !state.editable;
-      unlockBtn.textContent = state.editable ? "自定义调节：开" : "自定义调节：关";
+      unlockBtn.textContent = state.editable ? TEXT.customizeOn : TEXT.customizeOff;
       unlockBtn.classList.toggle("ts-b3d__btn--on", state.editable);
+      unlockBtn.setAttribute("aria-pressed", state.editable ? "true" : "false");
+      if (state.editable) document.querySelector(".ts-b3d__details").open = true;
       draw();                       // info() 按 state.editable 重画面板
     };
     state.name = DATA.materials["BuildingBritish4_1st"] ? "BuildingBritish4_1st" : DATA.order[0];
@@ -528,7 +635,7 @@
       if (!state.custom) {
         var src = DATA.materials[state.lastName] || DATA.materials[DATA.order[0]];
         state.custom = JSON.parse(JSON.stringify(src));
-        state.custom.name = "自定义";
+        state.custom.name = TEXT.custom;
       }
       mat = state.custom;
     } else {
@@ -539,7 +646,10 @@
     var cv = document.getElementById("b3dCanvas");
     if (!cv) return;
     // 等图集就位（第一帧可能还没解码完）
-    var need = [DATA.default_atlas, mat.detail_texture, (mat.roof || {}).texture].map(img);
+    // 墙面必须等当前建筑自己的 atlas_texture；只等 default_atlas 会让 British /
+    // Normandy 等建筑在首帧永久退化成纯色墙，图片后来加载完也不会再触发绘制。
+    var need = [DATA.default_atlas, mat.atlas_texture, mat.detail_texture, (mat.roof || {}).texture]
+      .filter(Boolean).map(img);
     // ⚠️ 去重：roof 和 detail 常是同一张图（img 缓存返回同一个 Image 对象），
     //    不去重的话计数器永远减不到 0，go 一次都不会执行，画布就一直是黑的。
     var pending = [];
@@ -553,7 +663,7 @@
           if (!view || !view.gl) {
             var c2 = cv.getContext("2d");
             c2.fillStyle = "#ccc"; c2.font = "13px sans-serif";
-            c2.fillText("这个浏览器没启用 WebGL，预览不可用", 12, 26);
+            c2.fillText(TEXT.noWebgl, 12, 26);
             return;
           }
         }
@@ -566,14 +676,16 @@
         window.__b3dErr = String(e && e.stack || e);
         var tip = document.createElement("p");
         tip.className = "ts-b3d__dim";
-        tip.textContent = "预览出错了：" + window.__b3dErr;
+        tip.textContent = TEXT.failed + window.__b3dErr;
         cv.parentNode.appendChild(tip);
       }
     };
     if (!pending.length) { go(); return; }
     var left = pending.length;
     pending.forEach(function (i) {
-      i.onload = i.onerror = function () { if (--left <= 0) go(); };
+      var done = function () { if (--left <= 0) go(); };
+      i.addEventListener("load", done, { once: true });
+      i.addEventListener("error", done, { once: true });
     });
   }
 
@@ -591,9 +703,9 @@
     floatBox.className = "ts-b3d__float";
     floatBox.hidden = true;
     floatBox.innerHTML =
-      '<div class="ts-b3d__floatbar"><span>3D 预览（跟随）</span>' +
-      '<span><button class="ts-b3d__btn" id="b3dFloatBack">回到原位</button> ' +
-      '<button class="ts-b3d__btn" id="b3dFloatClose">收起</button></span></div>' +
+      '<div class="ts-b3d__floatbar"><span>' + TEXT.follower + '</span>' +
+      '<span><button class="ts-b3d__btn" id="b3dFloatBack" type="button">' + TEXT.back + '</button> ' +
+      '<button class="ts-b3d__btn" id="b3dFloatClose" type="button" aria-label="' + esc(TEXT.close) + '">×</button></span></div>' +
       '<canvas id="b3dFloatCanvas" width="320" height="240"></canvas>';
     document.body.appendChild(floatBox);
     document.getElementById("b3dFloatBack").onclick = function () {
@@ -606,9 +718,11 @@
     var fc = document.getElementById("b3dFloatCanvas");
     // 在浮窗里拖动 → 视角同步回主画布，两边保持一致
     var syncBack = function () {
-      if (!floatView || !view) return;
-      view.rotX = floatView.rotX; view.rotY = floatView.rotY; view.zoom = floatView.zoom;
-      view.draw();
+      requestAnimationFrame(function () {
+        if (!floatView || !view) return;
+        view.rotX = floatView.rotX; view.rotY = floatView.rotY; view.zoom = floatView.zoom;
+        view.scheduleDraw();
+      });
     };
     fc.addEventListener("pointermove", syncBack);
     fc.addEventListener("wheel", syncBack, { passive: true });
@@ -674,7 +788,7 @@
   }
 
   var texSelect = function (key, val) {
-    let opts = '<option value="">（无）</option>';
+    let opts = '<option value="">' + TEXT.none + '</option>';
     const list = (DATA.textures || []).slice();
     const cur = String(val || "").trim().split(/\s+/)[0];
     if (cur && list.indexOf(cur) < 0) list.unshift(cur);
@@ -692,7 +806,7 @@
     let rows = "";
     Object.keys(flat0).forEach(function (k) {
       const val = flat0[k];
-      const label = abbr(k, ZH_KEY[k]);          // 英文参数名 → 悬停看中文注释
+      const label = LANG.indexOf("en") === 0 ? esc(k) : abbr(k, ZH_KEY[k]);
       if (/_texture(_atlas_cell)?$/.test(k) || k === "atlas_texture") {
         // 纹理文件名 → 下拉（值可能带格子参数，只取文件名部分；改动只写文件名）
         rows += '<div class="ts-b3d__kv"><span>' + label + '</span>' + texSelect(k, val) + '</div>';
@@ -714,8 +828,8 @@
       var val = f[g][i] || "";
       if (!canEdit)
         return '<div class="ts-b3d__kv"><span>' + label + '</span><code>' +
-          (val ? abbr(val, zhOf(val)) : "—") + '</code></div>';
-      var opts = '<option value="">（无）</option>';
+          (val ? named(val) : "—") + '</code></div>';
+      var opts = '<option value="">' + TEXT.none + '</option>';
       Object.keys(DATA.styles).sort().forEach(function (s) {
         opts += '<option value="' + s + '"' + (s === val ? " selected" : "") + '>' + s + '</option>';
       });
@@ -725,7 +839,7 @@
       var seq = DATA.styles[unit];
       var n = seq ? seq.reduce(function (a, s) { return a + s.length; }, 0) : 0;
       return '<div class="ts-b3d__kv"><span>' + label + '</span><code>' + (unit || "—") +
-        '</code><span class="ts-b3d__dim">' + (n ? n + " 格" : "") + '</span></div>';
+        '</code><span class="ts-b3d__dim">' + (n ? n + TEXT.cellsUnit : "") + '</span></div>';
     }
     // 图集格子（atlas_cell）：本栋 8 个面用到的基础单元，各自在图集里的 列/行
     // ——墙面就是这些格子横着拼出来的，格子指错整面墙就乱，所以直接摆出来可改
@@ -738,29 +852,29 @@
       });
     });
     function cellRows() {
-      var head = '<div class="ts-b3d__kv"><span>图集</span><code>' +
+      var head = '<div class="ts-b3d__kv"><span>' + TEXT.atlas + '</span><code>' +
         (mat.atlas_texture || DATA.default_atlas) + '</code>' +
-        '<span class="ts-b3d__dim">网格 列×行</span>' +
+        '<span class="ts-b3d__dim">' + TEXT.grid + '</span>' +
         '<input data-grid="1" value="' + (DATA.atlas_grid || [8, 8]).join(" ") + '" style="width:56px"' + dis() + '></div>';
       return head + units.map(function (u) {
         var c = DATA.cells[u] || [0, 0];
-        return '<div class="ts-b3d__kv"><span>' + abbr(u, zhOf(u)) + '</span>' +
+        return '<div class="ts-b3d__kv"><span>' + named(u) + '</span>' +
           '<input type="number" data-cell="' + u + '" data-axis="0" value="' + c[0] + '" style="width:44px"' + dis() + '>' +
           '<input type="number" data-cell="' + u + '" data-axis="1" value="' + c[1] + '" style="width:44px"' + dis() + '></div>';
       }).join("");
     }
     el.innerHTML =
-      faceRow("一层正面", "1st", 0) +
-      faceRow("一层右面", "1st", 1) +
-      faceRow("一层背面", "1st", 2) +
-      faceRow("一层左面", "1st", 3) +
-      faceRow("其它层正面", "other", 0) +
-      faceRow("其它层右面", "other", 1) +
-      faceRow("其它层背面", "other", 2) +
-      faceRow("其它层左面", "other", 3) +
-      '<p class="ts-b3d__dim" style="margin:6px 0 2px">图集格子 atlas_cell（列 / 行，改完 3D 实时更新）：</p>' +
+      faceRow(TEXT.faces[0], "1st", 0) +
+      faceRow(TEXT.faces[1], "1st", 1) +
+      faceRow(TEXT.faces[2], "1st", 2) +
+      faceRow(TEXT.faces[3], "1st", 3) +
+      faceRow(TEXT.faces[4], "other", 0) +
+      faceRow(TEXT.faces[5], "other", 1) +
+      faceRow(TEXT.faces[6], "other", 2) +
+      faceRow(TEXT.faces[7], "other", 3) +
+      '<p class="ts-b3d__dim ts-b3d__section-label">' + TEXT.cells + '</p>' +
       cellRows() +
-      '<p class="ts-b3d__dim" style="margin:6px 0 2px">以下参数可直接改，3D 实时更新：</p>' +
+      '<p class="ts-b3d__dim ts-b3d__section-label">' + TEXT.params + '</p>' +
       editorRows(mat);
     // 参数改动 → 回写 mat（纹理只写文件名）并重绘
     el.querySelectorAll("input[data-key], select[data-key], select[data-floor], input[data-cell], input[data-grid]").forEach(function (el2) {
@@ -810,6 +924,6 @@
     DATA = d;
     ui();
   }).catch(function (e) {
-    holder.innerHTML = '<p class="ts-b3d__dim">预览数据没取到（' + DATA_URL + '）：' + e + '</p>';
+    holder.innerHTML = '<p class="ts-b3d__dim">' + TEXT.dataFailed + ' (' + DATA_URL + '): ' + esc(e) + '</p>';
   });
 })();

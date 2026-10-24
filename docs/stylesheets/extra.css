@@ -2155,91 +2155,238 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
    Building E 的 3D 预览（docs/javascripts/building3d.js）
    ══════════════════════════════════════════════════════════════ */
 .ts-b3d {
-  margin: 1.2em 0 1.6em;
+  --b3d-accent: #d45b32;
+  --b3d-stage: #3b3f3d;
+  margin: 1.25em 0 1.8em;
 }
 
-.ts-b3d__row {
+.ts-b3d__shell {
+  overflow: hidden;
+  background: var(--md-default-bg-color);
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.65rem;
+  box-shadow: 0 0.55rem 1.8rem rgba(19, 27, 24, 0.08);
+}
+
+.ts-b3d__head {
   display: flex;
-  gap: 1.4rem;
-  flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 3.3rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--md-code-bg-color);
+  border-bottom: 0.05rem solid var(--md-default-fg-color--lightest);
+}
+
+.ts-b3d__head > div {
+  display: grid;
+  gap: 0.08rem;
+}
+
+.ts-b3d__head strong {
+  color: var(--md-default-fg-color);
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.ts-b3d__eyebrow {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.ts-b3d__live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.64rem;
+  white-space: nowrap;
+}
+
+.ts-b3d__live i {
+  width: 0.38rem;
+  height: 0.38rem;
+  background: #4da86d;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0.16rem rgba(77, 168, 109, 0.14);
 }
 
 .ts-b3d__stage {
-  flex: 0 0 auto;
+  position: relative;
+  min-width: 0;
+  background-color: var(--b3d-stage);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 0.05rem, transparent 0.05rem),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0.05rem, transparent 0.05rem);
+  background-size: 1.5rem 1.5rem;
 }
 
 .ts-b3d__stage canvas {
   display: block;
-  max-width: 100%;
-  /* 灰底：与 WebGL 里的 clearColor 一致，深色底会把灰色贴图衬得像没画出来 */
-  background: #757577;
-  border: 0.05rem solid var(--md-default-fg-color--lightest);
-  border-radius: 0.4rem;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  background: var(--b3d-stage, #3b3f3d);
+  cursor: grab;
+  user-select: none;
+}
+
+.ts-b3d__stage canvas.is-dragging {
+  cursor: grabbing;
+}
+
+.ts-b3d__hint {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  padding: 0.22rem 0.5rem;
+  color: rgba(255, 255, 255, 0.72);
+  background: rgba(18, 22, 20, 0.58);
+  border: 0.05rem solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  font-size: 0.58rem;
+  line-height: 1.4;
+  pointer-events: none;
+  backdrop-filter: blur(0.3rem);
 }
 
 .ts-b3d__ctrls {
-  margin-top: 0.6rem;
-}
-
-.ts-b3d__btn {
-  padding: 0.25rem 0.7rem;
-  font-size: 0.72rem;
-  color: var(--md-default-fg-color--light);
-  background: var(--md-code-bg-color);
-  border: 0.05rem solid var(--md-default-fg-color--lightest);
-  border-radius: 0.3rem;
-  cursor: pointer;
-}
-
-.ts-b3d__btn:hover {
-  border-color: var(--md-primary-fg-color);
-}
-
-.ts-b3d__side {
-  flex: 1 1 260px;
-  min-width: 260px;
-}
-
-.ts-b3d__field {
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  margin-bottom: 0.45rem;
-  font-size: 0.78rem;
+  min-height: 2.8rem;
+  padding: 0.55rem 0.75rem;
+  color: rgba(255, 255, 255, 0.62);
+  background: rgba(17, 20, 18, 0.48);
+  border-top: 0.05rem solid rgba(255, 255, 255, 0.08);
+}
+
+.ts-b3d__btn {
+  min-height: 1.75rem;
+  padding: 0.28rem 0.68rem;
+  color: inherit;
+  background: transparent;
+  border: 0.05rem solid currentColor;
+  border-radius: 0.28rem;
+  font: inherit;
+  font-size: 0.66rem;
+  font-weight: 650;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 140ms ease, border-color 140ms ease, background-color 140ms ease, transform 140ms ease;
+}
+
+.ts-b3d__btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.ts-b3d__btn:active {
+  transform: translateY(0.05rem);
+}
+
+.ts-b3d__btn:focus-visible,
+.ts-b3d :is(input, select, summary):focus-visible {
+  outline: 0.1rem solid var(--b3d-accent);
+  outline-offset: 0.1rem;
+}
+
+.ts-b3d__side {
+  min-width: 0;
+  padding: 0.85rem 0.9rem 0.95rem;
+}
+
+.ts-b3d__basic {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.ts-b3d__field {
+  display: grid;
+  grid-column: span 3;
+  gap: 0.28rem;
+  margin: 0;
+  font-size: 0.66rem;
+  font-weight: 650;
   color: var(--md-default-fg-color--light);
+}
+
+.ts-b3d__field--wide,
+.ts-b3d__field--range {
+  grid-column: span 6;
 }
 
 .ts-b3d__field select,
 .ts-b3d__field input {
-  font-size: 0.78rem;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 1.9rem;
+  margin: 0;
+  padding: 0.22rem 0.42rem;
   color: var(--md-default-fg-color);
-  background: var(--md-code-bg-color);
+  background-color: var(--md-code-bg-color);
   border: 0.05rem solid var(--md-default-fg-color--lightest);
-  border-radius: 0.3rem;
-  padding: 0.15rem 0.35rem;
+  border-radius: 0.28rem;
+  font: inherit;
+  font-size: 0.7rem;
+}
+
+.ts-b3d__field input[type="color"] {
+  padding: 0.16rem;
+  cursor: pointer;
+}
+
+.ts-b3d__field input[type="range"] {
+  accent-color: var(--b3d-accent);
+}
+
+.ts-b3d__details {
+  margin-top: 0.8rem;
+  border-top: 0.05rem solid var(--md-default-fg-color--lightest);
+}
+
+.ts-b3d__details summary {
+  padding: 0.68rem 0 0;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.68rem;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .ts-b3d__info {
-  margin-top: 0.7rem;
+  margin-top: 0.55rem;
   font-size: 0.72rem;
 }
 
 .ts-b3d__kv {
-  display: flex;
-  gap: 0.5rem;
-  align-items: baseline;
-  padding: 0.15rem 0;
+  display: grid;
+  grid-template-columns: minmax(6.4rem, 0.8fr) minmax(0, 1.45fr) auto;
+  gap: 0.45rem;
+  align-items: center;
+  min-height: 1.75rem;
+  padding: 0.22rem 0;
   border-bottom: 0.05rem solid var(--md-default-fg-color--lightest);
 }
 
 .ts-b3d__kv > span:first-child {
-  flex: 0 0 5.6em;
   color: var(--md-default-fg-color--light);
 }
 
+.ts-b3d__kv code,
+.ts-b3d__kv input,
+.ts-b3d__kv select {
+  min-width: 0;
+  max-width: 100%;
+}
+
 .ts-b3d__kv code {
-  flex: 1 1 auto;
   font-size: 0.72rem;
   word-break: break-all;
   background: none;
@@ -2247,8 +2394,13 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
 }
 
 .ts-b3d__dim {
-  flex: 0 0 auto;
   color: var(--md-default-fg-color--light);
+}
+
+.ts-b3d__section-label {
+  margin: 0.8rem 0 0.2rem;
+  font-size: 0.64rem;
+  font-weight: 700;
 }
 
 /* 英文参数名/单元名的中文注释（<abbr title>，与站内 abbr-tap.js 同一套） */
@@ -2266,21 +2418,24 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
 }
 
 .ts-b3d__btn--on {
-  color: var(--md-primary-fg-color);
-  border-color: var(--md-primary-fg-color);
+  color: #fff;
+  background: var(--b3d-accent);
+  border-color: var(--b3d-accent);
 }
 
 /* 3D 预览滚出视口 → 右下角浮窗（画布整块搬过去，WebGL 上下文不丢） */
 .ts-b3d__float {
   position: fixed;
-  right: 1rem;
-  bottom: 1rem;
-  z-index: 30;
-  padding: 0.5rem;
-  background: var(--md-default-bg-color);
+  right: clamp(0.65rem, 2vw, 1.2rem);
+  bottom: clamp(0.65rem, 2vw, 1.2rem);
+  z-index: 20;
+  overflow: hidden;
+  width: min(19rem, calc(100vw - 1.3rem));
+  background: var(--b3d-stage, #3b3f3d);
   border: 0.05rem solid var(--md-default-fg-color--lightest);
-  border-radius: 0.5rem;
-  box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.28);
+  border-radius: 0.55rem;
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.3);
+  animation: ts-b3d-float-in 180ms ease-out both;
 }
 
 .ts-b3d__float[hidden] {
@@ -2288,7 +2443,11 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
 }
 
 .ts-b3d__float canvas {
-  max-width: 320px;
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  touch-action: none;
 }
 
 .ts-b3d__floatbar {
@@ -2296,7 +2455,69 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   align-items: center;
   justify-content: space-between;
   gap: 0.6rem;
-  margin-bottom: 0.4rem;
-  font-size: 0.72rem;
-  color: var(--md-default-fg-color--light);
+  min-height: 2.35rem;
+  padding: 0.38rem 0.48rem 0.38rem 0.65rem;
+  color: rgba(255, 255, 255, 0.72);
+  background: rgba(17, 20, 18, 0.65);
+  border-bottom: 0.05rem solid rgba(255, 255, 255, 0.08);
+  font-size: 0.64rem;
+  font-weight: 650;
+}
+
+.ts-b3d__floatbar .ts-b3d__btn {
+  min-height: 1.45rem;
+  padding: 0.2rem 0.42rem;
+  font-size: 0.58rem;
+}
+
+@keyframes ts-b3d-float-in {
+  from { opacity: 0; transform: translateY(0.5rem) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+@media screen and (max-width: 44.9375em) {
+  .ts-b3d__head,
+  .ts-b3d__side {
+    padding-right: 0.7rem;
+    padding-left: 0.7rem;
+  }
+
+  .ts-b3d__hint {
+    top: 0.5rem;
+    right: 0.5rem;
+    max-width: calc(100% - 1rem);
+  }
+
+  .ts-b3d__ctrls {
+    flex-wrap: wrap;
+  }
+
+  .ts-b3d__ctrls .ts-b3d__dim {
+    flex-basis: 100%;
+    font-size: 0.6rem;
+  }
+
+  .ts-b3d__field,
+  .ts-b3d__field--wide,
+  .ts-b3d__field--range {
+    grid-column: span 6;
+  }
+
+  .ts-b3d__field--wide,
+  .ts-b3d__field--range {
+    grid-column: 1 / -1;
+  }
+
+  .ts-b3d__kv {
+    grid-template-columns: minmax(5.5rem, 0.8fr) minmax(0, 1.2fr);
+  }
+
+  .ts-b3d__kv > .ts-b3d__dim {
+    grid-column: 2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ts-b3d__float { animation: none; }
+  .ts-b3d__btn { transition: none; }
 }
