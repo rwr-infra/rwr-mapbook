@@ -80,7 +80,8 @@ extra_javascript = [
   "javascripts/download.js",
   "javascripts/lightbox-zoom.js",
   # Building E 页面的 3D 预览：脚本自己判断是不是 building 页才启动，数据也到那时才 fetch。
-  "javascripts/building3d.js",
+  # 它与 data.json、贴图全在 docs/b3d/ 里，不跟别的脚本混在 javascripts/ 下。
+  "b3d/viewer.js",
 ]
 
 # 链接与锚点校验：构建时就把断链/失效锚点报出来，而不是等读者点到。

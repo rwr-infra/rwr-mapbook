@@ -331,10 +331,11 @@ docs/                 构建层（.md 与跳转桩是生成物）+ 手写资产
   assets/editor/      界面与流程的 54 张图
   assets/tables/      清单里的 705 张图
   stylesheets/ javascripts/   手写
+  b3d/                Building E 的 3D 预览：viewer.js + data.json + 贴图，自成一处
 tools/                生成器、看门脚本与体检；langs.py 是语言清单的唯一出处
   r2/                 归档上传/删除/体检（密钥不入库，见「历史版本归档放在站外」）
   preview/            本机用的热更新预览（不想装 uv 时；见下）
-  building3d.py       从地编模板抽建筑定义，生成 Building E 的 3D 预览数据
+  building3d/         Building E 的 3D 预览数据生成器（build.py + 说明）
 overrides/            主题模板覆盖
 site/                 构建产物，不入库
 .staging/             源文档抽取的中间产物，不入库
@@ -353,22 +354,30 @@ site/                 构建产物，不入库
 `make gen`，发出去的就是旧内容且**不会有任何报错**——`make build` 与 CI 都先跑生成，
 就是为了堵这个缺口。
 
-### `tools/building3d.py`：Building E 的 3D 预览数据
+### `tools/building3d/` 与 `docs/b3d/`：Building E 的 3D 预览
 
-Building E 页底那台 3D 预览（`docs/javascripts/building3d.js`，原生 WebGL，
-不引外部库）不读游戏资源，只读一份 `docs/assets/tables/building/data.json`。
-这份 JSON 由 `tools/building3d.py` 生成：从地编模板 `vao0822.svg` 里取每栋楼的
-`material_XXX` 定义、`building_style_XXX` 的单元序列、`texture_groups__XXX` 的
-「单元名 = 列,行」坐标表，再从游戏贴图目录把图集与各贴图拷到
-`docs/assets/tables/building/`。
+Building E 页底那台 3D 预览不读游戏资源，只读一份 `docs/b3d/data.json`。这个
+子系统自己占两处，不再跟别的脚本和工具混在目录里：
 
-```bash
-python tools/building3d.py     # 重新生成 data.json + 贴图（要本机的模板与游戏目录）
+```
+tools/building3d/build.py    生成器：从地编模板抽建筑定义，产出 data.json 与贴图
+tools/building3d/README.md   怎么重跑、哪几个常量要按本机改
+docs/b3d/                    viewer.js（原生 WebGL）+ data.json + 全部贴图
 ```
 
-脚本里的 `TEMPLATE` 与 `GAME` 是**本机绝对路径**，换台机器要改这两个常量；
-产物（JSON + PNG）是入库的，所以只有换模板版本或补图集时才需要重跑。
-页面上「自定义调节」只是改预览参数，不动模板，也不回写这个 JSON。
+生成器从地编模板 `vao0822.svg` 里取每栋楼的 `material_XXX` 定义、
+`building_style_XXX` 的单元序列、`texture_groups__XXX` 的「单元名 = 列,行」坐标表，
+再从游戏贴图目录把图集与各贴图拷进 `docs/b3d/`。前端只认这一个目录：
+`extra_javascript` 里挂的是 `b3d/viewer.js`，它按自己的地址推出 `b3d/` 前缀，
+data.json 与每张图都从那里取，所以整个子系统搬家只改这一个前缀。
+
+```bash
+python tools/building3d/build.py   # 重新生成 data.json + 贴图（要本机的模板与游戏目录）
+```
+
+脚本里的 `TEMPLATE` 与 `GAME` 是**本机绝对路径**，换台机器要改；产物（JSON + PNG）
+是入库的，所以只有换模板版本或补图集时才需要重跑。页面上「自定义调节」只是改预览
+参数，不动模板，也不回写这个 JSON。
 
 ### 标题锚点钉住，别靠自动生成
 

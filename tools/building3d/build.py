@@ -10,7 +10,7 @@
      例如 apartment1_1st_floor_door = 2,0。有了它，建筑每层引用的 style 名
      才能落到图集的具体格子上（游戏资源里只存名字，不存坐标，就靠模板这张表）。
 
-输出：docs/assets/tables/building/data.json（页面运行时 fetch）。
+输出：docs/b3d/data.json（与 3D 预览用到的贴图放一起，页面运行时 fetch）。
 """
 
 import os
@@ -19,20 +19,54 @@ import re
 import json
 import shutil
 
+#: 这个脚本在 `<仓库>/tools/building3d/build.py`，往上两级是仓库根。
+HERE = os.path.dirname(os.path.abspath(__file__))
+PROJECT = os.path.dirname(os.path.dirname(HERE))
+
 TEMPLATE = r"D:\RWRMap\0100\1007_Data\templates\vao0822.svg"
 GAME = r"D://steam//steamapps//common//RunningWithRifles"
 GAME_TEX = os.path.join(GAME, "media", "packages", "vanilla", "textures")
-DOCS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "docs")
-OUT_DIR = os.path.join(DOCS, "assets", "tables", "building")
+#: 站点侧全在 docs/b3d/：viewer.js、data.json 与所有贴图同住一处，
+#: 前端只认这一个目录（docs/b3d/viewer.js 里 BASE + "b3d/"）。
+OUT_DIR = os.path.join(PROJECT, "docs", "b3d")
 
 # 模板没写 atlas_texture 时用的默认墙体图集（参数字典里列的三种之一）
 DEFAULT_ATLAS = "building_atlas2.png"
-# ⚠️ 模板 vao0822.svg 里的建筑定义**没有 atlas_texture**，而实际地图的
-#    objects.svg 里每栋楼都指定了图集（normandy / provence / tropical /
-#    building_atlas2/3/4）。预览必须用地图那份，否则整栋楼的墙面格子全错
-#    （BuildingBritish 系列应该是 normandy，拿 building_atlas2 画就全是乱的）。
+# ⚠️ normandy / provence / tropical 三张图集是跟着特定地图目录走的**极特殊素材**，
+#    不进通用模板体系：相关材质、style、单元坐标与贴图全部排除在预览之外。
+SPECIAL_ATLASES = {
+    "building_atlas_normandy.png",
+    "building_atlas_provence.png",
+    "building_atlas_tropical.png",
+}
+# 这三个系列的名字直接出现在材质名 / style 名 / 单元名里
+SPECIAL_PAT = re.compile(r"normandy|provence|tropical", re.I)
 MAP_SVGS = [r"D:\RWRMap\0100\1007_Data\map\objects.svg"]
 GRID = [8, 8]        # 单元坐标表是 8 列（列号 0..7）；图集 256×256 → 每格 32px
+# 各图集真实的网格（换图集时前端自动匹配，不用手数）：
+#   building 系都是 8×8（building_atlas4 是 512px，格子 64px）；world_atlas1 是 16×16
+ATLAS_GRIDS = {
+    "building_atlas.png": [8, 8],
+    "building_atlas2.png": [8, 8],
+    "building_atlas3.png": [8, 8],
+    "building_atlas4.png": [8, 8],
+    "building_atlas_desert.png": [8, 8],
+    "world_atlas1.png": [16, 16],
+}
+# 图集「原生格」跨度（宽格, 高格）：坐标表里 1 个单位 = 1 宽 × 2 高 的基础格。
+# building_atlas2/3/4 三张统一按 1×2 编号（此前只有 atlas2 标了，atlas3 被当成
+# 1×1 → 窗全落在空格上，整面墙没窗；atlas4 的坐标也跟着错位）。这里做成数据，
+# 让 Python 与前端 JS 走同一份配置，不再在 JS 里另写一份 DEFAULT_SPANS。
+ATLAS_SPANS = {
+    "building_atlas2.png": [1, 2],
+    "building_atlas3.png": [1, 2],
+    "building_atlas4.png": [1, 2],
+}
+# 个别单元的真实切分与所在图集的默认跨度不同 → 按「图集 → 单元」单独列出。
+# 当前三张图集统一 1×2，没有需要回退的单元；渲染层（styleTexture）会把窗/门
+# 的不透明内容竖向拉满整格（触顶触底），所以无需在此做 1×1 例外。保留结构以备
+# 将来个别单元微调。
+ATLAS_UNIT_SPANS = {}
 
 
 def parse_kv(text):
@@ -161,6 +195,17 @@ def main():
         print("  扫描 %s：单元 %d / style %d" % (
             os.path.relpath(svg_path, GAME), len(cells), len(styles)))
 
+    # 1.7) ⚠️ 极特殊素材（normandy/provence/tropical）相关的 style 直接剔除：
+    #      名字带这三词的，以及 sequence 里引用了 normandy_* 单元的。
+    #      放在所有来源扫完之后——别的包地图会把同名 style 再次塞回来。
+    dropped_styles = [n for n in styles
+                      if SPECIAL_PAT.search(n)
+                      or any(SPECIAL_PAT.search(u) for item in styles[n] for u in item)]
+    for n in dropped_styles:
+        del styles[n]
+    if dropped_styles:
+        print("  剔除极特殊素材 style %d 个：%s" % (len(dropped_styles), ", ".join(sorted(dropped_styles))))
+
     # 2) 建筑定义
     materials = {}
     order = []
@@ -212,9 +257,11 @@ def main():
                     return None
                 parts = str(raw).split()
                 try:
-                    nums = [float(x) for x in parts[:4]]
+                    nums = [float(x) for x in parts[:6]]
                 except ValueError:
                     return None
+                while len(nums) < 6:
+                    nums.append(0.0)     # [列,行,总列,总行,边距u,边距v]，边距=UV 内缩防串色
                 return nums
             materials[name] = {
                 "color": kv.get("color", "fill"),
@@ -224,6 +271,10 @@ def main():
                 "detail_texture": first_token(kv.get("detail_texture"), "wall_atlas1.png"),
                 "detail_cell": cell_of("detail_texture"),
                 "detail_scale": str(kv.get("detail_texture_scale", "3 3")),
+                # 墙面 detail 遮罩上再叠的 cutout（channel 指用哪条通道当遮罩，1=G）
+                "detail_cutout": first_token(kv.get("detail_cutout_texture"), ""),
+                "detail_cutout_channel": kv.get("detail_cutout_texture_channel", "1"),
+                "detail_cutout_scale": str(kv.get("detail_cutout_texture_scale", "")),
                 "atlas_texture": first_token(kv.get("atlas_texture"), DEFAULT_ATLAS),
                 "floors": {
                     "1st": [kv.get(f"1st_floor_{i}", "") for i in (1, 2, 3, 4)],
@@ -234,17 +285,42 @@ def main():
                     "cell": cell_of("roof_texture"),
                     "scale": str(kv.get("roof_scale", kv.get("roof_texture_scale", "6 6"))),
                     "color": kv.get("roof_color", "stroke"),
+                    # 屋顶遮罩上面还有一层 cutout（channel=1 走 alpha）：
+                    # 遮罩决定明暗、cutout 决定斑驳，两层 alpha 相乘才是游戏里的屋顶
+                    "cutout": first_token(kv.get("roof_cutout_texture"), ""),
+                    "cutout_channel": kv.get("roof_cutout_texture_channel", "1"),
+                    "cutout_scale": str(kv.get("roof_cutout_texture_scale", "")),
                 },
             }
             order.append(name)
 
+    # 2.5) ⚠️ 极特殊素材的材质整栋剔除：图集是这三张的，或者楼层引用了
+    #      已被剔除的 style（引用链断了留着也没法画）
+    dropped_mats = [n for n, m in materials.items()
+                    if m["atlas_texture"] in SPECIAL_ATLASES
+                    or any(s and s not in styles
+                           for grp in m["floors"].values() for s in grp)]
+    for n in dropped_mats:
+        del materials[n]
+    order = [n for n in order if n in materials]
+    if dropped_mats:
+        print("  剔除极特殊素材材质 %d 个：%s" % (len(dropped_mats), ", ".join(sorted(dropped_mats))))
+
+    # 单元坐标表同样剔除 normandy_* 等极特殊单元（provence/tropical 的 style
+    # 用的都是共享的 house_* 单元，跟着 style 一起走，这里按名字兜一遍）
+    cells_all = {k: v for group in cells.values() for k, v in group.items()
+                 if not SPECIAL_PAT.search(k)}
+
     data = {
         "source": os.path.basename(TEMPLATE),
         "atlas_grid": GRID,
+        "atlas_grids": ATLAS_GRIDS,
+        "atlas_spans": ATLAS_SPANS,
+        "atlas_unit_spans": ATLAS_UNIT_SPANS,
         "default_atlas": DEFAULT_ATLAS,
         # 单元名全局唯一，直接把所有组的坐标并到一起（组 key 带 _desc_1 后缀，
         # 别按名字精确取，取不到就 0 条）
-        "cells": {k: v for group in cells.values() for k, v in group.items()},
+        "cells": cells_all,
         "styles": styles,
         "cell_groups": sorted(cells.keys()),
         "materials": materials,
@@ -258,6 +334,10 @@ def main():
         needed.add(m["atlas_texture"])
         needed.add(m["detail_texture"])
         needed.add(m["roof"]["texture"])
+        if m.get("detail_cutout"):
+            needed.add(m["detail_cutout"])
+        if m["roof"].get("cutout"):
+            needed.add(m["roof"]["cutout"])
     # 墙/建筑/平台材质体系用到的全部贴图——3D 预览的「自定义」要能任选，
     # 哪怕某个贴图暂时没被任何建筑引用（wood/pavement/grass 这类平台顶面）
     needed.update([
@@ -267,6 +347,8 @@ def main():
     ])
     missing = []
     for tex in sorted(needed):
+        if tex in SPECIAL_ATLASES:
+            continue                # 极特殊素材不拷
         # 查找顺序：vanilla/textures → 其它包 textures → 各包地图目录
         # （building_atlas_normandy.png 这类图集只存在于特定地图目录里）
         hits = [h for h in (
@@ -279,10 +361,59 @@ def main():
             shutil.copyfile(hits[0], os.path.join(OUT_DIR, tex))
         else:
             missing.append(tex)
+    # 站点目录里若还残留上一次跑出来的极特殊图集，一并清掉
+    for tex in SPECIAL_ATLASES:
+        stale = os.path.join(OUT_DIR, tex)
+        if os.path.exists(stale):
+            os.remove(stale)
+            print("  已删除残留贴图", tex)
 
-    # 4) 写 data.json：textures = 站点里实际有的贴图文件（下拉框全量可选）
+    # 3.5) cutout 遮罩派生图：cutout.png 的 alpha 全 0、遮罩在 G 通道（R 全 255）。
+    #      ⚠️ 浏览器 canvas 按**预乘 alpha** 存储，drawImage 一张全透明图会把 RGB
+    #      抹成 0——前端永远读不到颜色通道（表现为「斑驳怎么调都没变化」）。
+    #      所以在生成器里用 PIL 把指定通道预转成真 alpha，写成 <名>__mask.png，
+    #      并把 data.json 里的引用改到派生图上。channel 约定：0=R 1=G 2=B。
+    #      派生源优先用 cutout_viewable.png（用户导出的可视化版：同 RGB、
+    #      alpha 全 255）；原 cutout.png 保留在站点里但不再参与合成。
+    from PIL import Image as PILImage
+    cut_refs = {}                          # 文件名 -> 用到的通道集合
+    for m in materials.values():
+        if m.get("detail_cutout"):
+            cut_refs.setdefault(m["detail_cutout"], set()).add(m.get("detail_cutout_channel", "1"))
+        if m["roof"].get("cutout"):
+            cut_refs.setdefault(m["roof"]["cutout"], set()).add(m["roof"].get("cutout_channel", "1"))
+    viewable = os.path.join(OUT_DIR, "cutout_viewable.png")
+    for fname, chans in sorted(cut_refs.items()):
+        if chans - {"1"}:
+            print(f"  ⚠️ {fname} 用到非 G 通道 {chans}，暂按 G 处理")
+        src = os.path.join(OUT_DIR, fname)
+        if os.path.exists(viewable):
+            src = viewable
+        if not os.path.exists(src):
+            continue                       # 拷贝阶段已缺失（如 cutout_2.png），前端有守卫
+        im = PILImage.open(src).convert("RGBA")
+        derived = fname.replace(".png", "__mask.png")       # G 通道（黄+白 = 露砖）
+        derived_b = fname.replace(".png", "__maskb.png")    # B 通道（白 = 磨得最深）
+        out = PILImage.new("RGBA", im.size, (0, 0, 0, 0))
+        out.putalpha(im.split()[1])        # G 通道 → alpha
+        out.save(os.path.join(OUT_DIR, derived))
+        outb = PILImage.new("RGBA", im.size, (0, 0, 0, 0))
+        outb.putalpha(im.split()[2])       # B 通道 → alpha
+        outb.save(os.path.join(OUT_DIR, derived_b))
+        for m in materials.values():
+            if m.get("detail_cutout") == fname:
+                m["detail_cutout"] = derived
+            if m["roof"].get("cutout") == fname:
+                m["roof"]["cutout"] = derived
+                m["roof"]["cutout_b"] = derived_b
+        print(f"  生成通道遮罩 {derived} / {derived_b} ← {os.path.basename(src)} (G/B→alpha)")
+
+    # 4) 写 data.json：textures = 站点里实际有的贴图文件（下拉框全量可选；
+    #    __mask*.png 是生成器派生的通道遮罩、cutout_viewable.png 是派生源，不列进去）
     data["textures"] = sorted(
-        f for f in os.listdir(OUT_DIR) if f.lower().endswith(".png"))
+        f for f in os.listdir(OUT_DIR)
+        if f.lower().endswith(".png") and "__mask" not in f
+        and f != "cutout_viewable.png")
     with open(os.path.join(OUT_DIR, "data.json"), "w", encoding="utf-8") as fh:
         json.dump(data, fh, ensure_ascii=False)
 

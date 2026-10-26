@@ -2152,7 +2152,7 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   Building E 的 3D 预览（docs/javascripts/building3d.js）
+   Building E 的 3D 预览（docs/b3d/viewer.js + docs/b3d/ 里的数据与贴图）
    ══════════════════════════════════════════════════════════════ */
 .ts-b3d {
   --b3d-accent: #d45b32;
@@ -2309,7 +2309,7 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
 
 .ts-b3d__field {
   display: grid;
-  grid-column: span 3;
+  grid-column: span 4;
   gap: 0.28rem;
   margin: 0;
   font-size: 0.66rem;
@@ -2317,9 +2317,10 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   color: var(--md-default-fg-color--light);
 }
 
-.ts-b3d__field--wide,
-.ts-b3d__field--range {
-  grid-column: span 6;
+/* 建筑选择占整行（右侧带上/下翻键）；层数与楼长/楼宽各占三分之一，
+   颜色与两个开关各占半行 —— 三行正好铺满 12 栏，不留空档。 */
+.ts-b3d__field--wide {
+  grid-column: 1 / -1;
 }
 
 .ts-b3d__field select,
@@ -2343,21 +2344,115 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   cursor: pointer;
 }
 
+/* 建筑选择条：下拉 + 右侧竖叠的上/下翻小键（像数字框的加减） */
+.ts-b3d__pickrow {
+  display: flex;
+  gap: 0.22rem;
+  align-items: stretch;
+}
+.ts-b3d__pickrow select { flex: 1 1 auto; }
+.ts-b3d__spin {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.ts-b3d__step {
+  flex: 1 1 auto;
+  width: 1.15rem;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--md-default-fg-color--light);
+  background: var(--md-code-bg-color);
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.22rem;
+  font-size: 0.55rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.ts-b3d__step:hover {
+  color: var(--b3d-accent);
+  border-color: var(--b3d-accent);
+}
+
+/* 墙面/屋顶色：一行两个小方块，替代各占一整行的长条取色框 */
+.ts-b3d__colors {
+  grid-column: span 6;
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+}
+
+.ts-b3d__field--swatch {
+  display: flex;
+  grid-column: auto;
+  align-items: center;
+  gap: 0.34rem;
+}
+
+.ts-b3d__field--swatch input[type="color"] {
+  flex: 0 0 auto;
+  width: 1.55rem;
+  height: 1.55rem;
+  padding: 0.12rem;
+  border-radius: 0.24rem;
+}
+
 .ts-b3d__field input[type="range"] {
   accent-color: var(--b3d-accent);
 }
 
-.ts-b3d__details {
-  margin-top: 0.8rem;
+/* ── 「材质与图集参数」折叠区 ───────────────────────────────────────
+   主题给 <details> 套的是**警示框**那套皮肤：整块半透明底色 + 左侧曲别针图标
+   + 右侧箭头，两个图标都用 `top: .125em` 定位——那是给「标题紧贴图标下沿」
+   的行高算的，而这里标题要跟面板其他行一样上下留白，图标就浮到字上面去了。
+   所以这块不再借用主题皮肤，自己画成一行普通折叠条：去掉曲别针只留箭头，
+   箭头改成在一行里垂直居中，上下留白对称。
+
+   ⚠️ 选择器必须比 `.md-typeset details` / `.md-typeset summary` 更具体，
+   否则 background / padding 会被主题压回去（这两条是 (0,1,1)）。 */
+.md-typeset details.ts-b3d__details {
+  margin: 0.9rem 0 0;
+  padding: 0;
+  background: none;
+  border: 0;
   border-top: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0;
 }
 
-.ts-b3d__details summary {
-  padding: 0.68rem 0 0;
-  color: var(--md-default-fg-color--light);
-  font-size: 0.68rem;
+.md-typeset details.ts-b3d__details > summary {
+  margin: 0;
+  padding: 0.62rem 1.4rem 0.62rem 0;
+  color: var(--md-default-fg-color);
+  font-size: 0.72rem;
   font-weight: 700;
+  line-height: 1.35;
+  list-style: none;
   cursor: pointer;
+}
+
+.md-typeset details.ts-b3d__details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* 曲别针（主题的 note 图标）不要了 */
+.md-typeset details.ts-b3d__details > summary::before {
+  content: none;
+}
+
+/* 右侧箭头：主题按 top:.125em 摆，这里在 1rem 方块上垂直居中 */
+.md-typeset details.ts-b3d__details > summary::after {
+  top: 50%;
+  right: 0;
+  margin-top: -0.5rem;
+  background-color: var(--md-default-fg-color--light);
+}
+
+.md-typeset details.ts-b3d__details > summary:hover {
+  color: var(--b3d-accent, var(--md-primary-fg-color));
 }
 
 .ts-b3d__info {
@@ -2374,6 +2469,24 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   padding: 0.22rem 0;
   border-bottom: 0.05rem solid var(--md-default-fg-color--lightest);
 }
+/* 每个面一组：标签行 + 配方条小块（+ 展开的选格页）。分割线画在整组的最下面，
+   不再压在标签文字和小块中间。组内的标签行自己不带线。 */
+.ts-b3d__face {
+  border-bottom: 0.05rem solid var(--md-default-fg-color--lightest);
+  padding-bottom: 0.35rem;
+}
+.ts-b3d__face > .ts-b3d__kv {
+  min-height: 1.5rem;
+  padding: 0.18rem 0 0.06rem;
+  border-bottom: 0;
+}
+.ts-b3d__face > .ts-b3d__recipe {
+  margin-bottom: 0;
+}
+/* 图集选择那行：缩略图要更多横向空间 */
+.ts-b3d__kv--wide {
+  grid-template-columns: minmax(6.4rem, 0.8fr) minmax(0, 3fr);
+}
 
 .ts-b3d__kv > span:first-child {
   color: var(--md-default-fg-color--light);
@@ -2384,6 +2497,34 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
 .ts-b3d__kv select {
   min-width: 0;
   max-width: 100%;
+}
+
+/* 图集格子行（roof_texture_atlas_cell / detail_texture_atlas_cell）：
+   [名字] [缩略图 + 列,行] ......... [切分 列 × 行]
+   三件各占一栏，正好填满 kv 的三条轨道，切分那两个数字右对齐收在行尾。 */
+.ts-b3d__kv--cell {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  column-gap: 0.55rem;
+}
+.ts-b3d__cellsrc,
+.ts-b3d__cellcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+.ts-b3d__cellcut {
+  justify-self: end;
+  gap: 0.22rem;
+}
+.ts-b3d__cellcut input {
+  width: 2.4rem;
+  padding-right: 0.2rem;
+  text-align: center;
+}
+.ts-b3d__cellsrc code {
+  font-size: 0.62rem;
+  word-break: normal;
 }
 
 .ts-b3d__kv code {
@@ -2415,6 +2556,184 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
 .ts-b3d__info input:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* （旧「单元列表」样式已删：单元查看/替换改走配方条上的小块） */
+/* 墙面遮罩层 / 屋顶斑驳层：两个开关同占一栏、并排一行（各半） */
+.ts-b3d__checks {
+  grid-column: span 6;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: 0;
+}
+
+/* 勾选框字段（墙面遮罩层 / 屋顶斑驳层开关） */
+.ts-b3d__field--check {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 0;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+.ts-b3d__field--check input {
+  width: 0.85rem;
+  height: 0.85rem;
+  margin: 0;
+  accent-color: var(--b3d-accent);
+}
+.ts-b3d__field--check span {
+  font-size: 0.62rem;
+}
+/* 配方条：选中样式的 sequence 单元小图，从左到右 = 墙面从左到右。
+   块与块之间不加间隔、直接相连（一条连续的墙带）。 */
+.ts-b3d__recipe {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.1rem 0;
+  margin: 0.1rem 0 0.2rem;
+}
+.ts-b3d__recipeblock {
+  display: inline-flex;
+  align-items: flex-end;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  line-height: 0;
+}
+.ts-b3d__recipeblock:disabled { cursor: default; }
+.ts-b3d__recipeblock canvas {
+  display: block;
+  image-rendering: pixelated;
+}
+/* 空单元：图集上本来就是全透明，画个虚线框表示「这格是空墙」 */
+.ts-b3d__recipeblock canvas.ts-b3d__recipeempty {
+  outline: 1px dashed var(--md-default-fg-color--light);
+  outline-offset: -1px;
+  opacity: 0.5;
+}
+/* 条尾「＋新建小块」：往序列末尾追加单元 */
+.ts-b3d__recipeadd {
+  align-self: stretch;
+  min-width: 1.1rem;
+  margin-left: 0.3rem;
+  border: 1px dashed var(--md-default-fg-color--light);
+  border-radius: 0.15rem;
+  background: none;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.72rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.ts-b3d__recipeadd:disabled { opacity: 0.5; cursor: default; }
+/* 点小块展开的「选单元」列表：候选 = 图集上全部单元小图 */
+.ts-b3d__cellpop {
+  margin: 0.15rem 0 0.25rem;
+  padding: 0.35rem 0.45rem;
+  border: 0.05rem dashed var(--md-default-fg-color--lighter);
+  border-radius: 0.4rem;
+}
+.ts-b3d__cellpop-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.28rem;
+}
+.ts-b3d__cellpop-head code { font-size: 0.62rem; }
+.ts-b3d__cellpop-btns { display: inline-flex; gap: 0.3rem; margin-left: auto; }
+.ts-b3d__popatlas {
+  border: 0.05rem solid var(--md-default-fg-color--lighter);
+  border-radius: 0.3rem;
+  background: none;
+  color: inherit;
+  font-size: 0.6rem;
+  padding: 0.06rem 0.45rem;
+  cursor: pointer;
+}
+.ts-b3d__popatlas:disabled { opacity: 0.5; cursor: default; }
+.ts-b3d__popatlas--del { color: #e24b4a; border-color: rgba(226, 75, 74, 0.5); }
+.ts-b3d__spanrow { border-bottom: none; padding-bottom: 0; }
+.ts-b3d__spanrow code { font-size: 0.6rem; }
+
+/* ── 图集缩略图选择：整张图集缩小 + 网格线，点图切换 ── */
+.ts-b3d__atlases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.ts-b3d__atlasopt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.12rem;
+  padding: 0.15rem;
+  background: none;
+  border: 0.1rem solid transparent;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+.ts-b3d__atlasopt canvas {
+  width: 2.5rem;
+  height: 2.5rem;
+  image-rendering: pixelated;
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.2rem;
+}
+.ts-b3d__atlasopt code { font-size: 0.56rem; word-break: break-all; text-align: center; }
+.ts-b3d__atlasopt--on { border-color: var(--b3d-accent, #e24b4a); }
+.ts-b3d__atlasopt:disabled { opacity: 0.5; cursor: default; }
+
+/* 浮窗顶栏可按住拖动 */
+.ts-b3d__floatbar {
+  cursor: move;
+  touch-action: none;
+  user-select: none;
+}
+.ts-b3d__floatbar button { cursor: pointer; }
+.ts-b3d__float--drag { animation: none; }
+
+/* ── 图集格子小图预览 + 点图集选格（替代手敲列/行数字） ── */
+.ts-b3d__cellpick {
+  display: inline-flex;
+  padding: 0;
+  border: 0.1rem solid var(--md-default-fg-color--lighter);
+  border-radius: 0.25rem;
+  background: none;
+  cursor: pointer;
+  line-height: 0;
+}
+.ts-b3d__cellpick canvas {
+  width: 1.75rem;
+  height: 1.75rem;
+  image-rendering: pixelated;
+}
+.ts-b3d__cellpick:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+.ts-b3d__atlasbox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.5rem;
+  margin: 0.3rem 0;
+  border: 0.05rem dashed var(--md-default-fg-color--lighter);
+  border-radius: 0.5rem;
+}
+.ts-b3d__atlasbox[hidden] { display: none; }
+#b3dPopPick {
+  width: 14rem;
+  max-width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  cursor: crosshair;
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.25rem;
 }
 
 .ts-b3d__btn--on {
@@ -2499,17 +2818,27 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
 
   .ts-b3d__field,
   .ts-b3d__field--wide,
-  .ts-b3d__field--range {
+  .ts-b3d__checks {
     grid-column: span 6;
   }
 
   .ts-b3d__field--wide,
-  .ts-b3d__field--range {
+  .ts-b3d__checks {
     grid-column: 1 / -1;
   }
 
   .ts-b3d__kv {
     grid-template-columns: minmax(5.5rem, 0.8fr) minmax(0, 1.2fr);
+  }
+
+  /* 窄屏：格子行折成「名字 + 缩略图」一行，「切分」另起一行占满 */
+  .ts-b3d__kv--cell {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: 0.28rem;
+  }
+  .ts-b3d__cellcut {
+    grid-column: 1 / -1;
+    justify-self: start;
   }
 
   .ts-b3d__kv > .ts-b3d__dim {

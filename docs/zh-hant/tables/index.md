@@ -8,10 +8,10 @@ nav: ["wall", "building", "vehicle", "mesh", "decal"]
 hide: [toc]
 ---
 
-<meta http-equiv="refresh" content="0; url=mesh/">
+<meta http-equiv="refresh" content="0; url=wall/">
 
 這一頁因排版改動不再單獨存在。
 
-正在前往 [MESH E](mesh.md)，如果未主動跳轉請自行點擊鏈接。
+正在前往第一張清單 [Wall E & Platform E](wall.md)，如果未主動跳轉請自行點擊鏈接。
 
 <span class="redact" tabindex="0">趁沒人注意偷摸喫口屎</span>
