@@ -7,6 +7,28 @@
  */
 
 /* ══════════════════════════════════════════════════════════════
+   点击指针
+
+   站内可点的东西统一用自定义 .cur 光标（32×32，Aero 手势图）。
+   文件自带的热点是 (0,22)，但图案是手指朝上，热点应为指尖 →
+   CSS 里显式写 `16 0` 覆盖。链接的指针是浏览器默认的、CSS 里没有
+   声明，所以链接要单独指一遍。
+   ══════════════════════════════════════════════════════════════ */
+:root {
+  --ts-cursor-click: url("../assets/cursor/aero-middle-finger.svg") 12 0,
+                     url("../assets/cursor/aero-middle-finger-16.cur") 8 0, pointer;
+}
+/* 全站「点击」指针。
+   注意权重：主题用 .md-header__button / .md-nav__link / .md-typeset summary
+   这类**类选择器**写了 cursor:pointer（0,1,0），只用 a/button/label 这些元素
+   选择器（0,0,1）会被它们压住、顶栏图标和目录链接照旧——这里靠 body + :is()
+   + 两个 :not() 把权重抬到 0,3,1，稳稳盖过主题。
+   .md-clipboard / .md-code__button 是复制按钮（cursor: copy），排除掉别改错。 */
+body :is(a, button, label, summary, [role="button"]):not(.md-clipboard):not(.md-code__button) {
+  cursor: var(--ts-cursor-click);
+}
+
+/* ══════════════════════════════════════════════════════════════
    强调色的无障碍修正（唯一一处改配色）
 
    Material 默认强调色 indigo #526cfe 的对比度不够正文使用：
@@ -458,7 +480,7 @@
   border-radius: 0.1rem;
   color: transparent;
   background-color: var(--md-default-fg-color);
-  cursor: pointer;
+  cursor: var(--ts-cursor-click);
   transition: color 0.15s, background-color 0.15s;
   -webkit-user-select: none;
   user-select: none;
@@ -1229,7 +1251,7 @@ html[data-ts-page] .md-typeset .ts-hit {
   gap: 0.15em 0.6em;
   padding: 0.35em 0.5em;
   border-radius: 0.2rem;
-  cursor: pointer;
+  cursor: var(--ts-cursor-click);
 }
 
 html[data-ts-page] .md-typeset .ts-hit.is-active {
@@ -2277,7 +2299,7 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   font-size: 0.66rem;
   font-weight: 650;
   line-height: 1;
-  cursor: pointer;
+  cursor: var(--ts-cursor-click);
   transition: color 140ms ease, border-color 140ms ease, background-color 140ms ease, transform 140ms ease;
 }
 
@@ -2341,7 +2363,7 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
 
 .ts-b3d__field input[type="color"] {
   padding: 0.16rem;
-  cursor: pointer;
+  cursor: var(--ts-cursor-click);
 }
 
 /* 建筑选择条：下拉 + 右侧竖叠的上/下翻小键（像数字框的加减） */
@@ -2371,7 +2393,7 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   border-radius: 0.22rem;
   font-size: 0.55rem;
   line-height: 1;
-  cursor: pointer;
+  cursor: var(--ts-cursor-click);
 }
 .ts-b3d__step:hover {
   color: var(--b3d-accent);
@@ -2431,7 +2453,7 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   font-weight: 700;
   line-height: 1.35;
   list-style: none;
-  cursor: pointer;
+  cursor: var(--ts-cursor-click);
 }
 
 .md-typeset details.ts-b3d__details > summary::-webkit-details-marker {
@@ -2602,7 +2624,7 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   padding: 0;
   border: 0;
   background: none;
-  cursor: pointer;
+  cursor: var(--ts-cursor-click);
   line-height: 0;
 }
 .ts-b3d__recipeblock:disabled { cursor: default; }
@@ -2627,7 +2649,7 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   color: var(--md-default-fg-color--light);
   font-size: 0.72rem;
   line-height: 1;
-  cursor: pointer;
+  cursor: var(--ts-cursor-click);
 }
 .ts-b3d__recipeadd:disabled { opacity: 0.5; cursor: default; }
 /* 点小块展开的「选单元」列表：候选 = 图集上全部单元小图 */
@@ -2653,7 +2675,7 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   color: inherit;
   font-size: 0.6rem;
   padding: 0.06rem 0.45rem;
-  cursor: pointer;
+  cursor: var(--ts-cursor-click);
 }
 .ts-b3d__popatlas:disabled { opacity: 0.5; cursor: default; }
 .ts-b3d__popatlas--del { color: #e24b4a; border-color: rgba(226, 75, 74, 0.5); }
@@ -2675,7 +2697,7 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   background: none;
   border: 0.1rem solid transparent;
   border-radius: 0.3rem;
-  cursor: pointer;
+  cursor: var(--ts-cursor-click);
 }
 .ts-b3d__atlasopt canvas {
   width: 2.5rem;
@@ -2694,7 +2716,7 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   touch-action: none;
   user-select: none;
 }
-.ts-b3d__floatbar button { cursor: pointer; }
+.ts-b3d__floatbar button { cursor: var(--ts-cursor-click); }
 .ts-b3d__float--drag { animation: none; }
 
 /* ── 图集格子小图预览 + 点图集选格（替代手敲列/行数字） ── */
@@ -2704,7 +2726,7 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   border: 0.1rem solid var(--md-default-fg-color--lighter);
   border-radius: 0.25rem;
   background: none;
-  cursor: pointer;
+  cursor: var(--ts-cursor-click);
   line-height: 0;
 }
 .ts-b3d__cellpick canvas {

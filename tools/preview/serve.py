@@ -130,6 +130,10 @@ REFRESH_JS = (
     b'  var y=window.scrollY;'
     b'  if(fresh&&here){here.innerHTML=fresh.innerHTML;window.scrollTo(0,y);}'
     b'  else location.reload();'
+    b'  /* versioned stylesheet href: follow the fresh one so CSS updates too */'
+    b'  var fl=doc.querySelector(\'link[href*="extra.css"]\');'
+    b'  var hl=document.querySelector(\'link[href*="extra.css"]\');'
+    b'  if(fl&&hl&&fl.getAttribute("href")!==hl.getAttribute("href"))hl.setAttribute("href",fl.getAttribute("href"));'
     b' }).catch(function(){location.reload()});}'
     b'function apply(d){'
     b' mark(!!d.busy);'
@@ -562,6 +566,24 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, fmt: str, *args) -> None:
         pass  # 正常请求一律不刷屏
 
+    def send_header(self, keyword: str, value: str) -> None:
+        if keyword.lower() == "cache-control":
+            self._has_cache_control = True
+        super().send_header(keyword, value)
+
+    def end_headers(self) -> None:
+        """没显式写过 Cache-Control 的响应，一律补 no-store。
+
+        ⚠️ 不补这一条，普通刷新（F5 / 热更新里的 location.reload）会把 CSS/JS
+        直接从内存缓存里捞出来——url 不带版本号，改了样式用户却看不到，还以为是
+        没改对（实测踩过：全站指针换了，顶栏图标仍显示旧光标）。
+        """
+        if not getattr(self, "_has_cache_control", False):
+            self._has_cache_control = True
+            self.send_header("Cache-Control", "no-store, max-age=0")
+            self.send_header("Pragma", "no-cache")
+        super().end_headers()
+
     def sse(self) -> None:
         """服务端这一头：一条常驻连接，状态一变就推给页面（替代轮询）。"""
         self.send_response(200)
@@ -633,6 +655,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             data = fh.read()
         # 自动刷新只注入 HTML；没有 </body> 就追加到末尾，总能生效。
         data = data.replace(b"</body>", REFRESH_JS + b"</body>") if b"</body>" in data else data + REFRESH_JS
+        # 给本站样式表打个版本号：重建一次 URL 就变一次，浏览器不可能再拿旧 CSS。
+        # （theme 自带的 main.css 由 zensical 自己带 hash，extra.css 没有。）
+        with lock:
+            v = state["v"]
+        data = re.sub(rb'(href="[^"]*stylesheets/extra\.css)(\?v=\d+)?"',
+                      b'\\1?v=' + str(v).encode() + b'"', data)
         self.send_response(200)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.send_header("Content-Length", str(len(data)))
