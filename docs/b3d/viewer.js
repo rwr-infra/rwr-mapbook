@@ -51,6 +51,8 @@
       hint: "拖动旋转 · 滚轮或双指缩放", reset: "复位视角",
       customizeOff: "自定义调节：关", customizeOn: "自定义调节：开",
       customizeHint: "解锁后可更换素材与图集格子", building: "建筑",
+      search: "搜索建筑名…", searchHint: "输入关键字过滤：↑↓ 移动、回车选中、Esc 取消",
+      openList: "展开建筑列表", noMatch: "没有匹配的建筑",
       prevBuilding: "上一个建筑", nextBuilding: "下一个建筑", floors: "层数", lotW: "楼长（单位）", lotD: "楼宽（单位）",
       lotHint: "占地按 SVG 单位填，1 单位 = 0.5 m",
       wall: "墙面色", roof: "屋顶色",
@@ -73,6 +75,8 @@
       hint: "拖曳旋轉 · 滾輪或雙指縮放", reset: "重設視角",
       customizeOff: "自訂調節：關", customizeOn: "自訂調節：開",
       customizeHint: "解鎖後可更換素材與圖集格子", building: "建築",
+      search: "搜尋建築名…", searchHint: "輸入關鍵字篩選：↑↓ 移動、Enter 選取、Esc 取消",
+      openList: "展開建築清單", noMatch: "沒有符合的建築",
       prevBuilding: "上一個建築", nextBuilding: "下一個建築", floors: "層數", lotW: "樓長（單位）", lotD: "樓寬（單位）",
       lotHint: "占地按 SVG 單位填，1 單位 = 0.5 m",
       wall: "牆面色", roof: "屋頂色",
@@ -95,6 +99,8 @@
       hint: "Drag to orbit · scroll or pinch to zoom", reset: "Reset view",
       customizeOff: "Custom controls: off", customizeOn: "Custom controls: on",
       customizeHint: "Unlock materials and atlas cells", building: "Building",
+      search: "Search buildings…", searchHint: "Type to filter · ↑↓ to move · Enter to select · Esc to cancel",
+      openList: "Show building list", noMatch: "No matching building",
       prevBuilding: "Previous building", nextBuilding: "Next building", floors: "Floors", lotW: "Footprint length (units)", lotD: "Footprint width (units)",
       lotHint: "Footprint in SVG units; 1 unit = 0.5 m",
       wall: "Wall tint", roof: "Roof tint",
@@ -871,11 +877,19 @@
       '</div></div>' +
       '<div class="ts-b3d__side">' +
       '<div class="ts-b3d__basic"><div class="ts-b3d__field ts-b3d__field--wide">' +
-      '<label for="b3dPick">' + TEXT.building + '</label>' +
+      // 建筑选择：47 个名字躺在一个原生 select 里太难找，改成「输入框 + 过滤列表」
+      // 的组合框——点一下/直接打字就按关键字过滤，↑↓ 移动、回车选中、Esc 取消。
+      // 输入框本身也是当前建筑的显示位（空闲时显示楼名，聚焦自动全选）。
+      '<label for="b3dFind">' + TEXT.building + '</label>' +
       '<span class="ts-b3d__pickrow">' +
-      '<select id="b3dPick">' + DATA.order.map(function (n) {
-        return '<option value="' + n + '">' + n + '</option>';
-      }).join("") + '</select>' +
+      '<span class="ts-b3d__combo" id="b3dCombo">' +
+      '<input type="text" id="b3dFind" role="combobox" aria-autocomplete="list"' +
+      ' aria-expanded="false" aria-controls="b3dList" autocomplete="off" spellcheck="false"' +
+      ' placeholder="' + esc(TEXT.search) + '" title="' + esc(TEXT.searchHint) + '">' +
+      '<button type="button" class="ts-b3d__caret" id="b3dToggle" tabindex="-1"' +
+      ' aria-label="' + esc(TEXT.openList) + '" title="' + esc(TEXT.openList) + '">▾</button>' +
+      '<span class="ts-b3d__list" id="b3dList" role="listbox" aria-label="' + esc(TEXT.building) + '" hidden></span>' +
+      '</span>' +
       // 选择条右侧的上/下翻键：竖着叠一对小箭头，像数字框的加减（循环切换）
       '<span class="ts-b3d__spin">' +
       '<button type="button" class="ts-b3d__step" id="b3dPrev" title="' + esc(TEXT.prevBuilding) + '" aria-label="' + esc(TEXT.prevBuilding) + '">▲</button>' +
@@ -897,7 +911,10 @@
       '</div></div>' +
       '<details class="ts-b3d__details"><summary>' + TEXT.details + '</summary><div class="ts-b3d__info" id="b3dInfo"></div></details>' +
       '</div></section>';
-    var pick = document.getElementById("b3dPick");
+    var combo = document.getElementById("b3dCombo");
+    var find = document.getElementById("b3dFind");
+    var listEl = document.getElementById("b3dList");
+    var toggle = document.getElementById("b3dToggle");
     var fl = document.getElementById("b3dFloors");
     var wall = document.getElementById("b3dWall");
     var roof = document.getElementById("b3dRoof");
@@ -911,11 +928,117 @@
     function selectBuilding(name) {
       if (!name || !DATA.materials[name]) name = DATA.order[0];
       state.name = name;
-      pick.value = name;
+      if (find) find.value = name;
+      if (isOpen) closeList(false);     // 上/下翻键换楼时顺手收掉弹层
       applyMatColors(DATA.materials[name]);
       draw();
     }
-    pick.onchange = function () { selectBuilding(pick.value); };
+
+    /* ── 建筑名搜索：输入框当显示位，弹一层按关键字过滤的列表 ── */
+    var hits = DATA.order.slice();   // 当前过滤结果
+    var at = 0;                      // 列表里高亮到第几项
+    var isOpen = false;
+
+    // 命中的那一段用 <mark> 标出来（先切片再转义，别拼完再转义）
+    function markOf(name, q) {
+      var i = q ? name.toLowerCase().indexOf(q) : -1;
+      if (i < 0) return esc(name);
+      return esc(name.slice(0, i)) + "<mark>" + esc(name.slice(i, i + q.length)) +
+        "</mark>" + esc(name.slice(i + q.length));
+    }
+    function renderList(q) {
+      if (!hits.length) {
+        listEl.innerHTML = '<span class="ts-b3d__nomatch">' + esc(TEXT.noMatch) + "</span>";
+        return;
+      }
+      listEl.innerHTML = hits.map(function (n, i) {
+        return '<button type="button" class="ts-b3d__opt' + (i === at ? " is-on" : "") +
+          '" role="option" id="b3dOpt' + i + '" data-name="' + esc(n) +
+          '" aria-selected="' + (n === state.name ? "true" : "false") + '">' +
+          markOf(n, q) + "</button>";
+      }).join("");
+    }
+    function setAt(i) {
+      var btns = listEl.querySelectorAll(".ts-b3d__opt");
+      if (!btns.length) return;
+      at = Math.max(0, Math.min(hits.length - 1, i));
+      for (var k = 0; k < btns.length; k++) btns[k].classList.toggle("is-on", k === at);
+      if (btns[at]) {
+        find.setAttribute("aria-activedescendant", btns[at].id);
+        if (btns[at].scrollIntoView) btns[at].scrollIntoView({ block: "nearest" });
+      }
+    }
+    // 列表高度：外壳是 overflow:hidden，写死一个 rem 值在窄/宽屏下会有一截被裁掉，
+    // 所以每次展开按「外壳底边到输入框下沿的余量」现算，再顺手压在半屏以内。
+    function sizeList() {
+      var shell = document.querySelector(".ts-b3d__shell");
+      var box = combo.getBoundingClientRect();
+      var room = (shell ? shell.getBoundingClientRect().bottom : window.innerHeight) - box.bottom - 6;
+      room = Math.min(room, window.innerHeight * 0.55);
+      listEl.style.maxHeight = Math.max(110, Math.min(300, room)) + "px";
+    }
+    function openList(q) {
+      q = String(q == null ? find.value : q).trim().toLowerCase();
+      hits = q
+        ? DATA.order.filter(function (n) { return n.toLowerCase().indexOf(q) >= 0; })
+        : DATA.order.slice();
+      at = Math.max(0, hits.indexOf(state.name));
+      renderList(q);
+      listEl.hidden = false;
+      sizeList();
+      isOpen = true;
+      find.setAttribute("aria-expanded", "true");
+      setAt(at);
+    }
+    // cancel=true（默认）：没选中的话把半截搜索丢掉，输入框回到当前楼名
+    function closeList(cancel) {
+      if (!isOpen) return;
+      isOpen = false;
+      listEl.hidden = true;
+      find.setAttribute("aria-expanded", "false");
+      find.removeAttribute("aria-activedescendant");
+      if (cancel !== false) find.value = state.name;
+    }
+    find.addEventListener("focus", function () { find.select(); openList(""); });
+    // 已经聚焦时再点一下也要开（Esc 收起后不会再来一次 focus 事件）
+    find.addEventListener("click", function () { if (!isOpen) openList(find.value === state.name ? "" : find.value); });
+    find.addEventListener("input", function () { openList(find.value); });
+    find.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        if (!isOpen) { openList(find.value); return; }
+        setAt(at + (e.key === "ArrowDown" ? 1 : -1));
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        if (!isOpen) { openList(""); return; }
+        if (hits[at]) { selectBuilding(hits[at]); closeList(false); find.select(); }
+      } else if (e.key === "Escape") {
+        closeList(); find.select();
+      } else if (e.key === "Tab") {
+        closeList();
+      }
+    });
+    // 点列表别先把输入框的焦点弄丢——失焦就收列表，click 反而落空了
+    listEl.addEventListener("mousedown", function (e) { e.preventDefault(); });
+    listEl.addEventListener("click", function (e) {
+      var b = e.target.closest ? e.target.closest(".ts-b3d__opt") : null;
+      if (!b) return;
+      selectBuilding(b.getAttribute("data-name"));
+      closeList(false);
+    });
+    listEl.addEventListener("mousemove", function (e) {
+      var b = e.target.closest ? e.target.closest(".ts-b3d__opt") : null;
+      if (!b) return;
+      var i = +b.id.replace("b3dOpt", "");
+      if (i !== at) setAt(i);
+    });
+    toggle.addEventListener("click", function () {
+      if (isOpen) { closeList(); return; }
+      find.focus(); find.select(); openList("");
+    });
+    document.addEventListener("mousedown", function (e) {
+      if (isOpen && !combo.contains(e.target)) closeList();
+    });
     // 上/下翻键：按 DATA.order 顺序循环切换
     function stepBuilding(d) {
       var i = DATA.order.indexOf(state.name);
@@ -948,7 +1071,7 @@
     };
     // 默认楼：2020Busy（BuildingBritish4_1st 属极特殊素材 normandy，已整体剔除）
     state.name = DATA.materials["2020Busy"] ? "2020Busy" : DATA.order[0];
-    pick.value = state.name;
+    find.value = state.name;
     applyMatColors(DATA.materials[state.name]);
     draw();
     setupFloat();

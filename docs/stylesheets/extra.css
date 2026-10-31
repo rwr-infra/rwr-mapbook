@@ -2366,13 +2366,97 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   cursor: var(--ts-cursor-click);
 }
 
-/* 建筑选择条：下拉 + 右侧竖叠的上/下翻小键（像数字框的加减） */
+/* 建筑选择条：可搜索的组合框 + 右侧竖叠的上/下翻小键（像数字框的加减） */
 .ts-b3d__pickrow {
   display: flex;
   gap: 0.22rem;
   align-items: stretch;
 }
 .ts-b3d__pickrow select { flex: 1 1 auto; }
+
+/* 组合框本体：输入框（也是当前楼名的显示位）+ 右侧小箭头 + 弹出的过滤列表 */
+.ts-b3d__combo {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.ts-b3d__combo input { padding-right: 1.35rem; }
+.ts-b3d__caret {
+  position: absolute;
+  top: 0.05rem;
+  right: 0.05rem;
+  bottom: 0.05rem;
+  width: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--md-default-fg-color--light);
+  background: none;
+  border: 0;
+  border-radius: 0.22rem;
+  font-size: 0.6rem;
+  line-height: 1;
+  cursor: var(--ts-cursor-click);
+}
+.ts-b3d__caret:hover { color: var(--md-default-fg-color); }
+
+/* 过滤出来的列表：浮在下面的控件之上。⚠️ 外壳是 overflow:hidden，写死高度会
+   被裁掉一截——真正的高度由 viewer.js 的 sizeList() 按余量现算写在这里的
+   style 上，下面这个 max-height 只是 JS 没跑时的兜底。 */
+.ts-b3d__list {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 0.15rem);
+  left: 0;
+  right: 0;
+  max-height: 9rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.15rem;
+  background: var(--md-default-bg-color);
+  border: 0.05rem solid var(--md-default-fg-color--lighter);
+  border-radius: 0.28rem;
+  box-shadow: 0 0.4rem 1.1rem rgba(19, 27, 24, 0.28);
+}
+.ts-b3d__list[hidden] { display: none; }
+/* 灰阶：不加彩。没命中的那段压暗一档，命中的那段用满色 + 加粗，
+   悬停/高亮整行再叠一层中性灰——深浅两档就够看，别用主题橙。 */
+.ts-b3d__opt {
+  display: block;
+  width: 100%;
+  padding: 0.24rem 0.36rem;
+  color: var(--md-default-fg-color--light);
+  background: none;
+  border: 0;
+  border-radius: 0.2rem;
+  font: inherit;
+  font-size: 0.68rem;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: var(--ts-cursor-click);
+}
+.ts-b3d__opt:hover {
+  color: var(--md-default-fg-color);
+  background: rgba(127, 127, 127, 0.14);
+}
+.ts-b3d__opt.is-on {
+  color: var(--md-default-fg-color);
+  background: rgba(127, 127, 127, 0.26);
+}
+.ts-b3d__opt mark {
+  color: var(--md-default-fg-color);
+  background: none;
+  font-weight: 700;
+}
+.ts-b3d__nomatch {
+  display: block;
+  padding: 0.3rem 0.36rem;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.64rem;
+}
 .ts-b3d__spin {
   display: flex;
   flex: 0 0 auto;

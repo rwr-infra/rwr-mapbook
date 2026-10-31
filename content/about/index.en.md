@@ -1,8 +1,8 @@
 ---
 title: "About"
 description: "What this handbook is, who puts it together, and which sections it has."
-source_sha256: 261d8cf0eaffdfeaade525e2a25d96c13fa9b3305276a0672a21fa3350af7fc9
-translated: 2026-10-26
+source_sha256: e1df29911025968d1fb09d8d7a63797c23354bd7ef85d04f93e253e81ec74943
+translated: 2026-10-31
 nav_label: "About"
 icon: lucide/info
 ---
@@ -17,7 +17,7 @@ icon: lucide/info
 
     Handbook editor version: 0101
 
-    Handbook edited: 20261026
+    Handbook edited: 20261031
 
     Current editors: HamSter
 

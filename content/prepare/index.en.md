@@ -1,8 +1,8 @@
 ---
 title: "Getting ready"
 description: "How to configure the editor once it is downloaded, link it to your RWR map folder, and switch on the free camera."
-source_sha256: 2f5686b219bd076a42cec679a069b892eb6ddcfd6137bbf0986279bc583e21d6
-translated: 2026-10-11
+source_sha256: 94b66bf7b7a636e619965ed3a91857cff26797918babf7eaaf9349b89350d21c
+translated: 2026-10-31
 nav_label: "Getting ready"
 icon: lucide/download
 ---
@@ -175,7 +175,7 @@ that step.
     ??? quote "Adding the debugmode line alone is enough"
         Adding the debugmode line alone already lets you use F4 to switch on the free camera.
         The rest of the launch options configure the game's built-in camera mod, which can
-        widen the render range or turn on the normal view.
+        widen the render range or turn on special views.
 
 2. Open the game, click "Start a new Quick Match mode", then click "Load mods".
 
@@ -201,15 +201,32 @@ that step.
     Enter a map and press F4
     ///
 
-    ### Camera mod key bindings
+    ### Key bindings
 
     | Key | What it does |
     | --- | --- |
-    | ++f3++ | toggles the filter used for shooting promo footage |
+    | ++f2++ | adjusts shadow rendering |
+    | ++f3++ | toggles the vignette filter, once used for shooting promo footage |
     | ++f4++ | toggles the free camera |
-    | ++f5++ | toggles normal mode, for looking at the collision box |
+    | ++f5++ | toggles the normal view, for looking at the collision box |
     | ++f6++ | switches between early morning / evening |
     | ++f7++ | toggles the GUI display |
+    | ++f8++ | reloads the resources named in reload.txt, see below |
+    | ++f9++ | toggles the performance and status table |
+    | ++ctrl+f7++ | makes the game win |
+    | ++ctrl+f8++ | reloads all resource data |
+    | ++ctrl+f9++ | toggles the model wireframe view, for looking at the geometry |
+    | ++f4++ → ++1++ | toggles soldier models |
+    | ++3++ | toggles Mesh, Building and most Wall models |
+    | ++6++ | toggles the decorations the ground spawns by itself (weeds on grass, for example) |
+    | ++9++ | toggles tree crowns, wooden crates and a small part of the Wall models |
+    | ++0++ | toggles vehicle models |
+    | ++f5++ → ++ctrl+3++ | shows the AI movement lines |
+    | ++f5++ → ++ctrl+4++ | shows the AI destination lines |
+    ??? quote "About reloading with F8"
+        If there is a file called reload.txt in the root of the RWR folder, F8 reloads the
+        certain resources listed one per line in that file.
+    !!! warning "The old wiki says: group show / hide of visual elements, used to check how each group affects performance (number keys 1–0), and show / hide of AI debug visual markers (Ctrl + 1–0) — so the list above may not be complete"
 
 *[debugmode]: turns on Debug mode, which lets you use the free camera and the camera mod
 *[no_simulation]: drops the render distance — everything is computed and drawn across the whole map, which costs a lot of performance
