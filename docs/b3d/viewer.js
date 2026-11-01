@@ -39,10 +39,73 @@
   var STYLE_TEX = {};       // style → 合成好的墙面纹理
   var view = null;          // BoxView 实例
   // editable=false：按模板固定值来，素材下拉/格子输入只读；点「自定义调节」才解锁
-  // lotW/lotD = 楼占地（SVG 单位，1 单位 0.5 m）；33×33 = 16.5×16.5 m
+  // lotW/lotD = 楼占地（SVG 单位，1 单位 0.5 m）；50×50 = 25×25 m
   // roofBlur / roofGrow / tileScale：屋顶瓦片缩放、斑驳扩散、斑驳模糊，已调到位的定值，
   // 不再挂滑条（滑条去掉后仍留在 state 里，渲染照读，改值只改这里）。
-  var state = { name: "", floors: 4, lotW: 33, lotD: 33, wall: "#cfc9bd", roof: "#8a8578", bright: 1.05, rotX: 0.45, rotY: 0.6, zoom: 1, editable: false, wallDetail: true, roofCutout: true, roofBlur: 20, roofGrow: 0.02, tileScale: 2.8 };
+  var poolAddMode = false;           // 「添加变体」模式：下一次点图集 = 加进池子
+  /* 还没选格的「空块」占位符。它只在编辑期存在：纹理合成、缩略图、导出都跳过它，
+     点开它选一格就把这个占位换成真实单元。 */
+  var UNSET = "__unset__";
+  /* 模板原始坐标快照：用来分辨「玩家新建的 / 改过坐标的」单元 —— 这类单元必须在导出里
+     一并写进 texture_groups，否则游戏侧根本没有这个名字的定义。 */
+  var CELLS0 = {};
+  /* 新建单元默认名 new_1 / new_2 …（避开已占用的名字） */
+  function newUnitName() {
+    var n = 1;
+    while (DATA.cells["new_" + n] || (DATA.cell_pools && DATA.cell_pools["new_" + n])) n++;
+    return "new_" + n;
+  }
+  /* 改单元名：坐标表、变体池、切分、随机开关、所有 style 里的引用一起搬过去。
+     名字只收 [A-Za-z0-9_.-]（游戏侧按名字查表，中文/空格容易出问题）。 */
+  function renameUnit(oldName, next) {
+    next = String(next == null ? "" : next).trim();
+    if (!oldName || !DATA.cells[oldName]) return { ok: false, why: "bad" };
+    if (!next || next === oldName) return { ok: true, name: oldName };
+    if (!/^[A-Za-z0-9_.\-]+$/.test(next)) return { ok: false, why: "bad" };
+    DATA.cell_pools = DATA.cell_pools || {};
+    if (DATA.cells[next] || DATA.cell_pools[next]) return { ok: false, why: "dup" };
+    DATA.cells[next] = DATA.cells[oldName];
+    delete DATA.cells[oldName];
+    if (DATA.cell_pools[oldName]) { DATA.cell_pools[next] = DATA.cell_pools[oldName]; delete DATA.cell_pools[oldName]; }
+    if (DATA.cell_spans && DATA.cell_spans[oldName]) {
+      DATA.cell_spans[next] = DATA.cell_spans[oldName];
+      delete DATA.cell_spans[oldName];
+    }
+    Object.keys(DATA.styles || {}).forEach(function (sv) {
+      (DATA.styles[sv] || []).forEach(function (item) {
+        for (var i2 = 0; i2 < item.length; i2++) if (item[i2] === oldName) item[i2] = next;
+      });
+    });
+    return { ok: true, name: next };
+  }
+  var PICK_BG = { gray: "#8a8a8a", white: "#ffffff", black: "#000000" };
+  var pickRepaint = [];              // 各选格器的重画函数（切背景色时全部重画）
+  function fillPickBg(cx, S, h) {
+    cx.fillStyle = PICK_BG[state.pickBg] || PICK_BG.gray;
+    cx.fillRect(0, 0, S, h == null ? S : h);   // h 缺省 = 方画布；长条缩略图传两个维度
+  }
+  /* 灰/白/黑 背景切换按钮组：三个选格器（墙面单元 / 细节 / 屋顶）共用一套 */
+  function bgSwitchHtml() {
+    var opts = [["gray", TEXT.bgGray], ["white", TEXT.bgWhite], ["black", TEXT.bgBlack]];
+    return '<span class="ts-b3d__bgsw"><span class="ts-b3d__dim">' + TEXT.pickBg + '</span>' +
+      opts.map(function (o) {
+        return '<button type="button" class="ts-b3d__bgbtn' +
+          (state.pickBg === o[0] ? " ts-b3d__bgbtn--on" : "") +
+          '" data-pickbg="' + o[0] + '">' + esc(o[1]) + '</button>';
+      }).join("") + '</span>';
+  }
+  function bindBgSwitch(root) {
+    (root || document).querySelectorAll("[data-pickbg]").forEach(function (b) {
+      b.onclick = function () {
+        state.pickBg = b.dataset.pickbg;
+        document.querySelectorAll("[data-pickbg]").forEach(function (o) {
+          o.classList.toggle("ts-b3d__bgbtn--on", o.dataset.pickbg === state.pickBg);
+        });
+        pickRepaint.forEach(function (fn) { try { fn(); } catch (e) {} });
+      };
+    });
+  }              // 单元 → 是否走随机变体池（false = 玩家固定了某一格）
+  var state = { name: "", floors: 4, lotW: 50, lotD: 50, wall: "#cfc9bd", roof: "#8a8578", bright: 1.05, rotX: 0.45, rotY: 0.6, zoom: 1, editable: false, seed: 0, pickBg: "gray", randomAll: true, wallDetail: true, roofCutout: true, roofBlur: 20, roofGrow: 0.02, tileScale: 2.8, dirty: false };
 
   var LANG = (document.documentElement.lang || "zh-hans").toLowerCase();
   var COPY = {
@@ -51,13 +114,26 @@
       hint: "拖动旋转 · 滚轮或双指缩放", reset: "复位视角",
       customizeOff: "自定义调节：关", customizeOn: "自定义调节：开",
       customizeHint: "解锁后可更换素材与图集格子", building: "建筑",
+      customName: "自定义建筑",
+      groupTip: "同一条 sequence 条目：这几片会并排拼成一起（宽窗 _l/_r 就是这样）",
+      appendAdd: "＋ 空块",
+      addMany: "「＋ 空块」往这一条里再插一个未选择的空块，点它再去图集选格；一条目放两片就是宽窗",
+      unsetTip: "空块：还没选格，点开它去图集上选",
+      unsetCode: "未选择",
       search: "搜索建筑名…", searchHint: "输入关键字过滤：↑↓ 移动、回车选中、Esc 取消",
       openList: "展开建筑列表", noMatch: "没有匹配的建筑",
       prevBuilding: "上一个建筑", nextBuilding: "下一个建筑", floors: "层数", lotW: "楼长（单位）", lotD: "楼宽（单位）",
       lotHint: "占地按 SVG 单位填，1 单位 = 0.5 m",
+      seed: "随机种子",
+      seedHint: "游戏里门/窗单元有多个候选格、放置时随机挑一个；拖动种子可预览不同排列（上面的「随机变体」关掉后这里不起作用）",
+      randomize: "随机一个", exportBtn: "导出配置",
+      exportHint: "导出材质 / 样式 / 图集坐标三层，都可直接贴回 objects.svg",
+      copyOk: "已复制到剪贴板", copyFail: "复制失败，请手动选中复制",
       wall: "墙面色", roof: "屋顶色",
       brightness: "亮度", details: "材质与图集参数", none: "（无）",
       wallDetail: "墙面遮罩层", roofCutout: "屋顶斑驳层",
+      randomVariant: "随机变体",
+      randomVariantHint: "总控：关掉后全楼一律用固定格，种子条不再起作用（不影响各单元的变体池内容）",
       follower: "3D 预览 · 跟随", back: "回到原位", close: "收起",
       noWebgl: "这个浏览器没有启用 WebGL，无法显示预览。", failed: "预览出错：",
       dataFailed: "预览数据加载失败", atlas: "图集", grid: "网格 列×行",
@@ -67,6 +143,19 @@
       cellSplit: "切分", cellSplitHint: "把这张贴图切成几列几行（列 × 行）",
       chooseUnit: "在图集上点一块，换到这里", addBlock: "新建小块",
       popBack: "返回", popDel: "删除",
+      cellRandom: "随机变体", on: "开", off: "关",
+      variantPool: "变体池", poolHint: "随机时从下面这些格子里挑一个（每层每面各挑一次）",
+      poolFrame: "图集上蓝框 = 这个单元的全部候选，角标序号与下面列表一一对应",
+      poolAddOn: "✓ 添加中：点格子加 / 再点已加的拿掉",
+      poolAdd: "＋ 添加变体", poolAddTip: "→ 点上面图集的格子，蓝框就出现在那一格；再点一次已加的格子＝拿掉",
+      poolDel: "删除这个变体", poolCount: "个候选",
+      noPool: "这个单元只有固定一格，还没有变体池",
+      poolCurrent: "当前种子在第 1 层正面挑中的是这个",
+      cellNameTip: "改这里给这一格起个自己的名字（字母 / 数字 / _ / -），所有引用一起跟着换",
+      cellNameDup: "这个名字已经被别的单元占了",
+      fixedTag: "固定",
+      fixedTip: "序号 1 是这一块的固定格：想换图就在图集上点别的格子；这里不能删、也不能改坐标",
+      pickBg: "背景", bgGray: "灰", bgWhite: "白", bgBlack: "黑",
       spanOf: "单元切分 宽×高（格）",
       faces: ["一层正面", "一层右面", "一层背面", "一层左面", "其它层正面", "其它层右面", "其它层背面", "其它层左面"]
     },
@@ -75,13 +164,26 @@
       hint: "拖曳旋轉 · 滾輪或雙指縮放", reset: "重設視角",
       customizeOff: "自訂調節：關", customizeOn: "自訂調節：開",
       customizeHint: "解鎖後可更換素材與圖集格子", building: "建築",
+      customName: "自訂建築",
+      groupTip: "同一條 sequence 條目：這幾片會並排拼在一起（寬窗 _l/_r 就是這樣）",
+      appendAdd: "＋ 空塊",
+      addMany: "「＋ 空塊」往這一條裡再插一個未選擇的空塊，點它再去圖集選格；一條目放兩片就是寬窗",
+      unsetTip: "空塊：還沒選格，點開它去圖集上選",
+      unsetCode: "未選擇",
       search: "搜尋建築名…", searchHint: "輸入關鍵字篩選：↑↓ 移動、Enter 選取、Esc 取消",
       openList: "展開建築清單", noMatch: "沒有符合的建築",
       prevBuilding: "上一個建築", nextBuilding: "下一個建築", floors: "層數", lotW: "樓長（單位）", lotD: "樓寬（單位）",
       lotHint: "占地按 SVG 單位填，1 單位 = 0.5 m",
+      seed: "隨機種子",
+      seedHint: "遊戲裡門/窗單元有多個候選格、放置時隨機挑一個；拖動種子可預覽不同排列（上面的「隨機變體」關掉後這裡不起作用）",
+      randomize: "隨機一個", exportBtn: "匯出設定",
+      exportHint: "匯出材質 / 樣式 / 圖集座標三層，都可直接貼回 objects.svg",
+      copyOk: "已複製到剪貼簿", copyFail: "複製失敗，請手動選取複製",
       wall: "牆面色", roof: "屋頂色",
       brightness: "亮度", details: "材質與圖集參數", none: "（無）",
       wallDetail: "牆面遮罩層", roofCutout: "屋頂斑駁層",
+      randomVariant: "隨機變體",
+      randomVariantHint: "總控：關掉後整棟一律用固定格，種子條不再起作用（不影響各單元的變體池內容）",
       follower: "3D 預覽 · 跟隨", back: "回到原位", close: "收起",
       noWebgl: "此瀏覽器未啟用 WebGL，無法顯示預覽。", failed: "預覽出錯：",
       dataFailed: "預覽資料載入失敗", atlas: "圖集", grid: "網格 欄×列",
@@ -91,6 +193,19 @@
       cellSplit: "切分", cellSplitHint: "把這張貼圖切成幾欄幾列（欄 × 列）",
       chooseUnit: "在圖集上點一塊，換到這裡", addBlock: "新建小塊",
       popBack: "返回", popDel: "刪除",
+      cellRandom: "隨機變體", on: "開", off: "關",
+      variantPool: "變體池", poolHint: "隨機時從下面這些格子裡挑一個（每層每面各挑一次）",
+      poolFrame: "圖集上藍框 = 這個單元的全部候選，角標序號與下面清單一一對應",
+      poolAddOn: "✓ 新增中：點格子加入 / 再點已加入的拿掉",
+      poolAdd: "＋ 新增變體", poolAddTip: "→ 點上面圖集的格子，藍框就出現在那一格；再點一次已加入的格子＝拿掉",
+      poolDel: "刪掉這個變體", poolCount: "個候選",
+      noPool: "這個單元只有固定一格，還沒有變體池",
+      poolCurrent: "目前種子在第 1 層正面挑中的是這個",
+      cellNameTip: "改這裡給這一格起個自己的名字（字母 / 數字 / _ / -），所有引用一起跟著換",
+      cellNameDup: "這個名字已經被別的單元佔了",
+      fixedTag: "固定",
+      fixedTip: "序號 1 是這一塊的固定格：想換圖就在圖集上點別的格子；這裡不能刪、也不能改座標",
+      pickBg: "背景", bgGray: "灰", bgWhite: "白", bgBlack: "黑",
       spanOf: "單元切分 寬×高（格）",
       faces: ["一樓正面", "一樓右面", "一樓背面", "一樓左面", "其他樓層正面", "其他樓層右面", "其他樓層背面", "其他樓層左面"]
     },
@@ -99,13 +214,26 @@
       hint: "Drag to orbit · scroll or pinch to zoom", reset: "Reset view",
       customizeOff: "Custom controls: off", customizeOn: "Custom controls: on",
       customizeHint: "Unlock materials and atlas cells", building: "Building",
+      customName: "Custom building",
+      groupTip: "One sequence entry: these pieces are laid out side by side (that's how wide windows use _l/_r)",
+      appendAdd: "＋ Empty slot",
+      addMany: "“＋ Empty slot” inserts an unset slot into this entry — click it, then pick a cell on the atlas. Two slots in one entry = one wide window",
+      unsetTip: "Empty slot: no cell yet — click it and pick a cell on the atlas",
+      unsetCode: "unset",
       search: "Search buildings…", searchHint: "Type to filter · ↑↓ to move · Enter to select · Esc to cancel",
       openList: "Show building list", noMatch: "No matching building",
       prevBuilding: "Previous building", nextBuilding: "Next building", floors: "Floors", lotW: "Footprint length (units)", lotD: "Footprint width (units)",
       lotHint: "Footprint in SVG units; 1 unit = 0.5 m",
+      seed: "Random seed",
+      seedHint: "Door/window cells have several candidate tiles and one is picked at random; drag the seed to preview different layouts (the “Random variants” switch above turns this off)",
+      randomize: "Randomize", exportBtn: "Export",
+      exportHint: "Export all three layers (material / styles / atlas cells) as pasteable code",
+      copyOk: "Copied to clipboard", copyFail: "Copy failed — select and copy manually",
       wall: "Wall tint", roof: "Roof tint",
       brightness: "Brightness", details: "Material and atlas parameters", none: "(none)",
       wallDetail: "Wall detail mask", roofCutout: "Roof grime layer",
+      randomVariant: "Random variants",
+      randomVariantHint: "Master switch: turn it off and every unit falls back to its fixed cell — the seed slider stops mattering (variant pools themselves are untouched)",
       follower: "3D preview · following", back: "Back to preview", close: "Dismiss",
       noWebgl: "WebGL is disabled in this browser, so the preview cannot be shown.", failed: "Preview error: ",
       dataFailed: "Preview data could not be loaded", atlas: "Atlas", grid: "Grid cols×rows",
@@ -114,6 +242,19 @@
       cellSplit: "Split", cellSplitHint: "How many columns × rows this texture is split into",
       chooseUnit: "Click an atlas cell for this block", addBlock: "New block",
       popBack: "Back", popDel: "Delete",
+      cellRandom: "Random variant", on: "On", off: "Off",
+      variantPool: "Variant pool", poolHint: "One of these cells is picked at random (independently per floor and face)",
+      poolFrame: "Blue frames on the atlas = every candidate of this unit; the corner numbers match the list below",
+      poolAddOn: "✓ Adding: click a cell to add / click again to remove",
+      poolAdd: "＋ Add variant", poolAddTip: "→ Click a cell on the atlas: a blue frame lands on it; click an existing one again to remove it",
+      poolDel: "Remove this variant", poolCount: "candidates",
+      noPool: "This unit has a single fixed cell and no variant pool yet",
+      poolCurrent: "This is the one picked by the current seed on floor 1, front face",
+      cellNameTip: "Rename this cell (letters / digits / _ / -); every reference follows",
+      cellNameDup: "That name is already taken by another unit",
+      fixedTag: "fixed",
+      fixedTip: "Entry 1 is this block's fixed cell: pick another cell on the atlas to change it; it can't be deleted or re-pointed here",
+      pickBg: "Background", bgGray: "Gray", bgWhite: "White", bgBlack: "Black",
       spanOf: "Unit split w×h (cells)",
       faces: ["First floor · front", "First floor · right", "First floor · back", "First floor · left", "Upper floors · front", "Upper floors · right", "Upper floors · back", "Upper floors · left"]
     }
@@ -192,6 +333,7 @@
   // 这种大格编的：门 [2,0]→基础行0-1、窗 [*,1]→基础行2-3）。像素换算必须
   // 坐标 × 原生格，不能按基础格算，否则整面墙的格子全错位。
   var DEFAULT_SPANS = {
+    "building_atlas.png": [1, 2],
     "building_atlas2.png": [1, 2],
     "building_atlas3.png": [1, 2],
     "building_atlas4.png": [1, 2]
@@ -218,6 +360,7 @@
     return nativeSpan(ak);
   }
   function cellCodeText(u, ak) {
+    if (u === UNSET) return TEXT.unsetCode;
     var c = cellOf(u, ak);
     var sp = spanOf(u, ak);
     // 只在手动改过切分时追加后缀，图集默认（如 atlas2 的 1×2）不加，免得刷屏
@@ -242,16 +385,75 @@
       house_empty: [0, 1]        // 1×2 框里 row≥1 都是空的；[5,4] 在 8×4 下越界
     }
   };
-  function cellOf(unit, ak) {
+  /* 变体池取格：游戏里一个单元名常对应**多个候选坐标**（如 apartment1_window
+     有 8 个），放置时随机挑一个，所以同一栋楼各层的窗并不完全一样。
+     游戏内部的随机读不到，这里用 (seed, 槽位序号) 做确定性哈希自己模拟一套：
+     · 同一个槽内的 _l/_r 共用同一个下标 —— 否则左右两半接不上；
+     · 不同槽各自独立 —— 才不会出现「四扇门一模一样」的死板排列。 */
+  /* ⚠️ 变体下标由 (种子, 槽位, 楼层, 面) 四者共同决定 —— 游戏里是「每次放置
+     都重新随机」，所以**每层、每面**都要各算一套，不能整栋楼共用一个排列。
+     界面上只给玩家拖一根种子条，四个维度在背后叠进哈希里。 */
+  function variantIdx(slotIdx, floor, face) {
+    var h = Math.imul(state.seed | 0, 374761393)
+          ^ Math.imul(slotIdx | 0, 668265263)
+          ^ Math.imul((floor | 0) + 1, 2246822519)
+          ^ Math.imul((face | 0) + 1, 3266489917);
+    h = Math.imul(h ^ (h >>> 13), 1274126177);
+    return (h ^ (h >>> 16)) >>> 0;
+  }
+  /* 块组乱序：游戏里 sequence 的条目（大 cell 块）放置顺序是**随机**的，
+     不是按序列先后循环。这里用 (种子, 层, 面) 派生一个确定性 PRNG，
+     Fisher–Yates 洗牌条目顺序——拖种子条换排列、可复现；总控
+     「随机变体」关掉时调用方直接用原顺序（回落到固定排列）。 */
+  function grpRng(floor, face) {
+    var s = (state.seed | 0)
+          ^ Math.imul((floor | 0) + 1, 2246822519)
+          ^ Math.imul((face | 0) + 1, 3266489917);
+    s |= 0;
+    return function () {
+      s = Math.imul(s ^ (s >>> 15), s | 1);
+      s ^= s + Math.imul(s ^ (s >>> 7), s | 61);
+      return ((s ^ (s >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function shuffledOrder(nItems, floor, face) {
+    var a = [], i;
+    for (i = 0; i < nItems; i++) a.push(i);
+    if (!state.randomAll || nItems < 2) return a;
+    var rnd = grpRng(floor, face);
+    for (i = nItems - 1; i > 0; i--) {
+      var j = Math.floor(rnd() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  function cellOf(unit, ak, slotIdx, floor, face) {
     var fix = ATLAS4_CELL_FIX[ak];
     if (fix && fix[unit]) return fix[unit];
+    var pool = DATA.cell_pools && DATA.cell_pools[unit];
+    // 随机变体是**全局总控**（面板「材质与图集参数」里的那个开关）：关掉时全楼
+    // 一律落回固定格（DATA.cells），不再按种子挑候选；不必逐个单元去关。
+    if (pool && pool.length > 1 && slotIdx != null && state.randomAll) {
+      return pool[variantIdx(slotIdx, floor || 0, face || 0) % pool.length];
+    }
     return DATA.cells[unit] || [0, 0];
   }
+  /* 当前种子/层/面下某单元实际选中的候选下标（面板显示用） */
+  function variantOf(unit, slotIdx, floor, face) {
+    if (!state.randomAll) return 0;              // 总控关着 = 一律固定格，不高亮别的候选
+    var pool = DATA.cell_pools && DATA.cell_pools[unit];
+    if (!pool || pool.length < 2) return 0;
+    return variantIdx(slotIdx == null ? 0 : slotIdx, floor || 0, face || 0) % pool.length;
+  }
 
-  function styleTexture(styleName, atlasName) {
+  function styleTexture(styleName, atlasName, ctx) {
     var ak = atlasName || DATA.default_atlas;
-    var ck = ak + "|" + styleName;
+    var cxFloor = (ctx && ctx.floor) || 0, cxFace = (ctx && ctx.face) || 0;
+    // 缓存键必须带层/面：否则每层的窗会共用同一张合成图，随机就白做了
+    var ck = ak + "|" + styleName + "|" + (state.seed | 0) + "|" + cxFloor + "|" + cxFace;
     if (STYLE_TEX[ck]) return STYLE_TEX[ck];
+    // 键里带了 seed/层/面，拖种子条会不断产生新键 → 到量就整体清一次
+    if (Object.keys(STYLE_TEX).length > 400) STYLE_TEX = {};
     var seq = DATA.styles[styleName];
     if (!seq) return null;
     var atlas = img(ak);
@@ -260,12 +462,25 @@
     var cw = atlas.naturalWidth / g0[0];
     var chh = atlas.naturalHeight / g0[1];
     // 每个单元按自己的切分裁：宽 spanCols 格、高 spanRows 格（atlas2 默认 1×2）
-    var segs = [];
-    seq.forEach(function (item) {
+    var segs = [], segGi = [];                   // segGi = 每单元所属的条目（块组）号
+    // empty 条目表：条目里所有单元都匹配 *_empty → 记为填充块（铺贴层拿它糊边缘）
+    var gEmpty = {};
+    seq.forEach(function (item, slotIdx) {
+      var has = false;
+      for (var i0 = 0; i0 < item.length; i0++) {
+        if (item[i0] === UNSET) continue;
+        has = true;
+        if (!/(^|_)empty/.test(item[i0])) return;
+      }
+      if (has) gEmpty[slotIdx] = true;
+    });
+    seq.forEach(function (item, slotIdx) {
       item.forEach(function (unit) {
-        var c = cellOf(unit, ak);
+        if (unit === UNSET) return;                 // 空块不参与拼墙（还没选格）
+        var c = cellOf(unit, ak, slotIdx, cxFloor, cxFace);
         var sp = spanOf(unit, ak);
         segs.push({ c: c, w: sp[0], h: sp[1] });
+        segGi.push(slotIdx);
       });
     });
     if (!segs.length) return null;
@@ -298,6 +513,10 @@
     });
     out.__uf = uf;
     out.__ufx = ufx;
+    // 每单元所属条目（块组）号：层内中轴对称要**整组**镜像，组内两片不能被
+    // 中缝拆开（见 composeWallFace）。
+    out.__gi = segGi;
+    out.__gEmpty = gEmpty;
     // ⚠️ WebGL1 里非 2 的幂（如 224×32）的纹理配 REPEAT+mipmap 会采样失败
     //    （整面变透明、CSS 黑底透出）——统一拉伸到 2 的幂
     var pot = function (n) { var v = 1; while (v < n) v *= 2; return v; };
@@ -310,6 +529,8 @@
       p2.__aw = out.__aw;
       p2.__uf = out.__uf;
       p2.__ufx = out.__ufx;
+      p2.__gi = out.__gi;
+      p2.__gEmpty = out.__gEmpty;
       STYLE_TEX[ck] = p2;
       return p2;
     }
@@ -363,19 +584,31 @@
       tex[g] = [];
       for (var i = 0; i < 4; i++) {
         var s = mat.floors[g][i];
-        var t = s ? styleTexture(s, mat.atlas_texture) : null;
+        // 这里只用来测「最长的一面有多宽」→ 取第 0 层即可；
+        // 真正画墙走下面的 faceTex()，把楼层号也喂进去。
+        var t = s ? styleTexture(s, mat.atlas_texture, { floor: 0, face: i }) : null;
         tex[g].push(t);
         if (t && t.__units > maxUnits) maxUnits = t.__units;
       }
     });
+    /* ⚠️ 每层每面的窗/门排列都要各自随机 —— 所以纹理得**按层**生成，
+       不能整个 "other" 组共用一张（那样楼上每层会长得一模一样）。 */
+    var texByFloor = {};
+    function faceTex(g, f, side) {
+      var key = g + "|" + f + "|" + side;
+      if (key in texByFloor) return texByFloor[key];
+      var s2 = mat.floors[g][side];
+      texByFloor[key] = s2 ? styleTexture(s2, mat.atlas_texture, { floor: f, face: side }) : null;
+      return texByFloor[key];
+    }
     // 楼占地按「SVG 单位」填（1 单位 = 0.5 m）：填 33×33 就是 16.5×16.5 m，
     // 在画布上占 5.5 单位宽（100×100 的楼占满 16.5）。层高/檐口/纹理周期
     // 是**世界常数**，不跟着楼大小变——楼越小，一面上能铺的槽/砖越少。
     // 门窗条按**单个单元**生成：从 style 序列逐个往右排，放不下的那个单元
     // 不生成、整行居中（见 composeWallFace ③）；砖块 detail 是连续纹理，
     // 平铺到边、被边缘切断无所谓。
-    var lotW = Math.max(MIN_LOT, Math.min(+state.lotW || 33, MAX_LOT));
-    var lotD = Math.max(MIN_LOT, Math.min(+state.lotD || 33, MAX_LOT));
+    var lotW = Math.max(MIN_LOT, Math.min(+state.lotW || 50, MAX_LOT));
+    var lotD = Math.max(MIN_LOT, Math.min(+state.lotD || 50, MAX_LOT));
     var W = lotW * UNIT_M * METER, D = lotD * UNIT_M * METER;
     // 墙面 detail 层（侧栏勾选，默认开）：**整面墙一张画布**（面级合成）——
     // ① 墙基色 → ② 砖块 detail 全平铺（跨层连续，砖缝不随楼层重开）→
@@ -430,7 +663,7 @@
       }
       // ③ 各层门窗条盖在墙纹之上（source-over：窗是独立一层，砖纹不穿透）
       for (var f2 = 0; f2 < n; f2++) {
-        var tf = tex[f2 === 0 ? "1st" : "other"][sideIdx];
+        var tf = faceTex(f2 === 0 ? "1st" : "other", f2, sideIdx);
         if (!tf) continue;
         // 窗条按**整层高度 FLOOR** 铺（不是 SLOT 槽宽）：一个 1×2 单元本来就
         // 映射到一整层，整格（含窗户上下的透明留白）原样拉伸到一层高度 → 窗图
@@ -438,30 +671,139 @@
         // 排布。用 SLOT 当条高会把窗压成一层不到一半、且单格宽度只剩 ~0.78 m
         // （比 1.5625 m 槽宽窄一截，窗数偏多）。
         cx.globalCompositeOperation = "source-over";
-        // 整窗机制（**按单个单元**判定）：从 style 序列第一个单元起逐个往右排，
-        // 墙上放不下的那个单元不生成（宁缺勿切），排完的整行再居中——
-        // 左右留白均分。例：下一个窗宽 10 m、右侧只剩 8 m → 该窗不生成，
-        // 已排好的部分左留 4 m、右留 4 m。不是按整条组合块截断。
-        // 每单元占整条宽的比例在 __uf/__ufx（POT 拉伸后仍成立）。
+        // 整窗机制（**按块组**判定）：把 sequence 条目按种子**随机乱序**
+        // （游戏里大块放置无固定顺序），再逐组往右排，墙上放不下的那一整组
+        // 不生成（宁缺勿切），随后用序列里的 empty 条目把剩余宽度糊到放不下
+        // 为止（见下方填充循环）。每单元占整条宽的比例在 __uf/__ufx
+        // （POT 拉伸后仍成立）。
         var uf = tf.__uf, ufx = tf.__ufx;
         if (uf && uf.length) {
           var swT = tf.__aw * FLOOR * sx;         // 一整条组合块的世界宽 → px
           var swH = FLOOR * sy;                   // 一条窗行 = 一整层高
           var yTop = FH - (f2 + 1) * FLOOR * sy;
-          var laid = [], cum = 0, k2 = 0, guard = 0;
-          while (guard++ < 999) {
-            var idx = k2 % uf.length;
-            var uw2 = uf[idx] * swT;
-            if (cum + uw2 > FW + 0.5) break;      // 这个单元放不下 → 到此为止
-            laid.push(idx); cum += uw2; k2++;
+          var laid = [], cum = 0, guard = 0;
+          var eIt = null;                        // 序列里第一个 empty 条目（填充用）
+          // 按块组（sequence 条目，两片一组的 l/r）整组铺：一组放不下就停，
+          // 不再按单元截断——此前 l 片贴着右缘、r 片被丢掉的「半组」就是这么来的。
+          // 组在条带里连续（__gi 变号即新组），条带循环时也只在组边界处折回。
+          if (tf.__gi) {
+            var items0 = [];
+            tf.__gi.forEach(function (g, i4) {
+              var it = items0[items0.length - 1];
+              if (!it || it.g !== g) { it = { g: g, s: i4, n: 0 }; items0.push(it); }
+              it.n++;
+            });
+            var ord0 = shuffledOrder(items0.length, f2, sideIdx);
+            var p = 0;
+            while (guard++ < 999) {
+              var it2 = items0[ord0[p % ord0.length]];
+              var gw2 = 0, i7;
+              for (i7 = it2.s; i7 < it2.s + it2.n; i7++) gw2 += uf[i7] * swT;
+              if (cum + gw2 > FW + 0.5) break;  // 整组放不下 → 到此为止
+              for (i7 = it2.s; i7 < it2.s + it2.n; i7++) laid.push(i7);
+              cum += gw2; p++;
+            }
+            // 边缘糊 empty：序列里有 empty 条目（如 apartment1_1st_floor_empty，
+            // 绿墙裙+斜灰那格）时，把剩余宽度用它的单元**连续填到放不下为止**；
+            // 最后剩下不足一个单元宽的窄缝由下面的末端拉伸补满（不留任何缺口）。
+            // 二层及以上走下面的镜像路径会整体重算 laid，这里的填充自然被丢弃。
+            if (tf.__gEmpty) {
+              var e1;
+              for (e1 = 0; e1 < items0.length; e1++)
+                if (tf.__gEmpty[items0[e1].g]) { eIt = items0[e1]; break; }
+              if (eIt) {
+                var gwE = 0, e2;
+                for (e2 = eIt.s; e2 < eIt.s + eIt.n; e2++) gwE += uf[e2] * swT;
+                while (guard++ < 999 && cum + gwE <= FW + 0.5) {
+                  for (e2 = eIt.s; e2 < eIt.s + eIt.n; e2++) laid.push(e2);
+                  cum += gwE;
+                }
+              }
+            }
           }
-          var bx0 = (FW - cum) / 2;               // 整行居中，左右留白均分
+          if (f2 > 0 && tf.__gi) {
+            // 二层及以上：一层内**中轴对称**（游戏行为，实拍确认）——左半边
+            // 随机铺好后，格子引用镜像到右半。⚠️ 镜像以**块组**（sequence 条目，
+            // 两片一组的 l/r）为单位：右半 = 组序列逆序、组内保持原序——
+            // 中缝正好落在组与组的拼接处（r|l），门脸接缝不会错位；若按单元
+            // 硬切，中缝会出现两个左片相接、右片被甩到别处的「乱组」。
+            // 图案本身不翻转（游戏 UV 不镜像）。一层（1st）不参与对称。
+            // 左半铺法与一层同款：**条目随机乱序**（游戏放置无固定顺序）后
+            // 逐组往右排、整组放不下即停——此前只铺序列一遍，宽墙的左半
+            // 铺不满、余量大。
+            var half = FW / 2;
+            var items = [];                       // 连续段 = 组：{ s: 起始单元下标, n: 单元数 }
+            // （segGi 里同组的单元连续；用「变号即新组」分段，空条目天然被跳过）
+            tf.__gi.forEach(function (g, i4) {
+              var it = items[items.length - 1];
+              if (!it || it.g !== g) { it = { g: g, s: i4, n: 0 }; items.push(it); }
+              it.n++;
+            });
+            var ord2 = shuffledOrder(items.length, f2, sideIdx);
+            var c2 = 0, p2 = 0, guard2 = 0;
+            var leftUnits = [], mirUnits = [];
+            while (guard2++ < 999) {
+              var it3 = items[ord2[p2 % ord2.length]];
+              var gw = 0, i5;
+              for (i5 = it3.s; i5 < it3.s + it3.n; i5++) gw += uf[i5] * swT;
+              if (c2 + gw > half + 0.5) break;    // 半墙放不下下一整组 → 到此为止
+              for (i5 = it3.s; i5 < it3.s + it3.n; i5++) leftUnits.push(i5);
+              c2 += gw; p2++;
+            }
+            if (leftUnits.length) {
+              // 右半：左半的**组序列**逆序、组内保持原序（leftUnits 按组连续
+              // push，按 __gi 变号分段后整段倒序拼接即可）
+              var runs = [];
+              leftUnits.forEach(function (i6) {
+                var r = runs[runs.length - 1];
+                if (!r || tf.__gi[i6] !== r.g) { r = { g: tf.__gi[i6], units: [] }; runs.push(r); }
+                r.units.push(i6);
+              });
+              for (var r2 = runs.length - 1; r2 >= 0; r2--)
+                mirUnits = mirUnits.concat(runs[r2].units);
+              laid = leftUnits.concat(mirUnits);
+              cum = c2 * 2;
+            }
+          }
+          // 末端补满：糊完 empty 后仍剩的窄缝（< 一个单元宽，主循环放不下、
+          // 墙宽 mod 单元宽的余数）也要盖住，不许露白条（用户要求）：
+          //   末端恰好是 empty → 把它**水平拉伸**补到墙缘（接缝最自然）；
+          //   末端是门脸等实体块 → 追加一段 empty，宽度**压缩**到刚好填满缝隙。
+          // 只对一层做；二层以上走镜像，边缘按游戏行为留素墙。
+          var lastW = 0, stretch = 1, tail = 0;
+          if (f2 === 0 && eIt) {
+            var remE = FW - cum;
+            if (remE > 0.5) {
+              var li = laid.length ? laid[laid.length - 1] : -1;
+              if (li >= eIt.s && li < eIt.s + eIt.n) {
+                lastW = uf[li] * swT;
+                stretch = (lastW + remE) / lastW;
+              } else {
+                tail = remE;                     // 追加压缩的 empty 补片
+              }
+            }
+          }
+          var cumEff = cum + (stretch > 1 ? lastW * (stretch - 1) : 0) + tail;
+          var bx0 = (FW - cumEff) / 2;            // 整行居中，左右留白均分
+          if (window.__b3dDbg) window.__b3dDbg.push({ side: sideIdx, f2: f2, laid: laid.join(","), cum: cum, FW: FW, stretch: stretch, tail: tail, cumEff: cumEff, bx0: bx0 });
           var xcur = bx0;
-          laid.forEach(function (idx2) {
+          laid.forEach(function (idx2, ii2) {
+            var dw = uf[idx2] * swT * (stretch > 1 && ii2 === laid.length - 1 ? stretch : 1);
             cx.drawImage(tf, ufx[idx2] * tf.width, 0, uf[idx2] * tf.width, tf.height,
-              xcur, yTop, uf[idx2] * swT, swH);
-            xcur += uf[idx2] * swT;
+              xcur, yTop, dw, swH);
+            xcur += dw;
           });
+          if (tail > 0) {                         // 压缩 empty 补片：整条目按比例压进缝隙
+            var gwE2 = 0, e3;
+            for (e3 = eIt.s; e3 < eIt.s + eIt.n; e3++) gwE2 += uf[e3] * swT;
+            var kT = tail / gwE2;
+            for (e3 = eIt.s; e3 < eIt.s + eIt.n; e3++) {
+              var dwE = uf[e3] * swT * kT;
+              cx.drawImage(tf, ufx[e3] * tf.width, 0, uf[e3] * tf.width, tf.height,
+                xcur, yTop, dwE, swH);
+              xcur += dwE;
+            }
+          }
         }
         cx.globalCompositeOperation = "source-over";
       }
@@ -473,7 +815,10 @@
     var fkeys = ["front", "right", "back", "left"];
     // front/back 铺在 X 向（宽 W），right/left 铺在 Z 向（深 D）——
     // 之前右/左面也按 W 算重复次数，进深改成 D 后会导致纹理被拉伸。
-    var faceW = [W, W, D, D];
+    // ⚠️ 按面取世界宽必须与 fkeys 对齐：front/back 跨 X 向=宽 W，right/left
+    //    跨 Z 向=深 D → [W, D, W, D]。此前写成 [W, W, D, D]（right 吃 W、
+    //    back 吃 D），楼宽/楼长只改其一时侧面 cell 数不跟着变、整条被拉伸。
+    var faceW = [W, D, W, D];
     var n = Math.max(1, Math.min(+state.floors || 11, MAX_FLOORS));
     var total = n * FLOOR;                 // 墙高（每层顶部自带檐口）
     var wallFaces = { top: { tint: hex2rgb(state.wall) }, bottom: { tint: hex2rgb(state.wall) } };
@@ -586,7 +931,9 @@
 
   /* ── 极简 WebGL 盒子渲染器（与 rwr-material-preview/render3d.js 同源） ── */
   function BoxView(canvas) {
-    var gl = canvas.getContext("webgl", { antialias: true, alpha: false, powerPreference: "high-performance" });
+    // preserveDrawingBuffer：draw 是事件回调里同步画的，读完帧再合成；不开的话
+    // 合成完缓冲就被清，事后 toDataURL / 右键另存画布只会拿到一整块黑。
+    var gl = canvas.getContext("webgl", { antialias: true, alpha: false, preserveDrawingBuffer: true, powerPreference: "high-performance" });
     if (!gl) return null;
     this.gl = gl; this.canvas = canvas; this.texCache = {}; this.geometry = [];
     this._frame = 0;
@@ -676,6 +1023,16 @@
   };
   BoxView.prototype.tex = function (canvas, key) {
     var gl = this.gl;
+    // 各向异性过滤：拉远后墙面是大斜角，只有三线性 mipmap 时会按"最糊的那个
+    // 方向"选层 → 砖缝/窗框拖出横条纹、边缘看着像重影。开 AF（≤8x）即可。
+    // 纹理参数跟着纹理对象走，建纹理时设一次就够；扩展不支持时静默跳过。
+    if (this._anisoExt === undefined) {
+      var ext = gl.getExtension("EXT_texture_filter_anisotropic") ||
+                gl.getExtension("WEBKIT_EXT_texture_filter_anisotropic") ||
+                gl.getExtension("MOZ_EXT_texture_filter_anisotropic");
+      this._anisoExt = ext || null;
+      this._maxAniso = ext ? Math.min(8, gl.getParameter(ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT)) : 0;
+    }
     var hit = this.texCache[key];
     if (hit) {
       // 命中说明这张纹理是墙面/屋顶这类"每次重绘都会换内容"的画布：
@@ -695,6 +1052,8 @@
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    if (this._anisoExt)
+      gl.texParameterf(gl.TEXTURE_2D, this._anisoExt.TEXTURE_MAX_ANISOTROPY_EXT, this._maxAniso);
     gl.generateMipmap(gl.TEXTURE_2D);
     this.texCache[key] = t;
     return t;
@@ -904,10 +1263,22 @@
       '<label class="ts-b3d__field ts-b3d__field--swatch"><span>' + TEXT.wall + '</span><input type="color" id="b3dWall" value="#cfc9bd"></label>' +
       '<label class="ts-b3d__field ts-b3d__field--swatch"><span>' + TEXT.roof + '</span><input type="color" id="b3dRoof" value="#8a8578"></label>' +
       '</div>' +
-      // 墙面遮罩层 / 屋顶斑驳层：两个开关并在一行（半栏宽，各占一半）
+      // 随机变体（总控）/ 墙面遮罩层 / 屋顶斑驳层：三个开关并在一行（半栏宽）
       '<div class="ts-b3d__checks">' +
+      '<label class="ts-b3d__field ts-b3d__field--check" title="' + esc(TEXT.randomVariantHint) + '"><input type="checkbox" id="b3dRandomAll"' + (state.randomAll ? " checked" : "") + '><span>' + TEXT.randomVariant + '</span></label>' +
       '<label class="ts-b3d__field ts-b3d__field--check"><input type="checkbox" id="b3dWallDetail"' + (state.wallDetail ? " checked" : "") + '><span>' + TEXT.wallDetail + '</span></label>' +
       '<label class="ts-b3d__field ts-b3d__field--check"><input type="checkbox" id="b3dRoofCutout"' + (state.roofCutout ? " checked" : "") + '><span>' + TEXT.roofCutout + '</span></label>' +
+      '</div></div>' +
+      // 随机种子：游戏里门/窗单元有多个候选格、放置时随机挑一个。
+      // 游戏内部的随机读不到，这里用 seed 做确定性哈希自己模拟一套，
+      // 拖动即可预览不同种子下的不同排列。
+      '<div class="ts-b3d__seedrow">' +
+      '<label class="ts-b3d__field ts-b3d__field--seed"><span>' + TEXT.seed + '</span>' +
+      '<input type="range" id="b3dSeed" min="0" max="999" step="1" value="' + (state.seed | 0) + '" title="' + esc(TEXT.seedHint) + '">' +
+      '<input type="number" id="b3dSeedNum" min="0" max="999" value="' + (state.seed | 0) + '">' +
+      '</label>' +
+      '<button type="button" class="ts-b3d__btn" id="b3dRandomize">' + TEXT.randomize + '</button>' +
+      '<button type="button" class="ts-b3d__btn" id="b3dExport" title="' + esc(TEXT.exportHint) + '">' + TEXT.exportBtn + '</button>' +
       '</div></div>' +
       '<details class="ts-b3d__details"><summary>' + TEXT.details + '</summary><div class="ts-b3d__info" id="b3dInfo"></div></details>' +
       '</div></section>';
@@ -915,11 +1286,27 @@
     var find = document.getElementById("b3dFind");
     var listEl = document.getElementById("b3dList");
     var toggle = document.getElementById("b3dToggle");
+    findInput = find;                    // markDirty() 要用（编辑后显示「自定义建筑」）
     var fl = document.getElementById("b3dFloors");
     var wall = document.getElementById("b3dWall");
     var roof = document.getElementById("b3dRoof");
+    var raCk = document.getElementById("b3dRandomAll");
     var wdCk = document.getElementById("b3dWallDetail");
     var rcCk = document.getElementById("b3dRoofCutout");
+    // 总控关掉时种子条/「随机一个」一并置灰：拖了没反应最容易让人以为坏了
+    function syncRandomUI() {
+      ["b3dSeed", "b3dSeedNum", "b3dRandomize"].forEach(function (id) {
+        var e2 = document.getElementById(id);
+        if (e2) e2.disabled = !state.randomAll;
+      });
+    }
+    if (raCk) raCk.onchange = function () {
+      state.randomAll = raCk.checked;
+      syncRandomUI();
+      STYLE_TEX = {};                          // 随机结果变了：合成纹理缓存作废
+      draw();
+    };
+    syncRandomUI();
     if (wdCk) wdCk.onchange = function () { state.wallDetail = wdCk.checked; draw(); };
     if (rcCk) rcCk.onchange = function () { state.roofCutout = rcCk.checked; draw(); };
     // 屋顶瓦片缩放 / 斑驳扩散 / 斑驳模糊三个参数已经定死在 state 里（2.8 / 0.02 / 20），
@@ -928,7 +1315,9 @@
     function selectBuilding(name) {
       if (!name || !DATA.materials[name]) name = DATA.order[0];
       state.name = name;
-      if (find) find.value = name;
+      state.dirty = false;              // 换楼 → 回到模板态，显示位恢复原名
+      findInput = find;
+      if (find) { find.value = curTitle(); find.title = state.name; }
       if (isOpen) closeList(false);     // 上/下翻键换楼时顺手收掉弹层
       applyMatColors(DATA.materials[name]);
       draw();
@@ -978,7 +1367,9 @@
       listEl.style.maxHeight = Math.max(110, Math.min(300, room)) + "px";
     }
     function openList(q) {
-      q = String(q == null ? find.value : q).trim().toLowerCase();
+      q = String(q == null ? find.value : q).trim();
+      if (q === curTitle()) q = "";      // 显示位里的「自定义建筑」不是搜索词
+      q = q.toLowerCase();
       hits = q
         ? DATA.order.filter(function (n) { return n.toLowerCase().indexOf(q) >= 0; })
         : DATA.order.slice();
@@ -997,11 +1388,11 @@
       listEl.hidden = true;
       find.setAttribute("aria-expanded", "false");
       find.removeAttribute("aria-activedescendant");
-      if (cancel !== false) find.value = state.name;
+      if (cancel !== false) find.value = curTitle();
     }
     find.addEventListener("focus", function () { find.select(); openList(""); });
     // 已经聚焦时再点一下也要开（Esc 收起后不会再来一次 focus 事件）
-    find.addEventListener("click", function () { if (!isOpen) openList(find.value === state.name ? "" : find.value); });
+    find.addEventListener("click", function () { if (!isOpen) openList(find.value === curTitle() ? "" : find.value); });
     find.addEventListener("input", function () { openList(find.value); });
     find.addEventListener("keydown", function (e) {
       if (e.key === "ArrowDown" || e.key === "ArrowUp") {
@@ -1054,6 +1445,19 @@
     if (lw) lw.onchange = function () { state.lotW = +lw.value; draw(); };
     if (ld) ld.onchange = function () { state.lotD = +ld.value; draw(); };
     wall.oninput = function () { state.wall = wall.value; draw(); };
+    var sd = document.getElementById("b3dSeed"), sdn = document.getElementById("b3dSeedNum");
+    var syncSeed = function (v) {
+      state.seed = Math.max(0, Math.min(999, +v || 0));
+      if (sd) sd.value = state.seed;
+      if (sdn) sdn.value = state.seed;
+      draw();
+    };
+    if (sd) sd.oninput = function () { syncSeed(sd.value); };
+    if (sdn) sdn.onchange = function () { syncSeed(sdn.value); };
+    var rndBtn = document.getElementById("b3dRandomize");
+    if (rndBtn) rndBtn.onclick = function () { syncSeed(Math.floor(Math.random() * 1000)); };
+    var expBtn = document.getElementById("b3dExport");
+    if (expBtn) expBtn.onclick = function () { showExport(); };
     roof.oninput = function () { state.roof = roof.value; draw(); };
     document.getElementById("b3dReset").onclick = function () {
       state.rotX = 0.45; state.rotY = 0.6; state.zoom = 1;
@@ -1069,7 +1473,7 @@
       if (state.editable) document.querySelector(".ts-b3d__details").open = true;
       draw();                       // info() 按 state.editable 重画面板
     };
-    // 默认楼：2020Busy（BuildingBritish4_1st 属极特殊素材 normandy，已整体剔除）
+    // 默认楼：2020Busy（模板里第一栋；91 栋全量收录后 order 依旧以 2020 系开头）
     state.name = DATA.materials["2020Busy"] ? "2020Busy" : DATA.order[0];
     find.value = state.name;
     applyMatColors(DATA.materials[state.name]);
@@ -1092,6 +1496,161 @@
     var w = document.getElementById("b3dWall"), rf = document.getElementById("b3dRoof");
     if (w) w.value = state.wall;
     if (rf) rf.value = state.roof;
+  }
+
+  /* ── 导出当前配置 ──────────────────────────────────────────────
+     输出两段：
+     ① 游戏材质行（`<desc>` 正文）—— 可直接贴回 map/objects.svg 的 material 里；
+        注意会把预览用的通道遮罩名（cutout__mask.png）还原成游戏原名 cutout.png。
+     ② 预览侧设置（层数 / 占地 / 颜色 / 随机种子 / 改过的格子）—— 这些不是
+        材质参数，游戏不认，所以以 `#` 注释附在后面，方便自己记或对别人说明。 */
+  function nfmt(v) { var n = +v; return n === Math.round(n) ? String(Math.round(n)) : String(n); }
+  function cellStr(c) {
+    if (!c || !c.length) return "";
+    var arr = c.slice();
+    while (arr.length && +arr[arr.length - 1] === 0) arr.pop();   // 去掉尾部补位的 0
+    return arr.map(nfmt).join(" ");
+  }
+  function unmask(t) {
+    return String(t || "")
+      .replace("cutout__mask.png", "cutout.png")
+      .replace("cutout_2__mask.png", "cutout_2.png")
+      .replace("cutout__maskb.png", "cutout_B.png")
+      .replace("cutout_2__maskb.png", "cutout_2_B.png");
+  }
+  function buildExportText() {
+    var m = DATA.materials[state.name];
+    if (!m) return "";
+    var kv = [["name", state.name]];
+    if (m.color) kv.push(["color", m.color]);
+    if (m.color_variance) kv.push(["color_variance", m.color_variance]);
+    if (m.detail_texture) kv.push(["detail_texture", m.detail_texture]);
+    if (m.detail_cell && m.detail_cell.length) kv.push(["detail_texture_atlas_cell", cellStr(m.detail_cell)]);
+    if (m.detail_scale) kv.push(["detail_texture_scale", m.detail_scale]);
+    if (m.detail_cutout) kv.push(["detail_cutout_texture", unmask(m.detail_cutout)]);
+    if (m.detail_cutout_channel) kv.push(["detail_cutout_texture_channel", m.detail_cutout_channel]);
+    if (m.detail_cutout_scale) kv.push(["detail_cutout_texture_scale", m.detail_cutout_scale]);
+    if (m.atlas_texture) kv.push(["atlas_texture", m.atlas_texture]);
+    var fl = m.floors || {};
+    [["1st", "1st_floor_"], ["other", "other_floor_"]].forEach(function (pair) {
+      var arr = fl[pair[0]] || [];
+      for (var i = 0; i < 4; i++) if (arr[i]) kv.push([pair[1] + (i + 1), arr[i]]);
+    });
+    var r = m.roof || {};
+    if (r.texture) kv.push(["roof_texture", r.texture]);
+    if (r.cell && r.cell.length) kv.push(["roof_texture_atlas_cell", cellStr(r.cell)]);
+    if (r.scale) kv.push(["roof_texture_scale", r.scale]);
+    if (r.color) kv.push(["roof_color", r.color]);
+    if (r.cutout) kv.push(["roof_cutout_texture", unmask(r.cutout)]);
+    if (r.cutout_channel) kv.push(["roof_cutout_texture_channel", r.cutout_channel]);
+    if (r.cutout_scale) kv.push(["roof_cutout_texture_scale", r.cutout_scale]);
+
+    var body = kv.map(function (p) { return p[0] + " = " + p[1] + ";"; }).join(" ");
+    /* 游戏侧是三层引用链，导出按同一顺序把三层**全部**给出（都是可直接粘贴的正文）：
+         ① material 的 <desc>：材质参数 + 四个面各引用哪套 style
+         ② building_style 的 <desc>：每套样式的 sequence 行 —— 一面墙由哪些单元按序拼起来
+         ③ texture_groups 的 <desc>：单元名 → 图集坐标（多组 = 随机变体）
+       段标题用 <!-- -->：那是 XML 注释，粘进 desc 里也不参与解析，纯粹给人看的分段。 */
+    var lines = [];
+    lines.push("<!-- ===== ① material_n_" + state.name + " 的 <desc> 正文（替换同名那条的 desc 内容）===== -->");
+    lines.push(body);
+    lines.push("");
+
+    // ② 本栋四面引用到的每一套样式（去重，保持出场顺序：先一层后楼上）
+    var svSeen = {}, svUsed = [];
+    ["1st", "other"].forEach(function (g) {
+      ((m.floors || {})[g] || []).forEach(function (sv) {
+        if (!sv || svSeen[sv] || !DATA.styles[sv]) return;
+        svSeen[sv] = 1;
+        svUsed.push(sv);
+      });
+    });
+    lines.push("<!-- ===== ② building_style 的 <desc> 正文：本栋用到 " + svUsed.length +
+               " 套样式，一套一行（只贴你改过的那几套就行）===== -->");
+    svUsed.forEach(function (sv) {
+      var parts = [], pieces = 0;
+      (DATA.styles[sv] || []).forEach(function (item) {
+        // 空块（还没选格）不导出：游戏侧不认这个占位名
+        var ok = item.filter(function (u) { return u && u !== UNSET; });
+        if (!ok.length) return;                   // 整条都是空块 → 这条不写
+        pieces += ok.length;
+        parts.push("sequence = " + ok.join(", ") + ";");
+      });
+      lines.push("# " + sv + "（" + parts.length + " 槽 / " + pieces + " 片）");
+      lines.push("name = " + sv + "; " + parts.join(" "));
+    });
+    lines.push("");
+
+    // ③ 本栋用到的全部单元坐标（不再只导"改过的"：全给一遍才不会漏、
+    //    也不用担心哪条判重逻辑漏判）
+    var usedUnits = {};
+    ["1st", "other"].forEach(function (g) {
+      ((m.floors || {})[g] || []).forEach(function (sv) {
+        ((DATA.styles || {})[sv] || []).forEach(function (item) {
+          item.forEach(function (u) { if (u && u !== UNSET) usedUnits[u] = 1; });
+        });
+      });
+    });
+    var plines = [];
+    Object.keys(usedUnits).sort().forEach(function (u) {
+      var pool = DATA.cell_pools && DATA.cell_pools[u];
+      var cur = DATA.cells[u] || null;
+      var list = (pool && pool.length) ? pool : (cur ? [cur] : []);
+      var pts = list.map(function (v) { return v[0] + "," + v[1]; });
+      if (pts.length) plines.push(u + " = " + pts.join(" ") + ";");
+    });
+    lines.push("<!-- ===== ③ texture_groups 的 <desc> 正文：单元名 = 列,行 [列,行 …]，多组 = 随机变体 ===== -->");
+    plines.forEach(function (l2) { lines.push(l2); });
+    lines.push("");
+
+    lines.push("<!-- 预览设置（不是材质参数，游戏不读，仅供自己留档） -->");
+    lines.push("# 预览: 层数=" + state.floors + " 楼长=" + state.lotW + " 楼宽=" + state.lotD +
+               " 墙面色=" + state.wall + " 屋顶色=" + state.roof + " 随机种子=" + (state.seed | 0));
+    var cs = DATA.cell_spans || {};
+    var csKeys = Object.keys(cs);
+    if (csKeys.length) {
+      lines.push("# 手改过的单元切分: " + csKeys.map(function (u) {
+        return u + " " + cs[u][0] + "x" + cs[u][1];
+      }).join(", "));
+    }
+    return lines.join("\n");
+  }
+  function showExport() {
+    var txt = buildExportText();
+    var box = document.getElementById("b3dExportBox");
+    if (!box) {
+      box = document.createElement("div");
+      box.id = "b3dExportBox";
+      box.className = "ts-b3d__modal";
+      box.innerHTML =
+        '<div class="ts-b3d__modalcard">' +
+        '<div class="ts-b3d__modalhead"><strong>' + TEXT.exportBtn + '</strong>' +
+        '<button type="button" class="ts-b3d__btn" id="b3dExportClose">' + TEXT.close + '</button></div>' +
+        '<textarea id="b3dExportText" readonly rows="14"></textarea>' +
+        '<div class="ts-b3d__modalfoot">' +
+        '<button type="button" class="ts-b3d__btn" id="b3dExportCopy">' + TEXT.exportBtn + ' · 复制</button>' +
+        '<span id="b3dExportMsg" class="ts-b3d__dim"></span></div></div>';
+      document.body.appendChild(box);
+      box.addEventListener("click", function (e) { if (e.target === box) box.style.display = "none"; });
+    }
+    box.style.display = "flex";
+    var ta = document.getElementById("b3dExportText");
+    ta.value = txt;
+    var msg = document.getElementById("b3dExportMsg");
+    msg.textContent = "";
+    document.getElementById("b3dExportClose").onclick = function () { box.style.display = "none"; };
+    document.getElementById("b3dExportCopy").onclick = function () {
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      if (!ok && navigator.clipboard) {
+        navigator.clipboard.writeText(ta.value).then(function () {
+          msg.textContent = TEXT.copyOk;
+        }, function () { msg.textContent = TEXT.copyFail; });
+        return;
+      }
+      msg.textContent = ok ? TEXT.copyOk : TEXT.copyFail;
+    };
   }
 
   function draw() {
@@ -1143,6 +1702,26 @@
       i.addEventListener("error", done, { once: true });
     });
   }
+
+  /* ── 弹层滚轮防穿透 ─────────────────────────────────────────
+     滚轮落在导出遮罩 / 选格浮层的「非交互处」（遮罩空白、内容已到顶/底、
+     本来就不可滚的区域）会一路冒泡到 document，把浮层底下的页面滚得乱翻。
+     捕获阶段拦一道：目标在弹层里但弹层没得滚 / 已到边界 → preventDefault；
+     弹层还能滚就放行给它自己滚。（overscroll-behavior: contain 只是兜底，
+     内容不满一屏时它不管用，所以这里手动判。） */
+  document.addEventListener("wheel", function (e) {
+    if (!e.target.closest) return;
+    var pop = e.target.closest(".ts-b3d__modal, .ts-b3d__cellpop, .ts-b3d__list");
+    if (!pop) return;
+    if (pop.classList.contains("ts-b3d__modal")) {
+      var card = pop.querySelector(".ts-b3d__modalcard");
+      if (!card || !card.contains(e.target)) { e.preventDefault(); return; }
+      pop = card;
+    }
+    if (pop.scrollHeight <= pop.clientHeight + 1) { e.preventDefault(); return; }
+    if (e.deltaY < 0 && pop.scrollTop <= 0) e.preventDefault();
+    else if (e.deltaY > 0 && pop.scrollTop + pop.clientHeight >= pop.scrollHeight - 1) e.preventDefault();
+  }, { passive: false, capture: true });
 
   /* ── 页面往下翻、3D 预览滚出视口时，右下角浮出小窗继续看 ──────────
      ⚠️ 不搬动原画布（搬了 IntersectionObserver 会自触发来回弹），
@@ -1442,6 +2021,7 @@
           '</span></div>' +
           '<div class="ts-b3d__atlasbox" id="b3d' + base + 'Box" hidden>' +
           '<span class="ts-b3d__dim">' + TEXT.pickCell + '</span>' +
+          '<div class="ts-b3d__bgrow">' + bgSwitchHtml() + '</div>' +
           '<canvas id="b3d' + base + 'Pick" width="224" height="224"></canvas></div>';
         return;
       }
@@ -1467,8 +2047,20 @@
   }
 
   // 选格器展开状态（跨 draw()→info() 重建保留）：null=都收起 / "wall"=墙面 / "roof"=屋顶
-  // popOpen = 展开了选单元列表的那个面（"1st:0" 这类），popIdx = 该面序列里的扁平序号，-1 = 新建小块
+  // popOpen = 展开了选单元列表的那个面（"1st:0" 这类），popIdx = 该面序列里的扁平序号
   var pickOpen = null, activeUnit = null, popOpen = null, popIdx = -1;
+
+  /* 建筑名显示位：用户动过材质/格子/样式/变体池 → 头上就不该再顶着模板原名，
+     改显示「自定义建筑」（原名挪到 title，鼠标一停还能看见）。 */
+  var findInput = null;
+  function curTitle() { return state.dirty ? TEXT.customName : state.name; }
+  function markDirty() {
+    state.dirty = true;
+    if (findInput) {
+      findInput.value = curTitle();
+      findInput.title = state.name;      // 原名留个尾巴，别让人忘了改的是哪栋
+    }
+  }
 
   function info(mat) {
     var el = document.getElementById("b3dInfo");
@@ -1486,6 +2078,68 @@
       seq.forEach(function (item, i) { item.forEach(function (u, j) { out.push([i, j, u]); }); });
       return out;
     }
+    /* ── 变体池编辑器 ──
+       一个单元名可以对应多个候选格（游戏 texture_groups 里 `名 = 0,1 1,1 …`）。
+       这里让玩家可以：① 看到全部候选；② 直接改坐标数字；③ 删；④ 点图集加。
+       改完立刻生效 —— 随机开着时墙上就从这份池子里挑。 */
+    function poolEditorHtml(cur) {
+      DATA.cell_pools = DATA.cell_pools || {};
+      var pool = DATA.cell_pools[cur];
+      // 没有池子也造一个「只有固定格」的：序号 1 是固有的，池子永远至少有一项可选
+      if ((!pool || !pool.length) && DATA.cells[cur]) {
+        pool = DATA.cell_pools[cur] = [[DATA.cells[cur][0], DATA.cells[cur][1]]];
+      }
+      var vi = pool && pool.length ? variantOf(cur, 0, 0, 0) : -1;
+      // 缩略图按「单元切分」的原比例画（同配方条那条墙带）：一格 32px，宽块就是宽图。
+      // 原来是硬塞进 26×26 的方框 —— 5 格宽的门一排压成方块，糊得没法认。
+      var psp = spanOf(cur, mat.atlas_texture);
+      var items = (pool && pool.length)
+        ? pool.map(function (v, i) {
+            var fixed = i === 0;                      // 序号 1 = 这一块的固定格，锁死
+            var tip = fixed ? TEXT.fixedTip : (i === vi ? TEXT.poolCurrent : "");
+            return '<span class="ts-b3d__poolitem' + (i === vi ? " ts-b3d__poolitem--on" : "") +
+              (fixed ? " ts-b3d__poolitem--fixed" : "") + '" title="' + esc(tip) + '">' +
+              '<i class="ts-b3d__poolno">' + (i + 1) + '</i>' +
+              '<canvas width="' + (32 * psp[0]) + '" height="' + (32 * psp[1]) +
+              '" data-poolthumb="' + i + '"></canvas>' +
+              '<input data-poolset="' + i + '" value="' + v[0] + "," + v[1] + '"' +
+              (fixed ? ' readonly aria-readonly="true"' : "") + dis() + '>' +
+              (fixed ? '<i class="ts-b3d__poolfixed">' + TEXT.fixedTag + '</i>'
+                     : (canEdit ? '<button type="button" class="ts-b3d__poolx" data-pooldel="' + i +
+                       '" title="' + esc(TEXT.poolDel) + '"' + dis() + '>×</button>' : "")) +
+              '</span>';
+          }).join("")
+        : '<span class="ts-b3d__dim">' + TEXT.noPool + '</span>';
+      return '<div class="ts-b3d__pool">' +
+        '<div class="ts-b3d__poolhead"><span>' + TEXT.variantPool + '</span>' +
+        '<span class="ts-b3d__dim">' + (pool ? pool.length + " " + TEXT.poolCount : "") + '</span>' +
+        (canEdit ? '<button type="button" class="ts-b3d__popatlas' + (poolAddMode ? " ts-b3d__popatlas--on" : "") +
+          '" data-pooladd="1"' + dis() + '>' + (poolAddMode ? TEXT.poolAddOn : TEXT.poolAdd) + '</button>' : "") +
+        '</div>' +
+        '<div class="ts-b3d__poollist">' + items + '</div>' +
+        (poolAddMode ? '<div class="ts-b3d__dim ts-b3d__pooltip">' + TEXT.poolAddTip + '</div>' : "") +
+        '<div class="ts-b3d__dim">' + (pool ? TEXT.poolFrame + "。" : "") + TEXT.poolHint + '</div></div>';
+    }
+    function paintPoolThumbs() {
+      if (!activeUnit) return;
+      var a = atlasOf();
+      if (!a.atlas.complete || !a.atlas.naturalWidth) return;
+      var pool = DATA.cell_pools && DATA.cell_pools[activeUnit];
+      if (!pool || !pool.length) return;
+      var cw = a.atlas.naturalWidth / a.g[0], chh = a.atlas.naturalHeight / a.g[1];
+      var ns = nativeSpan(a.ak), sp = spanOf(activeUnit, a.ak);
+      el.querySelectorAll("canvas[data-poolthumb]").forEach(function (cnv) {
+        var i = +cnv.dataset.poolthumb, v = pool[i];
+        var cx = cnv.getContext("2d");
+        cx.imageSmoothingEnabled = false;
+        // 先铺选格器同款的灰/白/黑底：图集是透明底，深色主题里不铺底
+        // 窗棂那几根深线就淹进页面背景里了（「看不清」的另一半原因）。
+        fillPickBg(cx, cnv.width, cnv.height);
+        if (!v) return;
+        cx.drawImage(a.atlas, v[0] * cw * ns[0], v[1] * chh * ns[1], sp[0] * cw, sp[1] * chh,
+                     0, 0, cnv.width, cnv.height);
+      });
+    }
     function cellPopup(styleName, idx) {
       var append = idx < 0;
       var cur = null;
@@ -1493,38 +2147,66 @@
         var e = flatSeq(DATA.styles[styleName] || [])[idx];
         if (e) cur = e[2];
       }
+      if (cur === UNSET) cur = null;        // 空块：还没有单元，按「在图集上点一块」处理
       var head = '<div class="ts-b3d__cellpop-head"><span class="ts-b3d__dim">' +
         (append ? TEXT.addBlock : TEXT.chooseUnit) + '</span>' +
-        (cur ? '<code>' + esc(cur) + '</code>' : "") +
+        (cur ? '<input class="ts-b3d__cellname" data-cellname="1" value="' + esc(cur) + '"' +
+          ' title="' + esc(TEXT.cellNameTip) + '" maxlength="40" spellcheck="false"' + dis() + '>' : "") +
         '<span class="ts-b3d__cellpop-btns">' +
+        (!append ? '<button type="button" class="ts-b3d__popatlas" data-popappend="1" title="' +
+          esc(TEXT.addMany) + '"' + dis() + '>' + TEXT.appendAdd + '</button>' : "") +
         '<button type="button" class="ts-b3d__popatlas" data-popback="1"' + dis() + '>' + TEXT.popBack + '</button>' +
         (!append ? '<button type="button" class="ts-b3d__popatlas ts-b3d__popatlas--del" data-popdel="1"' + dis() + '>' + TEXT.popDel + '</button>' : "") +
         '</span></div>';
       // 直接在图集大图上点格子 → 把那格指给这个小块（有同名单元就用名字，
       // 没有就按 列,行 现造一个自定义单元）；比一排缩略图直观。
-      var body = '<canvas id="b3dPopPick" width="224" height="224"></canvas>' +
+      var body = '<div class="ts-b3d__bgrow">' + bgSwitchHtml() + '</div>' +
+        '<canvas id="b3dPopPick" width="224" height="224"></canvas>' +
+        (append ? '<div class="ts-b3d__dim ts-b3d__pooltip">' + TEXT.addMany + '</div>' : "") +
         (cur ? '<div class="ts-b3d__kv ts-b3d__spanrow"><span>' + TEXT.spanOf + '</span>' +
         '<input type="number" data-span="0" min="1" value="1" style="width:42px"' + dis() + '>' +
         '<span class="ts-b3d__dim">×</span>' +
         '<input type="number" data-span="1" min="1" value="1" style="width:42px"' + dis() + '>' +
         '<code data-spanunit></code></div>' : "");
+      // 变体池编辑器：**能看有哪些候选格，也能自己写**（改坐标 / 删 / 点图集加）
+      if (cur) body += poolEditorHtml(cur);
       return '<div class="ts-b3d__cellpop">' + head + body + '</div>';
     }
     function recipeStrip(styleName, fk) {
       var seq = DATA.styles[styleName];
       if (!seq || !seq.length) return "";
-      var blocks = [];
-      flatSeq(seq).forEach(function (e, idx) {
-        var u = e[2], sp = spanOf(u, mat.atlas_texture);
-        blocks.push('<button type="button" class="ts-b3d__recipeblock" data-seg="' + fk + '" data-segidx="' + idx + '"' +
-          ' title="' + esc(u + " " + cellCodeText(u, mat.atlas_texture)) + '"' + dis() + '>' +
-          '<canvas width="' + (32 * sp[0]) + '" height="' + (32 * sp[1]) + '"' +
-          ' data-rthumb="' + esc(u) + '"' +
-          (/(^|_)empty/.test(u) ? ' class="ts-b3d__recipeempty"' : "") + '></canvas></button>');
+      // 按 sequence 的**条目**分组渲染：一条目里的几片（宽窗 _l/_r）套一个浅底小框，
+      // 让人一眼看出「这几片是绑在一起、并排拼起来才成一扇窗的」。
+      // data-segidx 仍是扁平序号（跟 flatSeq 一致），点选逻辑不用改。
+      var idx = 0;
+      var parts = seq.map(function (item) {
+        var inner = item.map(function (u) {
+          var myIdx = idx++;
+          // 正在编辑的那一块：描一圈亮边 + 下面一个小三角，免得「点开的是哪块」看不出来
+          var onNow = (popOpen === fk && popIdx === myIdx);
+          var cls = "ts-b3d__recipeblock" + (onNow ? " ts-b3d__recipeblock--on" : "");
+          if (u === UNSET) {
+            // 还没选格的空块：虚线方框里一个问号，点开去图集上选
+            var ns0 = nativeSpan(mat.atlas_texture);
+            return '<button type="button" class="' + cls + ' ts-b3d__recipeblock--unset' +
+              '" data-seg="' + fk + '" data-segidx="' + myIdx + '" title="' + esc(TEXT.unsetTip) +
+              '"' + dis() + ' style="width:' + (32 * ns0[0]) + 'px;height:' + (32 * ns0[1]) + 'px">' +
+              '<span class="ts-b3d__unsetmark">?</span></button>';
+          }
+          var sp = spanOf(u, mat.atlas_texture);
+          var b = '<button type="button" class="' + cls + '" data-seg="' + fk + '" data-segidx="' + myIdx + '"' +
+            ' title="' + esc(u + " " + cellCodeText(u, mat.atlas_texture)) + '"' + dis() + '>' +
+            '<canvas width="' + (32 * sp[0]) + '" height="' + (32 * sp[1]) + '"' +
+            ' data-rthumb="' + esc(u) + '"' +
+            (/(^|_)empty/.test(u) ? ' class="ts-b3d__recipeempty"' : "") + '></canvas></button>';
+          return b;
+        }).join("");
+        return '<span class="ts-b3d__recipeitem' + (item.length > 1 ? " ts-b3d__recipeitem--multi" : "") + '"' +
+          (item.length > 1 ? ' title="' + esc(TEXT.groupTip) + '"' : "") + '>' + inner + '</span>';
       });
       if (canEdit)
-        blocks.push('<button type="button" class="ts-b3d__recipeadd" data-segadd="' + fk + '" title="' + TEXT.addBlock + '"' + dis() + '>＋</button>');
-      return '<div class="ts-b3d__recipe">' + blocks.join("") + '</div>';
+        parts.push('<button type="button" class="ts-b3d__recipeadd" data-segadd="' + fk + '" title="' + TEXT.addBlock + '"' + dis() + '>＋</button>');
+      return '<div class="ts-b3d__recipe">' + parts.join("") + '</div>';
     }
     function faceRow(label, g, i) {
       var val = f[g][i] || "", fk = g + ":" + i;
@@ -1559,7 +2241,10 @@
     ["1st", "other"].forEach(function (g) {
       (f[g] || []).forEach(function (s) {
         (DATA.styles[s] || []).forEach(function (item) {
-          item.forEach(function (u) { if (units.indexOf(u) < 0) units.push(u); });
+          item.forEach(function (u) {
+            if (u === UNSET) return;                // 空块没有格子，不进图集描框列表
+            if (units.indexOf(u) < 0) units.push(u);
+          });
         });
       });
     });
@@ -1587,6 +2272,7 @@
     el.querySelectorAll("input[data-key], select[data-key], select[data-floor], input[data-grid]").forEach(function (el2) {
       el2.onchange = function () {
         var v = el2.value;
+        markDirty();                                 // 动过材质参数 → 头上改「自定义建筑」
         if (el2.dataset.grid) {                      // 图集网格 列×行 → 记到这张图集名下
           var gv = String(v).split(/\s+/).map(Number).filter(function (n) { return !isNaN(n); });
           if (gv.length >= 2) {
@@ -1606,7 +2292,21 @@
         }
         if (el2.dataset.floor) {
           var fg = el2.dataset.floor.split(":");
-          mat.floors[fg[0]][+fg[1]] = v || null;
+          var oldS = mat.floors[fg[0]][+fg[1]] || null;
+          var newS = v || null;
+          mat.floors[fg[0]][+fg[1]] = newS;
+          // 一处改，凡是引用同一套样式的面跟着改：默认八面就是 2 个样式名，
+          // 只改一面会悄悄混出「一面墙跟其余三面不一样」，多数时候不是本意。
+          //（想让某个面单独换，先把它改成别的样式再用，别从同名里挑一个。）
+          if (oldS && newS !== oldS) {
+            ["1st", "other"].forEach(function (g) {
+              (mat.floors[g] || []).forEach(function (s, i) {
+                if (g === fg[0] && i === +fg[1]) return;
+                if ((s || null) === oldS) mat.floors[g][i] = newS;
+              });
+            });
+          }
+          STYLE_TEX = {};
           draw();
           return;
         }
@@ -1678,6 +2378,7 @@
       var ns = nativeSpan(a.ak);
       cx.imageSmoothingEnabled = false;
       cx.clearRect(0, 0, S, S);
+      fillPickBg(cx, S);                     // 灰/白/黑 背景（图集是 RGBA 透明底）
       cx.drawImage(a.atlas, 0, 0, a.atlas.naturalWidth, a.atlas.naturalHeight, 0, 0, S, S);
       cx.lineWidth = 1; cx.strokeStyle = "rgba(0,0,0,0.4)";
       for (var i = 1; i < ng[0]; i++) { cx.beginPath(); cx.moveTo(i * S / ng[0] + 0.5, 0); cx.lineTo(i * S / ng[0] + 0.5, S); cx.stroke(); }
@@ -1692,6 +2393,32 @@
         cx.strokeRect(c[0] * ns[0] * S / a.g[0] + 1, c[1] * ns[1] * S / a.g[1] + 1,
                       sp[0] * S / a.g[0] - 2, sp[1] * S / a.g[1] - 2);
       });
+      // 变体池的候选：在对应格上描一层**内侧**蓝框（红=当前单元、白=本栋用到的格，
+      // 蓝=这个单元的全部候选），左上角标序号，跟下面列表的序号一一对应。
+      // 加/删候选后 draw() 会重画这张图 —— 点哪格，框就出现在哪格。
+      // 只剩一个候选（用户把别的都删了）也要画：那格就是唯一候选，角标 1。
+      var pl = DATA.cell_pools && DATA.cell_pools[activeUnit];
+      if (pl && pl.length) {
+        var psp = spanOf(activeUnit, a.ak);
+        pl.forEach(function (v, pi) {
+          var x = v[0] * ns[0] * S / a.g[0], y = v[1] * ns[1] * S / a.g[1];
+          var w = psp[0] * S / a.g[0], h = psp[1] * S / a.g[1];
+          if (w < 8 || h < 8) return;
+          var inset = Math.min(4, w / 6, h / 6);
+          cx.strokeStyle = "#3f8cff";
+          cx.lineWidth = 2;
+          cx.strokeRect(x + inset + 0.5, y + inset + 0.5, w - inset * 2 - 1, h - inset * 2 - 1);
+          // 序号角标：太小就画个圆点，别糊成一坨
+          var bs = Math.min(13, w - inset * 2, h - inset * 2);
+          cx.fillStyle = "#3f8cff";
+          cx.fillRect(x + inset + 0.5, y + inset + 0.5, bs, bs);
+          cx.fillStyle = "#fff";
+          cx.font = "bold " + Math.round(bs * 0.7) + "px system-ui,sans-serif";
+          cx.textAlign = "center"; cx.textBaseline = "middle";
+          cx.fillText(String(pi + 1), x + inset + 0.5 + bs / 2, y + inset + 0.5 + bs / 2 + 0.5);
+        });
+        cx.textAlign = "start"; cx.textBaseline = "alphabetic";   // 复位，别影响后续绘制
+      }
     }
     // 列表里的坐标徽章 + 选格框里的切分输入，跟当前单元同步
     function syncSpanUI() {
@@ -1724,13 +2451,25 @@
         draw();                                        // 重建面板：弹出页内联渲染
       };
     });
-    // 条尾「＋新建小块」→ 同款图集选格页，点中的格子追加到序列末尾（扩展排序）
+    // 条尾「＋新建小块」→ 立刻在序列末尾插一个**未选择的空块**（虚线问号），
+    // 并把它打开：点图集上的格子就填进去。不先建空块的话，用户不知道自己在往哪加。
     el.querySelectorAll("[data-segadd]").forEach(function (btn) {
       btn.onclick = function () {
         if (!state.editable) return;
         var k = btn.dataset.segadd;
-        if (popOpen === k && popIdx === -1) { popOpen = null; popIdx = -1; activeUnit = null; }
-        else { popOpen = k; popIdx = -1; activeUnit = null; }
+        var p = k.split(":");
+        var sv = mat.floors[p[0]] && mat.floors[p[0]][+p[1]];
+        if (!sv) return;
+        var seq0 = DATA.styles[sv] || (DATA.styles[sv] = []);
+        var flat = flatSeq(seq0);
+        // 末尾已经是一个正开着的空块：再点一次就收起来（不叠第二个空块）
+        if (popOpen === k && popIdx === flat.length - 1 && flat[popIdx] && flat[popIdx][2] === UNSET) {
+          popOpen = null; popIdx = -1; activeUnit = null;
+        } else {
+          seq0.push([UNSET]);
+          popOpen = k; popIdx = flatSeq(seq0).length - 1; activeUnit = null;
+          markDirty();
+        }
         pickOpen = null;
         draw();
       };
@@ -1739,28 +2478,34 @@
     // 它的名字；没有就按 列,行 现造一个自定义单元（custom_r行c列）。
     function assignCell(col, row) {
       if (!state.editable || popOpen == null) return;
-      var a = atlasOf();
-      var hit = null;
-      Object.keys(DATA.cells).forEach(function (u) {
-        var c = cellOf(u, a.ak);
-        if (!hit && c && c[0] === col && c[1] === row) hit = u;
-      });
-      var name = hit || ("custom_r" + row + "c" + col);
-      if (!hit) DATA.cells[name] = [col, row];
       var p = popOpen.split(":");
       var sv = mat.floors[p[0]] && mat.floors[p[0]][+p[1]];
       if (!sv) return;
       var seq = DATA.styles[sv] || (DATA.styles[sv] = []);
-      if (popIdx < 0) {                                            // 新建小块
-        seq.push([name]);
-        popIdx = flatSeq(seq).length - 1;            // 弹出页切到新块的页
-      } else {
-        var e = flatSeq(seq)[popIdx];
-        if (e) seq[e[0]][e[1]] = name;                             // 替换这块
+      var e = flatSeq(seq)[popIdx];
+      var prev = e ? e[2] : null;
+      // 点回自己那一格：什么都不用改（只把焦点落回这块）
+      if (prev && prev !== UNSET && DATA.cells[prev] &&
+          DATA.cells[prev][0] === col && DATA.cells[prev][1] === row) {
+        activeUnit = prev;
+        draw();
+        return;
       }
+      /* 每块独立：换到别的格 = 这一块**只属于它自己**的一个单元 —— 变体池里只有这一格
+         （序号 1 = 固定格）、切分回默认、随机关掉。原来那个单元（模板自带的候选格、
+         切分、随机开关）一个字都不动，也不会把别的单元的设置带进来。
+         想再加候选，点「＋ 添加变体」自己往里挑。 */
+      var name = newUnitName();
+      DATA.cells[name] = [col, row];
+      DATA.cell_pools = DATA.cell_pools || {};
+      DATA.cell_pools[name] = [[col, row]];
+      if (DATA.cell_spans) delete DATA.cell_spans[name];
+      if (e) seq[e[0]][e[1]] = name;
+      else seq.push([name]);                          // 兜底（没有定位就追加一条）
       activeUnit = name;
-      STYLE_TEX = {};                                // 合成纹理缓存失效
-      draw();                                        // 重建：块图/红框/切分同步
+      markDirty();
+      STYLE_TEX = {};                                 // 合成纹理缓存失效
+      draw();                                         // 重建：块图/红框/切分同步
     }
     // 弹出页的图集大图：点格子 = 选格（按大格算，atlas2 = 8×4）
     var popCv = document.getElementById("b3dPopPick");
@@ -1770,12 +2515,109 @@
       var r = popCv.getBoundingClientRect();
       var col = Math.min(ng[0] - 1, Math.max(0, Math.floor((ev.clientX - r.left) / r.width * ng[0])));
       var row = Math.min(ng[1] - 1, Math.max(0, Math.floor((ev.clientY - r.top) / r.height * ng[1])));
+      // 「添加变体」模式下：这一下点的是「把该格加进池子」，不是换掉当前格
+      if (poolAddMode && state.editable && activeUnit) {
+        var pl = DATA.cell_pools[activeUnit];
+        if (!pl) {
+          var base = DATA.cells[activeUnit] || [col, row];
+          pl = DATA.cell_pools[activeUnit] = [base.slice()];
+        }
+        var dup = -1;
+        pl.forEach(function (v, i) { if (dup < 0 && v[0] === col && v[1] === row) dup = i; });
+        // 再点一次已加进来的格子 = 拿掉。序号 1（固定格）锁死不能拿，
+        // 其余候选随便删（至少留固定格，池子不能空）。
+        if (dup > 0) pl.splice(dup, 1);
+        else if (dup < 0) pl.push([col, row]);
+        // 模式不自动关：连着点几格就能一次挑齐，蓝框点哪格出现在哪格
+        markDirty();
+        STYLE_TEX = {};                            // 池子变了 → 合成纹理重算
+        draw();
+        return;
+      }
       assignCell(col, row);
     });
     // 「返回」：收起弹出页，不改任何东西
+    // 变体池：直接改坐标数字
+    el.querySelectorAll("[data-poolset]").forEach(function (inp) {
+      inp.onchange = function () {
+        if (!state.editable || !activeUnit) return;
+        var i = +inp.dataset.poolset;
+        var pl = DATA.cell_pools && DATA.cell_pools[activeUnit];
+        if (!pl || !pl[i]) return;
+        // 序号 1 是固定格，坐标不接受手改（要换就回图集上点别的格子）
+        if (i === 0) { inp.value = pl[0][0] + "," + pl[0][1]; return; }
+        var mm = String(inp.value).split(/[,，\s]+/);
+        var c = parseInt(mm[0], 10), rr = parseInt(mm[1], 10);
+        if (isNaN(c) || isNaN(rr)) { inp.value = pl[i][0] + "," + pl[i][1]; return; }
+        pl[i] = [c, rr];
+        markDirty();
+        STYLE_TEX = {};
+        draw();
+      };
+    });
+    // 变体池：删掉一个候选（至少留一个）
+    el.querySelectorAll("[data-pooldel]").forEach(function (btn) {
+      btn.onclick = function () {
+        if (!state.editable || !activeUnit) return;
+        var i = +btn.dataset.pooldel;
+        var pl = DATA.cell_pools && DATA.cell_pools[activeUnit];
+        if (!pl || pl.length <= 1 || i === 0) return;   // 至少留一个，序号 1 锁死
+        pl.splice(i, 1);
+        markDirty();
+        STYLE_TEX = {};
+        draw();
+      };
+    });
+    // 单元名：改成自己的名字（name 会同步到坐标表、变体池、切分、所有 style 引用）
+    el.querySelectorAll("[data-cellname]").forEach(function (inp) {
+      inp.onchange = function () {
+        if (!state.editable || !activeUnit) return;
+        var r = renameUnit(activeUnit, inp.value);
+        if (!r.ok) {
+          inp.value = activeUnit;                    // 名字非法 / 重名：还原
+          inp.classList.add("ts-b3d__cellname--bad");
+          inp.title = r.why === "dup" ? TEXT.cellNameDup : TEXT.cellNameTip;
+          setTimeout(function () { inp.classList.remove("ts-b3d__cellname--bad"); }, 900);
+          return;
+        }
+        activeUnit = r.name;
+        markDirty();
+        STYLE_TEX = {};
+        draw();
+      };
+    });
+    // 变体池：进入「点图集添加」模式
+    el.querySelectorAll("[data-pooladd]").forEach(function (btn) {
+      btn.onclick = function () {
+        if (!state.editable) return;
+        poolAddMode = !poolAddMode;
+        draw();
+      };
+    });
+    // 「＋ 空块」：在**当前这条 sequence 条目**尾部再插一个未选择的空块，
+    // 并把它打开 —— 点图集选格就填进去。要两片的宽窗就再点一次，插第二块。
+    el.querySelectorAll("[data-popappend]").forEach(function (btn) {
+      btn.onclick = function () {
+        if (!state.editable || popOpen == null || popIdx < 0) return;
+        var p = popOpen.split(":");
+        var sv = mat.floors[p[0]] && mat.floors[p[0]][+p[1]];
+        var seq = sv ? DATA.styles[sv] : null;
+        var e = seq ? flatSeq(seq)[popIdx] : null;
+        if (!e) return;
+        var item = seq[e[0]];
+        item.push(UNSET);
+        var off = 0;
+        for (var k = 0; k < e[0]; k++) off += seq[k].length;
+        popIdx = off + item.length - 1;              // 弹出页切到刚插的空块
+        activeUnit = null;                           // 空块没有单元：切分/变体池先收起
+        markDirty();
+        STYLE_TEX = {};
+        draw();
+      };
+    });
     el.querySelectorAll("[data-popback]").forEach(function (btn) {
       btn.onclick = function () {
-        popOpen = null; popIdx = -1; activeUnit = null;
+        popOpen = null; popIdx = -1; activeUnit = null; poolAddMode = false;
         draw();
       };
     });
@@ -1791,6 +2633,7 @@
           seq[e[0]].splice(e[1], 1);
           if (!seq[e[0]].length) seq.splice(e[0], 1);  // 半边删空了，整项拿掉
           STYLE_TEX = {};
+          markDirty();
         }
         popOpen = null; popIdx = -1; activeUnit = null;
         draw();
@@ -1805,12 +2648,13 @@
         DATA.cell_spans = DATA.cell_spans || {};
         DATA.cell_spans[activeUnit] = DATA.cell_spans[activeUnit] || [1, 1];
         DATA.cell_spans[activeUnit][+inp.dataset.span] = n;
+        markDirty();
         var a = atlasOf(), c = DATA.cells[activeUnit] || (DATA.cells[activeUnit] = [0, 0]);  // 整块别出图集右/下边界
         var sp0 = spanOf(activeUnit, a.ak), ns0 = nativeSpan(a.ak);
         if (c[0] * ns0[0] + sp0[0] > a.g[0]) c[0] = Math.max(0, Math.floor((a.g[0] - sp0[0]) / ns0[0]));
         if (c[1] * ns0[1] + sp0[1] > a.g[1]) c[1] = Math.max(0, Math.floor((a.g[1] - sp0[1]) / ns0[1]));
         STYLE_TEX = {};                                // 合成纹理缓存失效
-        syncSpanUI(); paintThumbs(); paintPicker();
+        syncSpanUI(); paintThumbs(); paintPicker(); paintPoolThumbs();
         draw();
       };
     });
@@ -1843,6 +2687,7 @@
       var d = roofDims(), c = mat.roof.cell || [0, 0, 0, 0];
       cx.imageSmoothingEnabled = false;
       cx.clearRect(0, 0, S, S);
+      fillPickBg(cx, S);
       cx.drawImage(rImg2, 0, 0, rImg2.naturalWidth, rImg2.naturalHeight, 0, 0, S, S);
       cx.lineWidth = 1; cx.strokeStyle = "rgba(0,0,0,0.4)";
       for (var i = 1; i < d[0]; i++) { cx.beginPath(); cx.moveTo(i * S / d[0] + 0.5, 0); cx.lineTo(i * S / d[0] + 0.5, S); cx.stroke(); }
@@ -1872,6 +2717,7 @@
       var row = Math.min(d[1] - 1, Math.max(0, Math.floor((ev.clientY - r.top) / r.height * d[1])));
       mat.roof.cell = mat.roof.cell || [0, 0, 1, 1];
       mat.roof.cell[0] = col; mat.roof.cell[1] = row;
+      markDirty();
       var code = el.querySelector("[data-roofcode]");
       if (code) code.textContent = col + "," + row;
       if (roofBtn) roofBtn.title = col + "," + row;
@@ -1922,6 +2768,7 @@
       var d = detailDims(), c = mat.detail_cell || [0, 0, 0, 0];
       cx.imageSmoothingEnabled = false;
       cx.clearRect(0, 0, S, S);
+      fillPickBg(cx, S);
       cx.drawImage(dImg2, 0, 0, dImg2.naturalWidth, dImg2.naturalHeight, 0, 0, S, S);
       cx.lineWidth = 1; cx.strokeStyle = "rgba(0,0,0,0.4)";
       for (var i = 1; i < d[0]; i++) { cx.beginPath(); cx.moveTo(i * S / d[0] + 0.5, 0); cx.lineTo(i * S / d[0] + 0.5, S); cx.stroke(); }
@@ -1929,6 +2776,10 @@
       cx.lineWidth = 2; cx.strokeStyle = "#e24b4a";
       cx.strokeRect(c[0] * S / d[0] + 1, c[1] * S / d[1] + 1, S / d[0] - 2, S / d[1] - 2);
     }
+    // 背景色切换要能重画全部选格器 —— 在这里登记（info() 每次重建面板都重登）
+    pickRepaint.length = 0;
+    pickRepaint.push(paintPicker, paintRoofPicker, paintDetailPicker, paintPoolThumbs);
+    bindBgSwitch(el);
     var detailBtn = el.querySelector("[data-pickdetail]");
     if (detailBtn) detailBtn.onclick = function () {
       if (!state.editable) return;
@@ -1949,6 +2800,7 @@
       var row = Math.min(d[1] - 1, Math.max(0, Math.floor((ev.clientY - r.top) / r.height * d[1])));
       mat.detail_cell = mat.detail_cell || [0, 0, 8, 8];
       mat.detail_cell[0] = col; mat.detail_cell[1] = row;
+      markDirty();
       var code = el.querySelector("[data-detailcode]");
       if (code) code.textContent = col + "," + row;
       if (detailBtn) detailBtn.title = col + "," + row;
@@ -1977,6 +2829,7 @@
         if (btn.dataset.atlas === (mat.atlas_texture || DATA.default_atlas)) return;
         mat.atlas_texture = btn.dataset.atlas;
         DATA.atlas_grid = gridOf(mat.atlas_texture);   // 换图集 → 网格自动匹配
+        markDirty();
         STYLE_TEX = {};
         draw();
       };
@@ -2000,7 +2853,9 @@
       });
     }
     // 面板重建后恢复展开中的选格框/弹出页（调网格/换贴图时不再被折叠）
-    if (popOpen != null) { syncSpanUI(); if (activeUnit) paintPicker(); }
+    // ⚠️ 图集大图无条件要画：空块（还没选格）的弹出页 activeUnit 是 null，
+    //    但它恰恰就是让用户去点图集的 —— 不画就是一块黑板。
+    if (popOpen != null) { syncSpanUI(); paintPicker(); if (activeUnit) paintPoolThumbs(); }
     else if (pickOpen === "roof" && roofBox) { roofBox.hidden = false; paintRoofPicker(); }
     else if (pickOpen === "detail" && detailBox) { detailBox.hidden = false; paintDetailPicker(); }
     paintAtlasOpts();
@@ -2012,6 +2867,7 @@
 
   fetch(DATA_URL).then(function (r) { return r.json(); }).then(function (d) {
     DATA = d;
+    CELLS0 = JSON.parse(JSON.stringify(d.cells || {}));
     ui();
   }).catch(function (e) {
     holder.innerHTML = '<p class="ts-b3d__dim">' + TEXT.dataFailed + ' (' + DATA_URL + '): ' + esc(e) + '</p>';

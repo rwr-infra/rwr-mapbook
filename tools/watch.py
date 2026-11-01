@@ -47,6 +47,10 @@ WATCH_DIRS = (
     ROOT / "docs" / "stylesheets",
     ROOT / "docs" / "javascripts",
     ROOT / "docs" / "assets",
+    ROOT / "docs" / "b3d",       # 3D 预览的脚本/数据/图集：不盯的话改了只会
+                                 # 更新 site/ 文件、版本号不涨，浏览器永远
+                                 # 拿缓存的旧 viewer.js（踩过：填充逻辑明明
+                                 # 生效，用户那边却一直是旧版渲染）。
 )
 WATCH_FILES = (
     ROOT / "zensical.toml",

@@ -30,17 +30,16 @@ GAME_TEX = os.path.join(GAME, "media", "packages", "vanilla", "textures")
 #: 前端只认这一个目录（docs/b3d/viewer.js 里 BASE + "b3d/"）。
 OUT_DIR = os.path.join(PROJECT, "docs", "b3d")
 
-# 模板没写 atlas_texture 时用的默认墙体图集（参数字典里列的三种之一）
-DEFAULT_ATLAS = "building_atlas2.png"
-# ⚠️ normandy / provence / tropical 三张图集是跟着特定地图目录走的**极特殊素材**，
-#    不进通用模板体系：相关材质、style、单元坐标与贴图全部排除在预览之外。
-SPECIAL_ATLASES = {
-    "building_atlas_normandy.png",
-    "building_atlas_provence.png",
-    "building_atlas_tropical.png",
-}
-# 这三个系列的名字直接出现在材质名 / style 名 / 单元名里
-SPECIAL_PAT = re.compile(r"normandy|provence|tropical", re.I)
+# 模板没写 atlas_texture 时用的默认墙体图集。
+# ⚠️ 用 building_atlas.png：地编模板里大量材质（2020 系列、BuildingWhite1/2/3、
+#    factory1_*、house2_*）都不写 atlas_texture，游戏侧回退的就是这张。
+#    building_atlas2/3/4 是**显式声明**时才用的配色变体，不是缺省值。
+DEFAULT_ATLAS = "building_atlas.png"
+# normandy / provence / tropical 三张图集原本按「极特殊素材」整体剔除过（只出
+# 47 栋）；后来要求把模板里的 91 栋全收，三套随之放开。它们的贴图不在
+# vanilla/textures：provence/tropical 在 vanilla/textures，normandy 只在
+# ww2_base/textures 与部分地图目录（map18 是特制版，其余地图与 ww2_base 同图），
+# 拷贝时的查找顺序见「纹理拷贝」段。
 MAP_SVGS = [r"D:\RWRMap\0100\1007_Data\map\objects.svg"]
 GRID = [8, 8]        # 单元坐标表是 8 列（列号 0..7）；图集 256×256 → 每格 32px
 # 各图集真实的网格（换图集时前端自动匹配，不用手数）：
@@ -51,16 +50,24 @@ ATLAS_GRIDS = {
     "building_atlas3.png": [8, 8],
     "building_atlas4.png": [8, 8],
     "building_atlas_desert.png": [8, 8],
+    "building_atlas_normandy.png": [8, 8],
+    "building_atlas_provence.png": [8, 8],
+    "building_atlas_tropical.png": [8, 8],
     "world_atlas1.png": [16, 16],
 }
 # 图集「原生格」跨度（宽格, 高格）：坐标表里 1 个单位 = 1 宽 × 2 高 的基础格。
-# building_atlas2/3/4 三张统一按 1×2 编号（此前只有 atlas2 标了，atlas3 被当成
-# 1×1 → 窗全落在空格上，整面墙没窗；atlas4 的坐标也跟着错位）。这里做成数据，
-# 让 Python 与前端 JS 走同一份配置，不再在 JS 里另写一份 DEFAULT_SPANS。
+# building 系（含 normandy/provence/tropical）统一按 1×2 编号（此前只有 atlas2
+# 标了，atlas3 被当成 1×1 → 窗全落在空格上，整面墙没窗；atlas4 的坐标也跟着
+# 错位）。这里做成数据，让 Python 与前端 JS 走同一份配置，不再在 JS 里另写
+# 一份 DEFAULT_SPANS。
 ATLAS_SPANS = {
+    "building_atlas.png": [1, 2],
     "building_atlas2.png": [1, 2],
     "building_atlas3.png": [1, 2],
     "building_atlas4.png": [1, 2],
+    "building_atlas_normandy.png": [1, 2],
+    "building_atlas_provence.png": [1, 2],
+    "building_atlas_tropical.png": [1, 2],
 }
 # 个别单元的真实切分与所在图集的默认跨度不同 → 按「图集 → 单元」单独列出。
 # 当前三张图集统一 1×2，没有需要回退的单元；渲染层（styleTexture）会把窗/门
@@ -99,10 +106,17 @@ def main():
     svg = open(TEMPLATE, encoding="utf-8", errors="replace").read()
 
     # 1) 图集单元坐标表：`empty = 0,0; shop1_l = 0,1 2,1 ...`
+    # ⚠️ 一个单元名可以跟**多个坐标**（空格分隔）= 游戏里的随机变体池：
+    #    如 `apartment1_window = 0,1 1,1 ... 7,1` 是 8 选 1，游戏每次放置随机
+    #    挑一个，所以同一栋楼各层窗户长得不完全一样。
+    #    cells      = 第一个坐标（代表值，兼容旧渲染路径 / 坐标显示器）
+    #    cell_pools = 完整变体池（种子预览用，前端按 seed 取）
     cells = {}
+    cell_pools = {}
     for gid, body in re.findall(r'<desc\s+id="texture_groups__([^"]+)"[^>]*>(.*?)</desc>',
                                 svg, re.S):
         group = {}
+        pool_group = {}
         for chunk in body.split(";"):
             chunk = chunk.strip()
             if "=" not in chunk:
@@ -111,15 +125,20 @@ def main():
             name, val = name.strip(), val.strip()
             if not name or not re.match(r"^[\d,\s]+$", val):
                 continue
-            # 一个单元可能有多个位置（序列），取第一个当代表
-            first = val.split()[0]
-            col, _, row = first.partition(",")
-            try:
-                group[name] = [int(col), int(row)]
-            except ValueError:
+            pool = []
+            for tok in val.split():
+                col, _, row = tok.partition(",")
+                try:
+                    pool.append([int(col), int(row)])
+                except ValueError:
+                    pass
+            if not pool:
                 continue
+            group[name] = pool[0]
+            pool_group[name] = pool
         if group:
             cells[gid] = group
+            cell_pools[gid] = pool_group
 
     # 1.5) style（一栋楼一面墙的贴图 = 一串基础单元横向拼起来）：
     #      `name = factory1_1st_floor; sequence = a; sequence = b, c; ...`
@@ -195,16 +214,8 @@ def main():
         print("  扫描 %s：单元 %d / style %d" % (
             os.path.relpath(svg_path, GAME), len(cells), len(styles)))
 
-    # 1.7) ⚠️ 极特殊素材（normandy/provence/tropical）相关的 style 直接剔除：
-    #      名字带这三词的，以及 sequence 里引用了 normandy_* 单元的。
-    #      放在所有来源扫完之后——别的包地图会把同名 style 再次塞回来。
-    dropped_styles = [n for n in styles
-                      if SPECIAL_PAT.search(n)
-                      or any(SPECIAL_PAT.search(u) for item in styles[n] for u in item)]
-    for n in dropped_styles:
-        del styles[n]
-    if dropped_styles:
-        print("  剔除极特殊素材 style %d 个：%s" % (len(dropped_styles), ", ".join(sorted(dropped_styles))))
+    # 1.7) 收尾：styles 里 name 为空的保险处理（parse 已挡，占位避免误删）。
+    #      （曾经在这里剔除 normandy/provence/tropical 系 style，要求全量收录后放开。）
 
     # 2) 建筑定义
     materials = {}
@@ -223,11 +234,17 @@ def main():
         override = src_i > 0
         # 先收一遍所有 material rect 的 style，拿到 fill/stroke 的实际色值——
         # desc 里的 color/roof_color 只是「fill 还是 stroke」的语义开关
+        # ⚠️ 必须搜**整个 rect 标签**：有的楼（BuildingArmory1 等 18 个）属性顺序是
+        #    style 在 id 之前，只搜 id 后面那截会一个色值都拿不到 → 预览退成占位色。
         rect_styles = {}
-        for tag in re.finditer(r'<rect[^>]*\bid="(material_[^"]+)"([^>]*)>', src):
-            sid, attrs = tag.group(1), tag.group(2)
-            f = re.search(r'fill:\s*(#[0-9a-fA-F]{3,8})', attrs)
-            s = re.search(r'stroke:\s*(#[0-9a-fA-F]{3,8})', attrs)
+        for tag in re.finditer(r'<rect\b[^>]*>', src):
+            whole = tag.group(0)
+            sid_m = re.search(r'\bid="(material_[^"]+)"', whole)
+            if not sid_m:
+                continue
+            sid = sid_m.group(1)
+            f = re.search(r'\bfill:\s*(#[0-9a-fA-F]{3,8})', whole)
+            s = re.search(r'\bstroke:\s*(#[0-9a-fA-F]{3,8})', whole)
             rect_styles[sid] = {"fill": f.group(1) if f else "",
                                 "stroke": s.group(1) if s else ""}
         for mid, body in re.findall(r'<desc\s+id="material_([^"]+)"[^>]*>(.*?)</desc>',
@@ -294,22 +311,23 @@ def main():
             }
             order.append(name)
 
-    # 2.5) ⚠️ 极特殊素材的材质整栋剔除：图集是这三张的，或者楼层引用了
-    #      已被剔除的 style（引用链断了留着也没法画）
+    # 2.5) 收尾检查：楼层引用了不存在的 style 的材质没法画，留在数据里会让
+    #      前端炸掉，剔除并报告。（曾经连 normandy/provence/tropical 一起剔，
+    #      全量收录后它们引用的 style 都能扫到，走不到这里。）
     dropped_mats = [n for n, m in materials.items()
-                    if m["atlas_texture"] in SPECIAL_ATLASES
-                    or any(s and s not in styles
+                    if any(s and s not in styles
                            for grp in m["floors"].values() for s in grp)]
     for n in dropped_mats:
         del materials[n]
     order = [n for n in order if n in materials]
     if dropped_mats:
-        print("  剔除极特殊素材材质 %d 个：%s" % (len(dropped_mats), ", ".join(sorted(dropped_mats))))
+        print("  剔除引用缺失 style 的材质 %d 个：%s" % (len(dropped_mats), ", ".join(sorted(dropped_mats))))
 
-    # 单元坐标表同样剔除 normandy_* 等极特殊单元（provence/tropical 的 style
-    # 用的都是共享的 house_* 单元，跟着 style 一起走，这里按名字兜一遍）
-    cells_all = {k: v for group in cells.values() for k, v in group.items()
-                 if not SPECIAL_PAT.search(k)}
+    # 单元坐标表（曾按名字剔除 normandy_* 等，放开后全收）
+    cells_all = {k: v for group in cells.values() for k, v in group.items()}
+    # 变体池同步合并（只保留 >1 个坐标的，省体积；单坐标的走 cells 即可）
+    pools_all = {k: v for group in cell_pools.values() for k, v in group.items()
+                 if len(v) > 1}
 
     data = {
         "source": os.path.basename(TEMPLATE),
@@ -321,6 +339,8 @@ def main():
         # 单元名全局唯一，直接把所有组的坐标并到一起（组 key 带 _desc_1 后缀，
         # 别按名字精确取，取不到就 0 条）
         "cells": cells_all,
+        # 单元 → 全部候选坐标（随机变体池）。游戏随机挑一个；预览用 seed 决定。
+        "cell_pools": pools_all,
         "styles": styles,
         "cell_groups": sorted(cells.keys()),
         "materials": materials,
@@ -347,13 +367,13 @@ def main():
     ])
     missing = []
     for tex in sorted(needed):
-        if tex in SPECIAL_ATLASES:
-            continue                # 极特殊素材不拷
-        # 查找顺序：vanilla/textures → 其它包 textures → 各包地图目录
-        # （building_atlas_normandy.png 这类图集只存在于特定地图目录里）
+        # 查找顺序：vanilla/textures → 其它包 textures → 各包地图目录。
+        # normandy 图集只在 ww2_base/textures（map18 目录里是张特制版，其余
+        # 地图目录与 ww2_base 同图）——包级 textures 在 glob 地图目录之前命中。
         hits = [h for h in (
             os.path.join(GAME_TEX, tex),
             os.path.join(GAME, "media", "packages", "edelweiss", "textures", tex),
+            os.path.join(GAME, "media", "packages", "ww2_base", "textures", tex),
         ) if os.path.exists(h)]
         if not hits:
             hits = glob.glob(os.path.join(GAME, "media", "packages", "*", "maps", "*", tex))
@@ -361,12 +381,6 @@ def main():
             shutil.copyfile(hits[0], os.path.join(OUT_DIR, tex))
         else:
             missing.append(tex)
-    # 站点目录里若还残留上一次跑出来的极特殊图集，一并清掉
-    for tex in SPECIAL_ATLASES:
-        stale = os.path.join(OUT_DIR, tex)
-        if os.path.exists(stale):
-            os.remove(stale)
-            print("  已删除残留贴图", tex)
 
     # 3.5) cutout 遮罩派生图：cutout.png 的 alpha 全 0、遮罩在 G 通道（R 全 255）。
     #      ⚠️ 浏览器 canvas 按**预乘 alpha** 存储，drawImage 一张全透明图会把 RGB

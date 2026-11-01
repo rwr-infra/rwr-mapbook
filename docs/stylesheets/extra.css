@@ -2529,9 +2529,10 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   border-radius: 0;
 }
 
+/* 标题与展开内容整体缩进一道（与侧栏自身 padding 同源），别齐着边缘 */
 .md-typeset details.ts-b3d__details > summary {
   margin: 0;
-  padding: 0.62rem 1.4rem 0.62rem 0;
+  padding: 0.62rem 1.4rem 0.62rem 0.9rem;
   color: var(--md-default-fg-color);
   font-size: 0.72rem;
   font-weight: 700;
@@ -2563,6 +2564,7 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
 
 .ts-b3d__info {
   margin-top: 0.55rem;
+  padding-left: 0.9rem;
   font-size: 0.72rem;
 }
 
@@ -2669,8 +2671,9 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
 .ts-b3d__checks {
   grid-column: span 6;
   display: flex;
+  flex-wrap: wrap;                 /* 三个开关（随机变体 / 遮罩层 / 斑驳层）挤不下就折行 */
   align-items: center;
-  gap: 0.9rem;
+  gap: 0.35rem 0.9rem;
   min-width: 0;
 }
 
@@ -2703,6 +2706,7 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   margin: 0.1rem 0 0.2rem;
 }
 .ts-b3d__recipeblock {
+  position: relative;
   display: inline-flex;
   align-items: flex-end;
   padding: 0;
@@ -2715,6 +2719,59 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
 .ts-b3d__recipeblock canvas {
   display: block;
   image-rendering: pixelated;
+}
+
+/* 正在编辑的那一块（弹出页对着它）：描一圈亮边 + 底下一个小三角，
+   否则一排同款窗户里根本分不清点开的是哪一块 */
+.ts-b3d__recipeblock--on {
+  z-index: 2;
+  border-radius: 0.1rem;
+  outline: 0.12rem solid var(--md-accent-fg-color);
+  outline-offset: -0.1rem;
+}
+.ts-b3d__recipeblock--on::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -0.26rem;
+  width: 0;
+  height: 0;
+  margin-left: -0.22rem;
+  border: 0.22rem solid transparent;
+  border-bottom: 0;
+  border-top-color: var(--md-accent-fg-color);
+}
+
+/* 还没选格的空块：虚线框 + 一个问号，点开去图集上选 */
+.ts-b3d__recipeblock--unset {
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  border: 0.06rem dashed var(--md-default-fg-color--lighter);
+  border-radius: 0.15rem;
+  background: var(--md-default-fg-color--lightest);
+}
+.ts-b3d__unsetmark {
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--md-default-fg-color--light);
+}
+
+/* 一条 sequence 条目 = 一个组：组里的片并排拼起来才是一扇完整的窗/门。
+   多片的条目（宽窗 _l/_r、卷帘门 _l/_c/_r）套一层浅底 + 1px 描边，
+   让人一眼看出「这几片是绑在一起的」；outline 不占布局，墙带不会被撑断。 */
+.ts-b3d__recipeitem {
+  display: inline-flex;
+  align-items: flex-end;
+  line-height: 0;
+}
+
+.ts-b3d__recipeitem--multi {
+  border-radius: 0.2rem;
+  background: var(--md-accent-fg-color--transparent);
+  outline: 0.06rem solid var(--md-accent-fg-color);
+  outline-offset: -0.06rem;
 }
 /* 空单元：图集上本来就是全透明，画个虚线框表示「这格是空墙」 */
 .ts-b3d__recipeblock canvas.ts-b3d__recipeempty {
@@ -2736,12 +2793,30 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   cursor: var(--ts-cursor-click);
 }
 .ts-b3d__recipeadd:disabled { opacity: 0.5; cursor: default; }
-/* 点小块展开的「选单元」列表：候选 = 图集上全部单元小图 */
+/* 点小块展开的「选单元」列表：候选 = 图集上全部单元小图。
+   浮动卡片、屏幕正中：原来内联插在配方条下面，面板一长就得往下翻才找得到。 */
 .ts-b3d__cellpop {
-  margin: 0.15rem 0 0.25rem;
-  padding: 0.35rem 0.45rem;
-  border: 0.05rem dashed var(--md-default-fg-color--lighter);
-  border-radius: 0.4rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 88;                     /* 低于导出框的 .ts-b3d__modal(90) */
+  width: min(92vw, 27rem);
+  max-height: min(86vh, 44rem);
+  overflow-y: auto;
+  margin: 0;
+  padding: 0.6rem 0.7rem 0.75rem;
+  border: 0.05rem solid var(--md-default-fg-color--lighter);
+  border-radius: 0.55rem;
+  background: var(--md-default-bg-color);
+  box-shadow: 0 0.6rem 2rem rgba(0, 0, 0, 0.35);
+}
+/* 浮层里图集放大一点、居中（内联时只有 14rem，点格子费劲） */
+.ts-b3d__cellpop #b3dPopPick {
+  display: block;
+  width: 100%;
+  max-width: 17rem;
+  margin: 0.15rem auto 0.2rem;
 }
 .ts-b3d__cellpop-head {
   display: flex;
@@ -2762,6 +2837,12 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   cursor: var(--ts-cursor-click);
 }
 .ts-b3d__popatlas:disabled { opacity: 0.5; cursor: default; }
+/* 「添加变体」开着：按钮亮成蓝底，跟图集上的蓝框同一色系，一眼知道现在是加点状态 */
+.ts-b3d__popatlas--on {
+  background: #3f8cff;
+  border-color: #3f8cff;
+  color: #fff;
+}
 .ts-b3d__popatlas--del { color: #e24b4a; border-color: rgba(226, 75, 74, 0.5); }
 .ts-b3d__spanrow { border-bottom: none; padding-bottom: 0; }
 .ts-b3d__spanrow code { font-size: 0.6rem; }
@@ -2956,3 +3037,250 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   .ts-b3d__float { animation: none; }
   .ts-b3d__btn { transition: none; }
 }
+
+/* ── 随机种子行 + 导出弹窗（docs/b3d/viewer.js） ── */
+.ts-b3d__seedrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.55rem;
+  padding-top: 0.55rem;
+  border-top: 0.05rem solid var(--md-default-fg-color--lightest);
+}
+
+/* 种子：标签 + 短条 + 数值挤在同一行。
+   （.ts-b3d__field 是单列 grid，条和数值会被排成上下两行；这里改 flex 一行排开。）
+   条固定短一点，别把整行撑满 —— 右边还有「随机一个 / 导出配置」两个按钮。 */
+.ts-b3d__field--seed {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.ts-b3d__field--seed > span {
+  flex: 0 0 auto;
+}
+
+.ts-b3d__field--seed input[type="range"] {
+  flex: 0 1 6.5rem;
+  width: 6.5rem;
+  min-width: 3.2rem;
+  height: 1rem;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.ts-b3d__field--seed input[type="number"] {
+  flex: 0 0 auto;
+  width: 4.8em;
+  height: 1.9rem;
+  text-align: center;
+}
+
+/* ⚠️ 必须 fixed：原先 absolute + inset:0 挂在 body 上，铺满的是**整篇文档**的高度，
+   flex 居中的是整个文档的中心 —— 页面一长，弹窗就落在中下部，得往下翻才看见。 */
+.ts-b3d__modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 90;
+}
+
+.ts-b3d__modalcard {
+  width: min(680px, 92vw);
+  max-height: 84vh;
+  overflow: auto;
+  padding: 1rem;
+  background: var(--md-default-bg-color);
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.5rem;
+}
+
+.ts-b3d__modalhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.7rem;
+}
+
+.ts-b3d__modalcard textarea {
+  width: 100%;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  line-height: 1.55;
+  color: var(--md-default-fg-color);
+  background: var(--md-code-bg-color);
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  resize: vertical;
+}
+
+.ts-b3d__modalfoot {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 0.7rem;
+}
+
+/* ── 选格器：灰/白/黑 背景切换 ── */
+.ts-b3d__bgrow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0.3rem 0;
+}
+
+.ts-b3d__bgsw {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.ts-b3d__bgbtn {
+  min-width: 1.9em;
+  padding: 0.1rem 0.35rem;
+  font-size: 0.68rem;
+  color: var(--md-default-fg-color--light);
+  background: var(--md-code-bg-color);
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.ts-b3d__bgbtn--on {
+  color: var(--md-primary-fg-color);
+  border-color: var(--md-primary-fg-color);
+}
+
+/* ── 变体池编辑器 ── */
+.ts-b3d__pool {
+  margin-top: 0.5rem;
+  padding-top: 0.45rem;
+  border-top: 0.05rem solid var(--md-default-fg-color--lightest);
+}
+
+.ts-b3d__poolhead {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.35rem;
+}
+
+.ts-b3d__poollist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+
+.ts-b3d__poolitem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.15rem 0.25rem;
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.3rem;
+}
+
+.ts-b3d__poolitem--on {
+  border-color: var(--md-primary-fg-color);
+}
+
+/* 缩略图跟配方条一个路子：按单元切分的原比例、像素化放大，不再塞进方框里压扁 */
+.ts-b3d__poolitem canvas {
+  display: block;
+  max-width: 100%;
+  image-rendering: pixelated;
+  border-radius: 0.12rem;
+}
+
+/* 候选序号：跟图集上的蓝色角标同一个数字、同一个色 */
+.ts-b3d__poolno {
+  min-width: 0.9rem;
+  font-size: 0.58rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  color: #3f8cff;
+}
+
+.ts-b3d__poolitem input {
+  width: 3.4em;
+  font-size: 0.7rem;
+  text-align: center;
+}
+
+.ts-b3d__poolx {
+  padding: 0 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1;
+  color: var(--md-default-fg-color--light);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.ts-b3d__poolx:hover {
+  color: #e24b4a;
+}
+
+/* 序号 1 = 这一块的固定格：坐标只读（换图得回图集点别的格），旁边挂个「固定」小签 */
+.ts-b3d__poolitem--fixed input {
+  opacity: 0.72;
+  cursor: default;
+}
+
+.ts-b3d__poolfixed {
+  padding: 0 0.18rem;
+  font-size: 0.56rem;
+  font-style: normal;
+  line-height: 1.3;
+  color: var(--md-default-fg-color--light);
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.15rem;
+}
+
+/* 单元名：可改，改完全站引用一起换 */
+.ts-b3d__cellname {
+  width: 11em;
+  max-width: 42vw;
+  padding: 0.05rem 0.3rem;
+  font-family: var(--md-code-font-family, monospace);
+  font-size: 0.66rem;
+  color: var(--md-default-fg-color);
+  background: var(--md-default-bg-color);
+  border: 0.05rem solid var(--md-default-fg-color--lighter);
+  border-radius: 0.2rem;
+}
+
+.ts-b3d__cellname:focus {
+  border-color: var(--md-primary-fg-color);
+  outline: none;
+}
+
+.ts-b3d__cellname--bad {
+  border-color: #e24b4a;
+  box-shadow: 0 0 0 0.1rem rgba(226, 75, 74, 0.22);
+}
+
+.ts-b3d__pooltip {
+  color: var(--md-primary-fg-color);
+}
+
+/* 3D 预览弹层的滚动链兜底：内容能滚时滚到边界不串到页面（配合 viewer.js
+   的 wheel 捕获守卫——内容不满一屏时 CSS 管不到，那边手动 preventDefault）。
+   注意 .ts-b3d__recipe（信息面板里的配方条）不在守卫里：它不滚动，
+   滚轮必须放行给页面——曾经把 recipe 拦住导致悬停时页面滚不动。 */
+.ts-b3d__modalcard,
+.ts-b3d__cellpop,
+.ts-b3d__list { overscroll-behavior: contain; }
