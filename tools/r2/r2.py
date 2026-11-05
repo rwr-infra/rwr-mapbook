@@ -4,10 +4,15 @@
     r2.bat list                      列出线上都有什么
     r2.bat head 060.zip              看一个文件的大小、类型、缓存头、公开地址
     r2.bat upload D:\\pkg\\070.rar   上传（对象名默认就是文件名）
+    r2.bat upload-dir D:\\pkg        整个文件夹一起传（--recursive 连子目录）
     r2.bat delete 070.rar            删除（要你手打一遍名字才肯删）
     r2.bat verify                    页面上的直链与哈希，和线上挨个对一遍
     r2.bat creds                     看凭据是从哪儿读的（值打码，不打印密钥）
     r2.bat lock                      把凭据文件的权限收紧到只有你自己
+
+不想敲命令也行：**双击 r2.bat** 会进菜单（看列表 / 传一个文件 / 传整个文件夹 /
+删除 / 核链接），问什么答什么；也可以把文件夹或文件直接**拖到 r2.bat 图标上**——
+拖文件夹等于 `upload-dir`，拖文件等于 `upload`，都会先问一句再动手。
 
 密钥不写在脚本里：按顺序找 `R2_CREDS` 指的文件 → 本目录的 `creds.env` →
 `~/.r2/creds.env`；同名环境变量始终覆盖文件里的值。
@@ -207,6 +212,35 @@ def ask(prompt: str) -> str:
         return ""
 
 
+#: 只解释一次「[y/N] 怎么读」——每次都印太啰嗦，一次也不印又有人不敢回车。
+_YN_HINT_SHOWN = False
+
+
+def yes_no(prompt: str, default: bool = False) -> bool:
+    """问一个是非题。`[y/N]` = 回车算 No，`[Y/n]` = 回车算 Yes。
+
+    大写那个字母就是**直接回车**时的答案，这是命令行的老惯例，但第一次见的人
+    经常以为「必须打大写 N」或者干脆不敢按回车。所以头一次问的时候印一句说明，
+    后面就不再啰嗦。只认 y / yes / n / no（大小写都行）和空回车，别的重问。
+    """
+    global _YN_HINT_SHOWN
+    if not _YN_HINT_SHOWN:
+        _YN_HINT_SHOWN = True
+        enter = "yes" if default else "no"
+        other = "n" if default else "y"
+        print(f"  （怎么答：大写字母 = 直接回车的答案，回车 = {enter}；"
+              f"要改就输入 {other}（或 yes/no）再回车。）", flush=True)
+    while True:
+        ans = ask(prompt).strip().lower()
+        if not ans:
+            return default
+        if ans in ("y", "yes"):
+            return True
+        if ans in ("n", "no"):
+            return False
+        print("  只认 y / n（直接回车也算一种回答）。", flush=True)
+
+
 class Progress:
     """上传进度：在同一行里刷新，最多每 0.5 秒重画一次（别把日志刷爆）。"""
 
@@ -226,6 +260,14 @@ class Progress:
     def done(self) -> None:
         sys.stdout.write("\r" + " " * 44 + "\r")
         sys.stdout.flush()
+
+
+def _rel(p: Path, root: Path) -> str:
+    """相对路径，只为打印好看；不在 root 底下就退回文件名。"""
+    try:
+        return str(p.relative_to(root)).replace("\\", "/")
+    except ValueError:
+        return p.name
 
 
 def human(size: int) -> str:
@@ -350,7 +392,7 @@ def put_one(cfg: dict, s3, src: Path, name: str, args, confirm: bool = True) -> 
 
     if confirm and not args.yes:
         print("     对一眼上面的哈希，和你记的那份一致再传。", flush=True)
-        if ask("     上传？[y/N] ").strip().lower() != "y":
+        if not yes_no("     上传？[y/N] "):
             print("     取消了，什么都没传。")
             return False, ""
 
@@ -398,33 +440,56 @@ def cmd_upload_dir(cfg: dict, s3, args) -> int:
         print(f"× 本地没有这个文件夹：{root}", flush=True)
         return 1
 
-    wanted = [p for p in sorted(root.iterdir()) if p.is_file()]
+    # 子目录里还有文件的话，说一声：按约定它们的对象名只能是文件名，
+    # 硬传会把同名文件互相覆盖，所以整批上传默认不往下钻。
+    # （空壳子文件夹不算——那种情况下提醒「没往里钻」只会让人以为漏了东西。）
+    subdirs = [p for p in sorted(root.iterdir()) if p.is_dir()]
+    if subdirs and not args.recursive:
+        # 只看「里面到底有没有文件」，别为了一个提示把整棵树数一遍。
+        deep = any(p.is_file() and p.parent != root for p in root.rglob("*"))
+        if deep:
+            print(f"· 下面还有 {len(subdirs)} 个子文件夹（里面有文件），没往里钻："
+                  f"{', '.join(p.name for p in subdirs[:3])}"
+                  f"{'…' if len(subdirs) > 3 else ''}", flush=True)
+            print("  要连子文件夹一起传就加 --recursive（对象名仍只取文件名，"
+                  "重名的只留第一个）。", flush=True)
+
+    walker = root.rglob("*") if args.recursive else root.iterdir()
+    wanted = [p for p in sorted(walker) if p.is_file()]
     if args.ext:
         exts = tuple(e.lower() if e.startswith(".") else "." + e.lower() for e in args.ext)
         wanted = [p for p in wanted if p.suffix.lower() in exts]
-
-    # 子目录里还有文件的话，说一声：按约定它们的对象名只能是文件名，
-    # 硬传会把同名文件互相覆盖，所以整批上传不往下钻。
-    subdirs = [p for p in sorted(root.iterdir()) if p.is_dir()]
-    if subdirs and not args.recursive:
-        print(f"· 下面还有 {len(subdirs)} 个子文件夹，没往里钻：{', '.join(p.name for p in subdirs[:3])}"
-              f"{'…' if len(subdirs) > 3 else ''}", flush=True)
-        print("  要连子文件夹一起传就加 --recursive（对象名仍只取文件名，"
-              "同名会互相覆盖，慎用）。", flush=True)
-    if args.recursive:
-        for p in sorted(root.rglob("*")):
-            if p.is_file() and p not in wanted:
-                wanted.append(p)
 
     if not wanted:
         print("× 这个文件夹里没有可传的文件。", flush=True)
         return 1
 
+    # 对象名只取文件名，所以不同子目录里的同名文件只能留一个。
+    # 与其让后一个被「线上已有同名」挡下来（看着像 bug），不如提前点名。
+    seen: dict[str, Path] = {}
+    uniq: list[Path] = []
+    dups: list[tuple[Path, Path]] = []
+    for p in wanted:
+        if p.name in seen:
+            dups.append((p, seen[p.name]))
+        else:
+            seen[p.name] = p
+            uniq.append(p)
+    if dups:
+        print(f"⚠ 有 {len(dups)} 个重名文件（对象名只取文件名，只留第一个）：", flush=True)
+        for p, first in dups[:8]:
+            print(f"     {p.name}　{_rel(p, root)} 与 {_rel(first, root)} 重名，跳过后者", flush=True)
+        if len(dups) > 8:
+            print(f"     …还有 {len(dups) - 8} 个", flush=True)
+        wanted = uniq
+
     total = sum(p.stat().st_size for p in wanted)
     print(f"  文件夹    {root}")
     print(f"  待传 {len(wanted)} 个文件，共 {human(total)}：", flush=True)
     for p in wanted:
-        print(f"     {p.name}　{human(p.stat().st_size)}", flush=True)
+        # 递归时把相对路径也打出来，否则一排同名文件看不出谁是谁
+        tag = f"　{_rel(p, root)}" if args.recursive and p.parent != root else ""
+        print(f"     {p.name}　{human(p.stat().st_size)}{tag}", flush=True)
 
     if args.dry_run:
         print("\n  --dry-run，只是列一下，什么都没传。")
@@ -432,7 +497,7 @@ def cmd_upload_dir(cfg: dict, s3, args) -> int:
 
     if not args.yes:
         print(f"\n  这 {len(wanted)} 个文件会传成同样名字的对象（缓存头一律长缓存）。", flush=True)
-        if ask("  开始传？[y/N] ").strip().lower() != "y":
+        if not yes_no("  开始传？[y/N] "):
             print("  取消了，一个都没传。")
             return 0
 
@@ -488,7 +553,7 @@ def cmd_delete(cfg: dict, s3, args) -> int:
     print(f"  公开地址  {public_url(cfg, args.name)}")
     if not args.yes:
         print("\n  删了就找不回来了，而且页面上的直链会当场断。", flush=True)
-        typed = ask(f"  要删就手打一遍对象名（{args.name}）：").strip()
+        typed = ask(f"  要删就手打一遍对象名（直接回车 = 取消）：").strip()
         if typed != args.name:
             print("  名字对不上，没删。")
             return 0
@@ -773,10 +838,138 @@ def cmd_verify(cfg: dict, s3, args) -> int:
 
 # ── 入口 ──────────────────────────────────────────────────────────────────
 
+def _run(func, cfg: dict, s3, args) -> int:
+    """跑一个命令，把 Ctrl-C 和异常统一收成一句人话。"""
+    try:
+        return func(cfg, s3, args)
+    except KeyboardInterrupt:
+        print("\n停了。")
+        return 130
+    except Exception as exc:
+        code = getattr(exc, "response", {}).get("Error", {}).get("Code", "")
+        # 过一遍 redact：万一哪层库把密钥塞进了异常信息，也不会留在终端/日志里。
+        print(redact(f"× 出错了：{code or type(exc).__name__}  {exc}"), flush=True)
+        return 1
+
+
+def _with_s3(func, **kw) -> int:
+    """交互式菜单用：自己读凭据、建客户端，再把参数捏成 Namespace 交给命令。"""
+    cfg = load_creds()
+    return _run(func, cfg, client(cfg), argparse.Namespace(**kw))
+
+
+def _clean_path(text: str) -> Path:
+    """把拖进窗口的路径弄干净。
+
+    Windows 把文件夹拖进 cmd 时会连引号一起丢过来（`"D:\\a b\\pkg"`），
+    末尾还常带一个 `\\`。只剥最外层那对引号，里面的空格原样留着。
+    """
+    s = text.strip()
+    if len(s) >= 2 and s[0] == s[-1] and s[0] in "\"'":
+        s = s[1:-1]
+    return Path(s).expanduser()
+
+
+def upload_dir_wizard(root: Path) -> int:
+    """整批上传的交互版：按需问两句，然后走和 `upload-dir` 同一条路。
+
+    只多问「要不要钻子目录」和「只传哪些后缀」——其余（同名检查、逐个确认尺寸、
+    先算 sha256 再传、传完 HEAD 校验）全在 cmd_upload_dir / put_one 里，不另写一份。
+
+    ⚠️ 那两个问题都**只在有必要时才问**：顶平一个目录（没有子文件夹，或子文件夹里
+    没有文件）就别问「连子文件夹一起传吗」——问了也是白问，还让人以为自己的文件夹
+    上有东西。全部文件后缀都一样时也不问「只传哪些后缀」。
+    """
+    if not root.is_dir():
+        print(f"× 本地没有这个文件夹：{root}", flush=True)
+        return 1
+
+    try:
+        top = [p for p in root.iterdir() if p.is_file()]
+        subdirs = [p for p in root.iterdir() if p.is_dir()]
+    except OSError as exc:
+        print(f"× 读不了这个文件夹：{exc}", flush=True)
+        return 1
+
+    # 子文件夹里真有文件才值得问；空壳子文件夹不算。
+    sub_files = [p for p in root.rglob("*") if p.is_file() and p.parent != root] \
+        if subdirs else []
+    recursive = False
+    if sub_files:
+        recursive = yes_no(f"  下面还有 {len(subdirs)} 个子文件夹、{len(sub_files)} 个文件。"
+                           f"连它们一起传吗？[y/N] ")
+
+    # 顶层全是同一种后缀时，「只传哪些后缀」也没得选。
+    kinds = {p.suffix.lower() for p in top} | {p.suffix.lower() for p in (sub_files if recursive else [])}
+    ext = None
+    if len(kinds) > 1:
+        ext_raw = ask("  只传这些后缀？（直接回车 = 全部，例：.zip .rar） ").strip()
+        if ext_raw:
+            ext = ext_raw.split()
+
+    return _with_s3(cmd_upload_dir, dir=str(root), ext=ext,
+                    recursive=recursive, dry_run=False, content_type=None,
+                    overwrite=False, yes=False)
+
+
+MENU = """
+R2 归档小工具（assets 桶 · rwrme-web-assets/）
+
+  1  看线上都有什么
+  2  上传一个文件
+  3  上传一个文件夹里的所有文件
+  4  删除一个对象
+  5  核一遍页面上的直链与哈希
+  q  退出
+"""
+
+
+def menu() -> int:
+    """双击 r2.bat 时的交互菜单。做完一件事就结束（窗口是 bat 的 pause 停住的）。"""
+    print(MENU)
+    while True:
+        choice = ask("  选一个 [1-5/q] ").strip().lower()
+        if choice in ("", "q", "quit", "exit"):
+            print("  走了。")
+            return 0
+        if choice == "1":
+            return _with_s3(cmd_list)
+        if choice == "2":
+            raw = ask("  文件路径（可以把文件直接拖进这个窗口）： ")
+            if not raw.strip():
+                print("  没给路径，重来。")
+                continue
+            src = _clean_path(raw)
+            if not src.is_file():
+                print(f"× 没有这个文件：{src}", flush=True)
+                continue
+            name = ask(f"  对象名（直接回车 = {src.name}）： ").strip() or src.name
+            return _with_s3(cmd_upload, file=str(src), name=name,
+                            content_type=None, overwrite=False, yes=False)
+        if choice == "3":
+            raw = ask("  文件夹路径（可以把文件夹直接拖进这个窗口）： ")
+            if not raw.strip():
+                print("  没给路径，重来。")
+                continue
+            return upload_dir_wizard(_clean_path(raw))
+        if choice == "4":
+            name = ask("  要删的对象名（下一步还会要你手打一遍）： ").strip()
+            if not name:
+                print("  没给名字，重来。")
+                continue
+            return _with_s3(cmd_delete, name=name, yes=False)
+        if choice == "5":
+            return _with_s3(cmd_verify, hash=False, only=None)
+        print("  只有 1-5 和 q，再选一次。")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(
         prog="r2", description="R2 上的归档：上传 / 删除 / 查看")
-    sub = ap.add_subparsers(dest="cmd", required=True)
+    # ⚠️ 不设 required：双击 r2.bat 时一个参数都没有（%* 是空的），
+    #    设了 required=True 就只会甩一句 "the following arguments are required: cmd"，
+    #    看着像坏了。没子命令时下面自己打帮助 + 常用例子。
+    sub = ap.add_subparsers(dest="cmd")
 
     p = sub.add_parser("list", help="列出线上都有什么")
     p.set_defaults(func=cmd_list, needs_s3=True)
@@ -799,7 +992,7 @@ def main() -> int:
     p.add_argument("--ext", nargs="+", metavar="后缀",
                    help="只传这些后缀的，例如 --ext .asmb .svg")
     p.add_argument("--recursive", action="store_true",
-                   help="连子文件夹里的文件一起传（对象名仍只取文件名，同名会覆盖）")
+                   help="连子文件夹里的文件一起传（对象名仍只取文件名，重名的只留第一个）")
     p.add_argument("--dry-run", action="store_true", help="只列出要传什么，不真传")
     p.add_argument("--content-type", help="覆盖自动推断的 Content-Type（整批同一个）")
     p.add_argument("--overwrite", action="store_true", help="线上已有同名对象时也照传")
@@ -829,19 +1022,44 @@ def main() -> int:
     p = sub.add_parser("lock", help="把凭据文件的权限收紧到只有你自己")
     p.set_defaults(func=cmd_lock)
 
+    # 把文件夹/文件直接拖到 r2.bat 上时，命令行只有一个路径、没有子命令。
+    # 认出来就直接走对应流程，省得先开 cmd 再敲 upload-dir。
+    if len(sys.argv) == 2:
+        dropped = _clean_path(sys.argv[1])
+        if dropped.is_dir():
+            print(f"  拖进来的是文件夹：{dropped}")
+            return upload_dir_wizard(dropped)
+        if dropped.is_file():
+            print(f"  拖进来的是文件：{dropped}")
+            return _with_s3(cmd_upload, file=str(dropped), name=dropped.name,
+                            content_type=None, overwrite=False, yes=False)
+        # 长得像路径（有斜杠或盘符）却不存在：直接说清楚，
+        # 别丢给 argparse 甩一句 "invalid choice"。
+        if not dropped.exists() and any(ch in sys.argv[1] for ch in ("/", "\\", ":")):
+            print(f"× 这个路径不存在：{dropped}", flush=True)
+            return 1
+
     args = ap.parse_args()
+    if not getattr(args, "cmd", None):
+        # 双击 .bat 时一个参数都没有（%* 是空的）：有键盘就进菜单，
+        # 没键盘（重定向、脚本里）就打帮助——以前这里只会甩一句
+        # "the following arguments are required: cmd"，看着像坏了。
+        # ⚠️ 要连 stdout 一起看：Windows 上 `< /dev/null` 这种重定向的 stdin
+        #    也会 isatty()==True，只看 stdin 会把脚本里的调用也拖进菜单。
+        if sys.stdin is not None and sys.stdin.isatty() and sys.stdout.isatty():
+            return menu()
+        ap.print_help()
+        print("\n常用：")
+        print("  r2.bat list                     看看线上都有什么")
+        print("  r2.bat head 060.zip             看某个文件的大小、缓存头、公开地址")
+        print("  r2.bat upload D:\\pkg\\070.rar   上传（对象名默认取文件名）")
+        print("  r2.bat upload-dir D:\\pkg       整个文件夹一起传（--recursive 连子目录）")
+        print("  r2.bat delete 070.rar           删除（要手打一遍名字才肯删）")
+        print("\n（双击会进菜单；在 cmd 里跑可以带参数。）")
+        return 0
     cfg = load_creds()
     s3 = client(cfg) if getattr(args, "needs_s3", False) else None
-    try:
-        return args.func(cfg, s3, args)
-    except KeyboardInterrupt:
-        print("\n停了。")
-        return 130
-    except Exception as exc:
-        code = getattr(exc, "response", {}).get("Error", {}).get("Code", "")
-        # 过一遍 redact：万一哪层库把密钥塞进了异常信息，也不会留在终端/日志里。
-        print(redact(f"× 出错了：{code or type(exc).__name__}  {exc}"), flush=True)
-        return 1
+    return _run(args.func, cfg, s3, args)
 
 
 if __name__ == "__main__":

@@ -2262,6 +2262,54 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   cursor: grabbing;
 }
 
+/* 加载中：UI 建好前是整卡占位（--boot），建好后浮层盖在画布上，首帧撤掉。
+   画布底色恒为深色（--b3d-stage），浮层文字用浅色；boot 卡在页面流里，
+   跟随站点明暗主题。 */
+.ts-b3d__loading {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  background: var(--b3d-stage, #3b3f3d);
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+
+.ts-b3d__loading--boot {
+  position: static;
+  min-height: 15rem;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color--light);
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.65rem;
+  box-shadow: 0 0.55rem 1.8rem rgba(19, 27, 24, 0.08);
+}
+
+.ts-b3d__loadspin {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+  border: 0.14rem solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: ts-b3d-loadspin 0.8s linear infinite;
+}
+
+@keyframes ts-b3d-loadspin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ts-b3d__loadspin {
+    animation-duration: 2.4s;
+  }
+}
+
 .ts-b3d__hint {
   position: absolute;
   top: 0.7rem;
@@ -2624,6 +2672,7 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
 .ts-b3d__cellcut {
   justify-self: end;
   gap: 0.22rem;
+  margin-right: 0.3rem;              /* 别把数字框顶到面板右内缘上 */
 }
 .ts-b3d__cellcut input {
   width: 2.4rem;
@@ -2844,8 +2893,24 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   color: #fff;
 }
 .ts-b3d__popatlas--del { color: #e24b4a; border-color: rgba(226, 75, 74, 0.5); }
+/* 单元切分行（弹出页）：5 个节点（标签/宽/×/高/单元名）必须一行放下，
+   不能沿用 .ts-b3d__kv 的三栏模板 —— 否则后两个节点折到第二行、
+   跑到标签底下去（单位名跟数字框错位）。双类选择器压过窄屏的 .ts-b3d__kv 覆盖。 */
+.ts-b3d__kv.ts-b3d__spanrow {
+  grid-template-columns: minmax(7.2rem, 0.9fr) auto auto auto minmax(0, 1fr);
+  column-gap: 0.45rem;
+  align-items: center;
+}
+/* 窄屏媒体查询里 `.ts-b3d__kv > .ts-b3d__dim { grid-column: 2 }` 会把「×」
+   强推到第二栏（= 第二行），切分行必须豁免，五个节点才守得住一行。 */
+.ts-b3d__kv.ts-b3d__spanrow > .ts-b3d__dim { grid-column: auto; }
 .ts-b3d__spanrow { border-bottom: none; padding-bottom: 0; }
-.ts-b3d__spanrow code { font-size: 0.6rem; }
+.ts-b3d__spanrow code {
+  font-size: 0.6rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* ── 图集缩略图选择：整张图集缩小 + 网格线，点图切换 ── */
 .ts-b3d__atlases {
@@ -2981,6 +3046,66 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   to { opacity: 1; transform: none; }
 }
 
+/* ── 离线导入自定义贴图（docs/b3d/viewer.js） ──
+   label 包住隐藏的 file input：点整块就开系统选图（手机上是相册/文件），
+   不经过任何服务器。按钮自动换行，窄屏一行放不下就折两行。 */
+.ts-b3d__importbtns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.ts-b3d__import {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 1.9rem;                 /* 手机触摸目标 */
+  padding: 0.26rem 0.6rem;
+  border: 0.05rem dashed var(--md-default-fg-color--light);
+  border-radius: 0.28rem;
+  font-size: 0.66rem;
+  font-weight: 650;
+  line-height: 1;
+  cursor: var(--ts-cursor-click, pointer);
+  user-select: none;
+  -webkit-user-select: none;
+  transition: color 140ms ease, border-color 140ms ease;
+}
+
+.ts-b3d__import:hover {
+  color: var(--b3d-accent);
+  border-color: var(--b3d-accent);
+}
+
+/* input 藏进角落但保持可聚焦（别 display:none，键盘/读屏还能摸到） */
+.ts-b3d__import input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  border: 0;
+  padding: 0;
+}
+
+/* 已导入：虚线转实线、上强调色 */
+.ts-b3d__import--on,
+.ts-b3d__import--on:hover {
+  color: var(--b3d-accent);
+  border-style: solid;
+  border-color: var(--b3d-accent);
+}
+
+/* 未解锁（自定义调节关着）时整排置灰、不可点 */
+.ts-b3d__import:has(input:disabled) {
+  opacity: 0.45;
+  cursor: default;
+}
+.ts-b3d__import:has(input:disabled):hover {
+  color: inherit;
+  border-color: var(--md-default-fg-color--light);
+}
+
 @media screen and (max-width: 44.9375em) {
   .ts-b3d__head,
   .ts-b3d__side {
@@ -3049,12 +3174,12 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   border-top: 0.05rem solid var(--md-default-fg-color--lightest);
 }
 
-/* 种子：标签 + 短条 + 数值挤在同一行。
+/* 种子：标签 + 条 + 数值挤在同一行。
    （.ts-b3d__field 是单列 grid，条和数值会被排成上下两行；这里改 flex 一行排开。）
-   条固定短一点，别把整行撑满 —— 右边还有「随机一个 / 导出配置」两个按钮。 */
+   整行铺满面板宽度：条按剩余空间伸缩，右侧按钮保持自然宽度。 */
 .ts-b3d__field--seed {
   display: flex;
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   align-items: center;
   gap: 0.35rem;
   min-width: 0;
@@ -3066,8 +3191,8 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
 }
 
 .ts-b3d__field--seed input[type="range"] {
-  flex: 0 1 6.5rem;
-  width: 6.5rem;
+  flex: 1 1 auto;
+  width: auto;
   min-width: 3.2rem;
   height: 1rem;
   padding: 0;
@@ -3080,6 +3205,16 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   width: 4.8em;
   height: 1.9rem;
   text-align: center;
+}
+
+/* 种子区 / 「导出配置」之间的竖分隔线（跟着行高走，换行时也不至于突兀） */
+.ts-b3d__seedsep {
+  flex: 0 0 auto;
+  align-self: stretch;
+  width: 0.05rem;
+  min-height: 1.5rem;
+  margin: 0 0.15rem;
+  background: var(--md-default-fg-color--lightest);
 }
 
 /* ⚠️ 必须 fixed：原先 absolute + inset:0 挂在 body 上，铺满的是**整篇文档**的高度，
@@ -3109,6 +3244,15 @@ html:has(.ts-jump__title) .md-sidebar--secondary {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0.7rem;
+}
+
+/* 弹窗标题：模块整体字号偏小（.ts-b3d 里 0.75rem 一脉相承），弹窗自己的
+   标题要单独放大，否则挤在左上角几乎看不清。 */
+.ts-b3d__modaltitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
 }
 
 .ts-b3d__modalcard textarea {

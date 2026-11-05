@@ -1,8 +1,8 @@
 ---
 title: "File downloads"
 description: "Complete archives of every editor version, the three templates and the prefabs, hosted outside the repository as direct links."
-source_sha256: a1fe461b884c21ef710030aedddb713b63caef56ed607f6584c5b1cc0d3087eb
-translated: 2026-10-18
+source_sha256: d452088130e80af6d2d844f61f3e1fe679842923e90b935b468a7c8d0fe729e0
+translated: 2026-11-05
 nav_label: "File downloads"
 icon: lucide/archive
 # ⚠️ 由 tools/docsgen.py 从 content/download/index.en.md 生成，请勿手改；要改请改 content/ 下的源文件。
@@ -10,24 +10,25 @@ hide: [navigation]
 ---
 
 <!--
-  译文同步提醒（2026-10-10）：这次简中页改了三处——
-    1. 模板下载由一种拆成三种（普通 / 沙漠 / 雪地），三种并列；
-    2. 新加「组件下载」一节（三个 .asmb 预制件，带页内搜索）；
-    3. 校验用哈希多了五条（vdao.svg、vwao.svg 与三个 .asmb）。
+  译文同步提醒（2026-11-05）：这次简中页改了四处——
+    1. 新增 0114（最新版本）与 0113（进历史区），0101 降为「教程对着它写」的那版；
+    2. 雪地模板换成 vwao1102.svg（清单版本 vwao1102），旧的 vwao.svg 下架；
+    3. 「先看清是哪一版」那条改成「正文仍按 0101 写」；
+    4. 校验用哈希：加 0113 / 0114 / vwao1102，去掉 vwao。
   组件那三行的**预览图与备注简中原文也还空着**，这里同样留了位置；
   等原文补上再跟一次即可。source_sha256 由 _refingerprint.js 重算，不用手改。
 -->
 
 This page is for downloading the editor, the templates and the prefabs. The editor's latest
-version is 0101; there are three templates now: the normal-mode template vao0822, the
-desert-mode template vdao and the winter-mode template vwao.
+version is 0114; there are three templates now: the normal-mode template vao0822, the
+desert-mode template vdao and the winter-mode template vwao1102.
 
 ## Editor downloads { #download .section-title }
 
-Complete archives of every editor version, from 060 to 0101. Each one holds the whole
+Complete archives of every editor version, from 060 to 0114. Each one holds the whole
 set of files for that version, exactly as it was posted in the group files.
 
-The archives are **not in this site's repository**. These eight alone are 234 MB, and carrying
+The archives are **not in this site's repository**. These ten alone are 300 MB, and carrying
 them there would mean everyone who wants to edit the text downloads several hundred megabytes
 first — while what actually changes in that repository is the text. They live in object
 storage elsewhere (Cloudflare R2), and every entry below is **a direct link**: a browser can
@@ -39,13 +40,15 @@ fetch it, and so can a download manager (IDM, aria2, Thunder) — right-click ha
 
 | Version | Archive | Notes | Download |
 | --- | --- | --- | --- |
-| Editor 0101 | `0101.rar`　26.2 MB | The latest — the handbook describes this one | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/0101.rar){ .md-button .md-button--primary } |
+| Editor 0114 | `0114.rar`　34.7 MB | The latest — the handbook still describes 0101 | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/0114.rar){ .md-button .md-button--primary } |
 
 **Previous versions:**
 
-??? note "Expand for every earlier version (060 to 0100)"
+??? note "Expand for every earlier version (060 to 0113)"
     | Version | Archive | Notes | Download |
     | --- | --- | --- | --- |
+    | Editor 0113 | `0113.rar`　31.7 MB | One release before 0114; differences from 0101 not checked line by line | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/0113.rar){ .md-button .md-button--primary } |
+    | Editor 0101 | `0101.rar`　26.2 MB | The one the handbook is written against — trust its UI and inventories | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/0101.rar){ .md-button .md-button--primary } |
     | Editor 0100 | `0100.rar`　31.2 MB | The previous release, close to 0101 | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/0100.rar){ .md-button .md-button--primary } |
     | Editor 091 | `091.rar`　26.2 MB | Older — the UI may not match the inventories | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/091.rar){ .md-button .md-button--primary } |
     | Editor 090 | `090.rar`　30.7 MB | Older — the UI may not match the inventories | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/090.rar){ .md-button .md-button--primary } |
@@ -58,8 +61,8 @@ fetch it, and so can a download manager (IDM, aria2, Thunder) — right-click ha
 
 !!! warning "Check which version you are looking at"
     The archives are **frozen**: each one is that version's complete file set, and it will
-    not change afterwards. The handbook itself describes the latest version; against an
-    older editor the interface and the inventories may not line up.
+    not change afterwards. The handbook is still written against **0101**, not the newer
+    0114; against a different editor the interface and the inventories may not line up.
 
 ## Template downloads { #materials .section-title }
 
@@ -89,7 +92,7 @@ The three templates are listed **side by side** — take the one you want.
 
 | Version | Archive | Notes | Download |
 | --- | --- | --- | --- |
-| Winter-mode template | `vwao.svg`　426 kB | Ground texture only — the rest is the same | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/vwao.svg){ .md-button .md-button--primary download="vwao.svg" } |
+| Winter-mode template (inventory version vwao1102) | `vwao1102.svg`　412 kB | Ground texture only — the rest is the same | [Download](https://assets.rwr-infra.uk/rwrme-web-assets/vwao1102.svg){ .md-button .md-button--primary download="vwao1102.svg" } |
 
 </div>
 
@@ -134,9 +137,11 @@ placing objects one by one.
     2479c531f4576e8c5751e15637c422f6ff2ce3654e8c4c4aa3fd5263c1b6eade  091.rar
     84d18efd2fe7de947efe9f44374662961f2a4d5f7e09cb65e4165aafcddd742a  0100.rar
     49de6d2c0175f6a6a01f0f6eaaab93c4f0af394d82151576ad9b36c33c849a55  0101.rar
+    95f76cf335ea3eee5d3aba97ad6ae4917422caabc05ea43220425d70a3568e76  0113.rar
+    3f22c36b120e4302fa42d5fa8495cd9c760bc1342b98c264be88a8f960329647  0114.rar
     e4ec1869d92fc802d8760e8898eba9953b55a2face1c39e74dffee850f1bfc31  vao0822.svg
     67a34f77b43b1520dde8515e83c1b6e78413a14293938a85479aa1de3aa0dc48  vdao.svg
-    d6959ab114a5ef17d628449a882e019e1ad7d1dd245adad40a0db80f27a9657f  vwao.svg
+    c65f01c40ca8a4b576f868fa79239bbfa13e45987c57d8ab6ece5b4cb854e4a4  vwao1102.svg
     42b39c0476684493dcafb7d0a4fd4954f55f960b034591f3dcf1a614c9047d19  HangarOnIsland_objects.asmb
     c1228e7973441ee118e15f31dd0fd4babdcbe1b3d09035022cd8284c493353f5  Stash_vao0822.asmb
     ccbdcdb74b362ddbc559fd66c10d3d9aeaee1b7423907997326ae79c3404ba5c  Armory_vao0822.asmb

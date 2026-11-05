@@ -10,7 +10,7 @@ hide: [navigation]
 
 ## 地編下載 { #download .section-title }
 
-這裡是歷次地編版本的完整歸檔，從 060 到 0101 。每個包就是那一版地編的全套文件，與群裡發布的一致。
+這裡是歷次地編版本的完整歸檔，從 060 到 0114 。每個包就是那一版地編的全套文件，與群裡發布的一致。
 
 <div class="ts-plain" markdown="1">
 
@@ -18,13 +18,15 @@ hide: [navigation]
 
 | 版本 | 歸檔 | 備註 | 下載 |
 | --- | --- | --- | --- |
-| 地編 0101 | `0101.rar`　26.2 MB | 最新版本，教程正文對着它寫 | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/0101.rar){ .md-button .md-button--primary } |
+| 地編 0114 | `0114.rar`　34.7 MB | 最新版本；教程正文目前仍按 0101 寫 | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/0114.rar){ .md-button .md-button--primary } |
 
 **歷史版本：**
 
-??? note "展開查看全部歷史版本（060 到 0100）"
+??? note "展開查看全部歷史版本（060 到 0113）"
     | 版本 | 歸檔 | 備註 | 下載 |
     | --- | --- | --- | --- |
+    | 地編 0113 | `0113.rar`　31.7 MB | 比 0114 早一版，與 0101 的差異未逐條核對 | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/0113.rar){ .md-button .md-button--primary } |
+    | 地編 0101 | `0101.rar`　26.2 MB | 教程正文對着它寫，界面與清單以這版為準 | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/0101.rar){ .md-button .md-button--primary } |
     | 地編 0100 | `0100.rar`　31.2 MB | 上一版，與 0101 差異不大 | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/0100.rar){ .md-button .md-button--primary } |
     | 地編 091 | `091.rar`　26.2 MB | 舊版，界面與清單可能對不上 | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/091.rar){ .md-button .md-button--primary } |
     | 地編 090 | `090.rar`　30.7 MB | 舊版，界面與清單可能對不上 | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/090.rar){ .md-button .md-button--primary } |
@@ -36,7 +38,7 @@ hide: [navigation]
 </div>
 
 !!! warning "先看清是哪一版"
-    手冊正文默認講的是最新版，如果不是會特殊標明；拿舊版地編對着看，界面與清單可能對不上。
+    手冊正文目前仍按 **0101** 寫（不是最新的 0114），其餘版本還沒逐條核對；拿別的版本對着看，界面與清單可能對不上。
 
 ## 模板下載 { #materials .section-title }
 
@@ -62,7 +64,7 @@ hide: [navigation]
 
 | 版本 | 歸檔 | 備註 | 下載 |
 | --- | --- | --- | --- |
-| 雪地模式模板 | `vwao.svg`　426 kB | 環境材質為雪地<br>該模板還未細化測試 | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/vwao.svg){ .md-button .md-button--primary download="vwao.svg" } |
+| 雪地模式模板（清單版本 vwao1102） | `vwao1102.svg`　412 kB | 環境材質為雪地<br>該模板還未細化測試 | [下載](https://assets.rwr-infra.uk/rwrme-web-assets/vwao1102.svg){ .md-button .md-button--primary download="vwao1102.svg" } |
 
 </div>
 
@@ -104,9 +106,11 @@ hide: [navigation]
     2479c531f4576e8c5751e15637c422f6ff2ce3654e8c4c4aa3fd5263c1b6eade  091.rar
     84d18efd2fe7de947efe9f44374662961f2a4d5f7e09cb65e4165aafcddd742a  0100.rar
     49de6d2c0175f6a6a01f0f6eaaab93c4f0af394d82151576ad9b36c33c849a55  0101.rar
+    95f76cf335ea3eee5d3aba97ad6ae4917422caabc05ea43220425d70a3568e76  0113.rar
+    3f22c36b120e4302fa42d5fa8495cd9c760bc1342b98c264be88a8f960329647  0114.rar
     e4ec1869d92fc802d8760e8898eba9953b55a2face1c39e74dffee850f1bfc31  vao0822.svg
     67a34f77b43b1520dde8515e83c1b6e78413a14293938a85479aa1de3aa0dc48  vdao.svg
-    d6959ab114a5ef17d628449a882e019e1ad7d1dd245adad40a0db80f27a9657f  vwao.svg
+    c65f01c40ca8a4b576f868fa79239bbfa13e45987c57d8ab6ece5b4cb854e4a4  vwao1102.svg
     42b39c0476684493dcafb7d0a4fd4954f55f960b034591f3dcf1a614c9047d19  HangarOnIsland_objects.asmb
     c1228e7973441ee118e15f31dd0fd4babdcbe1b3d09035022cd8284c493353f5  Stash_vao0822.asmb
     ccbdcdb74b362ddbc559fd66c10d3d9aeaee1b7423907997326ae79c3404ba5c  Armory_vao0822.asmb

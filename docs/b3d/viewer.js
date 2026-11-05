@@ -104,8 +104,16 @@
         pickRepaint.forEach(function (fn) { try { fn(); } catch (e) {} });
       };
     });
+    // 边框开关：只影响弹出的图集选格大图（网格线 + 白/红/蓝描框），点击选格不受影响
+    (root || document).querySelectorAll("[data-pickborders]").forEach(function (b) {
+      b.onclick = function () {
+        state.pickBorders = !state.pickBorders;
+        b.classList.toggle("ts-b3d__bgbtn--on", state.pickBorders);
+        pickRepaint.forEach(function (fn) { try { fn(); } catch (e) {} });
+      };
+    });
   }              // 单元 → 是否走随机变体池（false = 玩家固定了某一格）
-  var state = { name: "", floors: 4, lotW: 50, lotD: 50, wall: "#cfc9bd", roof: "#8a8578", bright: 1.05, rotX: 0.45, rotY: 0.6, zoom: 1, editable: false, seed: 0, pickBg: "gray", randomAll: true, wallDetail: true, roofCutout: true, roofBlur: 20, roofGrow: 0.02, tileScale: 2.8, dirty: false };
+  var state = { name: "", floors: 4, lotW: 50, lotD: 50, wall: "#cfc9bd", roof: "#8a8578", bright: 1.05, rotX: 0.45, rotY: 0.6, zoom: 1, editable: false, seed: 0, pickBg: "gray", pickBorders: true, randomAll: true, wallDetail: true, roofCutout: true, roofBlur: 20, roofGrow: 0.02, tileScale: 2.8, dirty: false };
 
   var LANG = (document.documentElement.lang || "zh-hans").toLowerCase();
   var COPY = {
@@ -128,7 +136,7 @@
       seedHint: "游戏里门/窗单元有多个候选格、放置时随机挑一个；拖动种子可预览不同排列（上面的「随机变体」关掉后这里不起作用）",
       randomize: "随机一个", exportBtn: "导出配置",
       exportHint: "导出材质 / 样式 / 图集坐标三层，都可直接贴回 objects.svg",
-      copyOk: "已复制到剪贴板", copyFail: "复制失败，请手动选中复制",
+      copyOk: "已复制到剪贴板", copyFail: "复制失败，请手动选中复制", copy: "复制",
       wall: "墙面色", roof: "屋顶色",
       brightness: "亮度", details: "材质与图集参数", none: "（无）",
       wallDetail: "墙面遮罩层", roofCutout: "屋顶斑驳层",
@@ -136,6 +144,10 @@
       randomVariantHint: "总控：关掉后全楼一律用固定格，种子条不再起作用（不影响各单元的变体池内容）",
       follower: "3D 预览 · 跟随", back: "回到原位", close: "收起",
       noWebgl: "这个浏览器没有启用 WebGL，无法显示预览。", failed: "预览出错：",
+      loading: "3D 预览加载中…",
+      importRow: "预览自定义贴图",
+      importAtlas: "主图集", importDetail: "墙面砖纹", importWallCut: "墙面镂空",
+      importRoof: "屋顶", importRoofCut: "屋顶斑驳",
       dataFailed: "预览数据加载失败", atlas: "图集", grid: "网格 列×行",
       cells: "图集格子 atlas_cell（列 / 行，修改后实时更新）",
       params: "模板参数（修改后实时更新）", cellsUnit: " 格",
@@ -156,6 +168,7 @@
       fixedTag: "固定",
       fixedTip: "序号 1 是这一块的固定格：想换图就在图集上点别的格子；这里不能删、也不能改坐标",
       pickBg: "背景", bgGray: "灰", bgWhite: "白", bgBlack: "黑",
+      borders: "边框", bordersTip: "显示/隐藏图集上的网格线和描框（占用白框、候选蓝框）",
       spanOf: "单元切分 宽×高（格）",
       faces: ["一层正面", "一层右面", "一层背面", "一层左面", "其它层正面", "其它层右面", "其它层背面", "其它层左面"]
     },
@@ -178,7 +191,7 @@
       seedHint: "遊戲裡門/窗單元有多個候選格、放置時隨機挑一個；拖動種子可預覽不同排列（上面的「隨機變體」關掉後這裡不起作用）",
       randomize: "隨機一個", exportBtn: "匯出設定",
       exportHint: "匯出材質 / 樣式 / 圖集座標三層，都可直接貼回 objects.svg",
-      copyOk: "已複製到剪貼簿", copyFail: "複製失敗，請手動選取複製",
+      copyOk: "已複製到剪貼簿", copyFail: "複製失敗，請手動選取複製", copy: "複製",
       wall: "牆面色", roof: "屋頂色",
       brightness: "亮度", details: "材質與圖集參數", none: "（無）",
       wallDetail: "牆面遮罩層", roofCutout: "屋頂斑駁層",
@@ -186,6 +199,10 @@
       randomVariantHint: "總控：關掉後整棟一律用固定格，種子條不再起作用（不影響各單元的變體池內容）",
       follower: "3D 預覽 · 跟隨", back: "回到原位", close: "收起",
       noWebgl: "此瀏覽器未啟用 WebGL，無法顯示預覽。", failed: "預覽出錯：",
+      loading: "3D 預覽載入中…",
+      importRow: "預覽自訂貼圖",
+      importAtlas: "主圖集", importDetail: "牆面磚紋", importWallCut: "牆面鏤空",
+      importRoof: "屋頂", importRoofCut: "屋頂斑駁",
       dataFailed: "預覽資料載入失敗", atlas: "圖集", grid: "網格 欄×列",
       cells: "圖集格子 atlas_cell（欄 / 列，修改後即時更新）",
       params: "範本參數（修改後即時更新）", cellsUnit: " 格",
@@ -206,6 +223,7 @@
       fixedTag: "固定",
       fixedTip: "序號 1 是這一塊的固定格：想換圖就在圖集上點別的格子；這裡不能刪、也不能改座標",
       pickBg: "背景", bgGray: "灰", bgWhite: "白", bgBlack: "黑",
+      borders: "邊框", bordersTip: "顯示/隱藏圖集上的網格線與描框（佔用白框、候選藍框）",
       spanOf: "單元切分 寬×高（格）",
       faces: ["一樓正面", "一樓右面", "一樓背面", "一樓左面", "其他樓層正面", "其他樓層右面", "其他樓層背面", "其他樓層左面"]
     },
@@ -228,7 +246,7 @@
       seedHint: "Door/window cells have several candidate tiles and one is picked at random; drag the seed to preview different layouts (the “Random variants” switch above turns this off)",
       randomize: "Randomize", exportBtn: "Export",
       exportHint: "Export all three layers (material / styles / atlas cells) as pasteable code",
-      copyOk: "Copied to clipboard", copyFail: "Copy failed — select and copy manually",
+      copyOk: "Copied to clipboard", copyFail: "Copy failed — select and copy manually", copy: "Copy",
       wall: "Wall tint", roof: "Roof tint",
       brightness: "Brightness", details: "Material and atlas parameters", none: "(none)",
       wallDetail: "Wall detail mask", roofCutout: "Roof grime layer",
@@ -236,6 +254,10 @@
       randomVariantHint: "Master switch: turn it off and every unit falls back to its fixed cell — the seed slider stops mattering (variant pools themselves are untouched)",
       follower: "3D preview · following", back: "Back to preview", close: "Dismiss",
       noWebgl: "WebGL is disabled in this browser, so the preview cannot be shown.", failed: "Preview error: ",
+      loading: "Loading 3D preview…",
+      importRow: "Preview custom textures",
+      importAtlas: "Atlas", importDetail: "Wall detail", importWallCut: "Wall cutout",
+      importRoof: "Roof", importRoofCut: "Roof grime",
       dataFailed: "Preview data could not be loaded", atlas: "Atlas", grid: "Grid cols×rows",
       cells: "Atlas cells (column / row; updates live)", params: "Template parameters (updates live)",
       cellsUnit: " cells", pickCell: "Click an atlas cell to assign it",
@@ -255,6 +277,7 @@
       fixedTag: "fixed",
       fixedTip: "Entry 1 is this block's fixed cell: pick another cell on the atlas to change it; it can't be deleted or re-pointed here",
       pickBg: "Background", bgGray: "Gray", bgWhite: "White", bgBlack: "Black",
+      borders: "Outlines", bordersTip: "Show or hide grid lines and overlays on the atlas (occupied boxes, candidate boxes)",
       spanOf: "Unit split w×h (cells)",
       faces: ["First floor · front", "First floor · right", "First floor · back", "First floor · left", "Upper floors · front", "Upper floors · right", "Upper floors · back", "Upper floors · left"]
     }
@@ -1229,6 +1252,8 @@
       '<strong>' + TEXT.title + '</strong></div><span class="ts-b3d__live"><i></i>' + TEXT.live + '</span></header>' +
       '<div class="ts-b3d__stage"><canvas id="b3dCanvas" width="960" height="720" aria-label="' + esc(TEXT.title) + '"></canvas>' +
       '<span class="ts-b3d__hint">' + TEXT.hint + '</span>' +
+      // 首帧前的「加载中」浮层：贴图解码完、真正画出第一帧才撤（draw 的 go() 里 remove）
+      loadingHTML("", "b3dLoading") +
       '<div class="ts-b3d__ctrls">' +
       '<button class="ts-b3d__btn" id="b3dReset" type="button">' + TEXT.reset + '</button>' +
       '<button class="ts-b3d__btn" id="b3dUnlock" type="button" aria-pressed="false">' + TEXT.customizeOff + '</button>' +
@@ -1278,6 +1303,8 @@
       '<input type="number" id="b3dSeedNum" min="0" max="999" value="' + (state.seed | 0) + '">' +
       '</label>' +
       '<button type="button" class="ts-b3d__btn" id="b3dRandomize">' + TEXT.randomize + '</button>' +
+      // 分隔线：种子区（条 + 随机一个）与「导出配置」分属两件事，竖线隔开
+      '<span class="ts-b3d__seedsep" aria-hidden="true"></span>' +
       '<button type="button" class="ts-b3d__btn" id="b3dExport" title="' + esc(TEXT.exportHint) + '">' + TEXT.exportBtn + '</button>' +
       '</div></div>' +
       '<details class="ts-b3d__details"><summary>' + TEXT.details + '</summary><div class="ts-b3d__info" id="b3dInfo"></div></details>' +
@@ -1624,11 +1651,11 @@
       box.className = "ts-b3d__modal";
       box.innerHTML =
         '<div class="ts-b3d__modalcard">' +
-        '<div class="ts-b3d__modalhead"><strong>' + TEXT.exportBtn + '</strong>' +
+        '<div class="ts-b3d__modalhead"><strong class="ts-b3d__modaltitle">' + TEXT.exportBtn + '</strong>' +
         '<button type="button" class="ts-b3d__btn" id="b3dExportClose">' + TEXT.close + '</button></div>' +
         '<textarea id="b3dExportText" readonly rows="14"></textarea>' +
         '<div class="ts-b3d__modalfoot">' +
-        '<button type="button" class="ts-b3d__btn" id="b3dExportCopy">' + TEXT.exportBtn + ' · 复制</button>' +
+        '<button type="button" class="ts-b3d__btn" id="b3dExportCopy">' + TEXT.copy + '</button>' +
         '<span id="b3dExportMsg" class="ts-b3d__dim"></span></div></div>';
       document.body.appendChild(box);
       box.addEventListener("click", function (e) { if (e.target === box) box.style.display = "none"; });
@@ -1678,15 +1705,18 @@
             var c2 = cv.getContext("2d");
             c2.fillStyle = "#ccc"; c2.font = "13px sans-serif";
             c2.fillText(TEXT.noWebgl, 12, 26);
+            hideLoading();
             return;
           }
         }
         view.bright = state.bright;
         view.setBoxes(buildScene(mat));
         view.draw();
+        hideLoading();             // 首帧真正画出来了，撤掉「加载中」浮层
         drawFloat();                 // 浮窗（如果正显示着）同步重画
         info(mat);
       } catch (e) {
+        hideLoading();
         window.__b3dErr = String(e && e.stack || e);
         var tip = document.createElement("p");
         tip.className = "ts-b3d__dim";
@@ -1718,9 +1748,21 @@
       if (!card || !card.contains(e.target)) { e.preventDefault(); return; }
       pop = card;
     }
-    if (pop.scrollHeight <= pop.clientHeight + 1) { e.preventDefault(); return; }
-    if (e.deltaY < 0 && pop.scrollTop <= 0) e.preventDefault();
-    else if (e.deltaY > 0 && pop.scrollTop + pop.clientHeight >= pop.scrollHeight - 1) e.preventDefault();
+    // ⚠️ 只看外层卡片会漏掉内部可滚元素：导出框里真正能滚的是 textarea，
+    //    卡片本身撑得下（scrollHeight===clientHeight）→ 旧逻辑一律拦掉，
+    //    于是鼠标放在文本框上滚轮完全不动，只能去拖右边的滚动条。
+    //    这里从命中的元素一路向上找到卡片，谁还能顺着滚轮方向滚就放行给谁；
+    //    一层都滚不动（到顶/到底/本来就不可滚）才 preventDefault 防穿透。
+    var dy = e.deltaY;
+    for (var n = e.target; n; n = n.parentNode) {
+      if (n.nodeType !== 1) continue;
+      var ah = n.scrollHeight, ch = n.clientHeight;
+      if (ah > ch + 1) {
+        if (dy < 0 ? n.scrollTop > 0 : n.scrollTop + ch < ah - 1) return;
+      }
+      if (n === pop) break;
+    }
+    e.preventDefault();
   }, { passive: false, capture: true });
 
   /* ── 页面往下翻、3D 预览滚出视口时，右下角浮出小窗继续看 ──────────
@@ -1967,6 +2009,48 @@
     return Object.keys(USED_TEX[field] || {}).sort();
   }
 
+  /* ── 离线导入自定义贴图 ─────────────────────────────────────
+     五个入口各接一张本地图片（FileReader 读 dataURL，全程不经过
+     网络）：主图集 / 墙面砖纹 / 墙面镂空 / 屋顶贴图 / 屋顶斑驳。
+     读进来的 Image 直接塞进 IMG 缓存（img() 命中即用），材质字段
+     指到 __custom_* 这个假名上——后续绘制、缩略图、选格全走既有
+     通路，不需要任何特殊分支。 */
+  var CUSTOM_KEYS = {
+    atlas: "__custom_atlas", detail: "__custom_detail", wallcut: "__custom_wallcut",
+    roof: "__custom_roof", roofcut: "__custom_roofcut"
+  };
+  function applyCustomTex(mat, kind, im, fname) {
+    var key = CUSTOM_KEYS[kind];
+    if (!key || !im || !im.naturalWidth) return;   // 图片没解码成功就当没导入
+    IMG[key] = im;                       // 必须等 load 完再进来（调用方保证）
+    im.__fname = fname || "";
+    if (kind === "atlas") {
+      // 网格先沿用原图集的（用户多半是同规格替换）；要改面板「网格」里直接改，
+      // 会记到 __custom_atlas 名下，跟正式图集同一套机制。
+      var g = gridOf(mat.atlas_texture || DATA.default_atlas);
+      mat.atlas_texture = key;
+      DATA.atlas_grids = DATA.atlas_grids || {};
+      DATA.atlas_grids[key] = g;
+      DATA.atlas_grid = g;
+    } else if (kind === "detail") {
+      mat.detail_texture = key;
+      mat.detail_cell = [0, 0, 1, 1];    // 自定义砖纹默认整张一格（可在面板改切分）
+    } else if (kind === "wallcut") {
+      mat.detail_cutout = key;
+    } else if (kind === "roof") {
+      mat.roof = mat.roof || {};
+      mat.roof.texture = key;
+      mat.roof.cell = [0, 0, 1, 1];
+    } else if (kind === "roofcut") {
+      mat.roof = mat.roof || {};
+      mat.roof.cutout = key;             // 镂空/斑驳无图集格，整张一次循环
+    }
+    markDirty();
+    STYLE_TEX = {};
+    draw();
+    info(mat);                           // 重建面板：缩略图/下拉立刻显示新贴图
+  }
+
   var texSelect = function (key, val) {
     let opts = '<option value="">' + TEXT.none + '</option>';
     const list = usedTex(key).slice();
@@ -2160,7 +2244,11 @@
         '</span></div>';
       // 直接在图集大图上点格子 → 把那格指给这个小块（有同名单元就用名字，
       // 没有就按 列,行 现造一个自定义单元）；比一排缩略图直观。
-      var body = '<div class="ts-b3d__bgrow">' + bgSwitchHtml() + '</div>' +
+      var body = '<div class="ts-b3d__bgrow">' + bgSwitchHtml() +
+        // 边框开关：嫌网格线/描框挡视线时可整个关掉，只剩干净的图集
+        '<button type="button" class="ts-b3d__bgbtn' + (state.pickBorders ? " ts-b3d__bgbtn--on" : "") +
+        '" data-pickborders="1" title="' + esc(TEXT.bordersTip) + '"' + dis() + '>' + TEXT.borders + '</button>' +
+        '</div>' +
         '<canvas id="b3dPopPick" width="224" height="224"></canvas>' +
         (append ? '<div class="ts-b3d__dim ts-b3d__pooltip">' + TEXT.addMany + '</div>' : "") +
         (cur ? '<div class="ts-b3d__kv ts-b3d__spanrow"><span>' + TEXT.spanOf + '</span>' +
@@ -2255,6 +2343,33 @@
         '<input data-grid="1" value="' + gridOf(mat.atlas_texture).join(" ") + '" style="width:56px"' + dis() + '></div>';
     }
     el.innerHTML =
+      // 自定义贴图入口放在面板最上面（先选图，再看下面的图集/面/单元参数）。
+      // 五个入口一行铺开（手机上自动换行），label 包 input 点整块就开相册；
+      // 已导入的入口高亮，悬停能看到来源文件名。
+      (function () {
+        var impOn = {
+          atlas: mat.atlas_texture === CUSTOM_KEYS.atlas,
+          detail: mat.detail_texture === CUSTOM_KEYS.detail,
+          wallcut: mat.detail_cutout === CUSTOM_KEYS.wallcut,
+          roof: (mat.roof || {}).texture === CUSTOM_KEYS.roof,
+          roofcut: (mat.roof || {}).cutout === CUSTOM_KEYS.roofcut
+        };
+        var impName = function (k) {
+          var im = IMG[CUSTOM_KEYS[k]];
+          return im && im.__fname ? im.__fname : "";
+        };
+        return '<div class="ts-b3d__kv ts-b3d__kv--wide ts-b3d__imports"><span>' + TEXT.importRow + '</span>' +
+          '<div class="ts-b3d__importbtns">' +
+          [["atlas", TEXT.importAtlas], ["detail", TEXT.importDetail], ["wallcut", TEXT.importWallCut],
+           ["roof", TEXT.importRoof], ["roofcut", TEXT.importRoofCut]].map(function (p) {
+            var tip = impName(p[0]);
+            return '<label class="ts-b3d__import' + (impOn[p[0]] ? " ts-b3d__import--on" : "") + '"' +
+              (tip ? ' title="' + esc(tip) + '"' : '') + '>' +
+              '<input type="file" accept="image/*" data-import="' + p[0] + '"' + dis() + '>' +
+              '<span aria-hidden="true">' + (impOn[p[0]] ? "✓" : "⬆") + '</span>' + p[1] + '</label>';
+          }).join("") +
+          '</div></div>';
+      })() +
       atlasPickerRow(mat) +
       faceRow(TEXT.faces[0], "1st", 0) +
       faceRow(TEXT.faces[1], "1st", 1) +
@@ -2269,6 +2384,23 @@
       '<p class="ts-b3d__dim ts-b3d__section-label">' + TEXT.params + '</p>' +
       editorRows(mat);
     // 参数改动 → 回写 mat（纹理只写文件名）并重绘
+    // 离线导入：选了本地图片 → FileReader 转 dataURL（不碰网络）→ 解码完应用
+    el.querySelectorAll("input[data-import]").forEach(function (inp) {
+      inp.onchange = function () {
+        var f = inp.files && inp.files[0];
+        inp.value = "";                        // 清掉，同一张图还能重选
+        if (!f || !/^image\//.test(f.type)) return;
+        var kind = inp.dataset.import;
+        var rd = new FileReader();
+        rd.onload = function () {
+          var im = new Image();
+          im.onload = function () { applyCustomTex(mat, kind, im, f.name); };
+          im.onerror = function () { applyCustomTex(mat, kind, null, f.name); };
+          im.src = rd.result;
+        };
+        rd.readAsDataURL(f);
+      };
+    });
     el.querySelectorAll("input[data-key], select[data-key], select[data-floor], input[data-grid]").forEach(function (el2) {
       el2.onchange = function () {
         var v = el2.value;
@@ -2380,6 +2512,8 @@
       cx.clearRect(0, 0, S, S);
       fillPickBg(cx, S);                     // 灰/白/黑 背景（图集是 RGBA 透明底）
       cx.drawImage(a.atlas, 0, 0, a.atlas.naturalWidth, a.atlas.naturalHeight, 0, 0, S, S);
+      // 「边框」开关关掉时只画干净的图集：网格线、占用白框、候选蓝框全部跳过
+      if (!state.pickBorders) return;
       cx.lineWidth = 1; cx.strokeStyle = "rgba(0,0,0,0.4)";
       for (var i = 1; i < ng[0]; i++) { cx.beginPath(); cx.moveTo(i * S / ng[0] + 0.5, 0); cx.lineTo(i * S / ng[0] + 0.5, S); cx.stroke(); }
       for (var j = 1; j < ng[1]; j++) { cx.beginPath(); cx.moveTo(0, j * S / ng[1] + 0.5); cx.lineTo(S, j * S / ng[1] + 0.5); cx.stroke(); }
@@ -2865,10 +2999,29 @@
     paintRecipes();
   }
 
+  /* ── 加载中占位 ─────────────────────────────────────────────
+     数据 fetch 与 UI 建好之前，.ts-b3d 只是个空 div——慢网下那块就是
+     一片空白，像页面坏了。脚本一进来先铺一个「加载中」占位卡；
+     ui() 重建 holder 后在画布上再盖一层同款浮层（贴图还在解码、首帧
+     未出），第一帧真正画出来（或出错）才撤。 */
+  function loadingHTML(extra, id) {
+    return '<div class="ts-b3d__loading' + (extra ? " " + extra : "") + '"' +
+      (id ? ' id="' + id + '"' : "") + ' role="status">' +
+      '<span class="ts-b3d__loadspin"></span>' + TEXT.loading + '</div>';
+  }
+  function hideLoading() {
+    var el = document.getElementById("b3dLoading");
+    if (el) el.remove();
+  }
+  holder.innerHTML = loadingHTML("ts-b3d__loading--boot");
+
   fetch(DATA_URL).then(function (r) { return r.json(); }).then(function (d) {
     DATA = d;
     CELLS0 = JSON.parse(JSON.stringify(d.cells || {}));
-    ui();
+    try { ui(); }
+    catch (e) {
+      holder.innerHTML = '<p class="ts-b3d__dim">' + TEXT.failed + esc(e) + '</p>';
+    }
   }).catch(function (e) {
     holder.innerHTML = '<p class="ts-b3d__dim">' + TEXT.dataFailed + ' (' + DATA_URL + '): ' + esc(e) + '</p>';
   });

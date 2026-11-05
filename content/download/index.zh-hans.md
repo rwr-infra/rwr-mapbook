@@ -8,7 +8,7 @@ description: "地编各版本的完整归档、三种模板与预制件组件，
 
 ## 地编下载 { #download .section-title }
 
-这里是历次地编版本的完整归档，从 060 到 0101 。每个包就是那一版地编的全套文件，与群里发布的一致。
+这里是历次地编版本的完整归档，从 060 到 0114 。每个包就是那一版地编的全套文件，与群里发布的一致。
 
 <div class="ts-plain" markdown="1">
 
@@ -16,13 +16,15 @@ description: "地编各版本的完整归档、三种模板与预制件组件，
 
 | 版本 | 归档 | 备注 | 下载 |
 | --- | --- | --- | --- |
-| 地编 0101 | `0101.rar`　26.2 MB | 最新版本，教程正文对着它写 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/0101.rar){ .md-button .md-button--primary } |
+| 地编 0114 | `0114.rar`　34.7 MB | 最新版本；教程正文目前仍按 0101 写 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/0114.rar){ .md-button .md-button--primary } |
 
 **历史版本：**
 
-??? note "展开查看全部历史版本（060 到 0100）"
+??? note "展开查看全部历史版本（060 到 0113）"
     | 版本 | 归档 | 备注 | 下载 |
     | --- | --- | --- | --- |
+    | 地编 0113 | `0113.rar`　31.7 MB | 比 0114 早一版，与 0101 的差异未逐条核对 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/0113.rar){ .md-button .md-button--primary } |
+    | 地编 0101 | `0101.rar`　26.2 MB | 教程正文对着它写，界面与清单以这版为准 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/0101.rar){ .md-button .md-button--primary } |
     | 地编 0100 | `0100.rar`　31.2 MB | 上一版，与 0101 差异不大 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/0100.rar){ .md-button .md-button--primary } |
     | 地编 091 | `091.rar`　26.2 MB | 旧版，界面与清单可能对不上 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/091.rar){ .md-button .md-button--primary } |
     | 地编 090 | `090.rar`　30.7 MB | 旧版，界面与清单可能对不上 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/090.rar){ .md-button .md-button--primary } |
@@ -34,7 +36,7 @@ description: "地编各版本的完整归档、三种模板与预制件组件，
 </div>
 
 !!! warning "先看清是哪一版"
-    手册正文默认讲的是最新版，如果不是会特殊标明；拿旧版地编对着看，界面与清单可能对不上。
+    手册正文目前仍按 **0101** 写（不是最新的 0114），其余版本还没逐条核对；拿别的版本对着看，界面与清单可能对不上。
 
 ## 模板下载 { #materials .section-title }
 
@@ -60,7 +62,7 @@ description: "地编各版本的完整归档、三种模板与预制件组件，
 
 | 版本 | 归档 | 备注 | 下载 |
 | --- | --- | --- | --- |
-| 雪地模式模板 | `vwao.svg`　426 kB | 环境材质为雪地<br>该模板还未细化测试 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/vwao.svg){ .md-button .md-button--primary download="vwao.svg" } |
+| 雪地模式模板（清单版本 vwao1102） | `vwao1102.svg`　412 kB | 环境材质为雪地<br>该模板还未细化测试 | [下载](https://assets.rwr-infra.uk/rwrme-web-assets/vwao1102.svg){ .md-button .md-button--primary download="vwao1102.svg" } |
 
 </div>
 
@@ -102,9 +104,11 @@ description: "地编各版本的完整归档、三种模板与预制件组件，
     2479c531f4576e8c5751e15637c422f6ff2ce3654e8c4c4aa3fd5263c1b6eade  091.rar
     84d18efd2fe7de947efe9f44374662961f2a4d5f7e09cb65e4165aafcddd742a  0100.rar
     49de6d2c0175f6a6a01f0f6eaaab93c4f0af394d82151576ad9b36c33c849a55  0101.rar
+    95f76cf335ea3eee5d3aba97ad6ae4917422caabc05ea43220425d70a3568e76  0113.rar
+    3f22c36b120e4302fa42d5fa8495cd9c760bc1342b98c264be88a8f960329647  0114.rar
     e4ec1869d92fc802d8760e8898eba9953b55a2face1c39e74dffee850f1bfc31  vao0822.svg
     67a34f77b43b1520dde8515e83c1b6e78413a14293938a85479aa1de3aa0dc48  vdao.svg
-    d6959ab114a5ef17d628449a882e019e1ad7d1dd245adad40a0db80f27a9657f  vwao.svg
+    c65f01c40ca8a4b576f868fa79239bbfa13e45987c57d8ab6ece5b4cb854e4a4  vwao1102.svg
     42b39c0476684493dcafb7d0a4fd4954f55f960b034591f3dcf1a614c9047d19  HangarOnIsland_objects.asmb
     c1228e7973441ee118e15f31dd0fd4babdcbe1b3d09035022cd8284c493353f5  Stash_vao0822.asmb
     ccbdcdb74b362ddbc559fd66c10d3d9aeaee1b7423907997326ae79c3404ba5c  Armory_vao0822.asmb
